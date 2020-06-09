@@ -217,7 +217,7 @@ export default class ServiceDetails extends Component {
                 <View style={styles.fab} onPress={() => Actions.createRestaurant()}>
 
                     <View style={{ flexDirection: 'row', flex:1 }}>
-                        <View style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
+                        <TouchableOpacity onPress={() => Actions.agent_create()}  style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
                             <Icon
                                 active
                                 name="pluscircleo"
@@ -226,9 +226,9 @@ export default class ServiceDetails extends Component {
                                 size={25}
                             />
                               <Text style={{ fontSize: 12, margin: 10, fontWeight: '300', color: '#1E1E1E' }}>New Agent</Text>
-                        </View>
+                        </TouchableOpacity>
                         <View style={{width:0.6, marginTop:3, marginBottom:3, backgroundColor:'rgba(128,128,128,0.4)'}} ></View>
-                        <View style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
+                        <TouchableOpacity onPress={() => Actions.agent_pay()}  style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
                             <Icon
                                 active
                                 name="ios-wallet"
@@ -237,7 +237,7 @@ export default class ServiceDetails extends Component {
                                 size={25}
                             />
                               <Text style={{ fontSize: 12, margin: 10, fontWeight: '300', color: '#1E1E1E' }}>Pay Agents</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </Container>

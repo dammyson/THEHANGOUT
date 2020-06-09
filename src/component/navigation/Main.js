@@ -56,7 +56,8 @@ import More from '../../screen/restaurant/More';
 import MerchantDashboard from '../../screen/merchant/MerchantDashboard';
 import ServiceDetails from '../../screen/merchant/ServiceDetails';
 import Services from '../../screen/merchant/Services';
-
+import CreateAgent from '../../screen/agent/Create';
+import PayAgent from '../../screen/agent/Pay';
 import Test from '../../screen/onboarding/Test';
 
 
@@ -132,6 +133,8 @@ export default class Main extends Component {
             <Scene key='service_details' component={ServiceDetails} hideNavBar />
             <Scene key='services' component={Services} hideNavBar />
             <Scene key='test' component={Test} hideNavBar />
+            <Scene key='agent_create' component={CreateAgent} hideNavBar />
+            <Scene key='agent_pay' component={PayAgent} hideNavBar />
 
 
           </Scene>
