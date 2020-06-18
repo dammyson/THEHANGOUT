@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { TextInput, StyleSheet, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, ImageBackground, ScrollView } from 'react-native';
+import { TextInput, StyleSheet, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, Image, ScrollView } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import { Avatar, Badge, } from 'react-native-elements';
@@ -49,7 +49,7 @@ export default class MerchantDashboard extends Component {
                 this.setState({ user: JSON.parse(value).user })
             }
 
-             this.getEventsRequest()
+            this.getEventsRequest()
         })
 
         AsyncStorage.getItem('bal').then((value) => {
@@ -88,7 +88,7 @@ export default class MerchantDashboard extends Component {
 
                 } else {
                     this.setState({
-                        nodate: true,
+                        nodata: true,
                         loading: false
                     })
                 }
@@ -96,7 +96,7 @@ export default class MerchantDashboard extends Component {
             .catch(error => {
                 alert(error.message);
                 console.warn(error);
-                this.setState({ loading: false })
+                this.setState({ loading: false, nodata: true, })
             });
 
 
@@ -119,6 +119,7 @@ export default class MerchantDashboard extends Component {
                 </View>
             );
         }
+
 
         var left = (
             <Left style={{ flex: 1 }}>
@@ -151,44 +152,60 @@ export default class MerchantDashboard extends Component {
 
                 <Navbar left={left} right={right} title="Home" bg='#101023' />
                 <Content>
-                    <View style={styles.container}>
-                        <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
-                        <View >
-                            <View style={{ flexDirection: 'row', backgroundColor: '#FFF', marginTop: 24, marginBottom: 24, marginLeft: 30, marginRight: 30, borderRadius: 5 }}>
-                                <View style={{ marginLeft: 20, flex: 1, alignItems: 'flex-start', marginTop: 10, marginBottom: 10 }}>
-                                    <Text style={{ color: '#010113', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>₦{this.state.bal}</Text>
-                                    <Text style={{ color: '#010113', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>My Wallet Balance</Text>
+                    {!this.state.nodata ?
+                        <View style={styles.container}>
+                            <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
+                            <View >
+                                <View style={{ flexDirection: 'row', backgroundColor: '#FFF', marginTop: 24, marginBottom: 24, marginLeft: 30, marginRight: 30, borderRadius: 5 }}>
+                                    <View style={{ marginLeft: 20, flex: 1, alignItems: 'flex-start', marginTop: 10, marginBottom: 10 }}>
+                                        <Text style={{ color: '#010113', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>₦{this.state.bal}</Text>
+                                        <Text style={{ color: '#010113', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>My Wallet Balance</Text>
 
+                                    </View>
+                                    <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
+                                        <TouchableOpacity onPress={() => Actions.withdraw()} style={{ backgroundColor: '#139F2A', alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
+                                            <Text style={{ color: "#fff", marginTop: 7, marginBottom: 7, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Withdraw Funds</Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
-                                <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
-                                    <TouchableOpacity onPress={() => Actions.withdraw()} style={{ backgroundColor: '#139F2A', alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
-                                        <Text style={{ color: "#fff", marginTop: 7, marginBottom: 7, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Withdraw Funds</Text>
-                                    </TouchableOpacity>
+
+                                <View style={{ backgroundColor: '#FFF', marginTop: 10, marginLeft: 20, marginRight: 20, opacity: 0.77, height: 0.6 }}></View>
+                                <View style={{ marginLeft: 10, marginRight: 7, marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text style={styles.titleText}>RUNNING SERVICES</Text>
+                                    <TouchableOpacity onPress={() => Actions.services()} style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
+                                        <Text style={{ fontSize: 12, color: '#188EFF', }}>View All </Text>
+                                        <Icon
+                                            active
+                                            name="ios-arrow-forward"
+                                            type='ionicon'
+                                            color='#188EFF'
+                                        /></TouchableOpacity>
                                 </View>
                             </View>
+                            <View style={{ flex: 1, marginTop: 1, marginLeft: 20, marginRight: 20, }}>
+                                <ScrollView  >
 
-                            <View style={{ backgroundColor: '#FFF', marginTop: 10, marginLeft: 20, marginRight: 20, opacity: 0.77, height: 0.6 }}></View>
-                            <View style={{ marginLeft: 10, marginRight: 7, marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={styles.titleText}>RUNNING SERVICES</Text>
-                                <TouchableOpacity onPress={() => Actions.services()} style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
-                                    <Text style={{ fontSize: 12, color: '#188EFF', }}>View All </Text>
-                                    <Icon
-                                        active
-                                        name="ios-arrow-forward"
-                                        type='ionicon'
-                                        color='#188EFF'
-                                    /></TouchableOpacity>
+                                    {this.renderItem(this.state.datatwo)}
+
+                                </ScrollView>
+                            </View>
+
+                        </View>
+                        :
+                        <View style={{
+                            width: Dimensions.get('window').width,
+                            height: Dimensions.get('window').height, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000'
+                        }}>
+                            <View style={styles.welcome}>
+                                <Image
+                                    style={styles.logo}
+                                    source={require('../../assets/empty.png')} />
+                                <Text style={{ fontSize: 15, color: '#fff' }}>No data at the moment </Text>
+
                             </View>
                         </View>
-                        <View style={{ flex: 1, marginTop: 1, marginLeft: 20, marginRight: 20, }}>
-                            <ScrollView  >
+                    }
 
-                                {this.renderItem(this.state.datatwo)}
-
-                            </ScrollView>
-                        </View>
-
-                    </View>
                 </Content>
                 <TouchableOpacity style={styles.fab} onPress={() => this.setState({ view_create: true })}>
                     <Icon
@@ -225,7 +242,7 @@ export default class MerchantDashboard extends Component {
                                 <View style={{ flexDirection: 'row', marginRight: 20, marginLeft: 20, }}>
                                     <View style={styles.rowchild}>
 
-                                        <TouchableOpacity onPress={() => [this.setState({ view_create: false }) , Actions.createevent()]} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
+                                        <TouchableOpacity onPress={() => [this.setState({ view_create: false }), Actions.createevent()]} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
 
                                             <Icon
                                                 active
@@ -238,14 +255,14 @@ export default class MerchantDashboard extends Component {
 
                                         <Text style={styles.catName}> Events</Text>
 
-                                      
+
 
                                     </View>
 
 
                                     <View style={styles.rowchild}>
 
-                                        <TouchableOpacity onPress={() =>[this.setState({ view_create: false }), Actions.createRestaurant()]} style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
+                                        <TouchableOpacity onPress={() => [this.setState({ view_create: false }), Actions.createRestaurant()]} style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
 
                                             <Icon
                                                 active
@@ -275,12 +292,12 @@ export default class MerchantDashboard extends Component {
     }
 
     renderItem(tickets) {
-       
+
         let items = [];
         for (let i = 0; i < tickets.length; i++) {
             var filled = (tickets[i].ticketsSold / tickets[i].totalTickets) * 100;
             items.push(
-                <TouchableOpacity style={styles.oneRow} onPress={() => Actions.service_details({ id:  tickets[i].id })} >
+                <TouchableOpacity style={styles.oneRow} onPress={() => Actions.service_details({ id: tickets[i].id })} >
 
                     <View style={{ flex: 1, padding: 10 }}>
                         <AnimatedCircularProgress
@@ -306,7 +323,7 @@ export default class MerchantDashboard extends Component {
                     <View style={{ flex: 3, paddingLeft: 12, justifyContent: 'center', }}>
                         <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 20 }}>
                             <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 8, color: tickets[i].color, }}> {tickets[i].type} </Text>
-                            <View style={{ height: 8, width: 24, backgroundColor:  tickets[i].color }} />
+                            <View style={{ height: 8, width: 24, backgroundColor: tickets[i].color }} />
                         </View>
                         <Text style={styles.title}> {tickets[i].name}</Text>
                         <Text style={{ marginLeft: 2, marginTop: 10, textAlign: 'left', color: '#fff', fontSize: 14, fontWeight: '100', }}> ₦{this.currencyFormat(tickets[i].amount)} </Text>

@@ -37,7 +37,6 @@ export default class Category extends Component {
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })
-               
             }
 
             this.getEventsRequest()

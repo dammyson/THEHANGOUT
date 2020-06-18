@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Dimensions, TouchableOpacity,Image, TextInput, StyleSheet, AsyncStorage, ScrollView } from "react-native";
+import { Alert, Dimensions, TouchableOpacity,Image,StatusBar, TextInput, StyleSheet, AsyncStorage, ScrollView } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 
 import { Card, Icon, SocialIcon, Avatar } from 'react-native-elements'
@@ -20,7 +20,9 @@ export default class Pay extends Component {
             images_list: [],
             user: {},
             form_data:[],
-            loading: true 
+            loading: true ,
+            done: false,
+            general_amount:''
         };
     }
 
@@ -92,7 +94,7 @@ export default class Pay extends Component {
             return
         }
       
-    
+          var all=[];
         for (let i = 0; i < form_data.length; i++) {
             if(form_data[i].amount  == null || form_data[i].amount  =='' ){
                 Alert.alert('Validation failed', "FirstName field can not be empty", [{ text: 'Okay' }])
@@ -114,8 +116,8 @@ export default class Pay extends Component {
             .then(res => {
                 console.warn(res);
                 if (res.status) {
-                   
-                    this.setState({ loading: false })
+                    AsyncStorage.setItem('bal', this.currencyFormat(res.data.balance));
+                    this.setState({ loading: false,  done: true })
                   
     
                 } else {
@@ -129,6 +131,57 @@ export default class Pay extends Component {
             });
     }
 
+
+    processPayALLAgent() {
+      
+        const { images_list, data, general_amount } = this.state
+       
+       
+       if (images_list.length < 1 ||  general_amount=="") {
+            Alert.alert('Validation failed', "Fields can not be empty", [{ text: 'Okay' }])
+            return
+        }
+      
+       var all =[]
+        for (let i = 0; i < images_list.length; i++) {
+           all.push({id:images_list[i].id, amount: general_amount })
+        }
+
+        console.warn(all)
+    
+        this.setState({ loading: true })
+        fetch(URL.url + 'agent/pay', {
+            method: 'POST', headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Authorization': 'Bearer ' + data.token,
+            }, body: JSON.stringify({
+                agentPayments: all,
+            }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.warn(res);
+                if (res.status) {
+                    AsyncStorage.setItem('bal', this.currencyFormat(res.data.balance));
+                    this.setState({ loading: false,  done: true })
+                  
+    
+                } else {
+                    Alert.alert('Process failed', res.message, [{ text: 'Okay' }])
+                    this.setState({ loading: false })
+                }
+            }).catch((error) => {
+                console.warn(error);
+                this.setState({ loading: false })
+                alert(error.message);
+            });
+            
+    }
+
+    currencyFormat(n) {
+        return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+     }
 
     onChangeText(text, i){
         const {images_list} = this.state
@@ -209,6 +262,56 @@ export default class Pay extends Component {
         );
 
 
+        if (this.state.done) {
+            return (
+                <Container style={{ backgroundColor: '#000' }}>
+                    <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" translucent={true} />
+        
+                    <Navbar left={left} title='' bg='#000' />
+                    <Content>
+                        <View style={{  width: Dimensions.get('window').width, height: Dimensions.get('window').height,}}>
+        
+        
+                            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        
+                                <View style={{ alignItems: 'center', margin: 20, }}>
+                                    <TouchableOpacity style={{ backgroundColor: 'green', height: 74, width: 74, borderRadius: 37, justifyContent: 'center', alignItems: 'center', }}>
+                                        <Icon
+                                            active
+                                            name="md-checkmark"
+                                            type='ionicon'
+                                            color='#fff'
+                                            size={34}
+                                        />
+                                    </TouchableOpacity>
+        
+                                    <Text style={{ color: '#fff', fontSize: 22, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>Success</Text>
+                                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.8 }}>You've Paid agents successfully</Text>
+                                </View>
+        
+        
+        
+        
+                                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
+                                    <TouchableOpacity onPress={() => [this.setState({done:false}), Actions.pop()]} style={styles.enablebutton} block iconLeft>
+                                        <Text style={{ color: '#fff', marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
+                                    </TouchableOpacity>
+                                </View>
+        
+        
+                            </View>
+        
+        
+        
+                        </View>
+        
+        
+                    </Content>
+                </Container>
+            );
+        }
+
+
         return (
             <Container style={{ backgroundColor: '#000' }}>
                 <Navbar left={left} title="Pay your agents" bg='#000' />
@@ -224,8 +327,8 @@ export default class Pay extends Component {
 
                             </View>
                             <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
-                                <TouchableOpacity onPress={() => Actions.fundW()} style={{ backgroundColor: color.primary_color, alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
-                                    <Text style={{ color: "#010113", marginTop: 7, marginBottom: 7, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Fund Wallet</Text>
+                                <TouchableOpacity onPress={() => Actions.withdraw()} style={{ backgroundColor: 'green', alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
+                                    <Text style={{ color: "#fff", marginTop: 7, marginBottom: 7, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Withdraw Fund</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -242,15 +345,15 @@ export default class Pay extends Component {
                             <View style={styles.item}>
 
                                 <TextInput
-                                    placeholder="Enter agent email"
+                                    placeholder="Enter amount"
                                     placeholderTextColor='#8d96a6'
                                     returnKeyType="next"
-                                    onSubmitEditing={() => this.nextStep()}
-                                    keyboardType='default'
+                                    onSubmitEditing={() => this.processPayALLAgent()}
+                                    keyboardType='numeric'
                                     autoCapitalize="none"
                                     autoCorrect={false}
                                     style={styles.menu}
-                                    onChangeText={text => this.onChangeText(text, i)}
+                                    onChangeText={text => this.setState({general_amount: text})}
                                 />
 
 
@@ -262,7 +365,7 @@ export default class Pay extends Component {
                             </View>
 
                             <ScrollView horizontal style={{ marginRight: 20, marginLeft: 20, marginBottom: 20, marginTop: 15 }}>
-                                <TouchableOpacity onPress={() => this.pickSingle(false)} style={{ height: 80, width: 80, borderRadius: 5, backgroundColor: '#5F5C7F', borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                <TouchableOpacity onPress={() => Actions.agent_create()} style={{ height: 80, width: 80, borderRadius: 5, backgroundColor: '#5F5C7F', borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
 
                                     <Icon
                                         active
@@ -274,13 +377,10 @@ export default class Pay extends Component {
                                     <Text style={{ color: '#fff', textAlign: 'center', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>Add A New Agent</Text>
                                 </TouchableOpacity>
                                 {this.renderResuts(this.state.images_list)}
-
-
-
                             </ScrollView>
 
                             <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
-                                <TouchableOpacity onPress={() => this.processAddAgent()} style={styles.greenbutton} block iconLeft>
+                                <TouchableOpacity onPress={()=> this.processPayALLAgent()} style={styles.greenbutton} block iconLeft>
                                     <Text style={{ color: '#fff', marginTop: 10, marginBottom: 10, fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay Agents</Text>
                                 </TouchableOpacity>
                             </View>
@@ -291,7 +391,7 @@ export default class Pay extends Component {
 
                         <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
                             <TouchableOpacity onPress={() => this.processPayAgent()} style={styles.enablebutton} block iconLeft>
-                                <Text style={{ color: '#000', marginTop: 10, marginBottom: 10, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
+                                <Text style={{ color: '#000', marginTop: 10, marginBottom: 10, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -359,11 +459,11 @@ export default class Pay extends Component {
              
                         <View style={styles.item_two}>
                             <TextInput
-                                placeholder="Enter agent email"
+                              placeholder="Enter amount"
                                 placeholderTextColor='#8d96a6'
                                 returnKeyType="next"
                                 onSubmitEditing={() => this.nextStep()}
-                                keyboardType='default'
+                                keyboardType='numeric'
                                 autoCapitalize="none"
                                 autoCorrect={false}
                                 style={styles.menu_two}
@@ -423,10 +523,10 @@ const styles = StyleSheet.create({
         marginRight: 13,
         marginLeft: 13,
         fontSize: 12,
-        color: '#000',
+        color: '#fff',
         textAlign: 'left',
         fontFamily: 'NunitoSans-Bold',
-
+      flex:1
     },
     qrbuttonContainer: {
         flexDirection: 'row',
@@ -487,6 +587,7 @@ const styles = StyleSheet.create({
         color: '#000',
         textAlign: 'left',
         fontFamily: 'NunitoSans-Bold',
+        flex:1
 
     },
     logo:{

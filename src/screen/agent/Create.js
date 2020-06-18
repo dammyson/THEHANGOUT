@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Dimensions, TouchableOpacity, TextInput, AsyncStorage, StyleSheet, } from "react-native";
+import { Alert, Dimensions, TouchableOpacity, StatusBar,  TextInput, AsyncStorage, StyleSheet, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 
 import { Card, Icon, SocialIcon } from 'react-native-elements'
@@ -23,6 +23,7 @@ export default class Create extends Component {
       titleText: '',
       data: '',
       loading: false,
+      done: false,
 
     };
   }
@@ -65,6 +66,7 @@ export default class Create extends Component {
         }
     }
    const payload = this.pluck(form_data, 'email')
+
  
     this.setState({ loading: true })
     fetch(URL.url + 'agent/add', {
@@ -73,7 +75,7 @@ export default class Create extends Component {
             Accept: 'application/json',
             'Authorization': 'Bearer ' + data.token,
         }, body: JSON.stringify({
-            email: payload,
+            emails: payload,
         }),
     })
         .then(res => res.json())
@@ -81,9 +83,7 @@ export default class Create extends Component {
             console.warn(res);
             if (res.status) {
                
-                this.setState({ loading: false })
-              
-
+                this.setState({ loading: false,  done: true })
             } else {
                 Alert.alert('Process failed', res.message, [{ text: 'Okay' }])
                 this.setState({ loading: false })
@@ -164,6 +164,55 @@ pluck(arr, key) {
           </View>
       );
   }
+
+  if (this.state.done) {
+    return (
+        <Container style={{ backgroundColor: '#000' }}>
+            <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" translucent={true} />
+
+            <Navbar left={left} title='' bg='#000' />
+            <Content>
+                <View style={styles.container}>
+
+
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+
+                        <View style={{ alignItems: 'center', margin: 20, }}>
+                            <TouchableOpacity style={{ backgroundColor: 'green', height: 74, width: 74, borderRadius: 37, justifyContent: 'center', alignItems: 'center', }}>
+                                <Icon
+                                    active
+                                    name="md-checkmark"
+                                    type='ionicon'
+                                    color='#fff'
+                                    size={34}
+                                />
+                            </TouchableOpacity>
+
+                            <Text style={{ color: '#fff', fontSize: 22, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>Success</Text>
+                            <Text style={{ textAlign: 'center', color: '#fff', fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.8 }}>You've added an agent successfully</Text>
+                        </View>
+
+
+
+
+                        <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
+                            <TouchableOpacity onPress={() => [this.setState({done:false}), Actions.pop()]} style={styles.enablebutton} block iconLeft>
+                                <Text style={{ color: '#fff', marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
+                            </TouchableOpacity>
+                        </View>
+
+
+                    </View>
+
+
+
+                </View>
+
+
+            </Content>
+        </Container>
+    );
+}
 
     var left = (
       <Left style={{ flex: 1 }}>

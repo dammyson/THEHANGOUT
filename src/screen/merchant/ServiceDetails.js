@@ -255,7 +255,7 @@ export default class ServiceDetails extends Component {
                         <Avatar
                             size="large"
                             source={{
-                                uri: this.state.user.profilePicture
+                                uri: tickets[i].imageUrl
 
                             }}
                         />
@@ -265,8 +265,8 @@ export default class ServiceDetails extends Component {
                             <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 8, color: '#139F2A', }}> active </Text>
                             <View style={{ height: 8, width: 24, backgroundColor: '#139F2A' }} />
                         </View>
-                        <Text style={styles.title}> GTB Food & Drink</Text>
-                        <Text style={{ marginLeft: 2, marginTop: 10, textAlign: 'left', color: '#1E1E1E', fontSize: 14, fontWeight: '100', }}> 12,400.00 </Text>
+                        <Text style={styles.title}>{tickets[i].agentName}</Text>
+                        <Text style={{ marginLeft: 2, marginTop: 10, textAlign: 'left', color: '#1E1E1E', fontSize: 14, fontWeight: '100', }}> {tickets[i].agentAmount} </Text>
                         <Text style={{ marginLeft: 2, marginTop: 5, textAlign: 'left', color: 'gba(30,30,30,0.7)', fontSize: 14, fontWeight: '100', }}> Sales so far </Text>
 
                     </View>
