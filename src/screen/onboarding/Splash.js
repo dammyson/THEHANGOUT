@@ -11,7 +11,8 @@ export default class Splash extends Component {
 
     async componentDidMount() {
       setTimeout(() => {
-  this.initPage();
+  //this.initPage();
+  Actions.createMenu({type: 'replace'});
   //Actions.merchant_home();
           }, 3000);
     }

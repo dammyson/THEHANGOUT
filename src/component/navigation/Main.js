@@ -59,6 +59,7 @@ import Services from '../../screen/merchant/Services';
 import CreateAgent from '../../screen/agent/Create';
 import PayAgent from '../../screen/agent/Pay';
 import Test from '../../screen/onboarding/Test';
+import CreateMenu from '../../screen/menu/CreateMenu';
 
 
 ''
@@ -135,6 +136,10 @@ export default class Main extends Component {
             <Scene key='test' component={Test} hideNavBar />
             <Scene key='agent_create' component={CreateAgent} hideNavBar />
             <Scene key='agent_pay' component={PayAgent} hideNavBar />
+
+
+            <Scene key='createMenu' component={CreateMenu} hideNavBar />
+           
 
 
           </Scene>

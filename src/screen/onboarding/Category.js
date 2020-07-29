@@ -64,7 +64,6 @@ export default class Category extends Component {
 
             )
         }
-
         fetch(URL.url + 'categories/addUserCategory', {
           method: 'POST', headers: {
             'Content-Type': 'application/json',
@@ -177,7 +176,6 @@ export default class Category extends Component {
                         <Text style={{ fontSize: 20, margin: 25, textAlign:'center', fontWeight: '800', color: color.primary_color, }}>LET US KNOW WHAT YOUR INTERESTS ARE</Text>
                         <Text style={{ fontSize: 14, margin: 15, marginTop: 40,  textAlign: 'left', fontWeight: '800', color: "#ffffff", }}>Select at least 3 Categories </Text>
                     </View>
-
                     <View style={styles.multipleContainer}>
                         {this.state.multipleData.map(interest => (
                             <SelectMultipleButton
@@ -185,7 +183,6 @@ export default class Category extends Component {
                                 buttonViewStyle={{
                                     borderRadius: 4,
                                     height: 40,
-                    
                                 }}
                                 textStyle={{
                                     fontSize: 15,
@@ -207,9 +204,7 @@ export default class Category extends Component {
                             />
                         ))}
                     </View>
-
                     <View style={styles.buttonview}>
-
                         <View style={styles.buttons}>
                             <Button  style={ this.state.multipleSelectedData.length > 2 ? styles.enablebutton : styles.disablebutton } block iconLeft  onPress={()=> this.state.multipleSelectedData.length > 2 ? this.addCategotyRequest() : null } >
                                 <Text style={{ color: color.secondary_color }}>Done</Text>
@@ -217,7 +212,6 @@ export default class Category extends Component {
                             <Button  onPress={()=> Actions.home()} style={{ backgroundColor: 'transparent', width: 200 }} block iconLeft>
                                 <Text style={{ color: color.white }}>Skip</Text>
                             </Button>
-
                         </View>
                     </View>
                 </Content>
