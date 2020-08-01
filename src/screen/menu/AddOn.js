@@ -79,7 +79,7 @@ export default class AddOn extends Component {
                   console.warn(res);
                   if (res.status) {
                       Toast.show({
-                          text: 'Ticket created sucessfully !',
+                          text: 'Add On created sucessfully !',
                           position: 'bottom',
                           type: 'success',
                           buttonText: 'Dismiss',

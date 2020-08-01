@@ -60,6 +60,8 @@ import CreateAgent from '../../screen/agent/Create';
 import PayAgent from '../../screen/agent/Pay';
 import Test from '../../screen/onboarding/Test';
 import CreateMenu from '../../screen/menu/CreateMenu';
+import RestaurantDetails from '../../screen/merchant/RestaurantDetails';
+import PlaceOrder from '../../screen/restaurant/PlaceOrder';
 
 
 ''
@@ -139,6 +141,9 @@ export default class Main extends Component {
 
 
             <Scene key='createMenu' component={CreateMenu} hideNavBar />
+            <Scene key='res_service_details' component={RestaurantDetails} hideNavBar />
+
+            <Scene key='place_order' component={PlaceOrder} hideNavBar />
            
 
 

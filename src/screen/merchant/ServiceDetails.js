@@ -66,7 +66,7 @@ export default class ServiceDetails extends Component {
         console.warn(user)
 
 
-        fetch(URL.url + 'merchant/dashboard/'+id, {
+        fetch(URL.url + 'merchant/dashboard/'+id+'/Event', {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -240,6 +240,7 @@ export default class ServiceDetails extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
+
             </Container>
         );
     }

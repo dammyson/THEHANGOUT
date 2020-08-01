@@ -22,6 +22,11 @@ export default class CreateMenu extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+   
+   
+  }
+
   onNext = () => {
     console.log("Next");
   };

@@ -43,6 +43,7 @@ export default class MerchantDashboard extends Component {
 
 
     componentDidMount() {
+        console.warn('res');
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })
@@ -290,14 +291,20 @@ export default class MerchantDashboard extends Component {
             </Container>
         );
     }
-
+getDetails(data){
+    if(data.type =='EVENTS'){
+        Actions.service_details({ id: data.id })
+    }else  if(data.type =='RESTURANTS'){
+        Actions.res_service_details({ id: data.id })
+    }
+}
     renderItem(tickets) {
 
         let items = [];
         for (let i = 0; i < tickets.length; i++) {
             var filled = (tickets[i].ticketsSold / tickets[i].totalTickets) * 100;
             items.push(
-                <TouchableOpacity style={styles.oneRow} onPress={() => Actions.service_details({ id: tickets[i].id })} >
+                <TouchableOpacity style={styles.oneRow} onPress={()=> this.getDetails(tickets[i])}>
 
                     <View style={{ flex: 1, padding: 10 }}>
                         <AnimatedCircularProgress

@@ -10,7 +10,7 @@ import {
     BarIndicator,
 } from 'react-native-indicators';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-
+import { getSaveRestaurant, getData } from '../../component/utilities';
 
 import color from '../../component/color';
 const { width: screenWidth } = Dimensions.get('window')
@@ -26,7 +26,7 @@ export default class RestaurantDetails extends Component {
         this.state = {
             loading: true,
             data: '',
-            agent_list:[],
+            menu_list:[],
             nodata: false,
             slider1ActiveSlide: 0,
             selected: null,
@@ -40,17 +40,14 @@ export default class RestaurantDetails extends Component {
 
 
 
-    componentDidMount() {
+   async componentDidMount() {
         this.setState({ id: this.props.id });
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-                this.setState({ user: JSON.parse(value).user })
-            }
-
-             this.getEventsRequest()
-        })
-
+        AsyncStorage.removeItem('currentRES');
+        this.setState({
+            data: JSON.parse(await getData()),
+            user: JSON.parse(await getData()).user
+          })
+        this.getEventsRequest()
         AsyncStorage.getItem('bal').then((value) => {
             if (value == '') { } else {
                 this.setState({ bal: value })
@@ -66,7 +63,7 @@ export default class RestaurantDetails extends Component {
         console.warn(user)
 
 
-        fetch(URL.url + 'merchant/dashboard/'+id, {
+        fetch(URL.url + 'merchant/dashboard/'+id+"/Restaurant", {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -80,7 +77,7 @@ export default class RestaurantDetails extends Component {
                     this.setState({
                         details: res.data,
                         loading: false,
-                        agent_list:  res.data.agentList,
+                        menu_list:  res.data.menuList,
                     })
                 } else {
                     this.setState({
@@ -99,7 +96,16 @@ export default class RestaurantDetails extends Component {
     };
 
 
-
+createMenu(){
+    const { details } = this.state
+     console.warn(details);
+     var data={
+        id: details.id,
+        cat_id: details.categoriesList
+     }
+    AsyncStorage.setItem('currentRES', JSON.stringify(data));
+    Actions.createMenu()
+}
 
 
     render() {
@@ -146,8 +152,7 @@ export default class RestaurantDetails extends Component {
 
         return (
             <Container style={{ backgroundColor: color.secondary_color }}>
-
-                <Navbar left={left} right={right} title={details.title} bg='#101023' />
+               <Navbar left={left} right={right} title={details.title} bg='#101023' />
                 <Content>
                     <View style={styles.container}>
                         <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
@@ -188,8 +193,7 @@ export default class RestaurantDetails extends Component {
                                     <Text style={{ marginLeft: 2, color: '#fff', fontSize: 12, fontWeight: '200', opacity: 0.67, }}>Tickets Sold (pcs) </Text>
                                     <Text style={{ color: '#fff', fontSize: 24, fontWeight: '200', fontFamily: 'NunitoSans-Bold', marginTop: 10 }}>{details.dashboard.ticketsSold}</Text>
 
-                                    <Text style={{ marginLeft: 2, color: '#fff', fontSize: 10, fontWeight: '200', opacity: 0.67, marginTop: 35 }}>Tickets Left </Text>
-                                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', marginTop: 10 }}>{details.dashboard.ticketsLeft}</Text>
+                                   
                                 </View>
                             </View>
                             <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 15, justifyContent: 'center' }}>
@@ -198,26 +202,22 @@ export default class RestaurantDetails extends Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        {this.state.agent_list.length ?  
+                        {this.state.menu_list.length ?  
                         <View style={{ marginLeft: 25, marginRight: 7, marginTop: 10, alignItems: 'flex-start' }}>
-                            <Text style={styles.titleText}>AGENTS</Text>
+                            <Text style={styles.titleText}>MY MENU</Text>
                         </View>
                         :null}
                         <View style={styles.agent_content}>
-
-                            <ScrollView  >
-
-                                {this.renderItem(this.state.agent_list)}
-
+                            <ScrollView>
+                                {this.renderItem(this.state.menu_list)}
                             </ScrollView>
                         </View>
 
                     </View>
                 </Content>
                 <View style={styles.fab} onPress={() => Actions.createRestaurant()}>
-
                     <View style={{ flexDirection: 'row', flex:1 }}>
-                        <TouchableOpacity onPress={() => Actions.agent_create()}  style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
+                        <TouchableOpacity onPress={() => this.createMenu()}  style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
                             <Icon
                                 active
                                 name="pluscircleo"
@@ -225,21 +225,12 @@ export default class RestaurantDetails extends Component {
                                 color='#DD352E'
                                 size={25}
                             />
-                              <Text style={{ fontSize: 12, margin: 10, fontWeight: '300', color: '#1E1E1E' }}>New Agent</Text>
+                              <Text style={{ fontSize: 12, margin: 10, fontWeight: '300', color: '#1E1E1E' }}>New Menu</Text>
                         </TouchableOpacity>
                         <View style={{width:0.6, marginTop:3, marginBottom:3, backgroundColor:'rgba(128,128,128,0.4)'}} ></View>
-                        <TouchableOpacity onPress={() => Actions.agent_pay()}  style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
-                            <Icon
-                                active
-                                name="ios-wallet"
-                                type='ionicon'
-                                color='#139F2A'
-                                size={25}
-                            />
-                              <Text style={{ fontSize: 12, margin: 10, fontWeight: '300', color: '#1E1E1E' }}>Pay Agents</Text>
-                        </TouchableOpacity>
                     </View>
                 </View>
+
             </Container>
         );
     }
@@ -265,8 +256,8 @@ export default class RestaurantDetails extends Component {
                             <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 8, color: '#139F2A', }}> active </Text>
                             <View style={{ height: 8, width: 24, backgroundColor: '#139F2A' }} />
                         </View>
-                        <Text style={styles.title}>{tickets[i].agentName}</Text>
-                        <Text style={{ marginLeft: 2, marginTop: 10, textAlign: 'left', color: '#1E1E1E', fontSize: 14, fontWeight: '100', }}> {tickets[i].agentAmount} </Text>
+                        <Text style={styles.title}>{tickets[i].menuName}</Text>
+                        <Text style={{ marginLeft: 2, marginTop: 10, textAlign: 'left', color: '#1E1E1E', fontSize: 14, fontWeight: '100',   fontFamily: 'NunitoSans-Bold', }}> ₦ {tickets[i].menuAmount} </Text>
                         <Text style={{ marginLeft: 2, marginTop: 5, textAlign: 'left', color: 'gba(30,30,30,0.7)', fontSize: 14, fontWeight: '100', }}> Sales so far </Text>
 
                     </View>
@@ -323,16 +314,17 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
         backgroundColor: '#fff',
-        borderRadius: 20
+        borderRadius: 20,
+        marginBottom:50
 
     },
     fab: {
         height: 45,
-        width: Dimensions.get('window').width - 100,
+        width: Dimensions.get('window').width/2,
         borderRadius: 200,
         position: 'absolute',
-        bottom: 20,
-        right: 50,
+        bottom: 15,
+        right: Dimensions.get('window').width/4,
         backgroundColor: '#fff',
         elevation:5
     },
@@ -342,13 +334,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#F2F1FF',
         borderLeftWidth: 4,
         paddingBottom: 2,
-        borderRadius: 10
+        borderRadius: 10,
+        marginBottom:20
     },
     title: {
         marginTop: 1,
         color: '#1E1E1E',
-        fontSize: 14,
-        fontWeight: '600'
+        fontSize: 18,
+        fontFamily: 'NunitoSans-Bold',
     },
 
 });

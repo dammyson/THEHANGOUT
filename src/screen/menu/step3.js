@@ -1,17 +1,10 @@
 import React, { Component } from "react";
 import { Image, Dimensions, ImageBackground, NativeModules, TouchableOpacity, TextInput, AsyncStorage, StyleSheet, Alert, ScrollView } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Toast, List, ListItem, } from 'native-base';
-import { Avatar, Badge, } from 'react-native-elements';
 import { Icon,  } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux';
-const deviceHeight = Dimensions.get("window").height;
-
-
-
-import Modal, { SlideAnimation, ModalContent } from 'react-native-modals';
-import {
-  BarIndicator,
-} from 'react-native-indicators';
+import { getSaveRestaurant, getData } from '../../component/utilities';
+import {BarIndicator,} from 'react-native-indicators';
 
 
 import color from '../../component/color';
@@ -20,16 +13,19 @@ const URL = require("../../component/server");
 
 import RNPickerSelect from 'react-native-picker-select';
 var ImagePicker = NativeModules.ImageCropPicker;
-
 import Navbar from '../../component/Navbar';
 import AddOn from "./AddOn";
+
+
 
 export default class step5 extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading:true,
       show_add_on: false,
       add_ons:[],
+      cat_list:[],
       details: '',
       data: '',
       name: '',
@@ -42,7 +38,7 @@ export default class step5 extends Component {
       image: null,
       type: '',
       cat: '',
-      ticket: null
+      restaurant: null
     };
   }
 
@@ -59,14 +55,10 @@ export default class step5 extends Component {
     this.setState({ count: 140 - text.length })
   }
 
-  componentWillMount() {
-    AsyncStorage.getItem('data').then((value) => {
-      if (value == '') { } else {
-        this.setState({ data: JSON.parse(value) })
-        this.setState({ user: JSON.parse(value).user })
-      }
-
-      this.getOrganizersRequest()
+ async componentWillMount() {
+    this.setState({
+      data: JSON.parse(await getData()),
+      user: JSON.parse(await getData()).data
     })
 
     const { getState } = this.props;
@@ -77,6 +69,12 @@ export default class step5 extends Component {
       description: state.menuDescriptionText,
 
     })
+    this.setState({
+      restaurant: JSON.parse(await getSaveRestaurant())
+    })
+
+    this.getCatRequest()
+
   }
 
 
@@ -171,13 +169,67 @@ export default class step5 extends Component {
     }, []); 
 }
 
+
+
+getCatRequest() {
+  const { data } = this.state
+  this.setState({
+    loading: true,
+  })
+  fetch(URL.url + 'categories/Restaurants', {
+    method: 'GET', headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Authorization': 'Bearer ' + data.token,
+    }
+  })
+    .then(res => res.json())
+    .then(res => {
+      if (res.status) {
+        this.setState({
+          loading: false,
+        })
+        this.sortCat(res.data);
+      } else {
+        this.setState({
+          loading: false
+        })
+      }
+    })
+    .catch(error => {
+      alert(error.message);
+      console.warn(error);
+      this.setState({ loading: false })
+    });
+
+
+};
+
+
+
+sortCat(list){
+  const { restaurant } = this.state
+  let instant_array = [];
+  let ids = restaurant.cat_id;
+  for (let i = 0; i < list.length; i++) {
+    if (ids.includes(list[i].id)) {
+
+        instant_array.push(
+            {
+                label: list[i].name,
+                value: list[i].id,
+            }
+        )
+    }
+}
+this.setState({ cat_list: instant_array })
+}
+
   async processCreateMenu() {
 
+    const { data, name, description, price, max, min, add_ons, delivery, img_url, cat, image, restaurant } = this.state
 
-    const { data, name, description, price, max, min, add_ons, delivery, img_url, image } = this.state
-
-
-    if (name == "" || description == '' || price == '' || max == '' || min == '' || delivery== '' || add_ons.length > 1) {
+    if (name == "" || description == '' || price == '' || max == '' || min == '' || delivery== '' || add_ons.length < 1) {
       Alert.alert('Validation failed', 'field(s) cannot be empty', [{ text: 'Okay' }])
       return;
     }
@@ -208,11 +260,12 @@ export default class step5 extends Component {
       MinOrder: min,
       MaxOrder: max,
       BannerUrl: img_url,
-      RestaurantId: '1',
-      CategoryId: '5',
+      RestaurantId: restaurant.id,
+      CategoryId: cat,
     })
   
-    this.setState({ loading: true })
+   
+   this.setState({ loading: true })
     fetch(URL.url + 'food/menu/add', {
       method: 'POST', headers: {
         'Content-Type': 'application/json',
@@ -232,7 +285,7 @@ export default class step5 extends Component {
             buttonText: 'Dismiss',
             duration: 3000
           });
-          Actions.merchant_home({ type: 'replace' });
+          Actions.res_service_details({type: 'replace', id: restaurant.id })
         } else {
           Alert.alert('Operation failed', res.message, [{ text: 'Okay' }])
           this.setState({ loading: false })
@@ -249,7 +302,7 @@ export default class step5 extends Component {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
           <View style={styles.welcome}>
-            <Text style={{ fontSize: 15, color: '#fff' }}>Adding Event</Text>
+            <Text style={{ fontSize: 15, color: '#fff' }}>Processing For Restaurant</Text>
             <BarIndicator count={4} color={color.primary_color} />
             <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
           </View>
@@ -390,6 +443,32 @@ export default class step5 extends Component {
                 </View>
               </View>
             </View>
+
+            <View style={styles.oneRow}>
+
+<View style={{ marginLeft: 75, flex: 1 }}>
+    <View>
+        <Text style={styles.hintText}>Event Category </Text>
+    </View>
+    <View style={styles.item}>
+        <RNPickerSelect
+            placeholder={catPlaceholder}
+            items={this.state.cat_list}
+
+            onValueChange={value => {
+                this.setState({
+                    cat: value,
+                });
+            }}
+            style={pickerSelectStyles}
+            value={this.state.cat}
+            useNativeAndroidPickerStyle={false}
+
+        />
+    </View>
+</View>
+</View>
+
             <View style={styles.oneRow}>
 
               <View style={{ marginLeft: 75, flex: 1, }}>
@@ -723,5 +802,26 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
   },
+});
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+      fontSize: 16,
+      paddingVertical: 12,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderColor: 'gray',
+      borderRadius: 4,
+      color: 'black',
+      paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+      fontSize: 16,
+      paddingHorizontal: 10,
+      paddingVertical: 8,
+      borderRadius: 8,
+      color: '#fff',
+      paddingRight: 30, // to ensure the text is never behind the icon
+  },
+
 });
 

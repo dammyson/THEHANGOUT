@@ -41,6 +41,7 @@ export default class step1 extends Component {
   componentDidMount() {
     const { getState } = this.props;
     const state = getState();
+    console.warn(state);
     this.setState({ data: state })
    
   }
