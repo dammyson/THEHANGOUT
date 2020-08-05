@@ -15,6 +15,7 @@ import {
 import { getSaveRestaurant, getData } from '../../component/utilities';
 
 import Moment from 'moment';
+import SelectAddress from "./SelectAddress";
 
 
 const sports = [
@@ -49,6 +50,7 @@ export default class PlaceOrder extends Component {
             loading: true,
             done: false,
             show_add: false,
+            show_add_pika: false,
             pickup: 'Yes',
             res_id: '',
             restaurant: '',
@@ -57,7 +59,7 @@ export default class PlaceOrder extends Component {
             data: '',
             user: '',
             address_id: '',
-            address: 'No 23 Akin Ogunlewe',
+            address: '',
             add_price: 0,
             delivery_price: 0,
             price: 0,
@@ -100,6 +102,8 @@ export default class PlaceOrder extends Component {
                 console.warn(res);
                 if (res.status) {
                     this.setState({
+                        address:res.data.lastAddressUsed,
+                        address_id: res.data.lastAddressUsedId,
                         menu: res.data,
                         loading: false,
                         price: parseInt(res.data.amount),
@@ -121,7 +125,11 @@ export default class PlaceOrder extends Component {
 
 
     makePaymentRequest = (result) => {
-        const { user, menu, restaurant, data, qty, delivery_price, price, add_price } = this.state
+        const { user, menu,address_id, restaurant, data, qty, delivery_price, price, add_price } = this.state
+        if (address_id == '') {
+            Alert.alert('Validation failed', "address fields can not be empty", [{ text: 'Okay' }])
+            return
+        }
         var amount = (price * qty) + add_price + delivery_price;
         var order_des = restaurant + ' - ' + menu.name;
         var formBody = JSON.stringify({
@@ -146,8 +154,7 @@ export default class PlaceOrder extends Component {
             .then(res => {
                 console.warn(res);
                 if (res.status) {
-                    this.processAddAddresss()
-
+                    this.processOrder()
                 } else {
                     Alert.alert('Process failed', res.message, [{ text: 'Okay' }])
                     this.setState({ loading: false, can_scan: false, status: res.status, respons: 'Transaction was unsuccessfull' })
@@ -218,56 +225,7 @@ export default class PlaceOrder extends Component {
     }
 
 
-    processAddAddresss() {
-
-        const { address, data } = this.state
-
-
-        if (address == '') {
-            Alert.alert('Validation failed', "Addreses Fields can not be empty", [{ text: 'Okay' }])
-            return
-        }
-
-        this.setState({ loading: true })
-        fetch(URL.url + 'food/address/add', {
-            method: 'POST', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            }, body: JSON.stringify({
-                address: address,
-
-            }),
-        })
-            .then(res => res.json())
-            .then(res => {
-                console.warn(res);
-                if (res.status) {
-                    Toast.show({
-                        text: 'Address created sucessfully !',
-                        position: 'bottom',
-                        type: 'success',
-                        buttonText: 'Dismiss',
-                        duration: 2500
-                    });
-                    this.setState({ address_id: res.data })
-                    setTimeout(() => {
-                        this.processOrder()
-                    }, 500);
-
-                } else {
-                    Alert.alert('Action failed', res.message, [{ text: 'Okay' }])
-                    this.setState({ loading: false })
-                }
-            }).catch((error) => {
-                console.warn(error);
-                alert(error.message);
-            });
-
-    }
-
-
-
+   
     render() {
         const { menu, restaurant } = this.state
 
@@ -352,11 +310,44 @@ export default class PlaceOrder extends Component {
             <Container style={{ backgroundColor: '#000' }}>
                 <Navbar left={left} bg='000' />
                 <Content>
-                    {this.state.show_add ? this.renderADDON() : this.renderMenu()}
+                    {this.state.show_add ?  this.renderMenu() : this.renderADDON()}
                 </Content>
+                {this.state.show_add_pika ? 
+                <View
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        bottom: 0,
+                        right: 0,
+                        width: Dimensions.get('window').width,
+                        height: Dimensions.get('window').height,
+                    }}
+                   
+                >
+
+                 { this.renderAddressPicker()}
+                </View>
+               :null}
             </Container>
         );
     }
+    handleSelectedAddress(data){
+        console.warn(data);
+        this.setState({ 
+            show_add_pika: false, 
+            address: data.address,
+            address_id: data.id,
+            })
+    }
+
+    renderAddressPicker() {
+        return (
+          <SelectAddress
+          onSelected={(data) => this.handleSelectedAddress(data)}
+           onClose={() => this.setState({ show_add_pika: false })} />
+        )
+      }
 
     renderADDON() {
         const { menu, restaurant } = this.state
@@ -395,7 +386,7 @@ export default class PlaceOrder extends Component {
                         <Text style={{ fontSize: 16, color: '#ffffff', textAlign: 'left', fontWeight: '600', fontFamily: 'NunitoSans-Bold' }}> ₦{(this.state.price * this.state.qty) + this.state.delivery_price + this.state.add_price}</Text>
                     </View>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-                        <TouchableOpacity onPress={() => this.makePaymentRequest()} style={{ height: 45, flexDirection: 'row', paddingRight: 30, paddingLeft: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: 'red' }}>
+                        <TouchableOpacity   onPress={() =>  this.setState({ show_add: true }) } style={{ height: 45, flexDirection: 'row', paddingRight: 30, paddingLeft: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: 'red' }}>
                             <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>PROCEED</Text>
                         </TouchableOpacity>
                     </View>
@@ -418,7 +409,8 @@ export default class PlaceOrder extends Component {
             color: '#000',
         };
 
-        return (<View style={styles.container}>
+        return (
+        <View style={styles.container}>
             <View >
             <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
                 <Text style={styles.titleText}>CONFIRM ORDER</Text>
@@ -469,19 +461,9 @@ export default class PlaceOrder extends Component {
                         <View>
                             <Text style={styles.hintText}> Delievry Address</Text>
                         </View>
-                        <View style={styles.item}>
-                            <TextInput
-                                placeholder="Enter Delivery Address"
-                                placeholderTextColor='#fff'
-                                returnKeyType="next"
-                                keyboardType='default'
-                                autoCapitalize="none"
-                                autoCorrect={false}
-                                style={styles.menu}
-                                value={this.state.name}
-                                onChangeText={text => this.setState({ address: text })}
-                            />
-                        </View>
+                        <TouchableOpacity  onPress={() => this.setState({show_add_pika:true})}style={styles.item}>
+                        <Text style={styles.menu}> { this.state.address}</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={{ alignItems: 'flex-end', marginTop: 2, marginBottom: 20 }}>
@@ -495,7 +477,7 @@ export default class PlaceOrder extends Component {
 
             <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
 
-                <TouchableOpacity onPress={() => this.setState({ show_add: true })} style={{ height: 45, flexDirection: 'row', paddingRight: 30, paddingLeft: 30, marginTop: 20, marginBottom: 20, margin: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: 'red' }}>
+                <TouchableOpacity onPress={() => this.makePaymentRequest()} style={{ height: 45, flexDirection: 'row', paddingRight: 30, paddingLeft: 30, marginTop: 20, marginBottom: 20, margin: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: 'red' }}>
                     <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>Make Payment</Text>
                 </TouchableOpacity>
             </View>
@@ -654,7 +636,7 @@ export default class PlaceOrder extends Component {
                 </View>
                 <View style={{ justifyContent: 'center', flexDirection: 'row', }}>
                     <Text style={{ textAlign: 'left', flex: 1, fontFamily: 'NunitoSans-SemiBold', color: '#fff', fontSize: 13, }}>{this.state.address}</Text>
-                    <TouchableOpacity onPress={() => this.setState({ show_add: false })} style={{ margin: 5 }}>
+                    <TouchableOpacity onPress={() => this.setState({show_add_pika:true})} style={{ margin: 5 }}>
                         <Text style={{ textAlign: 'left', fontFamily: 'NunitoSans-SemiBold', color: 'red', fontSize: 13, }}>Change Address</Text>
                     </TouchableOpacity>
                 </View>
@@ -690,12 +672,17 @@ export default class PlaceOrder extends Component {
             </>
         )
     }
+
+
+
 }
 
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height - 80,
+        flex:1,
+
     },
     btnContainer: {
         flexDirection: "row",

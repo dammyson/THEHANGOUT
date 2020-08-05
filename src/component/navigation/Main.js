@@ -80,6 +80,9 @@ export default class Main extends Component {
       case 'home':
         BackHandler.exitApp()
         break
+        case 'merchant_dashboard':
+        BackHandler.exitApp()
+        break  
 
       default: Actions.pop()
     }

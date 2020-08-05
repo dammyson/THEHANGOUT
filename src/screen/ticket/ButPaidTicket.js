@@ -145,9 +145,7 @@ export default class BuyPaidTicket extends Component {
         console.warn(pos, title, price, id)
         var instant_array = []
         instant_array = this.state.ticket_buy
-
          this.onChangeText(id, pos, 'tick')
-
         if (instant_array[pos] == null) {
             obj = {};
             obj.title = title
