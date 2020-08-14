@@ -338,7 +338,7 @@ export default class Tables extends Component {
                                     color='#FFF'
                                     size={16}
                                 />
-                                <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}> {tickets[i].noOfAdults} Adults </Text>
+                                <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}> {tickets[i].noOfAdults}  </Text>
                             </View>
 
                         </View>

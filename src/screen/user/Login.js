@@ -122,7 +122,7 @@ export default class Login extends Component {
   }
 
   _signInRequest(email, password, social){
-     console.warn(URL.url);
+     console.warn(URL.url+ 'users/authenticate');
     this.setState({ loading: true })
     fetch(URL.url + 'users/authenticate', {
       method: 'POST', headers: {

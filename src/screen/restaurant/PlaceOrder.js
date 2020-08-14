@@ -580,7 +580,7 @@ export default class PlaceOrder extends Component {
                     }
 
                     <View style={{ flex: 1, justifyContent: 'center', marginLeft: 10 }}>
-                        <Text style={{ textAlign: 'left', fontFamily: 'NunitoSans-SemiBold', color: '#fff', fontSize: 13, }}>{data[i].name} - ₦{data[i].amount}</Text>
+                        <Text style={{ textAlign: 'left', fontFamily: 'NunitoSans-SemiBold', color: '#fff', fontSize: 13, }}>{data[i].name} - ₦{this.currencyFormat(data[i].amount)}</Text>
                     </View>
 
 

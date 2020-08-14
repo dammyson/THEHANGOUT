@@ -201,15 +201,15 @@ export default class Dashboard extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent>
-                    <Avatar
-                        rounded
-                        source={{
-                            uri: this.state.user.profilePicture
-                        }}
-                    />
-                </Button>
-            </Left>
+            <Button transparent onPress={() => Actions.pop()}>
+              <Icon
+                active
+                name="left"
+                type='antdesign'
+                color='#FFF'
+              />
+            </Button>
+          </Left>
         );
         var right = (
             <Right>

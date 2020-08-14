@@ -100,7 +100,7 @@ export default class Search extends Component {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>Fetching all events</Text>
+                        <Text style={{ fontSize: 15, color: '#fff' }}>Fetching all restaurants</Text>
                         <BarIndicator count={4} color={color.primary_color} />
                         <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
                     </View>
@@ -112,7 +112,7 @@ export default class Search extends Component {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>No event at the moment </Text>
+                        <Text style={{ fontSize: 15, color: '#fff' }}>No restaurant at the moment </Text>
 
                     </View>
                 </View>
@@ -122,7 +122,7 @@ export default class Search extends Component {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>No event at the moment </Text>
+                        <Text style={{ fontSize: 15, color: '#fff' }}>No restaurant at the moment </Text>
 
                     </View>
                 </View>

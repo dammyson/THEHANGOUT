@@ -48,6 +48,9 @@ export default class Details extends Component {
 
     }
 
+    currencyFormat(n) {
+        return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+     }
 
 
 
@@ -262,7 +265,7 @@ export default class Details extends Component {
                 <View style={styles.resultTextDescription}>
         <Text style={{ fontFamily: 'NunitoSans-Bold', color: '#fff', fontWeight: '700', fontSize: 12, marginBottom:10 }}>{item.name}</Text>
                     <Text style={{ fontFamily: 'NunitoSans-Regular',color: '#fff', fontWeight: '200', fontSize: 12,marginBottom:10 }}>{item.description}</Text>
-                    <Text style={{ fontFamily: 'NunitoSans-Bold', color: '#fff', fontWeight: '700', fontSize: 12,}}>₦{item.amount}</Text>
+                    <Text style={{ fontFamily: 'NunitoSans-Bold', color: '#fff', fontWeight: '700', fontSize: 12,}}>₦{this.currencyFormat(item.amount)}</Text>
                 </View>
 
             </TouchableOpacity>

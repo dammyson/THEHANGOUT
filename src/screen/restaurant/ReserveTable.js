@@ -18,32 +18,32 @@ import Moment from 'moment';
 
 const sports = [
     {
-        label: '2 ',
+        label: '2 Adults      ',
         value: '2',
         color: '#000',
     },
     {
-        label: '3 ',
+        label: '3  Adults      ',
         value: '3',
         color: '#000',
     },
     {
-        label: '4 ',
+        label: '4  Adults      ',
         value: '4',
         color: '#000',
     },
     {
-        label: '5 ',
+        label: '5  Adults      ',
         value: '5',
         color: '#000',
     },
     {
-        label: '5 ',
+        label: '5  Adults      ',
         value: '5',
         color: '#000',
     },
     {
-        label: '6 ',
+        label: '6  Adults      ',
         value: '6',
         color: '#000',
     },
