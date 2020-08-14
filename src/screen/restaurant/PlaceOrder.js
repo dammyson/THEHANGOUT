@@ -20,24 +20,24 @@ import SelectAddress from "./SelectAddress";
 
 const sports = [
     {
-        label: '2 ',
+        label: '2            ',
         value: 2,
     },
     {
-        label: '3',
+        label: '3             ',
         value: 3,
         color: '#000',
     },
     {
-        label: '4',
+        label: '4             ',
         value: 4,
     },
     {
-        label: '5',
+        label: '5            ',
         value: 5,
     },
     {
-        label: '6',
+        label: '6            ',
         value: 6,
     },
 
@@ -68,6 +68,7 @@ export default class PlaceOrder extends Component {
             startdate: new Date(),
             qty: 1,
             menu: {},
+            message:''
         };
     }
 
@@ -88,6 +89,7 @@ export default class PlaceOrder extends Component {
 
     }
     processGetEvent() {
+        this.setState({message:'getting menu... '})
         const { data, id, restaurant } = this.state
         this.setState({ loading: true })
         fetch(URL.url + 'food/menu/details/' + id, {
@@ -125,6 +127,7 @@ export default class PlaceOrder extends Component {
 
 
     makePaymentRequest = (result) => {
+        this.setState({message:'placing order... '})
         const { user, menu,address_id, restaurant, data, qty, delivery_price, price, add_price } = this.state
         if (address_id == '') {
             Alert.alert('Validation failed', "address fields can not be empty", [{ text: 'Okay' }])
@@ -223,7 +226,9 @@ export default class PlaceOrder extends Component {
 
 
     }
-
+    currencyFormat(n) {
+        return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+     }
 
    
     render() {
@@ -248,7 +253,7 @@ export default class PlaceOrder extends Component {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
-                        <Text style={{ fontSize: 12, color: '#fff' }}>loading menu </Text>
+                        <Text style={{ fontSize: 12, color: '#fff' }}>{this.state.message} </Text>
                         <BarIndicator count={4} color={color.primary_color} />
                         <Text style={{ fontSize: 10, flex: 1, color: '#fff', opacity: 0.6 }}>Please wait...</Text>
                     </View>
@@ -281,14 +286,14 @@ export default class PlaceOrder extends Component {
                                     </TouchableOpacity>
 
                                     <Text style={{ color: '#fff', fontSize: 22, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>Success</Text>
-                                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.8 }}>Your Table has been  wallet was successfully reserved.</Text>
+                                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.8 }}>Your Order has been  was successfully placed.</Text>
                                 </View>
 
 
 
 
                                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
-                                    <TouchableOpacity onPress={() => Actions.table({ type: 'replace' })} style={styles.enablebutton} block iconLeft>
+                                    <TouchableOpacity onPress={() => Actions.restaurants({ type: 'replace' })} style={styles.enablebutton} block iconLeft>
                                         <Text style={{ color: '#fff', marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -383,7 +388,7 @@ export default class PlaceOrder extends Component {
 
                 <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#111123', flexDirection: 'row', paddingTop: 10, paddingBottom: 10, paddingLeft: 25, paddingRight: 25 }}>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-                        <Text style={{ fontSize: 16, color: '#ffffff', textAlign: 'left', fontWeight: '600', fontFamily: 'NunitoSans-Bold' }}> ₦{(this.state.price * this.state.qty) + this.state.delivery_price + this.state.add_price}</Text>
+                        <Text style={{ fontSize: 16, color: '#ffffff', textAlign: 'left', fontWeight: '600', fontFamily: 'NunitoSans-Bold' }}> ₦{ this.currencyFormat((this.state.price * this.state.qty) + this.state.delivery_price + this.state.add_price)}</Text>
                     </View>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
                         <TouchableOpacity   onPress={() =>  this.setState({ show_add: true }) } style={{ height: 45, flexDirection: 'row', paddingRight: 30, paddingLeft: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: 'red' }}>
@@ -404,7 +409,7 @@ export default class PlaceOrder extends Component {
         const { menu, restaurant } = this.state
 
         const ticketVisibility = {
-            label: '1 ',
+            label: '1                           ',
             value: 1,
             color: '#000',
         };
@@ -468,7 +473,7 @@ export default class PlaceOrder extends Component {
                 </View>
                 <View style={{ alignItems: 'flex-end', marginTop: 2, marginBottom: 20 }}>
 
-                    <Text style={styles.title}> ₦{this.state.price * this.state.qty}</Text>
+                    <Text style={styles.title}> ₦{ this.currencyFormat((this.state.price * this.state.qty) + this.state.delivery_price + this.state.add_price)}</Text>
                 </View>
 
 

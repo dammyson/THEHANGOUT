@@ -18,32 +18,32 @@ import Moment from 'moment';
 
 const sports = [
     {
-        label: '2 adults',
+        label: '2 ',
         value: '2',
         color: '#000',
     },
     {
-        label: '3 adults',
+        label: '3 ',
         value: '3',
         color: '#000',
     },
     {
-        label: '4 adults',
+        label: '4 ',
         value: '4',
         color: '#000',
     },
     {
-        label: '5 adults',
+        label: '5 ',
         value: '5',
         color: '#000',
     },
     {
-        label: '5 adults',
+        label: '5 ',
         value: '5',
         color: '#000',
     },
     {
-        label: '6 adults',
+        label: '6 ',
         value: '6',
         color: '#000',
     },
@@ -132,7 +132,7 @@ export default class ReserveTable extends Component {
         Moment.locale('en');
 
         const ticketVisibility = {
-            label: '1  adult',
+            label: '1 ',
             value: 1,
             color: '#000',
         };
@@ -187,11 +187,8 @@ export default class ReserveTable extends Component {
                                     </TouchableOpacity>
 
                                     <Text style={{ color: '#fff', fontSize: 22, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>Success</Text>
-                                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.8 }}>Your Table has been  wallet was successfully reserved.</Text>
+                                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.8 }}>Your Table has been successfully reserved.</Text>
                                 </View>
-
-
-
 
                                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
                                     <TouchableOpacity onPress={() => Actions.table({ type: 'replace' })} style={styles.enablebutton} block iconLeft>

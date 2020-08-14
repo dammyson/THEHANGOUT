@@ -52,7 +52,7 @@ export default class AddOn extends Component {
         this.setState({ type: index })
     }
     processAddOn() {
-        const { onSuccess,  } = this.props;
+        const { onSuccess, } = this.props;
         const { data, name, amount, type } = this.state
 
 
@@ -61,44 +61,44 @@ export default class AddOn extends Component {
             return
         }
 
-          this.setState({ loading: true })
-          fetch(URL.url + 'food/addons/add', {
-              method: 'POST', headers: {
-                  'Content-Type': 'application/json',
-                  Accept: 'application/json',
-                  'Authorization': 'Bearer ' + data.token,
-              }, body: JSON.stringify({
-                  Type: type,
-                  Name: name,
-                  Amount:amount
-  
-              }),
-          })
-              .then(res => res.json())
-              .then(res => {
-                  console.warn(res);
-                  if (res.status) {
-                      Toast.show({
-                          text: 'Add On created sucessfully !',
-                          position: 'bottom',
-                          type: 'success',
-                          buttonText: 'Dismiss',
-                          duration: 2500
-                      });
-                      setTimeout(() => {
-                          this.setState({ loading: false })
-                          onSuccess(res.data);
-                      }, 500);
-  
-                  } else {
-                      Alert.alert('Action failed', res.message, [{ text: 'Okay' }])
-                      this.setState({ loading: false })
-                  }
-              }).catch((error) => {
-                  console.warn(error);
-                  alert(error.message);
-              });
-  
+        this.setState({ loading: true })
+        fetch(URL.url + 'food/addons/add', {
+            method: 'POST', headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Authorization': 'Bearer ' + data.token,
+            }, body: JSON.stringify({
+                Type: type,
+                Name: name,
+                Amount: amount
+
+            }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.warn(res);
+                if (res.status) {
+                    Toast.show({
+                        text: 'Add On created sucessfully !',
+                        position: 'bottom',
+                        type: 'success',
+                        buttonText: 'Dismiss',
+                        duration: 2500
+                    });
+                    setTimeout(() => {
+                        this.setState({ loading: false })
+                        onSuccess(res.data);
+                    }, 500);
+
+                } else {
+                    Alert.alert('Action failed', res.message, [{ text: 'Okay' }])
+                    this.setState({ loading: false })
+                }
+            }).catch((error) => {
+                console.warn(error);
+                alert(error.message);
+            });
+
     }
 
 
@@ -106,7 +106,7 @@ export default class AddOn extends Component {
 
 
     render() {
-        const { onClose,  } = this.props;
+        const { onClose, } = this.props;
 
         var left = (
             <Left style={{ flex: 1 }}>
@@ -161,29 +161,6 @@ export default class AddOn extends Component {
         return (
             <View>
 
-
-                <View style={styles.oneRow}>
-
-                    <View style={{ marginLeft: 30, flex: 1 }}>
-                        <View>
-                            <Text style={styles.hintText}>Name </Text>
-                        </View>
-                        <View style={styles.itemTwo}>
-                            <TextInput
-                                placeholder="Enter add-on name"
-                                placeholderTextColor='#6d706e'
-                                returnKeyType="next"
-
-                                keyboardType='default'
-                                autoCapitalize="none"
-                                autoCorrect={false}
-                                style={styles.menu}
-                                onChangeText={text => this.setState({ name: text })}
-                            />
-                        </View>
-                    </View>
-                </View>
-
                 <View style={styles.oneRow}>
 
                     <View style={{ marginLeft: 30, flex: 1 }}>
@@ -224,6 +201,29 @@ export default class AddOn extends Component {
                         </View>
                     </View>
                 </View>
+                <View style={styles.oneRow}>
+
+                    <View style={{ marginLeft: 30, flex: 1 }}>
+                        <View>
+                            <Text style={styles.hintText}>Name </Text>
+                        </View>
+                        <View style={styles.itemTwo}>
+                            <TextInput
+                                placeholder="Enter add-on name"
+                                placeholderTextColor='#6d706e'
+                                returnKeyType="next"
+
+                                keyboardType='default'
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                style={styles.menu}
+                                onChangeText={text => this.setState({ name: text })}
+                            />
+                        </View>
+                    </View>
+                </View>
+
+
 
                 <View style={styles.oneRow}>
 

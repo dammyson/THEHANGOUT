@@ -201,7 +201,7 @@ export default class Dashboard extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent>
                     <Avatar
                         rounded
                         source={{
@@ -285,16 +285,7 @@ export default class Dashboard extends Component {
                     </View>
                 </Content>
                
-                    <TouchableOpacity style={styles.fab} onPress={() => Actions.createRestaurant()}>
-                        <Icon
-                            active
-                            name="plus"
-                            type='entypo'
-                            color='#000'
-                            size={25}
-                        />
-                    </TouchableOpacity>
-             
+                   
 
             </Container>
         );

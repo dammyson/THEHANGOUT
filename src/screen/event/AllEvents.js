@@ -385,7 +385,7 @@ export default class Dashboard extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent >
                     <Avatar
                         rounded
                         source={{
@@ -476,17 +476,6 @@ export default class Dashboard extends Component {
                         </TouchableOpacity>
                     </View>
                 </Content>
-                {this.state.user.role == 'Customer' ?  null:
-                 <TouchableOpacity style={styles.fab} onPress={() => Actions.createevent()}>
-                 <Icon
-                     active
-                     name="plus"
-                     type='entypo'
-                     color='#000'
-                     size={25}
-                 />
-             </TouchableOpacity>
-                }
                
             </Container>
         );

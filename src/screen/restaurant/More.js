@@ -150,7 +150,7 @@ export default class More extends Component {
                                             <View style={styles.item}>
 
                                                 <TextInput
-                                                    placeholder="Search Events"
+                                                    placeholder="Search Restaurants"
                                                     placeholderTextColor='#8d96a6'
                                                     returnKeyType="next"
                                                     keyboardType='default'

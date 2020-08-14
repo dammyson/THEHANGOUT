@@ -76,13 +76,7 @@ export default class SelectAddress extends Component {
               .then(res => {
                   console.warn(res);
                   if (res.status) {
-                      Toast.show({
-                          text: 'Address created sucessfully !',
-                          position: 'bottom',
-                          type: 'success',
-                          buttonText: 'Dismiss',
-                          duration: 2500
-                      });
+                    
                       setTimeout(() => {
                           this.setState({ loading: false })
                           onSelected(res.data);
