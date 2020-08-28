@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Image, Dimensions, ImageBackground, NativeModules, TouchableOpacity, TextInput, AsyncStorage, StyleSheet, Alert, ScrollView } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Toast, List, ListItem, } from 'native-base';
-import { Icon,  } from 'react-native-elements'
+import { Icon, } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux';
 import { getSaveRestaurant, getData } from '../../component/utilities';
-import {BarIndicator,} from 'react-native-indicators';
+import { BarIndicator, } from 'react-native-indicators';
 
 
 import color from '../../component/color';
@@ -22,16 +22,16 @@ export default class step5 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading:true,
+      loading: true,
       show_add_on: false,
-      add_ons:[],
-      cat_list:[],
+      add_ons: [],
+      cat_list: [],
       details: '',
       data: '',
       name: '',
       description: '',
       price: '',
-      delivery:'',
+      delivery: '',
       min: '',
       max: '',
       img_url: null,
@@ -55,7 +55,7 @@ export default class step5 extends Component {
     this.setState({ count: 140 - text.length })
   }
 
- async componentWillMount() {
+  async componentWillMount() {
     this.setState({
       data: JSON.parse(await getData()),
       user: JSON.parse(await getData()).data
@@ -106,7 +106,7 @@ export default class step5 extends Component {
 
   uploadPhoto = () => {
 
-    
+
     const { image, data, name } = this.state
 
     if (image == null || name == "") {
@@ -163,78 +163,78 @@ export default class step5 extends Component {
 
   }
 
-  pluck(arr, key) { 
-    return arr.reduce(function(p, v) { 
-      return p.concat(v[key]); 
-    }, []); 
-}
+  pluck(arr, key) {
+    return arr.reduce(function (p, v) {
+      return p.concat(v[key]);
+    }, []);
+  }
 
 
 
-getCatRequest() {
-  const { data } = this.state
-  this.setState({
-    loading: true,
-  })
-  fetch(URL.url + 'categories/Restaurants', {
-    method: 'GET', headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'Authorization': 'Bearer ' + data.token,
-    }
-  })
-    .then(res => res.json())
-    .then(res => {
-      if (res.status) {
-        this.setState({
-          loading: false,
-        })
-        this.sortCat(res.data);
-      } else {
-        this.setState({
-          loading: false
-        })
+  getCatRequest() {
+    const { data } = this.state
+    this.setState({
+      loading: true,
+    })
+    fetch(URL.url + 'categories/Restaurants', {
+      method: 'GET', headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + data.token,
       }
     })
-    .catch(error => {
-      alert(error.message);
-      console.warn(error);
-      this.setState({ loading: false })
-    });
+      .then(res => res.json())
+      .then(res => {
+        if (res.status) {
+          this.setState({
+            loading: false,
+          })
+          this.sortCat(res.data);
+        } else {
+          this.setState({
+            loading: false
+          })
+        }
+      })
+      .catch(error => {
+        alert(error.message);
+        console.warn(error);
+        this.setState({ loading: false })
+      });
 
 
-};
+  };
 
 
 
-sortCat(list){
-  const { restaurant } = this.state
-  let instant_array = [];
-  let ids = restaurant.cat_id;
-  for (let i = 0; i < list.length; i++) {
-    if (ids.includes(list[i].id)) {
+  sortCat(list) {
+    const { restaurant } = this.state
+    let instant_array = [];
+    let ids = restaurant.cat_id;
+    for (let i = 0; i < list.length; i++) {
+      if (ids.includes(list[i].id)) {
 
         instant_array.push(
-            {
-                label: list[i].name,
-                value: list[i].id,
-            }
+          {
+            label: list[i].name,
+            value: list[i].id,
+          }
         )
+      }
     }
-}
-this.setState({ cat_list: instant_array })
-}
+    this.setState({ cat_list: instant_array })
+  }
 
   async processCreateMenu() {
 
     const { data, name, description, price, max, min, add_ons, delivery, img_url, cat, image, restaurant } = this.state
 
-    if (name == "" || description == '' || price == '' || max == '' || min == '' || delivery== '' || add_ons.length < 1) {
+    if (name == "" || description == '' || price == '' || max == '' || min == '' || delivery == '' || add_ons.length < 1) {
       Alert.alert('Validation failed', 'field(s) cannot be empty', [{ text: 'Okay' }])
       return;
     }
     if (image == null) {
-      Alert.alert('Validation failed', 'Please select and image for the organizer', [{ text: 'Okay' }])
+      Alert.alert('Validation failed', 'Please select and image for the menu', [{ text: 'Okay' }])
       return;
     } else {
       if (img_url == "") {
@@ -263,15 +263,15 @@ this.setState({ cat_list: instant_array })
       RestaurantId: restaurant.id,
       CategoryId: cat,
     })
-  
-   
-   this.setState({ loading: true })
+
+
+    this.setState({ loading: true })
     fetch(URL.url + 'food/menu/add', {
       method: 'POST', headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         'Authorization': 'Bearer ' + data.token,
-      }, body:request_body,
+      }, body: request_body,
     })
       .then(res => res.json())
       .then(res => {
@@ -285,7 +285,7 @@ this.setState({ cat_list: instant_array })
             buttonText: 'Dismiss',
             duration: 3000
           });
-          Actions.res_service_details({type: 'replace', id: restaurant.id })
+          Actions.res_service_details({ type: 'replace', id: restaurant.id })
         } else {
           Alert.alert('Operation failed', res.message, [{ text: 'Okay' }])
           this.setState({ loading: false })
@@ -446,28 +446,28 @@ this.setState({ cat_list: instant_array })
 
             <View style={styles.oneRow}>
 
-<View style={{ marginLeft: 75, flex: 1 }}>
-    <View>
-        <Text style={styles.hintText}>Event Category </Text>
-    </View>
-    <View style={styles.item}>
-        <RNPickerSelect
-            placeholder={catPlaceholder}
-            items={this.state.cat_list}
+              <View style={{ marginLeft: 75, flex: 1 }}>
+                <View>
+                  <Text style={styles.hintText}>Menu Category </Text>
+                </View>
+                <View style={styles.item}>
+                  <RNPickerSelect
+                    placeholder={catPlaceholder}
+                    items={this.state.cat_list}
 
-            onValueChange={value => {
-                this.setState({
-                    cat: value,
-                });
-            }}
-            style={pickerSelectStyles}
-            value={this.state.cat}
-            useNativeAndroidPickerStyle={false}
+                    onValueChange={value => {
+                      this.setState({
+                        cat: value,
+                      });
+                    }}
+                    style={pickerSelectStyles}
+                    value={this.state.cat}
+                    useNativeAndroidPickerStyle={false}
 
-        />
-    </View>
-</View>
-</View>
+                  />
+                </View>
+              </View>
+            </View>
 
             <View style={styles.oneRow}>
 
@@ -496,44 +496,44 @@ this.setState({ cat_list: instant_array })
             </View>
             <View style={styles.oneRow}>
 
-<View style={{ marginLeft: 75, flex: 1, }}>
-  <View>
-    <Text style={styles.hintText}>Delivery Price</Text>
-  </View>
-  <View style={{ flexDirection: 'row' }}>
-    <View style={styles.item}>
-      <TextInput
-        placeholder="5000"
-        placeholderTextColor='#ffffff60'
-        returnKeyType="next"
-        keyboardType='default'
-        autoCapitalize="none"
-        autoCorrect={false}
-        style={styles.menu}
-        defaultValue={this.state.delivery}
-        onChangeText={text => this.setState({ delivery: text })}
-      />
+              <View style={{ marginLeft: 75, flex: 1, }}>
+                <View>
+                  <Text style={styles.hintText}>Delivery Price</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={styles.item}>
+                    <TextInput
+                      placeholder="5000"
+                      placeholderTextColor='#ffffff60'
+                      returnKeyType="next"
+                      keyboardType='default'
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      style={styles.menu}
+                      defaultValue={this.state.delivery}
+                      onChangeText={text => this.setState({ delivery: text })}
+                    />
 
-    </View>
-    <View style={{ flex: 1, }}></View>
-  </View>
-</View>
-</View>
+                  </View>
+                  <View style={{ flex: 1, }}></View>
+                </View>
+              </View>
+            </View>
             <View style={styles.oneRow}>
               <View style={{ marginLeft: 75, flex: 1 }}>
-                <View style={{flexDirection:'row',marginRight: 55, marginBottom:10 }}>
-                <View style={{flex:1, }}>
-                <Text style={styles.hintText}>Add-Ons </Text>
-                </View>
-                <TouchableOpacity  onPress={()=> this.setState({show_add_on: true})} ><Icon
-                            active
-                            name="pluscircle"
-                            type='antdesign'
-                            color='#fff'
+                <View style={{ flexDirection: 'row', marginRight: 55, marginBottom: 10 }}>
+                  <View style={{ flex: 1, }}>
+                    <Text style={styles.hintText}>Add-Ons </Text>
+                  </View>
+                  <TouchableOpacity onPress={() => this.setState({ show_add_on: true })} ><Icon
+                    active
+                    name="pluscircle"
+                    type='antdesign'
+                    color='#fff'
 
-                        /></TouchableOpacity> 
+                  /></TouchableOpacity>
                 </View>
-               
+
                 <ScrollView horizontal style={{}}>
 
                   {this.renderResuts(this.state.add_ons)}
@@ -621,12 +621,12 @@ this.setState({ cat_list: instant_array })
   add_add_on() {
     return (
       <AddOn
-       onSuccess={(data) => this.handleSuccessAddAddON(data)}
-       onClose={() => this.setState({ show_add_on: false })} />
+        onSuccess={(data) => this.handleSuccessAddAddON(data)}
+        onClose={() => this.setState({ show_add_on: false })} />
     )
   }
 
-  handleSuccessAddAddON(data){
+  handleSuccessAddAddON(data) {
     this.setState({ show_add_on: false })
     var instant_array = []
     instant_array = this.state.add_ons
@@ -797,7 +797,7 @@ const styles = StyleSheet.create({
   },
   terms_container: {
     flexDirection: 'row',
-  
+
     marginRight: 10,
     marginTop: 10,
     marginBottom: 10,
@@ -805,22 +805,22 @@ const styles = StyleSheet.create({
 });
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-      fontSize: 16,
-      paddingVertical: 12,
-      paddingHorizontal: 10,
-      borderWidth: 1,
-      borderColor: 'gray',
-      borderRadius: 4,
-      color: 'black',
-      paddingRight: 30, // to ensure the text is never behind the icon
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
   },
   inputAndroid: {
-      fontSize: 16,
-      paddingHorizontal: 10,
-      paddingVertical: 8,
-      borderRadius: 8,
-      color: '#fff',
-      paddingRight: 30, // to ensure the text is never behind the icon
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 8,
+    color: '#fff',
+    paddingRight: 30, // to ensure the text is never behind the icon
   },
 
 });

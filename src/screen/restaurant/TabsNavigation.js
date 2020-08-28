@@ -64,7 +64,7 @@ class AppNavigator extends Component {
                 type='font-awesome'
                 color={color}
               />
-              <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7,fontSize: 10, color: color, textAlign: 'center',}}>My Tables</Text>
+              <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7,fontSize: 10, color: color, textAlign: 'center',}}>My History</Text>
               </View>
               );
               }else if (route.name === 'Payment') {

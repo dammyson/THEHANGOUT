@@ -286,7 +286,7 @@ export default class PlaceOrder extends Component {
                                     </TouchableOpacity>
 
                                     <Text style={{ color: '#fff', fontSize: 22, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>Success</Text>
-                                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.8 }}>Your Order has been  was successfully placed.</Text>
+                                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.8 }}>Your Order has been placed sucessfully.</Text>
                                 </View>
 
 

@@ -186,8 +186,6 @@ export default class Search extends Component {
 
 
                         {this.renderItem(this.state.searchResult)}
-
-
                        
                     </View>
                 </Content>
