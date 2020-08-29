@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { AppContainer } from '@react-navigation/native';
 
 
 import Home from '../../screen/dashboard/DashBoard';
@@ -19,7 +19,7 @@ class AppNavigator extends Component {
   render() {
 
     return (
-      <NavigationContainer>
+      <AppContainer>
         <Tab.Navigator
 
           screenOptions={({ route }) => ({
@@ -86,7 +86,7 @@ class AppNavigator extends Component {
 
 
         </Tab.Navigator>
-      </NavigationContainer>
+      </AppContainer>
 
     );
   }

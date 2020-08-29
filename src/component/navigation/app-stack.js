@@ -1,26 +1,18 @@
-/**
-* This is the Main file
-* This file contains the routes of all the pages
-**/
-
-// React native and others libraries imports
 import React, { Component } from 'react';
-import { BackHandler } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { Root } from 'native-base';
-import { Scene, Router, Actions } from 'react-native-router-flux';
-
-
 
 
 import Splash from '../../screen/onboarding/Splash';
+import Intro from '../../screen/onboarding/Intro';
 import Sorting from '../../screen/onboarding/Sorting';
 import Category from '../../screen/onboarding/Category';
 import Login from '../../screen/user/Login';
 import Register from '../../screen/user/Register';
 import EngagementStart from '../../screen/engagement/EngagementStart'
 
-import Intro from '../../screen/onboarding/Intro';
-/*
+
 import Home from '../../screen/engagement/Home';
 import MerchantHome from '../../screen/merchant/MerchantHome';
 import Profile from '../../screen/user/Profile';
@@ -64,52 +56,34 @@ import Test from '../../screen/onboarding/Test';
 import CreateMenu from '../../screen/menu/CreateMenu';
 import RestaurantDetails from '../../screen/merchant/RestaurantDetails';
 import PlaceOrder from '../../screen/restaurant/PlaceOrder';
-*/
 
-''
-export default class Main extends Component {
+//console.disableYellowBox = true;
 
-  componentDidMount() {
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
-  }
+class AppStack extends Component {
 
-  componentWillUnmount() {
-    this.backHandler.remove()
-  }
-
-  handleBackPress = () => {
-    switch (Actions.currentScene) {
-      case 'home':
-        BackHandler.exitApp()
-        break
-        case 'merchant_dashboard':
-        BackHandler.exitApp()
-        break  
-
-      default: Actions.pop()
-    }
-
-    return true
-  }
-
-  render() {
-    return (
-      <Root>
-        <Router>
-          <Scene key="root">
-            <Scene initial key="splash" component={Splash} hideNavBar />
-            <Scene key="sorting" component={Sorting} hideNavBar />
-            <Scene key="category" component={Category} hideNavBar />
-            <Scene key="login" component={Login} hideNavBar />
-            <Scene key="reg" component={Register} hideNavBar />
-            <Scene key='engagement' component={EngagementStart} hideNavBar />
-            <Scene key='intro' component={Intro} hideNavBar />
+    render() {
+      const Stack = createStackNavigator();
+      return (
+        <Root>
+          <NavigationContainer>
+        
+            <Stack.Navigator
+            screenOptions={{ 
+                gestureEnabled: false,
+                headerTintColor: 'white',
+                headerStyle: { backgroundColor: '#7862ff' }, 
+                headerShown: false,
+               }}
+               initialRouteName="Splash">
+  
+              <Stack.Screen name="Splash" component={Splash}  />
+             
+            </Stack.Navigator>
           
-
-          </Scene>
-        </Router>
-      </Root>
-    );
+          </NavigationContainer>
+          </Root>
+        );
+    }
+  
   }
-
-}
+  export default AppStack;
