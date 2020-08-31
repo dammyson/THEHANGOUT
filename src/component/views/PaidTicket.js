@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, ActivityIndicator, NativeModules, } from "react-native";
+import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, StatusBar, NativeModules, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Toast, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
@@ -64,10 +64,7 @@ export default class PaidTicket extends Component {
 
 
     }
-    goBack() {
-        const {  goBack } = this.props.navigation; 
-        goBack(null)
-    }
+
     processAddTicket() {
 
         const { data, form_data } = this.state
@@ -267,11 +264,11 @@ export default class PaidTicket extends Component {
     }
 
     render() {
-
+        const { onPress, onClose } = this.props;
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => this.goBack()}>
+                <Button transparent onPress={() => onClose()}>
                     <Icon
                         active
                         name="ios-arrow-back"
@@ -295,13 +292,11 @@ export default class PaidTicket extends Component {
         }
 
         return (
-            <Container style={{ backgroundColor: '#101023' }}>
+            <Container style={[styles.main_container,{ backgroundColor: '#101023' }]}>
+                   <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" translucent={true} />
                 <Navbar left={left} title='Paid Ticket' bg='#101023' />
                 <Content>
                     <View style={styles.container}>
-
-
-
                         {this.renderUpcomming()}
 
                         <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
@@ -577,11 +572,15 @@ export default class PaidTicket extends Component {
         return items;
     }
 }
+PaidTicket;
 
 const styles = StyleSheet.create({
+    main_container: {
+    
+    },
     container: {
-        width: Dimensions.get('window').width,
-
+       flex:1
+        
     },
     oneRow: {
         marginBottom: 10,
@@ -669,3 +668,4 @@ const pickerSelectStyles = StyleSheet.create({
     },
 
 });
+

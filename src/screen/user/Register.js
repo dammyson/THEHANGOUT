@@ -195,7 +195,7 @@ export default class Register extends Component {
           AsyncStorage.setItem('social', JSON.stringify(false));
           AsyncStorage.setItem('role', res.user.role);
           AsyncStorage.setItem('token', res.token);
-          Actions.category();
+          this.props.navigation.navigate('category');
         } else {
           Alert.alert('Registration failed', res.message, [{ text: 'Okay' }])
           this.setState({ loading: false })

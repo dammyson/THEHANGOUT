@@ -15,35 +15,33 @@ export default class step4 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      venue: '',
+      venue: 'kkkk',
       data: '',
 
     };
   }
 
   nextStep = () => {
-    const { next, saveState } = this.props;
+    const { venue, data } = this.state;
     // Save state for use in other steps
-    if(this.state.venue == ""){
+    if(venue == ""){
       Alert.alert('Validation failed', "All fields are requried", [{ text: 'Okay' }])
       return
     }
-    saveState({ venue: this.state.venue });
-  
-    // Go to next step
-    next();
+    const data_moving = data;
+    data_moving['venue'] = venue
+    this.props.navigation.navigate('Step5', {data_moving: data_moving});
   };
 
   goBack() {
-    const { back } = this.props;
-    // Go to previous step
-    back();
+    const {  goBack } = this.props.navigation; 
+    goBack(null)
   }
 
   componentDidMount() {
-    const { getState } = this.props;
-    const state = getState();
-    this.setState({ data: state })
+    const { data_moving } = this.props.route.params;
+    console.warn(data_moving)
+    this.setState({ data: data_moving})
   }
 
 
@@ -56,7 +54,7 @@ export default class step4 extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={this.props.back}>
+        <Button transparent onPress={()=>this.goBack()}>
           <Icon
             active
             name="ios-arrow-back"
@@ -69,7 +67,7 @@ export default class step4 extends Component {
 
 
     return (
-      <Container style={{ backgroundColor: 'transparent' }}>
+      <Container style={{ backgroundColor: "#010113" }}>
         <Navbar left={left} title={this.state.data.title} bg='#101023' />
         <Content>
           <View style={styles.container}>
@@ -80,6 +78,7 @@ export default class step4 extends Component {
               <Icon active name="md-locate" type='ionicon' color='red' />
               <TextInput
                 placeholder="Search for a location"
+                defaultValue={this.state.venue}
                 placeholderTextColor='#8d96a6'
                 returnKeyType="next"
                 onSubmitEditing={() => this.nextStep()}

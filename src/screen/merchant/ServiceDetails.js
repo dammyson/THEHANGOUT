@@ -41,7 +41,8 @@ export default class ServiceDetails extends Component {
 
 
     componentDidMount() {
-        this.setState({ id: this.props.id });
+        const { id  } = this.props.route.params;
+        this.setState({ id: id });
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })
@@ -100,6 +101,10 @@ export default class ServiceDetails extends Component {
 
 
 
+    goBack() {
+        const {  goBack } = this.props.navigation; 
+        goBack(null)
+      }
 
 
     render() {
@@ -121,7 +126,7 @@ export default class ServiceDetails extends Component {
          const { details } = this.state
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={()=>this.goBack()}>
                     <Icon
                         active
                         name="ios-arrow-back"

@@ -39,9 +39,15 @@ export default class RestaurantDetails extends Component {
 
 
 
+    goBack() {
+        const {  goBack } = this.props.navigation; 
+        goBack(null)
+      }
 
    async componentDidMount() {
-        this.setState({ id: this.props.id });
+    const { id  } = this.props.route.params;
+        this.setState({ id: id });
+
         AsyncStorage.removeItem('currentRES');
         this.setState({
             data: JSON.parse(await getData()),
@@ -104,7 +110,7 @@ createMenu(){
         cat_id: details.categoriesList
      }
     AsyncStorage.setItem('currentRES', JSON.stringify(data));
-    Actions.createMenu()
+    this.props.navigation.navigate('createMenu')
 }
 
 
@@ -127,7 +133,7 @@ createMenu(){
          const { details } = this.state
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={()=>this.goBack()}>
                     <Icon
                         active
                         name="ios-arrow-back"
@@ -215,7 +221,7 @@ createMenu(){
 
                     </View>
                 </Content>
-                <View style={styles.fab} onPress={() => Actions.createRestaurant()}>
+                <View style={styles.fab}>
                     <View style={{ flexDirection: 'row', flex:1 }}>
                         <TouchableOpacity onPress={() => this.createMenu()}  style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
                             <Icon

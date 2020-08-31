@@ -342,7 +342,7 @@ export default class Dashboard extends Component {
                             <View style={styles.row}>
                                 <View style={styles.rowchild}>
 
-                                    <TouchableOpacity onPress={() => Actions.events()} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
+                                    <TouchableOpacity onPress={() =>  this.props.navigation.navigate('events')} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
 
                                         <Icon
                                             active
@@ -385,7 +385,7 @@ export default class Dashboard extends Component {
 
                                     <Text style={styles.catName}>Clubs & lounge</Text>
 
-                                    <TouchableOpacity onPress={()=> Actions.restaurants()} style={[styles.circle, { backgroundColor: '#ffcccd', }]}>
+                                    <TouchableOpacity onPress={() =>  this.props.navigation.navigate('restaurants')} style={[styles.circle, { backgroundColor: '#ffcccd', }]}>
 
                                         <Icon
                                             active

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AppContainer } from '@react-navigation/native';
-
-
+import { NavigationContainer } from '@react-navigation/native';
 import Home from '../../screen/merchant/MerchantDashboard';
 import Payment from '../../screen/payment/ManagementPayment';
 import Manage from '../../screen/user/Profile';
@@ -15,13 +13,10 @@ const Tab = createBottomTabNavigator();
 
 
 class AppNavigator extends Component {
-
   render() {
 
     return (
-      <AppContainer>
         <Tab.Navigator
-
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
 
@@ -86,10 +81,7 @@ class AppNavigator extends Component {
           <Tab.Screen navigation={this.props.navigation} name="Home" component={Home} />
           <Tab.Screen name="Payment" component={Payment} />
           <Tab.Screen navigation={this.props.navigation} name="Manage" component={Manage} />
-
-
         </Tab.Navigator>
-      </AppContainer>
 
     );
   }

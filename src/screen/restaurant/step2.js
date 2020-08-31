@@ -21,28 +21,29 @@ export default class step2 extends Component {
   }
 
   nextStep = () => {
-    const { next, saveState } = this.props;
+    const { data, descriptionText } = this.state;
     // Save state for use in other steps
-    if(this.state.descriptionText == ""){
+    if(descriptionText == ""){
       Alert.alert('Validation failed', "All fields are requried", [{ text: 'Okay' }])
       return
     }
-    saveState({ description: this.state.descriptionText });
-    
-    next();
+
+    const data_moving = data;
+    data_moving['description'] = descriptionText
+    this.props.navigation.navigate('Rest3', {data_moving: data_moving});
+
     
   };
 
   goBack() {
-    const { back } = this.props;
-    // Go to previous step
-    back();
+    const {  goBack } = this.props.navigation; 
+    goBack(null)
   }
 
   componentDidMount() {
-    const { getState } = this.props;
-    const state = getState();
-    this.setState({ data: state})
+    const { data_moving } = this.props.route.params;
+    console.warn(data_moving)
+    this.setState({ data: data_moving})
    
   
   }
@@ -57,7 +58,7 @@ export default class step2 extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={this.props.back}>
+        <Button transparent onPress={() => this.goBack()}>
           <Icon
             active
             name="ios-arrow-back"
@@ -70,7 +71,7 @@ export default class step2 extends Component {
 
 
     return (
-      <Container style={{ backgroundColor: 'transparent' }}>
+      <Container style={{ backgroundColor: "#010113" }}>
         <Navbar left={left} title={this.state.data.title} bg='#101023' />
         <Content>
           <View style={styles.container}>
@@ -86,6 +87,7 @@ export default class step2 extends Component {
                 placeholderTextColor='#8d96a6'
                 returnKeyType="next"
                 onSubmitEditing={() => this.nextStep()}
+                defaultValue={this.state.descriptionText}
                 keyboardType='default'
                 autoCapitalize="none"
                 autoCorrect={false}

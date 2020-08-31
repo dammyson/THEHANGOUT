@@ -18,9 +18,7 @@ import Category from '../../screen/onboarding/Category';
 import Login from '../../screen/user/Login';
 import Register from '../../screen/user/Register';
 import EngagementStart from '../../screen/engagement/EngagementStart'
-
 import Intro from '../../screen/onboarding/Intro';
-/*
 import Home from '../../screen/engagement/Home';
 import MerchantHome from '../../screen/merchant/MerchantHome';
 import Profile from '../../screen/user/Profile';
@@ -64,7 +62,7 @@ import Test from '../../screen/onboarding/Test';
 import CreateMenu from '../../screen/menu/CreateMenu';
 import RestaurantDetails from '../../screen/merchant/RestaurantDetails';
 import PlaceOrder from '../../screen/restaurant/PlaceOrder';
-*/
+
 
 ''
 export default class Main extends Component {
@@ -104,7 +102,53 @@ export default class Main extends Component {
             <Scene key="reg" component={Register} hideNavBar />
             <Scene key='engagement' component={EngagementStart} hideNavBar />
             <Scene key='intro' component={Intro} hideNavBar />
-          
+            <Scene key='home' component={Home} hideNavBar />
+            <Scene key='merchant_home' component={MerchantHome} hideNavBar />
+            <Scene key='profile' component={Profile} hideNavBar />
+            <Scene key='dashboard' component={Dashboard} hideNavBar />
+            <Scene key='glogin' component={Glogin} hideNavBar />
+            <Scene key='events' component={Events} hideNavBar />
+            <Scene key='createevent' component={CreateEvent} hideNavBar />
+            <Scene key='test' component={test} hideNavBar />
+            <Scene key='creatorganizer' component={CreatOrganizer} hideNavBar />
+            <Scene key='freeT' component={FreeTicket} hideNavBar />
+            <Scene key='paidT' component={PaidTicket} hideNavBar />
+            <Scene key='eventD' component={EventDetails} hideNavBar />
+            <Scene key='buyT' component={BuyTicket} hideNavBar />
+            <Scene key='buyPT' component={BuyPaidTicket} hideNavBar />
+            <Scene key='successT' component={TicketSuccess} hideNavBar />
+            <Scene key='listT' component={ListTickets} hideNavBar />
+            <Scene key='detailT' component={TicketDetails} hideNavBar />
+            <Scene key='manageP' component={ManagementPayment} hideNavBar />
+            <Scene key='transaction' component={Transaction} hideNavBar />
+            <Scene key='fundW' component={FundWalet} hideNavBar />
+            <Scene key='more' component={MoreEvent} hideNavBar />
+            <Scene key='pay' component={PayPage} hideNavBar />
+            <Scene key='qr' component={QRcode} hideNavBar />
+            <Scene key='withdraw' component={WithDraw} hideNavBar />
+
+            <Scene key='createRestaurant' component={Create} hideNavBar />
+
+            <Scene key='restaurants' component={Restaurants} hideNavBar />
+            <Scene key='restaurantD' component={Details} hideNavBar />
+            <Scene key='reserveT' component={ReserveTable} hideNavBar />
+            <Scene key='table' component={Tables} hideNavBar />
+            <Scene key='moreR' component={More} hideNavBar />
+
+            <Scene key='merchant_dashboard' component={MerchantDashboard} hideNavBar />
+            <Scene key='service_details' component={ServiceDetails} hideNavBar />
+            <Scene key='services' component={Services} hideNavBar />
+            <Scene key='test' component={Test} hideNavBar />
+            <Scene key='agent_create' component={CreateAgent} hideNavBar />
+            <Scene key='agent_pay' component={PayAgent} hideNavBar />
+
+
+            <Scene key='createMenu' component={CreateMenu} hideNavBar />
+            <Scene key='res_service_details' component={RestaurantDetails} hideNavBar />
+
+            <Scene key='place_order' component={PlaceOrder} hideNavBar />
+           
+
 
           </Scene>
         </Router>

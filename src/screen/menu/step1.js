@@ -22,27 +22,22 @@ export default class step1 extends Component {
   }
 
   nextStep = () => {
-    const { next, saveState } = this.props;
+    const { next, menuName } = this.props;
     // Save state for use in other steps
-    if(this.state.menuName == ""){
+    if(menuName == ""){
       Alert.alert('Validation failed', "All fields are requried", [{ text: 'Okay' }])
       return
     }
-    saveState({ menuName: this.state.menuName });
-    next();
+    this.props.navigation.navigate('Menu2', {data_moving: {name: this.state.menuName}});
   };
 
   goBack() {
-    const { back } = this.props;
-    // Go to previous step
-    back();
+    const {  goBack } = this.props.navigation; 
+    goBack(null)
   }
 
   componentDidMount() {
-    const { getState } = this.props;
-    const state = getState();
-    console.warn(state);
-    this.setState({ data: state })
+   
    
   }
 
@@ -56,7 +51,7 @@ export default class step1 extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
+        <Button transparent onPress={() => this.goBack()}>
           <Icon
             active
             name="close"
@@ -69,7 +64,7 @@ export default class step1 extends Component {
 
 
     return (
-      <Container style={{ backgroundColor: 'transparent' }}>
+      <Container style={{ backgroundColor:  "#010113" }}>
         <Navbar left={left} title="Create New Menu" bg='#101023' />
         <Content>
           <View style={styles.container}>
@@ -87,6 +82,7 @@ export default class step1 extends Component {
                 onSubmitEditing={() => this.nextStep()}
                 keyboardType='default'
                 autoCapitalize="none"
+                defaultValue={this.state.menuName}
                 autoCorrect={false}
                 style={styles.menu}
                 onChangeText={text => [this.countChange(text), this.setState({ menuName: text})]}

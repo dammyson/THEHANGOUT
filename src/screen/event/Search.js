@@ -202,7 +202,7 @@ export default class Search extends Component {
         let items = [];
         for (let i = 0; i < tickets.length; i++) {
             items.push(
-                <TouchableOpacity onPress={() => Actions.eventD({id: tickets[i].id})} style={styles.oneRow}>
+                <TouchableOpacity onPress={() =>  this.props.navigation.navigate('eventD', { id: tickets[i].id })} style={styles.oneRow}>
                     <View style={{ marginRight: 20 , marginLeft:20}}>
                         <Text style={styles.title}> {tickets[i].title}</Text>
                         <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 12, fontWeight: '100', marginRight: 40, opacity: 0.59 }}> {tickets[i].description} </Text>

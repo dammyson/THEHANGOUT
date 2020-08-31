@@ -15,6 +15,7 @@ import {
 import Moment from 'moment';
 
 import Navbar from '../../component/Navbar';
+import Success from "../../component/views/Success";
 
 const type = [
     {
@@ -37,6 +38,7 @@ export default class BuyPaidTicket extends Component {
         super(props);
         this.state = {
             loading: false,
+            done: true,
             data: '',
             name: '',
             id: '',
@@ -45,11 +47,11 @@ export default class BuyPaidTicket extends Component {
             form_data: [],
             event_id: 2,
             eventTicket_id: 9,
-            ticket_count_array: [ 1 ],
-            tickets:[], 
-            bal:'',
-            ticket_buy:[],
-            ticketsPrice:0
+            ticket_count_array: [1],
+            tickets: [],
+            bal: '',
+            ticket_buy: [],
+            ticketsPrice: 0
 
 
         }
@@ -58,7 +60,9 @@ export default class BuyPaidTicket extends Component {
 
 
     componentWillMount() {
-        this.setState({ id: this.props.id });
+
+        const { id, ticket } = this.props.route.params;
+        this.setState({ id: id });
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })
@@ -69,13 +73,13 @@ export default class BuyPaidTicket extends Component {
 
         AsyncStorage.getItem('bal').then((value) => {
             if (value == '') { } else {
-                this.setState({ bal:  value})
+                this.setState({ bal: value })
             }
         })
-       if(this.props.ticket) {
-            this.setState({tickets: this.props.ticket});
-            console.warn(this.props.ticket);
-          }
+
+        if (ticket) {
+            this.setState({ tickets: ticket });
+        }
     }
 
 
@@ -87,8 +91,8 @@ export default class BuyPaidTicket extends Component {
             obj = {};
 
             obj.EventId = this.state.id
-          //  obj.EventTicketId = this.state.tickets[0].id
-            obj.Type ='Events'
+            //  obj.EventTicketId = this.state.tickets[0].id
+            obj.Type = 'Events'
 
             if (name == 'fname') {
                 obj.FirstName = text
@@ -141,18 +145,18 @@ export default class BuyPaidTicket extends Component {
 
 
 
-    addTicketType(pos, title, price, id){
+    addTicketType(pos, title, price, id) {
         console.warn(pos, title, price, id)
         var instant_array = []
         instant_array = this.state.ticket_buy
-         this.onChangeText(id, pos, 'tick')
+        this.onChangeText(id, pos, 'tick')
         if (instant_array[pos] == null) {
             obj = {};
             obj.title = title
             obj.price = price
             instant_array[pos] = obj
 
-        }else{
+        } else {
             obj = instant_array[pos];
             obj.title = title
             obj.price = price
@@ -161,41 +165,41 @@ export default class BuyPaidTicket extends Component {
         this.setState({ ticket_buy: instant_array })
         let sum = 0
         for (let i = 0; i < this.state.ticket_buy.length; i++) {
-                sum = sum + this.state.ticket_buy[i].price
+            sum = sum + this.state.ticket_buy[i].price
         }
         this.setState({ ticketsPrice: sum })
-        
+
     }
 
 
 
     processGetEventTickets() {
-      
+
         const { form_data, data, ticket_buy } = this.state
 
         console.warn(form_data);
-       
-        if (form_data.length < 1 ) {
+
+        if (form_data.length < 1) {
             Alert.alert('Validation failed', "Fields can not be empty", [{ text: 'Okay' }])
             return
         }
-      
+
 
         for (let i = 0; i < form_data.length; i++) {
-            if(form_data[i].FirstName  == null || form_data[i].FirstName  =='' ){
+            if (form_data[i].FirstName == null || form_data[i].FirstName == '') {
                 Alert.alert('Validation failed', "FirstName field can not be empty", [{ text: 'Okay' }])
                 return
             }
-            if(form_data[i].LastName  == null || form_data[i].LastName  =='' ){
+            if (form_data[i].LastName == null || form_data[i].LastName == '') {
                 Alert.alert('Validation failed', "LastName field can not be empty", [{ text: 'Okay' }])
                 return
             }
-            if(form_data[i].EventTicketId  == null || form_data[i].EventTicketId  =='' ){
+            if (form_data[i].EventTicketId == null || form_data[i].EventTicketId == '') {
                 Alert.alert('Validation failed', "Select Ticket Type field can not be empty", [{ text: 'Okay' }])
                 return
             }
         }
-     
+
         this.setState({ loading: true })
         fetch(URL.url + 'tickets/subscribe', {
             method: 'POST', headers: {
@@ -211,8 +215,7 @@ export default class BuyPaidTicket extends Component {
                 console.warn(res);
                 if (res.status) {
                     AsyncStorage.setItem('bal', this.currencyFormat(res.data.balance));
-                    this.setState({ loading: false })
-                    Actions.successT({type: 'replace'});
+                    this.setState({ loading: false, done: true })
 
                 } else {
                     Alert.alert('Process failed', res.message, [{ text: 'Okay' }])
@@ -223,17 +226,17 @@ export default class BuyPaidTicket extends Component {
                 this.setState({ loading: false })
                 alert(error.message);
             });
-           
+
     }
 
-    incrememntTicketCount(){
+    incrememntTicketCount() {
         var instant_array_count = []
         instant_array_count = this.state.ticket_count_array
-        instant_array_count.push(instant_array_count.length +1);
+        instant_array_count.push(instant_array_count.length + 1);
         this.setState({ ticket_count_array: instant_array_count })
     }
 
-    delete(i){
+    delete(i) {
 
         var instant_array_count = []
         instant_array_count = this.state.ticket_count_array
@@ -249,36 +252,11 @@ export default class BuyPaidTicket extends Component {
     }
 
     currencyFormat(n) {
-        return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-     }
+        return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+    }
 
     render() {
 
-        var left = (
-            <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
-                    <Icon
-                        active
-                        name="ios-arrow-back"
-                        type='ionicon'
-                        color='#FFF'
-                    />
-                </Button>
-            </Left>
-        );
-
-        var right = (
-            <Right style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
-                    <Icon
-                        active
-                        name="md-more"
-                        type='ionicon'
-                        color='#FFF'
-                    />
-                </Button>
-            </Right>
-        );
         if (this.state.loading) {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
@@ -292,96 +270,140 @@ export default class BuyPaidTicket extends Component {
         }
 
         return (
-            <Container style={{ backgroundColor: '#000' }}>
-                 <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
-                <Navbar left={left} right={right} title='Ticket Details' bg='#111124' />
-                <Content>
-                    <View style={styles.container}>
+            <>
+                {this.state.done ?
+                    this.success()
+                    :
+                    this.Body()}
+            </>
+        );
 
 
-                        <View style={{ flex: 1, }}>
+    }
 
-                            <ScrollView style={{ flex: 1, }}>
-                                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '200', marginLeft: 20, marginTop: 15, marginBottom: 6, fontFamily: 'NunitoSans', }}>PAYMENT </Text>
+    Body() {
+        const { state, goBack } = this.props.navigation;
+        var left = (
+            <Left style={{ flex: 1 }}>
+                <Button transparent onPress={() => goBack(null)}>
+                    <Icon
+                        active
+                        name="ios-arrow-back"
+                        type='ionicon'
+                        color='#FFF'
+                    />
+                </Button>
+            </Left>
+        );
+
+        var right = (
+            <Right style={{ flex: 1 }}>
+                <Button transparent>
+                    <Icon
+                        active
+                        name="md-more"
+                        type='ionicon'
+                        color='#FFF'
+                    />
+                </Button>
+            </Right>
+        );
+        return (
+            <>
+                <Container style={{ backgroundColor: '#000' }}>
+                    <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
+                    <Navbar left={left} right={right} title='Ticket Details' bg='#111124' />
+                    <Content>
+                        <View style={styles.container}>
 
 
-                                <View style={{ flexDirection: 'row', marginTop: 6, marginLeft: 32, marginRight: 32 }}>
-                                    <TouchableOpacity style={styles.activeType} >
-                                        <Icon
-                                            active
-                                            name="wallet"
-                                            type='simple-line-icon'
-                                            color='#000'
-                                            size={26}
-                                        />
-                                        <Text style={{ color: '#000', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with wallet</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={styles.inActiveType} >
-                                        <Icon
-                                            active
-                                            name="bank"
-                                            type='font-awesome'
-                                            color='#5F5C7F'
-                                            size={26}
-                                        />
-                                        <Text style={{ color: '#5F5C7F', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with wallet</Text>
+                            <View style={{ flex: 1, }}>
+
+                                <ScrollView style={{ flex: 1, }}>
+                                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '200', marginLeft: 20, marginTop: 15, marginBottom: 6, fontFamily: 'NunitoSans', }}>PAYMENT </Text>
+
+
+                                    <View style={{ flexDirection: 'row', marginTop: 6, marginLeft: 32, marginRight: 32 }}>
+                                        <TouchableOpacity style={styles.activeType} >
+                                            <Icon
+                                                active
+                                                name="wallet"
+                                                type='simple-line-icon'
+                                                color='#000'
+                                                size={26}
+                                            />
+                                            <Text style={{ color: '#000', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with wallet</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={styles.inActiveType} >
+                                            <Icon
+                                                active
+                                                name="bank"
+                                                type='font-awesome'
+                                                color='#5F5C7F'
+                                                size={26}
+                                            />
+                                            <Text style={{ color: '#5F5C7F', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with wallet</Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+
+
+
+
+
+                                    <View style={{ backgroundColor: '#fff', marginTop: 20, marginBottom: 20, marginLeft: 20, marginRight: 20, }}>
+                                        <View style={{ flexDirection: 'row', backgroundColor: '#111124', marginTop: 24, marginBottom: 24, marginLeft: 20, marginRight: 20, borderRadius: 5 }}>
+                                            <View style={{ marginLeft: 20, flex: 1, alignItems: 'flex-start', marginTop: 10, marginBottom: 10 }}>
+                                                <Text style={{ color: '#fff', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>₦{this.state.bal}</Text>
+                                                <Text style={{ color: '#fff', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>My Wallet Balance</Text>
+
+                                            </View>
+                                            <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
+                                                <TouchableOpacity onPress={() => Actions.fundW()} style={{ backgroundColor: color.primary_color, alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
+                                                    <Text style={{ color: "#010113", marginTop: 7, marginBottom: 7, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Fund Wallet</Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+
+                                        <View style={styles.inputView}>
+                                            <Text style={{ color: '#000', fontSize: 12, fontWeight: '200', margin: 10, fontFamily: 'NunitoSans', }}>You will not be charged for this transaction</Text>
+                                        </View>
+
+                                        {this.renderUpcomming()}
+
+                                        <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+                                            <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 10, }}>
+                                                <TouchableOpacity onPress={() => this.incrememntTicketCount()} style={styles.enablebutton} block iconLeft>
+                                                    <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 10, fontSize: 14, fontWeight: '200', fontFamily: 'NunitoSans', }}>Add</Text>
+                                                </TouchableOpacity>
+                                            </View>
+
+                                        </View>
+
+                                    </View>
+
+
+                                </ScrollView>
+                            </View>
+                            <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+                                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 10, }}>
+                                    <TouchableOpacity onPress={() => this.processGetEventTickets()} style={styles.enablebutton} block iconLeft>
+                                        <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 10, fontSize: 14, fontWeight: '200', fontFamily: 'NunitoSans', }}>PAY ₦  {this.currencyFormat(this.state.ticketsPrice)}  </Text>
                                     </TouchableOpacity>
                                 </View>
 
-
-
-
-
-
-                                <View style={{ backgroundColor: '#fff', marginTop: 20, marginBottom: 20, marginLeft: 20, marginRight: 20, }}>
-                                    <View style={{ flexDirection: 'row', backgroundColor: '#111124', marginTop: 24, marginBottom: 24, marginLeft: 20, marginRight: 20, borderRadius: 5 }}>
-                                        <View style={{ marginLeft: 20, flex: 1, alignItems: 'flex-start', marginTop: 10, marginBottom: 10 }}>
-                                            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>₦{this.state.bal}</Text>
-                                            <Text style={{ color: '#fff', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>My Wallet Balance</Text>
-
-                                        </View>
-                                        <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
-                                            <TouchableOpacity onPress={()=>  Actions.fundW()} style={{ backgroundColor: color.primary_color, alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
-                                                <Text style={{ color: "#010113", marginTop: 7, marginBottom: 7, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Fund Wallet</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-
-                                    <View style={styles.inputView}>
-                                        <Text style={{ color: '#000', fontSize: 12, fontWeight: '200', margin: 10, fontFamily: 'NunitoSans', }}>You will not be charged for this transaction</Text>
-                                    </View>
-
-                                    {this.renderUpcomming()}
-
-                                    <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                                        <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 10, }}>
-                                            <TouchableOpacity  onPress={()=> this.incrememntTicketCount()} style={styles.enablebutton} block iconLeft>
-                                                <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 10, fontSize: 14, fontWeight: '200', fontFamily: 'NunitoSans', }}>Add</Text>
-                                            </TouchableOpacity>
-                                        </View>
-
-                                    </View>
-
-                                </View>
-
-
-                            </ScrollView>
-                        </View>
-                        <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                            <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 10, }}>
-                                <TouchableOpacity onPress={()=> this.processGetEventTickets()} style={styles.enablebutton} block iconLeft>
-                                    <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 10, fontSize: 14, fontWeight: '200', fontFamily: 'NunitoSans', }}>PAY ₦  {this.currencyFormat(this.state.ticketsPrice)}  </Text>
-                                </TouchableOpacity>
                             </View>
 
                         </View>
 
-                    </View>
 
+                    </Content>
 
-                </Content>
-            </Container>
-        );
+                </Container>
+                {this.state.done ?
+                    this.success() :
+                    null}
+            </>);
     }
     renderUpcomming() {
         let items = [];
@@ -391,13 +413,13 @@ export default class BuyPaidTicket extends Component {
                 <View style={{ marginLeft: 20, marginRight: 20, borderBottomColor: '#808080', borderBottomWidth: 0.5 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', }}>
                         <Text style={{ color: '#1E1E1E', marginTop: 15, fontSize: 12, fontFamily: 'NunitoSans-Bold', flex: 1 }}>TICKET {this.state.ticket_count_array[i]}</Text>
-                        <TouchableOpacity  onPress={()=> this.delete(i)} ><Icon
+                        <TouchableOpacity onPress={() => this.delete(i)} ><Icon
                             active
                             name="ios-close"
                             type='ionicon'
                             color='red'
 
-                        /></TouchableOpacity> 
+                        /></TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 2, }}>
                         <View style={styles.inputTextView}>
@@ -422,7 +444,7 @@ export default class BuyPaidTicket extends Component {
                                 placeholder="Last name"
                                 placeholderTextColor={'#bbb'}
                                 returnKeyType="next"
-                               
+
                                 keyboardType='email-address'
                                 autoCapitalize="none"
                                 autoCorrect={false}
@@ -440,7 +462,7 @@ export default class BuyPaidTicket extends Component {
                                 placeholder="phone"
                                 placeholderTextColor={'#bbb'}
                                 returnKeyType="next"
-                               
+
                                 keyboardType='email-address'
                                 autoCapitalize="none"
                                 autoCorrect={false}
@@ -458,7 +480,7 @@ export default class BuyPaidTicket extends Component {
                                 placeholder="Email"
                                 placeholderTextColor={'#bbb'}
                                 returnKeyType="next"
-                                
+
                                 keyboardType='email-address'
                                 autoCapitalize="none"
                                 autoCorrect={false}
@@ -476,9 +498,9 @@ export default class BuyPaidTicket extends Component {
                     <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-start', marginBottom: 15, marginTop: 10 }}>
 
                         {this.renderTicket(i)}
-                       
 
-                       
+
+
                     </View>
                 </View>
 
@@ -494,48 +516,64 @@ export default class BuyPaidTicket extends Component {
         for (let i = 0; i < this.state.tickets.length; i++) {
 
             items.push(
-                <View style={{ flexDirection: 'row',marginBottom: 5 }}>
-                <Text style={{ color: '#1E1E1E', marginRight: 2, fontSize: 12, fontFamily: 'NunitoSans', }}>{this.state.tickets[i].title} { '('+ this.currencyFormat(this.state.tickets[i].cost) + ')' }</Text>
-                <TouchableOpacity onPress={()=> this.addTicketType(pos, this.state.tickets[i].title, this.state.tickets[i].cost, this.state.tickets[i].id )}   style={[{
-                    height: 16,
-                    width: 16,
-                    borderRadius: 11,
-                    borderWidth: 1,
-                    borderColor: '#F7A400',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginRight: 10
-                }]}>
-                   { this.state.ticket_buy[pos] != null ? 
+                <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+                    <Text style={{ color: '#1E1E1E', marginRight: 2, fontSize: 12, fontFamily: 'NunitoSans', }}>{this.state.tickets[i].title} {'(' + this.currencyFormat(this.state.tickets[i].cost) + ')'}</Text>
+                    <TouchableOpacity onPress={() => this.addTicketType(pos, this.state.tickets[i].title, this.state.tickets[i].cost, this.state.tickets[i].id)} style={[{
+                        height: 16,
+                        width: 16,
+                        borderRadius: 11,
+                        borderWidth: 1,
+                        borderColor: '#F7A400',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: 10
+                    }]}>
+                        {this.state.ticket_buy[pos] != null ?
 
-                   this.state.tickets[i].cost == this.state.ticket_buy[pos].price  &&    this.state.tickets[i].title == this.state.ticket_buy[pos].title ?
-                   <View style={{
-                       height: 12,
-                       width: 12,
-                       borderRadius: 6,
-                       backgroundColor: '#F7A400',
-                   }} />
+                            this.state.tickets[i].cost == this.state.ticket_buy[pos].price && this.state.tickets[i].title == this.state.ticket_buy[pos].title ?
+                                <View style={{
+                                    height: 12,
+                                    width: 12,
+                                    borderRadius: 6,
+                                    backgroundColor: '#F7A400',
+                                }} />
 
-                   :
-                   null
-                   
-                   :
-                   null
-                
+                                :
+                                null
 
-                   }
+                            :
+                            null
 
-                    
 
-                </TouchableOpacity>
+                        }
+
+
+
+                    </TouchableOpacity>
                 </View>
             )
-        
+
         };
         return items;
     }
+    onPress () {
+        this.props.navigation.replace('listT');
+      }
+    success() {
+        return (
+            <Success
+                onPress={() => this.onPress()}
+                button_color={color.primary_color}
+                button_text={'VIEW MY TICKETS'}
+                button_text_color={color.secondary_color}
+                message_color={'#fff'}
+                title={'Success'}
+                icon_bg={'#25AE88'}
+                message={'Your Ticket has been successfully purchased. We have emailed you digital copies of your Tickets'}
+            />
 
-  
+        );
+    }
 
 }
 
@@ -636,7 +674,7 @@ const styles = StyleSheet.create({
         height: 39,
         marginTop: 10,
         marginBottom: 10,
-       
+
         borderColor: '#BBB',
         borderWidth: 1,
         borderRadius: 5,

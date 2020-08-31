@@ -36,7 +36,8 @@ export default class EventDetails extends Component {
 
 
   componentWillMount() {
-    this.setState({ id: this.props.id });
+    const { id  } = this.props.route.params;
+    this.setState({ id: id });
     AsyncStorage.getItem('data').then((value) => {
       if (value == '') { } else {
         this.setState({ data: JSON.parse(value) })
@@ -163,6 +164,7 @@ likeUnlikeRequest(id, pos){
 
 
   render() {
+    const { state, goBack } = this.props.navigation;
     const { details, } = this.state
     const ticketVisibility = {
       label: 'Select visibility',
@@ -173,7 +175,7 @@ likeUnlikeRequest(id, pos){
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
+        <Button transparent onPress={() => goBack(null)}>
           <Icon
             active
             name="ios-arrow-back"
@@ -186,7 +188,7 @@ likeUnlikeRequest(id, pos){
 
     var right = (
       <Right style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
+        <Button transparent>
           <Icon
             active
             name="md-more"
@@ -345,7 +347,7 @@ likeUnlikeRequest(id, pos){
                 <Text style={{ marginLeft: 20, color: '#fff', fontSize: 15, fontWeight: '600' }}>  {details.type} </Text>
               </View>
 
-              <TouchableOpacity onPress={()=> Actions.buyPT({id: details.id, ticket:details.eventTickets , type: 'replace'})} style={{ height: 50, flexDirection: 'row', marginTop: 20, marginBottom: 20, margin: 10, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.primary_color }}>
+              <TouchableOpacity onPress={()=>  this.props.navigation.navigate('buyPT', {id: details.id, ticket:details.eventTickets , type: 'replace'})} style={{ height: 50, flexDirection: 'row', marginTop: 20, marginBottom: 20, margin: 10, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.primary_color }}>
                 <Text style={{ color: '#000', fontSize: 15, fontWeight: '600' }}>BUY TICKETS</Text>
               </TouchableOpacity>
             </View>

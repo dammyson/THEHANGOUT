@@ -10,7 +10,7 @@ export default class step2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      menuDescriptionText: '',
+      menuDescriptionText: 'nnnice',
       data: '',
       count:140,
       title:'',
@@ -21,28 +21,28 @@ export default class step2 extends Component {
   }
 
   nextStep = () => {
-    const { next, saveState } = this.props;
+    const { data, menuDescriptionText } = this.state;
     // Save state for use in other steps
-    if(this.state.menuDescriptionText == ""){
+    if(menuDescriptionText == ""){
       Alert.alert('Validation failed', "All fields are requried", [{ text: 'Okay' }])
       return
     }
-    saveState({ menuDescriptionText: this.state.menuDescriptionText });
-    
-    next();
+    const data_moving = data;
+    data_moving['description'] = menuDescriptionText
+    this.props.navigation.navigate('Menu3', {data_moving: data_moving});
     
   };
 
   goBack() {
-    const { back } = this.props;
-    // Go to previous step
-    back();
+    const {  goBack } = this.props.navigation; 
+    goBack(null)
   }
 
   componentDidMount() {
-    const { getState } = this.props;
-    const state = getState();
-    this.setState({ data: state})
+   
+    const { data_moving } = this.props.route.params;
+    console.warn(data_moving)
+    this.setState({ data: data_moving})
    
   
   }
@@ -57,7 +57,7 @@ export default class step2 extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={this.props.back}>
+        <Button transparent onPress={() => this.goBack()}>
           <Icon
             active
             name="ios-arrow-back"
@@ -70,8 +70,8 @@ export default class step2 extends Component {
 
 
     return (
-      <Container style={{ backgroundColor: 'transparent' }}>
-        <Navbar left={left} title={this.state.data.menuName} bg='#101023' />
+      <Container style={{ backgroundColor:  "#010113" }}>
+        <Navbar left={left} title={this.state.data.name} bg='#101023' />
         <Content>
           <View style={styles.container}>
             <View >
@@ -88,6 +88,7 @@ export default class step2 extends Component {
                 onSubmitEditing={() => this.nextStep()}
                 keyboardType='default'
                 autoCapitalize="none"
+                defaultValue={this.state.menuDescriptionText}
                 autoCorrect={false}
                 style={styles.menu}
                 onChangeText={text => [this.countChange(text), this.setState({ menuDescriptionText: text})]}

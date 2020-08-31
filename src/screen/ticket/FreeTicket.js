@@ -65,6 +65,11 @@ export default class FreeTicket extends Component {
 
     }
 
+    goBack() {
+        const {  goBack } = this.props.navigation; 
+        goBack(null)
+    }
+
     processAddTicket() {
 
         const { data, form_data } = this.state
@@ -253,7 +258,7 @@ export default class FreeTicket extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={() => this.goBack()}>
                     <Icon
                         active
                         name="ios-arrow-back"

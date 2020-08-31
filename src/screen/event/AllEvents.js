@@ -164,7 +164,7 @@ export default class Dashboard extends Component {
     _renderItem = ({ item, index }, parallaxProps)  =>{
         Moment.locale('en');
         return (
-            <TouchableOpacity onPress={() => Actions.eventD({ id: item.id })} >
+            <TouchableOpacity onPress={() =>   this.props.navigation.navigate('eventD', { id: item.id })} >
                 <ImageBackground
                     opacity={0.5}
                     style={{ borderRadius: 12 }}
@@ -235,7 +235,9 @@ export default class Dashboard extends Component {
             </TouchableOpacity>
         );
     }
-
+goToMore(params){
+    this.props.navigation.navigate('more',{ prams: params})
+}
     _renderMenu() {
         return (
             <View style={{ flexDirection: 'row', }}>
@@ -247,7 +249,7 @@ export default class Dashboard extends Component {
                 >
 
 
-                        <TouchableOpacity   onPress={() => Actions.more({ prams: "eventListing/Likes/7" })}  style={styles.hangoutDetails} >
+                        <TouchableOpacity   onPress={() => this.goToMore("eventListing/Likes/7") }  style={styles.hangoutDetails} >
 
                         <View style={styles.iconContainer}>
 
@@ -275,7 +277,7 @@ export default class Dashboard extends Component {
                 >
 
 
-<TouchableOpacity   onPress={() => Actions.more({ prams: "eventListing/Categories/7" })} style={styles.hangoutDetails} >
+<TouchableOpacity    onPress={() => this.goToMore("eventListing/Categories/7") }  style={styles.hangoutDetails} >
 
                         <View style={styles.iconContainer}>
 
@@ -302,7 +304,7 @@ export default class Dashboard extends Component {
                 >
 
 
-                    <TouchableOpacity   onPress={() => Actions.more({ prams: "eventListing/Categories/7" })} style={styles.hangoutDetails} >
+                    <TouchableOpacity  onPress={() => this.goToMore("eventListing/Categories/7") }  style={styles.hangoutDetails} >
 
                         <View style={styles.iconContainer}>
 
@@ -434,7 +436,7 @@ export default class Dashboard extends Component {
 
                             <View style={{ marginLeft: 10, marginRight: 7, flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={styles.titleText}>TRENDING</Text>
-                                <TouchableOpacity   onPress={() => Actions.more({ prams: "eventListing/Trending/7" })}   style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
+                                <TouchableOpacity    onPress={() => this.goToMore('eventListing/Trending/7')}   style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
                                     <Text style={{ fontSize: 12, color: 'orange', }}>Full List </Text>
                                     <Icon
                                         active
@@ -450,7 +452,7 @@ export default class Dashboard extends Component {
 
                         <View style={{ marginLeft: 10, marginRight: 7, flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.titleText}>For You</Text>
-                            <TouchableOpacity   onPress={() => Actions.more({ prams: "eventListing/Upcoming/7" })}   style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
+                            <TouchableOpacity    onPress={() => this.goToMore('eventListing/Upcoming/7')}  style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
                                 <Icon
                                     active
                                     name="ios-arrow-forward"
@@ -471,7 +473,7 @@ export default class Dashboard extends Component {
 
 
 
-                        <TouchableOpacity  onPress={() => Actions.more({ prams: "eventListing/Upcoming/50" })}  style={{ margin: 30, alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: '#F7A400' }}>
+                        <TouchableOpacity  onPress={() => this.goToMore('eventListing/Upcoming/50')}  style={{ margin: 30, alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: '#F7A400' }}>
                             <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: '#F7A400' }}>View all upcomning events</Text>
                         </TouchableOpacity>
                     </View>

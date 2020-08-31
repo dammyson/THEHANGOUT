@@ -152,9 +152,9 @@ export default class Login extends Component {
           }else{
             AsyncStorage.setItem('user', JSON.stringify(res.user));
             if(res.user.role == 'Customer'){
-              Actions.home({type: 'replace'});
+              this.props.navigation.navigate('home');
              }else{
-              Actions.merchant_home({type: 'replace'});
+              this.props.navigation.navigate('merchant_home');
              }
 
           }
@@ -195,9 +195,9 @@ export default class Login extends Component {
          this.setState({ loading: false })
          AsyncStorage.setItem('user', JSON.stringify(res.user));
          if(res.user.role == 'Customer'){
-          Actions.home({type: 'replace'});
+          this.props.navigation.navigate('home');
          }else{
-          Actions.merchant_home({type: 'replace'});
+          this.props.navigation.navigate('merchant_home');
          }
        } else {
          Alert.alert('Login failed', res.message, [{ text: 'Okay' }])
@@ -219,9 +219,10 @@ export default class Login extends Component {
   
 
   render() {
+    const { state, goBack } = this.props.navigation;
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
+        <Button transparent onPress={() => goBack(null)}>
           <Icon name='ios-arrow-back' size={30} style={{ color: '#fdfdfd' }} />
         </Button>
       </Left>

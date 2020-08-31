@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, Dimensions, ImageBackground, NativeModules, TouchableOpacity, TextInput, AsyncStorage, StyleSheet, Alert, FlatList } from "react-native";
+import { Image, Dimensions, ImageBackground, NativeModules, TouchableOpacity, TextInput,StatusBar, AsyncStorage, StyleSheet, Alert, FlatList } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Toast, List, ListItem, } from 'native-base';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
@@ -21,6 +21,7 @@ import RNPickerSelect from 'react-native-picker-select';
 var ImagePicker = NativeModules.ImageCropPicker;
 
 import Navbar from '../../component/Navbar';
+import PaidTicket from "../../component/views/PaidTicket";
 
 
 const type = [
@@ -61,6 +62,7 @@ export default class step5 extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            show_ticket_paid: true,
             details: '',
             data: '',
             org: 'Select Organizer',
@@ -83,14 +85,8 @@ export default class step5 extends Component {
 
 
     goBack() {
-        const { back } = this.props;
-        back();
-    }
-
-
-
-    countChange(text) {
-        this.setState({ count: 140 - text.length })
+        const {  goBack } = this.props.navigation; 
+        goBack(null)
     }
 
     componentWillMount() {
@@ -103,15 +99,14 @@ export default class step5 extends Component {
             this.getOrganizersRequest()
         })
 
-        const { getState } = this.props;
-        const state = getState();
+        const { data_moving } = this.props.route.params;
 
         this.setState({
-            name: state.title,
-            description: state.description,
-            startdate: state.startdate,
-            enddate: state.enddate,
-            venue: state.venue,
+            name: data_moving.title,
+            description: data_moving.description,
+            startdate: data_moving.startdate,
+            enddate: data_moving.enddate,
+            venue: data_moving.venue,
 
         })
     }
@@ -328,7 +323,7 @@ export default class step5 extends Component {
                         buttonText: 'Dismiss',
                         duration: 3000
                     });
-                    Actions.merchant_home({type: 'replace'});
+                    this.props.navigation.repl('merchant_home');
                 } else {
                     Alert.alert('Operation failed', res.message, [{ text: 'Okay' }])
                     this.setState({ loading: false })
@@ -341,6 +336,79 @@ export default class step5 extends Component {
     }
 
     render() {
+
+        var left = (
+            <Left style={{ flex: 1 }}>
+                <Button transparent onPress={()=>this.goBack()}>
+                    <Icon
+                        active
+                        name="ios-arrow-back"
+                        type='ionicon'
+                        color='#FFF'
+                    />
+                </Button>
+            </Left>
+        );
+
+        if (this.state.loading) {
+            return (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
+                    <View style={styles.welcome}>
+                        <Text style={{ fontSize: 15, color: '#fff' }}>Adding Event</Text>
+                        <BarIndicator count={4} color={color.primary_color} />
+                        <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
+                    </View>
+                </View>
+            );
+        }
+
+        return (
+               <Container style={{ flex:1, height: Dimensions.get('window').height, backgroundColor: "#010113" }}>
+                <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
+                <Navbar left={left} title='Confirm Details' bg='#101023' />
+                <Content>
+            
+            
+             {this.renderBody()}
+             <TouchableOpacity style={styles.fab} onPress={() => this.processCreateEvent()}>
+                        <Icon
+                            active
+                            name="check"
+                            type='feather'
+                            color='green'
+                            size={25}
+                        />
+                    </TouchableOpacity>
+                </Content>
+            </Container>
+        );
+    }
+
+    _handleCategorySelect = (index) => {
+        this.setState({ org: index.id, org_name: index.name, view_organizer: false });
+
+    }
+    renderItem = ({ item, }) => {
+        return (
+            <TouchableOpacity style={{ marginLeft: 20, marginRight: 20, marginBottom: 10 }}
+                onPress={() => this._handleCategorySelect(item)} underlayColor="red">
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+                    <Text style={styles.nameList}>{item.name}</Text>
+                    <Icon
+                        active
+                        name="dots-vertical"
+                        type='material-community'
+                        color='#FFF'
+                    />
+                </View>
+
+            </TouchableOpacity>
+
+        )
+
+    }
+
+    renderBody(){
 
 
         const catPlaceholder = {
@@ -366,22 +434,10 @@ export default class step5 extends Component {
                 </Button>
             </Left>
         );
-        if (this.state.loading) {
-            return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
-                    <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>Adding Event</Text>
-                        <BarIndicator count={4} color={color.primary_color} />
-                        <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
-                    </View>
-                </View>
-            );
-        }
 
-        return (
-            <Container style={{ backgroundColor: 'transparent' }}>
-                <Navbar left={left} title='Confirm Details' bg='#101023' />
-                <Content>
+        return(
+            <>
+        
                     <View style={styles.container}>
                         <View >
 
@@ -739,7 +795,7 @@ export default class step5 extends Component {
                                 </View>
                                 <View style={{ paddingTop: 1, paddingBottom: 10, flex: 1, }}>
                                     <View style={{ flexDirection: 'row', marginRight: 20, marginLeft: 20, }}>
-                                        <TouchableOpacity onPress={() => [Actions.freeT(), this.setState({ view_ticket: false })]} style={{ flex: 1, }}>
+                                        <TouchableOpacity onPress={() => [ this.props.navigation.navigate('freeT'), this.setState({ view_ticket: false }), ]} style={{ flex: 1, }}>
 
                                             <View elevation={5} style={styles.ticketContainer}>
 
@@ -767,7 +823,7 @@ export default class step5 extends Component {
 
 
 
-                                        <TouchableOpacity onPress={() => [Actions.paidT(), this.setState({ view_ticket: false })]} style={{ flex: 1, }}>
+                                        <TouchableOpacity onPress={() => [ this.props.navigation.navigate('paidT'), this.setState({ view_ticket: false })]} style={{ flex: 1, }}>
 
                                             <View elevation={5} style={styles.ticketContainer}>
 
@@ -824,42 +880,16 @@ export default class step5 extends Component {
                             </View>
                         </ModalContent>
                     </Modal>
-                    <TouchableOpacity style={styles.fab} onPress={() => this.processCreateEvent()}>
-                        <Icon
-                            active
-                            name="check"
-                            type='feather'
-                            color='green'
-                            size={25}
-                        />
-                    </TouchableOpacity>
-                </Content>
-            </Container>
-        );
+                
+            
+            </>  );
     }
 
-    _handleCategorySelect = (index) => {
-        this.setState({ org: index.id, org_name: index.name, view_organizer: false });
-
-    }
-    renderItem = ({ item, }) => {
-        return (
-            <TouchableOpacity style={{ marginLeft: 20, marginRight: 20, marginBottom: 10 }}
-                onPress={() => this._handleCategorySelect(item)} underlayColor="red">
-                <View style={{ flex: 1, flexDirection: 'row' }}>
-                    <Text style={styles.nameList}>{item.name}</Text>
-                    <Icon
-                        active
-                        name="dots-vertical"
-                        type='material-community'
-                        color='#FFF'
-                    />
-                </View>
-
-            </TouchableOpacity>
-
+    renderTicketPaid(){
+        return(
+            <PaidTicket
+             onClose={()=> this.setState({show_ticket_paid: false})}/>
         )
-
     }
 }
 
@@ -867,6 +897,8 @@ export default class step5 extends Component {
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
+       
+
     },
     btnContainer: {
         flexDirection: "row",

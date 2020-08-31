@@ -22,7 +22,7 @@ export default class step5 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
+      loading: false,
       show_add_on: false,
       add_ons: [],
       cat_list: [],
@@ -45,10 +45,9 @@ export default class step5 extends Component {
 
 
   goBack() {
-    const { back } = this.props;
-    back();
+    const {  goBack } = this.props.navigation; 
+    goBack(null)
   }
-
 
 
   countChange(text) {
@@ -61,12 +60,12 @@ export default class step5 extends Component {
       user: JSON.parse(await getData()).data
     })
 
-    const { getState } = this.props;
-    const state = getState();
+    const { data_moving } = this.props.route.params;
+    console.warn(data_moving)
 
     this.setState({
-      name: state.menuName,
-      description: state.menuDescriptionText,
+      name: data_moving.name,
+      description: data_moving.description,
 
     })
     this.setState({
@@ -337,7 +336,7 @@ export default class step5 extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={this.props.back}>
+        <Button transparent onPress={() => this.goBack()}>
           <Icon
             active
             name="ios-arrow-back"
@@ -348,8 +347,8 @@ export default class step5 extends Component {
       </Left>
     );
     return (
-      <Container style={{ backgroundColor: 'transparent' }}>
-        <Navbar left={left} title='Menu' bg='#101023' />
+      <Container style={{ backgroundColor:  "#010113" }}>
+        <Navbar left={left} title={this.state.name} bg='#101023' />
         <Content>
           <View style={styles.container}>
             <View >
@@ -414,7 +413,7 @@ export default class step5 extends Component {
                     autoCapitalize="none"
                     autoCorrect={false}
                     style={styles.menu}
-                    value={this.state.name}
+                    defaultValue={this.state.name}
                     onChangeText={text => this.setState({ name: text })}
                   />
                 </View>
@@ -437,7 +436,7 @@ export default class step5 extends Component {
                     autoCapitalize="none"
                     autoCorrect={false}
                     style={styles.menu}
-                    value={this.state.description}
+                    defaultValue={this.state.description}
                     onChangeText={text => this.setState({ description: text })}
                   />
                 </View>
