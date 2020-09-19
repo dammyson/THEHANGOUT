@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, AsyncStorage, Image, Dimensions, StatusBar } from 'react-native';
 import { Container, Content, View, Text, Icon, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 const URL = require("../../component/server");
 import _ from "lodash";
 import Navbar from '../../component/Navbar';

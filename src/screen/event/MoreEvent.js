@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, FlatList, ScrollView, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 const URL = require("../../component/server");
 
@@ -116,7 +115,7 @@ export default class MoreEvent extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={() => this.props.navigation.goBack()}>
                     <Icon
                         active
                         name="ios-arrow-back"
@@ -129,7 +128,7 @@ export default class MoreEvent extends Component {
 
         var right = (
             <Right style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent>
                     <Icon
                         active
                         name="md-more"
@@ -216,7 +215,7 @@ export default class MoreEvent extends Component {
         let items = [];
         for (let i = 0; i < tickets.length; i++) {
             items.push(
-                <TouchableOpacity onPress={() => Actions.eventD({id: tickets[i].id})} style={styles.oneRow}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('eventD', {id: tickets[i].id}) } style={styles.oneRow}>
                     <View style={{ marginRight: 20 , marginLeft:20}}>
                         <Text style={styles.title}> {tickets[i].title}</Text>
                         <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 12, fontWeight: '100', marginRight: 40, opacity: 0.59 }}> {tickets[i].description} </Text>

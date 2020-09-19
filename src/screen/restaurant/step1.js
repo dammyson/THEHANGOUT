@@ -4,7 +4,6 @@ import { Container, Content, View, Text, Button, Left, Right, Body, Title, List,
 
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 
-import { Actions } from 'react-native-router-flux';
 
 import color from '../../component/color';
 const { width: screenWidth } = Dimensions.get('window')

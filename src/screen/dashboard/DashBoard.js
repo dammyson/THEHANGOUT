@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { TextInput, StyleSheet, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, ImageBackground } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
@@ -168,7 +167,7 @@ export default class Dashboard extends Component {
     _renderItem = ({ item, index }, parallaxProps)  =>{
         Moment.locale('en');
         return (
-            <TouchableOpacity onPress={() => Actions.eventD({ id: item.id })} >
+            <TouchableOpacity onPress={() =>   this.props.navigation.naviagete('eventD', { id: item.id })} >
                 <ImageBackground
                     opacity={0.5}
                     style={{ borderRadius: 12 }}
@@ -264,7 +263,7 @@ export default class Dashboard extends Component {
         const { slider1ActiveSlide } = this.state;
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.profile()}>
+                <Button transparent onPress={() =>  this.props.navigation.naviagete('profile')}>
                     <Avatar
                         rounded
                         source={{

@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { TextInput, StyleSheet, ScrollView, TouchableOpacity, Image, AsyncStorage, Dimensions, StatusBar } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Toast, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
@@ -131,7 +130,7 @@ export default class Search extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={() => this.props.navigation.goBack()}>
                     <Avatar
                         rounded
                         source={{

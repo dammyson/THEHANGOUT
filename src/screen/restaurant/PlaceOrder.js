@@ -4,7 +4,6 @@ import { Container, Content, View, Text, Button, Left, Toast, Right, Body, Title
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import RNPickerSelect from 'react-native-picker-select';
-import { Actions } from 'react-native-router-flux';
 const URL = require("../../component/server");
 import color from '../../component/color';
 const { width: screenWidth } = Dimensions.get('window')
@@ -78,12 +77,12 @@ export default class PlaceOrder extends Component {
             data: JSON.parse(await getData()),
             user: JSON.parse(await getData()).data
         })
-
-        console.warn(this.props.res_id, this.props.restaurant, this.props.menu_id)
+        const { res_id, restaurant, menu_id } = this.props.route.params;
+        
         this.setState({
-            res_id: this.props.res_id,
-            restaurant: this.props.restaurant,
-            id: this.props.menu_id
+            res_id: res_id,
+            restaurant: restaurant,
+            id: menu_id
         });
         this.processGetEvent()
 
@@ -213,7 +212,6 @@ export default class PlaceOrder extends Component {
                 console.warn("kaikkk", res);
                 if (res.status) {
                     this.setState({ loading: false, done: true })
-                    // Actions.restaurants({ type: 'replace' });
                 } else {
                     Alert.alert('Operation failed', res.message, [{ text: 'Okay' }])
                     this.setState({ loading: false })
@@ -238,7 +236,7 @@ export default class PlaceOrder extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => this.state.show_add ? this.setState({ show_add: false }) : Actions.pop()}>
+                <Button transparent onPress={() => this.state.show_add ? this.setState({ show_add: false }) : this.props.navigation.goBack()}>
                     <Icon
                         active
                         name="left"
@@ -293,7 +291,7 @@ export default class PlaceOrder extends Component {
 
 
                                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
-                                    <TouchableOpacity onPress={() => Actions.restaurants({ type: 'replace' })} style={styles.enablebutton} block iconLeft>
+                                    <TouchableOpacity onPress={() => this.props.navigation.replace('restaurants')} style={styles.enablebutton} block iconLeft>
                                         <Text style={{ color: '#fff', marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
                                     </TouchableOpacity>
                                 </View>

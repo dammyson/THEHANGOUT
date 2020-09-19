@@ -10,7 +10,7 @@ export default class step2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      menuDescriptionText: 'nnnice',
+      menuDescriptionText: '',
       data: '',
       count:140,
       title:'',

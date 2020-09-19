@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { TextInput, StyleSheet, ScrollView, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, ImageBackground } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Toast, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
@@ -96,7 +95,7 @@ export default class Dashboard extends Component {
     _renderItem = ({ item, index }, parallaxProps) => {
         Moment.locale('en');
         return (
-            <TouchableOpacity onPress={() => Actions.restaurantD({ id: item.id })} >
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('restaurantD',{ id: item.id }) } >
                 <ImageBackground
                     opacity={0.5}
                     style={{ borderRadius: 12 }}
@@ -201,7 +200,7 @@ export default class Dashboard extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-            <Button transparent onPress={() => Actions.pop()}>
+            <Button transparent onPress={() =>this.props.navigation.goBack()}>
               <Icon
                 active
                 name="left"
@@ -249,7 +248,7 @@ export default class Dashboard extends Component {
 
                             <View style={{ marginLeft: 10, marginRight: 7, flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={styles.titleText}>POPULAR RESTAURANTS</Text>
-                                <TouchableOpacity onPress={() => Actions.moreR({ prams: "all" })} style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('moreR',{ prams: 'all' })}style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
                                     <Text style={{ fontSize: 12, color: 'red', }}>View all </Text>
                                     <Icon
                                         active
@@ -279,7 +278,7 @@ export default class Dashboard extends Component {
 
 
 
-                        <TouchableOpacity onPress={() => Actions.moreR({ prams: "all" })} style={{ margin: 30, alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: 'red' }}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('moreR',{ prams: 'all' })} style={{ margin: 30, alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: 'red' }}>
                             <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: 'red' }}>View all restaurants</Text>
                         </TouchableOpacity>
                     </View>
@@ -297,7 +296,7 @@ export default class Dashboard extends Component {
                 <View>
                     <View style={styles.upcomingContainer}>
                         <View style={{ flex: 1, }}>
-                            <TouchableOpacity onPress={() => Actions.restaurantD({ id: item.id })}   >
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('restaurantD',{ id: item.id }) }   >
                                 <ImageBackground
                                     opacity={0.5}
                                     style={{ borderRadius: 12, flex: 1, margin: 10, marginTop: 0 }}
@@ -348,7 +347,7 @@ export default class Dashboard extends Component {
 
                 <View style={styles.rowchild}>
 
-                <TouchableOpacity onPress={() => Actions.moreR({ prams: link })}  style={[styles.circle]}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('moreR',{ prams: link })}  style={[styles.circle]}>
 
                     <Icon
                         active

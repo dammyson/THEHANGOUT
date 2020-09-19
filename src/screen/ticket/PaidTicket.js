@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, ActivityIndicator, NativeModules, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Toast, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 import DatePicker from 'react-native-datepicker'
 const URL = require("../../component/server");
@@ -148,7 +147,7 @@ export default class PaidTicket extends Component {
                     });
                     setTimeout(() => {
                         this.setState({ loading: false })
-                        Actions.pop();
+                        this.goBack()
                     }, 2000);
 
                 } else {

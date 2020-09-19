@@ -1,5 +1,5 @@
 module.exports = {
-    url: "http://hg.4wallsdev.com/api/",
+    url: "http://api.thehangout.ng/api/",
   }
 
 

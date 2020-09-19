@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, AsyncStorage, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
-import { Actions } from 'react-native-router-flux';
+
 import { Avatar, Badge, } from 'react-native-elements';
 import {  Icon, } from 'react-native-elements'
 
@@ -50,8 +50,10 @@ export default class Manage extends Component {
            AsyncStorage.removeItem('bal');
            AsyncStorage.removeItem('user');
            setTimeout(() => {
-            Actions.intro({type: 'replace'});
+            this.props.navigation.replace('intro')
                 }, 2000);
+
+               
           
             return true;
         }
@@ -68,7 +70,7 @@ export default class Manage extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.profile()}>
+                <Button transparent onPress={() =>  this.props.navigation.navigate('profile')}>
                     <Avatar
                         rounded
                         source={{
@@ -123,7 +125,7 @@ export default class Manage extends Component {
                         <View style={styles.body}>
 
                             <View>
-                            <TouchableOpacity onPress={() => Actions.withdraw()}  style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
+                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate('withdraw')}  style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
                                     <Avatar
                                         rounded
                                         size="small"
@@ -150,7 +152,7 @@ export default class Manage extends Component {
 
 
                             <View style={{ marginTop: 20, }}>
-                                <TouchableOpacity onPress={() => Actions.transaction()} style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
+                                <TouchableOpacity onPress={() =>  this.props.navigation.navigate('transaction')} style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
                                     <Avatar
                                         rounded
                                         size="small"

@@ -284,7 +284,7 @@ export default class step5 extends Component {
             buttonText: 'Dismiss',
             duration: 3000
           });
-          Actions.res_service_details({ type: 'replace', id: restaurant.id })
+          this.props.navigation.replace('res_service_details',{id: restaurant.id})
         } else {
           Alert.alert('Operation failed', res.message, [{ text: 'Okay' }])
           this.setState({ loading: false })

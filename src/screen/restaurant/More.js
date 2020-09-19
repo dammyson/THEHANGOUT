@@ -37,7 +37,8 @@ export default class More extends Component {
 
 
     componentWillMount() {
-        this.setState({ prams: this.props.prams });
+        const { prams  } = this.props.route.params;
+        this.setState({ prams: prams });
        
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {

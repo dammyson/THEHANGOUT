@@ -3,7 +3,6 @@ import { Alert, Dimensions, Image, ImageBackground, StyleSheet, AsyncStorage, St
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker'
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 import QRCode from 'react-native-qrcode-svg';
 const URL = require("../../component/server");
@@ -37,7 +36,8 @@ export default class TicketDetails extends Component {
 
 
     componentWillMount() {
-        this.setState({ id: this.props.id });
+        const { id,  } = this.props.route.params;
+        this.setState({ id: id });
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })
@@ -93,7 +93,7 @@ export default class TicketDetails extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={() => this.props.navigation.goBack()}>
                     <Icon
                         active
                         name="ios-arrow-back"
@@ -106,7 +106,7 @@ export default class TicketDetails extends Component {
 
         var right = (
             <Right style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent>
                     <Icon
                         active
                         name="md-more"

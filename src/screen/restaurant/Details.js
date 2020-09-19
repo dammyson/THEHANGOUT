@@ -36,7 +36,8 @@ export default class Details extends Component {
 
 
     componentWillMount() {
-        this.setState({ id: this.props.id });
+        const { id  } = this.props.route.params;
+        this.setState({ id: id });
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })

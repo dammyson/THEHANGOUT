@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, View, Dimensions, TouchableOpacity, ImageBackground } from 'react-native';
 import { Container, Content, Text, Icon, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import { Icon as Fil } from 'react-native-elements'
 import {
     BarIndicator,
@@ -36,10 +35,7 @@ export default class Intro extends Component {
 
 
     async componentDidMount() {
-        if (data !== null) {
-            Actions.pop();
-            Actions.sorting({ email: "jesus" });
-        }
+       
     }
 
     _renderItem = ({ item }) => {

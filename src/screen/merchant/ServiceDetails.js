@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { TextInput, StyleSheet, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, ImageBackground, ScrollView } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
@@ -164,7 +163,7 @@ export default class ServiceDetails extends Component {
 
                                 </View>
                                 <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
-                                    <TouchableOpacity onPress={() => Actions.withdraw()} style={{ backgroundColor: '#139F2A', alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('withdraw')} style={{ backgroundColor: '#139F2A', alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
                                         <Text style={{ color: "#fff", marginTop: 7, marginBottom: 7, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Withdraw Funds</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -219,10 +218,10 @@ export default class ServiceDetails extends Component {
 
                     </View>
                 </Content>
-                <View style={styles.fab} onPress={() => Actions.createRestaurant()}>
+                <View style={styles.fab} onPress={() => this.props.navigation.navigate('createRestaurant') }>
 
                     <View style={{ flexDirection: 'row', flex:1 }}>
-                        <TouchableOpacity onPress={() => Actions.agent_create()}  style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('agent_create')}  style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
                             <Icon
                                 active
                                 name="pluscircleo"
@@ -233,7 +232,7 @@ export default class ServiceDetails extends Component {
                               <Text style={{ fontSize: 12, margin: 10, fontWeight: '300', color: '#1E1E1E' }}>New Agent</Text>
                         </TouchableOpacity>
                         <View style={{width:0.6, marginTop:3, marginBottom:3, backgroundColor:'rgba(128,128,128,0.4)'}} ></View>
-                        <TouchableOpacity onPress={() => Actions.agent_pay()}  style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
+                        <TouchableOpacity onPress={() =>  this.props.navigation.navigate('agent_pay')}  style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
                             <Icon
                                 active
                                 name="ios-wallet"

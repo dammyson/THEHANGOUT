@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, StatusBar, ScrollView, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 const URL = require("../../component/server");
 
@@ -359,7 +358,7 @@ export default class BuyPaidTicket extends Component {
 
                                             </View>
                                             <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
-                                                <TouchableOpacity onPress={() => Actions.fundW()} style={{ backgroundColor: color.primary_color, alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
+                                                <TouchableOpacity onPress={() =>  this.props.navigation.navigate('fundW')} style={{ backgroundColor: color.primary_color, alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
                                                     <Text style={{ color: "#010113", marginTop: 7, marginBottom: 7, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Fund Wallet</Text>
                                                 </TouchableOpacity>
                                             </View>

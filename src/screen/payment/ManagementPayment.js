@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, StatusBar, ScrollView, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 const URL = require("../../component/server");
 import QRCode from 'react-native-qrcode-svg';
@@ -62,7 +61,8 @@ export default class ManagementPayment extends Component {
 
 
     componentDidMount() {
-        this.setState({ id: this.props.id });
+        const { id  } = this.props.route.params;
+        this.setState({ id: id });
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })
@@ -141,7 +141,7 @@ generateQrCode(){
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={() => this.props.navigation.goBack()}>
                 <Avatar
                         rounded
                         source={{
@@ -190,7 +190,7 @@ generateQrCode(){
 
                                 </View>
                                 <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
-                                    <TouchableOpacity onPress={()=>  Actions.fundW()} style={{ backgroundColor: color.primary_color, alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
+                                    <TouchableOpacity onPress={()=> this.props.navigation.navigate('fundW')} style={{ backgroundColor: color.primary_color, alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
                                         <Text style={{ color: "#010113", marginTop: 7, marginBottom: 7, fontSize: 13, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Fund Wallet</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -246,7 +246,7 @@ generateQrCode(){
                                                     color='#000'
                                                     size={20}
                                                 />
-                                                <Text onPress={()=> Actions.qr()} style={{ color: "#010113", marginLeft: 5, marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '500', fontFamily: 'NunitoSans', opacity: 0.77 }}>SCAN QRCODE</Text>
+                                                <Text onPress={()=> this.props.navigation.navigate('qr')} style={{ color: "#010113", marginLeft: 5, marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '500', fontFamily: 'NunitoSans', opacity: 0.77 }}>SCAN QRCODE</Text>
                                             </TouchableOpacity>
 
                                         </View>

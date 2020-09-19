@@ -4,7 +4,6 @@ import { Container, Content, View, Text, Button, Left, Toast, Body, Title, List,
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 const URL = require("../../component/server");
 import {
@@ -171,7 +170,7 @@ export default class step2 extends Component {
         console.warn(res);
         if (res.status) {
           this.setState({ loading: false })
-          Actions.pop();
+          this.props.navigation.goBack()
         } else {
           Alert.alert('Registration failed', res.error, [{ text: 'Okay' }])
           this.setState({ loading: false })
@@ -200,7 +199,7 @@ export default class step2 extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={()=>Actions.pop()}>
+        <Button transparent onPress={()=> this.props.navigation.goBack()}>
           <Icon
             active
             name="ios-arrow-back"

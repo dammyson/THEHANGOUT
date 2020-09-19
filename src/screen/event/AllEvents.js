@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { TextInput, StyleSheet, ScrollView, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, ImageBackground } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Toast, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
@@ -500,7 +499,7 @@ goToMore(params){
 
                         </View>
                         <View style={{ flex: 1, }}>
-                            <TouchableOpacity onPress={() => Actions.eventD({ id: item.id })}   >
+                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate('eventD',{ id: item.id })}>
                                 <ImageBackground
                                     opacity={0.5}
                                     style={{ borderRadius: 12, flex: 1, margin: 10, marginTop: 0 }}
@@ -580,7 +579,7 @@ goToMore(params){
                             >
 
 
-                                <TouchableOpacity   onPress={() => Actions.more({ prams: "eventCategoryListing/"+ item.category+"/7" })} style={styles.hangoutDetails} >
+                                <TouchableOpacity   onPress={() =>  this.props.navigation.navigate('more',{ prams: "eventCategoryListing/"+ item.category+"/7" })} style={styles.hangoutDetails} >
 
                                     <Text style={{ fontWeight: '600', color: '#fff', flex: 1, marginLeft: 10 }}>{item.more} More Events</Text>
                                     <Icon

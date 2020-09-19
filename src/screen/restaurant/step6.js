@@ -4,7 +4,6 @@ import { Container, Content, View, Text, Button, Left, Right, Body, Toast, List,
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 
 import {
@@ -229,7 +228,8 @@ export default class step6 extends Component {
                         buttonText: 'Dismiss',
                         duration: 3000
                     });
-                    Actions.merchant_home({ type: 'replace' });
+                   
+                    this.props.navigation.replace('merchant_home')
                 } else {
                     Alert.alert('Operation failed', res.message, [{ text: 'Okay' }])
                     this.setState({ loading: false })

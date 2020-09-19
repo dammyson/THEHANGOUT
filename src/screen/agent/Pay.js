@@ -3,7 +3,6 @@ import { Alert, Dimensions, TouchableOpacity,Image,StatusBar, TextInput, StyleSh
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 
 import { Card, Icon, SocialIcon, Avatar } from 'react-native-elements'
-import { Actions } from 'react-native-router-flux';
 const URL = require("../../component/server");
 import color from '../../component/color';
 import Navbar from '../../component/Navbar';
@@ -250,7 +249,7 @@ export default class Pay extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={() => this.props.navigation.goBack()}>
                     <Icon
                         active
                         name="close"
@@ -293,7 +292,7 @@ export default class Pay extends Component {
         
         
                                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
-                                    <TouchableOpacity onPress={() => [this.setState({done:false}), Actions.pop()]} style={styles.enablebutton} block iconLeft>
+                                    <TouchableOpacity onPress={() => [this.setState({done:false}),this.props.navigation.goBack()]} style={styles.enablebutton} block iconLeft>
                                         <Text style={{ color: '#fff', marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -327,7 +326,7 @@ export default class Pay extends Component {
 
                             </View>
                             <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
-                                <TouchableOpacity onPress={() => Actions.withdraw()} style={{ backgroundColor: 'green', alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
+                                <TouchableOpacity onPress={() => this.props.navigation.naviagete('withdraw')} style={{ backgroundColor: 'green', alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
                                     <Text style={{ color: "#fff", marginTop: 7, marginBottom: 7, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Withdraw Fund</Text>
                                 </TouchableOpacity>
                             </View>
@@ -365,7 +364,7 @@ export default class Pay extends Component {
                             </View>
 
                             <ScrollView horizontal style={{ marginRight: 20, marginLeft: 20, marginBottom: 20, marginTop: 15 }}>
-                                <TouchableOpacity onPress={() => Actions.agent_create()} style={{ height: 80, width: 80, borderRadius: 5, backgroundColor: '#5F5C7F', borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                <TouchableOpacity onPress={() => this.props.navigation.naviagete('agent_create')} style={{ height: 80, width: 80, borderRadius: 5, backgroundColor: '#5F5C7F', borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
 
                                     <Icon
                                         active

@@ -3,7 +3,6 @@ import { Alert, Dimensions, TouchableOpacity, ImageBackground, StyleSheet, Async
 import { Container, Content, View, Text, Button, Left, Right, Toast, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker'
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 const URL = require("../../component/server");
 

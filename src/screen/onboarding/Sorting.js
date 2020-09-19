@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import { Platform, StyleSheet, AsyncStorage, View, Text, Dimensions, ImageBackground } from 'react-native';
-import { Actions } from 'react-native-router-flux';
 import SVGImage from 'react-native-svg-image';
 import {
     BarIndicator,
@@ -13,10 +12,7 @@ export default class Sorting extends Component {
 
 
     async componentDidMount() {
-        if (data !== null) {
-            Actions.pop();
-            Actions.sorting({ email: "jesus" });
-        }
+      
     }
 
     render() {

@@ -4,7 +4,6 @@ import { Container, Content, View, Text, Button, Left, Right, Body, Title, List,
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 
 import color from '../../component/color';

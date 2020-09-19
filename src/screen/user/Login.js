@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Alert, TextInput, ImageBackground, View, Dimensions, ActivityIndicator, Image, StyleSheet , AsyncStorage} from 'react-native';
 import { Container, Content, Text, Icon, Button, Left, } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import {
   BarIndicator,
 } from 'react-native-indicators';
@@ -332,10 +331,6 @@ export default class Login extends Component {
   }
 
 
-
-  itemClicked(item) {
-    Actions.product();
-  }
 
 
 

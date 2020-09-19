@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, AsyncStorage, Image, Dimensions, ImageBackground } from 'react-native';
 import { Container, Content, View, Text, Icon, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 
 
 import color from '../../component/color';
@@ -18,17 +17,14 @@ export default class EngagementStart extends Component {
     }
 
     async componentDidMount() {
-        if (data !== null) {
-            Actions.pop();
-            Actions.login({ email: "jesus" });
-        }
+       
     }
 
     render() {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={() =>this.props.navigation.goBack() }>
                     <Icon name="ios-arrow-back" size={30} style={{ fontSize: 30 }} />
                 </Button>
             </Left>
@@ -66,7 +62,7 @@ export default class EngagementStart extends Component {
                     <View style={styles.buttonviewtwo}>
                         <View style={styles.buttonstwo}> 
                         <Text style={{ fontSize: 14, textAlign:'center', marginTop: 10, marginBottom: 30, textAlign: 'left', fontWeight: '400', color: "#ffffff", }}>Browse to see all event available</Text>
-                            <Button  onPress={() => Actions.category()} category style={ styles.enablebutton} block iconLeft >
+                            <Button  onPress={() =>  this.props.navigation.navigate('category')} category style={ styles.enablebutton} block iconLeft >
                                 <Text style={{ color: color.secondary_color }}>BROWSE EVENTS</Text>
                             </Button>
                            
