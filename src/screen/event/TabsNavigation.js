@@ -22,7 +22,6 @@ class AppNavigator extends Component {
   render() {
 
     return (
-      <NavigationContainer>
       <Tab.Navigator
 
         screenOptions={({ route }) => ({
@@ -119,7 +118,6 @@ class AppNavigator extends Component {
 
 
       </Tab.Navigator>
-       </NavigationContainer>
 
     );
   }

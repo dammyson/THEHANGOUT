@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, AsyncStorage, Image, Dimensions, StatusBar } from 'react-native';
 import { Container, Content, View, Text, Icon, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 const URL = require("../../component/server");
 import _ from "lodash";
 import Navbar from '../../component/Navbar';
@@ -95,19 +94,19 @@ export default class Category extends Component {
     }
 
 
-    goHome(){
+    goHome() {
         AsyncStorage.getItem('role').then((value) => {
           if (value == '') { } else {
-             if(value == 'Customer'){
-              Actions.home({type: 'replace'});
-             }else{
-              Actions.merchant_home({type: 'replace'});
-             }
+            if (value == 'Customer') {
+              this.props.navigation.navigate('home');
+            } else {
+              this.props.navigation.navigate('merchant_home');
+            }
           }
-  
-         
-      })
-       } 
+    
+    
+        })
+      }
 
 
     getEventsRequest() {
@@ -148,6 +147,7 @@ export default class Category extends Component {
   
 
     render() {
+        const { state, goBack } = this.props.navigation;
         if (this.state.loading) {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
@@ -162,7 +162,7 @@ export default class Category extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={() => goBack(null)}>
                     <Icon name="ios-arrow-back" size={30} style={{ fontSize: 30 }} />
                 </Button>
             </Left>
@@ -209,7 +209,7 @@ export default class Category extends Component {
                             <Button  style={ this.state.multipleSelectedData.length > 2 ? styles.enablebutton : styles.disablebutton } block iconLeft  onPress={()=> this.state.multipleSelectedData.length > 2 ? this.addCategotyRequest() : null } >
                                 <Text style={{ color: color.secondary_color }}>Done</Text>
                             </Button>
-                            <Button  onPress={()=> Actions.home()} style={{ backgroundColor: 'transparent', width: 200 }} block iconLeft>
+                            <Button  onPress={()=> this.goHome()} style={{ backgroundColor: 'transparent', width: 200 }} block iconLeft>
                                 <Text style={{ color: color.white }}>Skip</Text>
                             </Button>
                         </View>

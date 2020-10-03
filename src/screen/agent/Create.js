@@ -3,7 +3,6 @@ import { Alert, Dimensions, TouchableOpacity, StatusBar,  TextInput, AsyncStorag
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 
 import { Card, Icon, SocialIcon } from 'react-native-elements'
-import { Actions } from 'react-native-router-flux';
 const URL = require("../../component/server");
 
 import color from '../../component/color';
@@ -196,7 +195,7 @@ pluck(arr, key) {
 
 
                         <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
-                            <TouchableOpacity onPress={() => [this.setState({done:false}), Actions.pop()]} style={styles.enablebutton} block iconLeft>
+                            <TouchableOpacity onPress={() => [this.setState({done:false}), this.props.navigation.goBack()]} style={styles.enablebutton} block iconLeft>
                                 <Text style={{ color: '#fff', marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
                             </TouchableOpacity>
                         </View>
@@ -216,7 +215,7 @@ pluck(arr, key) {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
+        <Button transparent onPress={() => this.props.navigation.goBack()}>
           <Icon
             active
             name="close"

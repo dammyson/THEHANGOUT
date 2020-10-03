@@ -11,9 +11,9 @@ export default class Splash extends Component {
 
   async componentDidMount() {
     setTimeout(() => {
-      this.initPage();
-      //Actions.home({type: 'replace'});
-      //Actions.merchant_home();
+      //this.initPage();
+     this.props.navigation.navigate('home');
+     
     }, 3000);
   }
 
@@ -23,9 +23,9 @@ export default class Splash extends Component {
       if (value == 'true') {
         this.goHome()
       } else if (value == null) {
-        Actions.intro({ type: 'replace' });
+        this.props.navigation.navigate('intro');
       } else {
-        Actions.intro({ type: 'replace' });
+        this.props.navigation.navigate('intro');
       }
 
     })
@@ -36,9 +36,9 @@ export default class Splash extends Component {
     AsyncStorage.getItem('role').then((value) => {
       if (value == '') { } else {
         if (value == 'Customer') {
-          Actions.home({ type: 'replace' });
+          this.props.navigation.navigate('home');
         } else {
-          Actions.merchant_home({ type: 'replace' });
+          this.props.navigation.navigate('merchant_home');
         }
       }
 

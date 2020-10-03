@@ -4,7 +4,6 @@ import { Container, Content, View, Text, Button, Left, Right, Body, Title, List,
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import RNPickerSelect from 'react-native-picker-select';
-import { Actions } from 'react-native-router-flux';
 const URL = require("../../component/server");
 import color from '../../component/color';
 const { width: screenWidth } = Dimensions.get('window')
@@ -69,7 +68,8 @@ export default class ReserveTable extends Component {
 
 
     componentDidMount() {
-        this.setState({ resturant: this.props.resturant });
+        const { resturant } = this.props.route.params;
+        this.setState({ resturant: resturant });
         console.warn(this.props.resturant)
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
@@ -111,7 +111,6 @@ export default class ReserveTable extends Component {
                 console.warn("kaikkk", res);
                 if (res.status) {
                     this.setState({ loading: false, done: true })
-                    // Actions.restaurants({ type: 'replace' });
                 } else {
                     Alert.alert('Operation failed', res.message, [{ text: 'Okay' }])
                     this.setState({ loading: false })
@@ -139,7 +138,7 @@ export default class ReserveTable extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={() => this.props.navigation.goBack()}>
                     <Icon
                         active
                         name="left"
@@ -191,7 +190,7 @@ export default class ReserveTable extends Component {
                                 </View>
 
                                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
-                                    <TouchableOpacity onPress={() => Actions.table({ type: 'replace' })} style={styles.enablebutton} block iconLeft>
+                                    <TouchableOpacity onPress={() => this.props.navigation.replace('table')} style={styles.enablebutton} block iconLeft>
                                         <Text style={{ color: '#fff', marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
                                     </TouchableOpacity>
                                 </View>

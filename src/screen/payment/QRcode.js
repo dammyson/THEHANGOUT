@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import { Alert, AsyncStorage, TextInput, Dimensions, StyleSheet,StatusBar, TouchableOpacity } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { withNavigationFocus } from 'react-navigation';
 import { Avatar, Badge, Card, Icon, SocialIcon } from 'react-native-elements';
@@ -154,7 +153,7 @@ this.setState({ visible: false, })
       <View style={{ flex: 1, alignContent: 'center' , backgroundColor:'black', width: Dimensions.get('window').width,
         height: Dimensions.get('window').height , }}>
         <View style={styles.arrowContainer}>
-        <Button onPress={() => Actions.pop()} transparent>
+        <Button onPress={() => this.props.navigation.goBack()} transparent>
         <Icon
                             name="ios-arrow-back"
                             size={30}
@@ -243,11 +242,11 @@ this.setState({ visible: false, })
        <View style={{ alignItems: 'center', justifyContent:'center', marginTop: 20, marginBottom: 20 , }}>
        {this.state.status ?
 
-<TouchableOpacity  onPress={()=>   Actions.transaction({type: 'replace'})} style={styles.enablebutton } block iconLeft>
+<TouchableOpacity  onPress={()=>  this.props.navigation.replace('transaction')} style={styles.enablebutton } block iconLeft>
 <Text style={{ color: color.secondary_color, marginTop: 15, marginBottom: 15 ,fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>VIEW MY TRANSACTIONS</Text>
 </TouchableOpacity>
 :
-<TouchableOpacity  onPress={()=>   Actions.pop()} style={styles.enablebutton } block iconLeft>
+<TouchableOpacity  onPress={()=> this.props.navigation.goBack()} style={styles.enablebutton } block iconLeft>
 <Text style={{ color: color.secondary_color, marginTop: 15, marginBottom: 15 ,fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Try again</Text>
 </TouchableOpacity>
 }

@@ -12,7 +12,7 @@ export default class step1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      titleText: '',
+      titleText: 'hhhh',
       data: '',
       count:140,
 
@@ -26,20 +26,16 @@ export default class step1 extends Component {
       Alert.alert('Validation failed', "All fields are requried", [{ text: 'Okay' }])
       return
     }
-    saveState({ title: this.state.titleText });
-    next();
+    this.props.navigation.navigate('Step2', {data_moving: {title: this.state.titleText}});
   };
 
   goBack() {
-    const { back } = this.props;
-    // Go to previous step
-    back();
+    const {  goBack } = this.props.navigation; 
+    goBack(null)
   }
 
   componentDidMount() {
-    const { getState } = this.props;
-    const state = getState();
-    this.setState({ data: state })
+    
    
   }
 
@@ -53,7 +49,7 @@ export default class step1 extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
+        <Button transparent onPress={()=>this.goBack()}>
           <Icon
             active
             name="close"
@@ -66,7 +62,7 @@ export default class step1 extends Component {
 
 
     return (
-      <Container style={{ backgroundColor: 'transparent' }}>
+      <Container style={{ backgroundColor:  "#010113" }}>
         <Navbar left={left} title="Create New Event" bg='#101023' />
         <Content>
           <View style={styles.container}>
@@ -80,6 +76,7 @@ export default class step1 extends Component {
               <TextInput
                 placeholder="Enter Event Name"
                 placeholderTextColor='#8d96a6'
+                defaultValue={this.state.titleText}
                 returnKeyType="next"
                 onSubmitEditing={() => this.nextStep()}
                 keyboardType='default'

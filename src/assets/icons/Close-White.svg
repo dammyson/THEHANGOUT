@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="62" height="62" viewBox="0 0 62 62">
+  <defs>
+    <ellipse id="ellipse-1" cx="16" cy="16" rx="16" ry="16"/>
+    <filter id="filter-2" width="200%" height="200%" x="-50%" y="-50%" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="3" in="SourceAlpha" result="shadow-1-feOffset-shadow"/>
+      <feGaussianBlur in="shadow-1-feOffset-shadow" result="shadow-1-feGaussianBlur-shadow" stdDeviation="9.036"/>
+      <feColorMatrix in="shadow-1-feGaussianBlur-shadow" result="shadow-1-feColorMatrix-shadow" type="matrix" values="0 0 0 0 0.10196078431372549  0 0 0 0 0.23529411764705882  0 0 0 0 0.26666666666666666  0 0 0 0.1591182255244755 0"/>
+    </filter>
+    <path id="path-3" fill-rule="evenodd" d="M7.41754837 6.65809208l3.77659605-4.00149804c.44457713-.44458679.44457713-1.16618534 0-1.6119121-.44571708-.44458679-1.16729997-.44458679-1.6118771 0L5.80567126 5.04617998 2.11502424 1.04468194c-.44457714-.44458679-1.16616003-.44458679-1.6118771 0-.44571708.44572676-.44571708 1.16732531 0 1.6119121l3.69064702 4.00149804-3.69064702 3.8097439c-.44571708.44458678-.44571708 1.16618534 0 1.6119121.22228856.2222934.51411356.33401007.80593855.33401007.29182499 0 .58364998-.11171668.80593855-.33401007l3.69064703-3.8097439 3.77659604 3.8097439c.22228857.2222934.51411356.33401007.80593855.33401007.291825 0 .58251005-.11171668.80593856-.33401007.44457713-.44572676.44457713-1.16732532 0-1.6119121l-3.77659605-3.8097439z"/>
+    <mask id="mask-4" maskContentUnits="userSpaceOnUse" maskUnits="userSpaceOnUse">
+      <rect width="62" height="62" x="0" y="0" fill="black"/>
+      <use fill="white" xlink:href="#path-3"/>
+    </mask>
+  </defs>
+  <g transform="translate(15 12)">
+    <g>
+      <use fill="black" stroke="black" stroke-opacity="0" stroke-width="0" filter="url(#filter-2)" xlink:href="#ellipse-1"/>
+      <use fill="rgb(1,1,19)" xlink:href="#ellipse-1"/>
+    </g>
+    <g transform="translate(10.6517817 9.9375)">
+      <use fill="rgb(255,255,255)" xlink:href="#path-3"/>
+      <g mask="url(#mask-4)">
+        <rect width="84" height="84" x="0" y="0" fill="rgb(255,255,255)" rx="0" ry="0" transform="translate(-34.72949726 -34.69008741)"/>
+      </g>
+    </g>
+  </g>
+</svg>

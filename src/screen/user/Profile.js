@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, AsyncStorage, Image, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import {
@@ -72,7 +71,7 @@ export default class Profile extends Component {
            AsyncStorage.removeItem('bal');
            AsyncStorage.removeItem('user');
            setTimeout(() => {
-            Actions.intro({type: 'replace'});
+            this.props.navigation.replace('intro')
                 }, 2000);
           
             return true;
@@ -194,7 +193,7 @@ export default class Profile extends Component {
 
 
                             <View>
-                                <TouchableOpacity  onPress={() => Actions.transaction()} style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, marginTop:20 }}>
+                                <TouchableOpacity  onPress={() => this.props.navigation.navigate('transaction')} style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, marginTop:20 }}>
                                     <Avatar
                                         rounded
                                         size="small"

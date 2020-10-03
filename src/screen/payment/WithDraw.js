@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, StatusBar, FlatList, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, colors, } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 const URL = require("../../component/server");
 import Modal, { SlideAnimation, ModalContent } from 'react-native-modals';
@@ -143,7 +142,7 @@ export default class WithDraw extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
+        <Button transparent onPress={() => this.props.navigation.goBack()}>
           <Icon
             active
             name="ios-arrow-back"
@@ -156,7 +155,7 @@ export default class WithDraw extends Component {
 
     var right = (
       <Right style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
+        <Button transparent >
           <Icon
             active
             name="md-more"
@@ -210,7 +209,7 @@ export default class WithDraw extends Component {
 
 
                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
-                  <TouchableOpacity onPress={() => Actions.transaction({type: 'replace'})} style={styles.enablebutton} block iconLeft>
+                  <TouchableOpacity onPress={() => this.props.navigation.replace('transaction')} style={styles.enablebutton} block iconLeft>
                     <Text style={{ color: color.secondary_color, marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
                   </TouchableOpacity>
                 </View>

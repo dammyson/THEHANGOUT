@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, FlatList, ScrollView, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 const URL = require("../../component/server");
 
@@ -311,7 +310,7 @@ export default class ListTickets extends Component {
         let items = [];
         for (let i = 0; i < tickets.length; i++) {
             items.push(
-                <TouchableOpacity onPress={() => Actions.detailT({ id: tickets[i].eventId })} style={styles.oneRow}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('detailT', { id: tickets[i].eventId })} style={styles.oneRow}>
                     <View>
                         <View style={styles.dot} />
                     </View>

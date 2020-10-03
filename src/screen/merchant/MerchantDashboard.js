@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { TextInput, StyleSheet, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, Image, ScrollView } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
@@ -124,7 +123,7 @@ export default class MerchantDashboard extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.profile()}>
+                <Button transparent onPress={()=> this.props.navigation.navigate('profile') }>
                     <Avatar
                         rounded
                         source={{
@@ -164,7 +163,7 @@ export default class MerchantDashboard extends Component {
 
                                     </View>
                                     <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
-                                        <TouchableOpacity onPress={() => Actions.withdraw()} style={{ backgroundColor: '#139F2A', alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
+                                        <TouchableOpacity onPress={() =>  this.props.navigation.navigate('withdraw')} style={{ backgroundColor: '#139F2A', alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
                                             <Text style={{ color: "#fff", marginTop: 7, marginBottom: 7, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Withdraw Funds</Text>
                                         </TouchableOpacity>
                                     </View>
@@ -173,7 +172,7 @@ export default class MerchantDashboard extends Component {
                                 <View style={{ backgroundColor: '#FFF', marginTop: 10, marginLeft: 20, marginRight: 20, opacity: 0.77, height: 0.6 }}></View>
                                 <View style={{ marginLeft: 10, marginRight: 7, marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
                                     <Text style={styles.titleText}>RUNNING SERVICES</Text>
-                                    <TouchableOpacity onPress={() => Actions.services()} style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('services')} style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
                                         <Text style={{ fontSize: 12, color: '#188EFF', }}>View All </Text>
                                         <Icon
                                             active
@@ -243,7 +242,7 @@ export default class MerchantDashboard extends Component {
                                 <View style={{ flexDirection: 'row', marginRight: 20, marginLeft: 20, }}>
                                     <View style={styles.rowchild}>
 
-                                        <TouchableOpacity onPress={() => [this.setState({ view_create: false }), Actions.createevent()]} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
+                                        <TouchableOpacity onPress={() => [this.setState({ view_create: false }), this.props.navigation.navigate('createevent')]} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
 
                                             <Icon
                                                 active
@@ -263,7 +262,7 @@ export default class MerchantDashboard extends Component {
 
                                     <View style={styles.rowchild}>
 
-                                        <TouchableOpacity onPress={() => [this.setState({ view_create: false }), Actions.createRestaurant()]} style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
+                                        <TouchableOpacity onPress={() => [this.setState({ view_create: false }), this.props.navigation.navigate('createRestaurant')]} style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
 
                                             <Icon
                                                 active
@@ -293,9 +292,9 @@ export default class MerchantDashboard extends Component {
     }
 getDetails(data){
     if(data.type =='EVENTS'){
-        Actions.service_details({ id: data.id })
+        this.props.navigation.navigate('service_details', { id: data.id })
     }else  if(data.type =='RESTURANTS'){
-        Actions.res_service_details({ id: data.id })
+        this.props.navigation.navigate('res_service_details', { id: data.id })
     }
 }
     renderItem(tickets) {

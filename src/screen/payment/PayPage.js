@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Alert, Dimensions, TouchableOpacity, ImageBackground, StyleSheet, AsyncStorage, StatusBar, ScrollView, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 const URL = require("../../component/server");
 import RNPaystack from 'react-native-paystack';
@@ -70,7 +69,7 @@ export default class PayPage extends Component {
             console.warn(res);
             if (res.status) {
                 this.setState({ loading: false })
-                Actions.successT();
+                this.props.navigation.navigate('successT')
 
             } else {
                 Alert.alert('Process failed', res.message, [{ text: 'Okay' }])
@@ -120,7 +119,7 @@ _onFocus = (field) => console.log("focusing", field);
    
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
+        <Button transparent onPress={() =>this.props.navigation.goBack()}>
           <Icon
             active
             name="ios-arrow-back"
@@ -133,7 +132,7 @@ _onFocus = (field) => console.log("focusing", field);
 
     var right = (
       <Right style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
+        <Button transparent >
           <Icon
             active
             name="md-more"

@@ -22,7 +22,7 @@ export default class step5 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
+      loading: false,
       show_add_on: false,
       add_ons: [],
       cat_list: [],
@@ -45,10 +45,9 @@ export default class step5 extends Component {
 
 
   goBack() {
-    const { back } = this.props;
-    back();
+    const { goBack } = this.props.navigation;
+    goBack(null)
   }
-
 
 
   countChange(text) {
@@ -61,12 +60,12 @@ export default class step5 extends Component {
       user: JSON.parse(await getData()).data
     })
 
-    const { getState } = this.props;
-    const state = getState();
+    const { data_moving } = this.props.route.params;
+    console.warn(data_moving)
 
     this.setState({
-      name: state.menuName,
-      description: state.menuDescriptionText,
+      name: data_moving.name,
+      description: data_moving.description,
 
     })
     this.setState({
@@ -229,7 +228,7 @@ export default class step5 extends Component {
 
     const { data, name, description, price, max, min, add_ons, delivery, img_url, cat, image, restaurant } = this.state
 
-    if (name == "" || description == '' || price == '' || max == '' || min == '' || delivery == '' || add_ons.length < 1) {
+    if (name == "" || description == '' || price == '' || max == '' || min == '' || delivery == '') {
       Alert.alert('Validation failed', 'field(s) cannot be empty', [{ text: 'Okay' }])
       return;
     }
@@ -248,8 +247,12 @@ export default class step5 extends Component {
         return;
       }
     }
+    if (add_ons.length > 1) {
+      var add_ons_id = this.pluck(add_ons, 'id')
+    } else {
 
-    var add_ons_id = this.pluck(add_ons, 'id')
+    }
+
 
     var request_body = JSON.stringify({
       Name: name,
@@ -285,7 +288,7 @@ export default class step5 extends Component {
             buttonText: 'Dismiss',
             duration: 3000
           });
-          Actions.res_service_details({ type: 'replace', id: restaurant.id })
+          this.props.navigation.replace('res_service_details', { id: restaurant.id })
         } else {
           Alert.alert('Operation failed', res.message, [{ text: 'Okay' }])
           this.setState({ loading: false })
@@ -337,7 +340,7 @@ export default class step5 extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={this.props.back}>
+        <Button transparent onPress={() => this.goBack()}>
           <Icon
             active
             name="ios-arrow-back"
@@ -348,8 +351,8 @@ export default class step5 extends Component {
       </Left>
     );
     return (
-      <Container style={{ backgroundColor: 'transparent' }}>
-        <Navbar left={left} title='Menu' bg='#101023' />
+      <Container style={{ backgroundColor: "#010113" }}>
+        <Navbar left={left} title={this.state.name} bg='#101023' />
         <Content>
           <View style={styles.container}>
             <View >
@@ -414,7 +417,7 @@ export default class step5 extends Component {
                     autoCapitalize="none"
                     autoCorrect={false}
                     style={styles.menu}
-                    value={this.state.name}
+                    defaultValue={this.state.name}
                     onChangeText={text => this.setState({ name: text })}
                   />
                 </View>
@@ -437,7 +440,7 @@ export default class step5 extends Component {
                     autoCapitalize="none"
                     autoCorrect={false}
                     style={styles.menu}
-                    value={this.state.description}
+                    defaultValue={this.state.description}
                     onChangeText={text => this.setState({ description: text })}
                   />
                 </View>

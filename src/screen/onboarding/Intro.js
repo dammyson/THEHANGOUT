@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, View, Dimensions, TouchableOpacity, ImageBackground } from 'react-native';
 import { Container, Content, Text, Icon, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import { Icon as Fil } from 'react-native-elements'
 import {
     BarIndicator,
@@ -36,10 +35,7 @@ export default class Intro extends Component {
 
 
     async componentDidMount() {
-        if (data !== null) {
-            Actions.pop();
-            Actions.sorting({ email: "jesus" });
-        }
+       
     }
 
     _renderItem = ({ item }) => {
@@ -105,7 +101,7 @@ export default class Intro extends Component {
 
                             <View style={styles.bottom}>
 
-                                <Button onPress={() => Actions.reg()} style={styles.buttonContainer} block iconLeft>
+                                <Button onPress={() => this.props.navigation.navigate('reg')} style={styles.buttonContainer} block iconLeft>
                                     <Text style={{ color: '#000000', fontWeight: '600', borderRadius: 3, }}>GET STARTED</Text>
                                 </Button>
                                 <View
@@ -114,7 +110,7 @@ export default class Intro extends Component {
                                     <Text style={{ color: color.primary_color, fontWeight: '600', fontSize: 20 }}>Or   </Text>
                                 </View>
 
-                                <TouchableOpacity onPress={() => Actions.login()}
+                                <TouchableOpacity onPress={() =>  this.props.navigation.navigate('login')}
                                     style={styles.loginButtonContainer}
                                 >
                                     <Text style={{ color: color.primary_color, fontWeight: '300', fontFamily: 'NunitoSans-Bold', fontSize: 17 }}>LOGIN  </Text>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, TextInput, AsyncStorage,ImageBackground, View, Dimensions, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Container, Content, Text, Icon, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import {
   BarIndicator,
 } from 'react-native-indicators';
@@ -147,7 +146,7 @@ export default class Register extends Component {
           AsyncStorage.setItem('social', JSON.stringify(false));
           AsyncStorage.setItem('role', res.user.role);
           AsyncStorage.setItem('token', res.token);
-          Actions.category();
+          this.props.navigation.navigate('category')
         } else {
           Alert.alert('Login failed', res.message, [{ text: 'Okay' }])
           this.setState({ loading: false })
@@ -195,7 +194,7 @@ export default class Register extends Component {
           AsyncStorage.setItem('social', JSON.stringify(false));
           AsyncStorage.setItem('role', res.user.role);
           AsyncStorage.setItem('token', res.token);
-          Actions.category();
+          this.props.navigation.navigate('category');
         } else {
           Alert.alert('Registration failed', res.message, [{ text: 'Okay' }])
           this.setState({ loading: false })
@@ -217,7 +216,7 @@ export default class Register extends Component {
   render() {
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
+        <Button transparent onPress={() => this.props.navigation.goBack()}>
           <Icon name='ios-arrow-back' size={30} style={{ color: '#fdfdfd' }} />
         </Button>
       </Left>

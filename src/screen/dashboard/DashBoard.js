@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { TextInput, StyleSheet, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, ImageBackground } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
@@ -10,11 +9,14 @@ import {
     BarIndicator,
 } from 'react-native-indicators';
 
+import SvgUri from 'react-native-svg-uri';
+
 import color from '../../component/color';
 const { width: screenWidth } = Dimensions.get('window')
 import Navbar from '../../component/Navbar';
 const URL = require("../../component/server");
 import Moment from 'moment';
+import TestSvgUri from '../../component/views/TestSvgUri';
 
 export default class Dashboard extends Component {
 
@@ -25,7 +27,7 @@ export default class Dashboard extends Component {
         this.likeUnlikeRequest = this.likeUnlikeRequest.bind(this);
 
         this.state = {
-            loading: true,
+          // loading: true,
             dataone: [
             ],
             datatwo: [
@@ -34,7 +36,7 @@ export default class Dashboard extends Component {
             nodata: false,
             slider1ActiveSlide: 0,
             selected: null, 
-            user:null,
+            user:{profilePicture:''},
             searchText:''
         };
     }
@@ -168,7 +170,7 @@ export default class Dashboard extends Component {
     _renderItem = ({ item, index }, parallaxProps)  =>{
         Moment.locale('en');
         return (
-            <TouchableOpacity onPress={() => Actions.eventD({ id: item.id })} >
+            <TouchableOpacity onPress={() =>   this.props.navigation.naviagete('eventD', { id: item.id })} >
                 <ImageBackground
                     opacity={0.5}
                     style={{ borderRadius: 12 }}
@@ -264,7 +266,7 @@ export default class Dashboard extends Component {
         const { slider1ActiveSlide } = this.state;
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.profile()}>
+                <Button transparent onPress={() =>  this.props.navigation.naviagete('profile')}>
                     <Avatar
                         rounded
                         source={{
@@ -342,15 +344,16 @@ export default class Dashboard extends Component {
                             <View style={styles.row}>
                                 <View style={styles.rowchild}>
 
-                                    <TouchableOpacity onPress={() => Actions.events()} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
 
-                                        <Icon
+                                    <TouchableOpacity onPress={() =>  this.props.navigation.navigate('events')} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
+                                    <Icon
                                             active
                                             name="calendar-clock"
                                             type='material-community'
                                             color='#f9ba3f'
 
                                         />
+
                                     </TouchableOpacity>
 
                                     <Text style={styles.catName}>Events</Text>
@@ -385,7 +388,7 @@ export default class Dashboard extends Component {
 
                                     <Text style={styles.catName}>Clubs & lounge</Text>
 
-                                    <TouchableOpacity onPress={()=> Actions.restaurants()} style={[styles.circle, { backgroundColor: '#ffcccd', }]}>
+                                    <TouchableOpacity onPress={() =>  this.props.navigation.navigate('restaurants')} style={[styles.circle, { backgroundColor: '#ffcccd', }]}>
 
                                         <Icon
                                             active

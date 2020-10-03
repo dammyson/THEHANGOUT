@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, ActivityIndicator, NativeModules, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Toast, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 import DatePicker from 'react-native-datepicker'
 const URL = require("../../component/server");
@@ -64,7 +63,10 @@ export default class PaidTicket extends Component {
 
 
     }
-
+    goBack() {
+        const {  goBack } = this.props.navigation; 
+        goBack(null)
+    }
     processAddTicket() {
 
         const { data, form_data } = this.state
@@ -145,7 +147,7 @@ export default class PaidTicket extends Component {
                     });
                     setTimeout(() => {
                         this.setState({ loading: false })
-                        Actions.pop();
+                        this.goBack()
                     }, 2000);
 
                 } else {
@@ -268,7 +270,7 @@ export default class PaidTicket extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={() => this.goBack()}>
                     <Icon
                         active
                         name="ios-arrow-back"

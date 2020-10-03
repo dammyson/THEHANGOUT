@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, StatusBar, ScrollView, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 const URL = require("../../component/server");
 import RNPaystack from 'react-native-paystack';
@@ -150,7 +149,7 @@ export default class FundWallet extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
+        <Button transparent onPress={() => this.props.navigation.goBack() }>
           <Icon
             active
             name="ios-arrow-back"
@@ -163,7 +162,7 @@ export default class FundWallet extends Component {
 
     var right = (
       <Right style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
+        <Button transparent>
           <Icon
             active
             name="md-more"

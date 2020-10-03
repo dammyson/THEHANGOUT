@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { TextInput, StyleSheet, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, ImageBackground, ScrollView } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
@@ -39,9 +38,15 @@ export default class RestaurantDetails extends Component {
 
 
 
+    goBack() {
+        const {  goBack } = this.props.navigation; 
+        goBack(null)
+      }
 
    async componentDidMount() {
-        this.setState({ id: this.props.id });
+    const { id  } = this.props.route.params;
+        this.setState({ id: id });
+
         AsyncStorage.removeItem('currentRES');
         this.setState({
             data: JSON.parse(await getData()),
@@ -104,7 +109,7 @@ createMenu(){
         cat_id: details.categoriesList
      }
     AsyncStorage.setItem('currentRES', JSON.stringify(data));
-    Actions.createMenu()
+    this.props.navigation.navigate('createMenu')
 }
 
 
@@ -127,7 +132,7 @@ createMenu(){
          const { details } = this.state
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={()=>this.goBack()}>
                     <Icon
                         active
                         name="ios-arrow-back"
@@ -164,7 +169,7 @@ createMenu(){
 
                                 </View>
                                 <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
-                                    <TouchableOpacity onPress={() => Actions.withdraw()} style={{ backgroundColor: '#139F2A', alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('withdraw')} style={{ backgroundColor: '#139F2A', alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
                                         <Text style={{ color: "#fff", marginTop: 7, marginBottom: 7, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Withdraw Funds</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -215,7 +220,7 @@ createMenu(){
 
                     </View>
                 </Content>
-                <View style={styles.fab} onPress={() => Actions.createRestaurant()}>
+                <View style={styles.fab}>
                     <View style={{ flexDirection: 'row', flex:1 }}>
                         <TouchableOpacity onPress={() => this.createMenu()}  style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
                             <Icon

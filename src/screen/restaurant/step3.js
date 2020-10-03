@@ -34,27 +34,24 @@ export default class step3 extends Component {
 
 
   nextStep = () => {
-    const { next, saveState } = this.props;
-    // Save state for use in other steps
+    const { startdate, enddate, data } = this.state;
 
-    saveState({
-      startdate: Moment(this.state.startdate).format('LT'),
-      enddate: Moment(this.state.enddate).format('LT')
-    });
-    // Go to next step
-    next();
+    const data_moving = data;
+    data_moving['startdate'] = Moment(startdate).format('LT')
+    data_moving['enddate'] = Moment(enddate).format('LT')
+    this.props.navigation.navigate('Rest4', {data_moving: data_moving});
   };
 
   goBack() {
-    const { back } = this.props;
-    // Go to previous step
-    back();
+    const {  goBack } = this.props.navigation; 
+    goBack(null)
   }
 
   componentDidMount() {
-    const { getState } = this.props;
-    const state = getState();
-    this.setState({ data: state })
+    const { data_moving } = this.props.route.params;
+    console.warn(data_moving)
+    this.setState({ data: data_moving})
+    
     this.setState({
       today: new Date(),
     });
@@ -72,7 +69,7 @@ export default class step3 extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={this.props.back}>
+        <Button transparent onPress={() => this.goBack()}>
           <Icon
             active
             name="ios-arrow-back"
@@ -85,7 +82,7 @@ export default class step3 extends Component {
 
 
     return (
-      <Container style={{ backgroundColor: 'transparent' }}>
+      <Container style={{ backgroundColor:  "#010113" }}>
         <Navbar left={left} title={this.state.data.title} bg='#101023' />
         <Content>
           <View style={styles.container}>

@@ -30,8 +30,8 @@ export default class step4 extends Component {
   }
 
   nextStep = () => {
-    const { next, saveState } = this.props;
-    const { dataone, multipleSelectedData } = this.state
+  
+    const { dataone,data, multipleSelectedData } = this.state
     var serverarray = [];
 
     for (let i = 0; i < multipleSelectedData.length; i++) {
@@ -46,22 +46,21 @@ export default class step4 extends Component {
       Alert.alert('Validation failed', "Select atleast a category !", [{ text: 'Okay' }])
       return
     }
-    saveState({ category: serverarray });
 
-    // Go to next step
-    next();
+    const data_moving = data;
+    data_moving['category'] = serverarray
+    this.props.navigation.navigate('Rest6', {data_moving: data_moving});
   };
 
   goBack() {
-    const { back } = this.props;
-    // Go to previous step
-    back();
+    const {  goBack } = this.props.navigation; 
+    goBack(null)
   }
 
   componentDidMount() {
-    const { getState } = this.props;
-    const state = getState();
-    this.setState({ data: state })
+    const { data_moving } = this.props.route.params;
+    console.warn(data_moving)
+    this.setState({ data: data_moving})
     AsyncStorage.getItem('data').then((value) => {
       if (value == '') { } else {
         this.setState({ udata: JSON.parse(value) })
@@ -118,7 +117,7 @@ export default class step4 extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={this.props.back}>
+        <Button transparent onPress={()=>this.goBack()}>
           <Icon
             active
             name="ios-arrow-back"
@@ -141,7 +140,7 @@ export default class step4 extends Component {
     }
 
     return (
-      <Container style={{ backgroundColor: 'transparent' }}>
+      <Container style={{ backgroundColor:  "#010113" }}>
         <Navbar left={left} title={this.state.data.title} bg='#101023' />
         <Content>
           <View style={styles.container}>

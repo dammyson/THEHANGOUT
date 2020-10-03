@@ -36,7 +36,8 @@ export default class Details extends Component {
 
 
     componentWillMount() {
-        this.setState({ id: this.props.id });
+        const { id  } = this.props.route.params;
+        this.setState({ id: id });
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })
@@ -287,7 +288,6 @@ export default class Details extends Component {
                         <Text style={[this.state.activeHead == 1 ? styles.toggleHeadText : styles.toggleHeadTextInactive]}> RESTAURANT INFO </Text>
                     </TouchableOpacity>
                 </View>
-                <View style={{ flex: 1 }}></View>
             </View>
         );
     }
@@ -421,13 +421,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         borderBottomWidth: 3,
-        borderBottomColor: color.red
+        borderBottomColor: color.red,
+        flex: 1,
     },
     inActiveHead: {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
         borderRadius: 3,
+        flex: 1,
 
     },
     toggleHeadText: {

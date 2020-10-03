@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { TextInput, StyleSheet, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, ImageBackground, ScrollView } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
@@ -115,7 +114,7 @@ export default class Services extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.profile()}>
+                <Button transparent onPress={() => this.props.navigation.navigate('profile')}>
                     <Avatar
                         rounded
                         source={{
@@ -166,9 +165,9 @@ export default class Services extends Component {
     }
     getDetails(data){
         if(data.type =='EVENTS'){
-            Actions.service_details({ id: data.id })
+            this.props.navigation.navigate('service_details',{ id: data.id })
         }else  if(data.type =='RESTURANTS'){
-            Actions.res_service_details({ id: data.id })
+            this.props.navigation.navigate('res_service_details', { id: data.id })
         }
     }
     renderItem(tickets) {

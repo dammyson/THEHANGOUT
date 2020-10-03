@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { TextInput, StyleSheet, ScrollView, TouchableOpacity, Image, AsyncStorage, Dimensions, StatusBar } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Toast, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
@@ -131,7 +130,7 @@ export default class Search extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={() => this.props.navigation.goBack()}>
                     <Avatar
                         rounded
                         source={{
@@ -200,7 +199,7 @@ export default class Search extends Component {
         let items = [];
         for (let i = 0; i < tickets.length; i++) {
             items.push(
-                <TouchableOpacity onPress={() => Actions.restaurantD({id: tickets[i].id})} style={styles.oneRow}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('restaurantD',{id: tickets[i].id})} style={styles.oneRow}>
                     <View style={{ marginRight: 20 , marginLeft:20}}>
             <Text style={styles.title}> {tickets[i].name}     {tickets[i].id}</Text>
                         <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 12, fontWeight: '100', marginRight: 40, opacity: 0.59 }}> {tickets[i].description} </Text>

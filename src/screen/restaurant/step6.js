@@ -4,7 +4,6 @@ import { Container, Content, View, Text, Button, Left, Right, Body, Toast, List,
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
-import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 
 import {
@@ -44,17 +43,11 @@ export default class step6 extends Component {
     }
 
 
-
     goBack() {
-        const { back } = this.props;
-        back();
-    }
+        const {  goBack } = this.props.navigation; 
+        goBack(null)
+      }
 
-
-
-    countChange(text) {
-        this.setState({ count: 140 - text.length })
-    }
 
     componentWillMount() {
         AsyncStorage.getItem('data').then((value) => {
@@ -65,16 +58,16 @@ export default class step6 extends Component {
 
         })
 
-        const { getState } = this.props;
-        const state = getState();
+        const { data_moving } = this.props.route.params;
+        console.warn(data_moving)
 
         this.setState({
-            name: state.title,
-            description: state.description,
-            startdate: state.startdate,
-            enddate: state.enddate,
-            venue: state.venue,
-            cat: state.category,
+            name: data_moving.title,
+            description: data_moving.description,
+            startdate: data_moving.startdate,
+            enddate: data_moving.enddate,
+            venue: data_moving.venue,
+            cat: data_moving.category,
 
         })
     }
@@ -235,7 +228,8 @@ export default class step6 extends Component {
                         buttonText: 'Dismiss',
                         duration: 3000
                     });
-                    Actions.merchant_home({ type: 'replace' });
+                   
+                    this.props.navigation.replace('merchant_home')
                 } else {
                     Alert.alert('Operation failed', res.message, [{ text: 'Okay' }])
                     this.setState({ loading: false })
@@ -265,7 +259,7 @@ export default class step6 extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={this.props.back}>
+                <Button transparent onPress={()=>this.goBack()}>
                     <Icon
                         active
                         name="ios-arrow-back"
@@ -288,7 +282,7 @@ export default class step6 extends Component {
         }
 
         return (
-            <Container style={{ backgroundColor: 'transparent' }}>
+            <Container style={{ backgroundColor:  "#010113" }}>
                 <Navbar left={left} title='Confirm Details' bg='#101023' />
                 <Content>
                     <View style={styles.container}>

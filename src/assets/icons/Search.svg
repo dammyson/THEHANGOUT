@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 30 30">
+  <defs>
+    <linearGradient id="linearGradient-2" x1="1.36" x2="32.675" y1="-10.874" y2="61.568" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="rgb(26,27,75)"/>
+      <stop offset="1" stop-color="rgb(221,53,46)"/>
+    </linearGradient>
+    <path id="path-4" fill-rule="evenodd" d="M0 7c0 3.8659935 3.13400674 7 7 7 1.57479382 0 3.02812767-.5200262 4.19764996-1.3977232l3.80755138 3.82946873 1.41421318-1.41421414-.6106453-.61416053c-.02916812-.03958416-.06159114-.07740593-.0972557-.1130705l-3.09300995-3.11435985C13.48637962 10.01016521 14 8.56506443 14 7c0-3.86599326-3.1340065-7-7-7-3.86599326 0-7 3.13400674-7 7zm7 5c2.76142311 0 5-2.23857689 5-5 0-2.76142406-2.23857689-5-5-5-2.76142406 0-5 2.23857594-5 5 0 2.76142311 2.23857594 5 5 5z"/>
+    <mask id="mask-5" x="-7" y="-7" maskContentUnits="userSpaceOnUse" maskUnits="userSpaceOnUse">
+      <rect width="30" height="30" x="-7" y="-7" fill="black"/>
+      <use fill="white" xlink:href="#path-4"/>
+    </mask>
+    <mask id="mask-6" maskContentUnits="userSpaceOnUse" maskUnits="userSpaceOnUse">
+      <rect width="30" height="30" x="0" y="0" fill="black"/>
+      <use fill="white" xlink:href="#path-4"/>
+    </mask>
+  </defs>
+  <g>
+    <path fill="url(#linearGradient-2)" fill-rule="evenodd" d="M2 0h26c1.10383005 0 2 .89616995 2 2v26c0 1.10383005-.89616995 2-2 2H2c-1.10383005 0-2-.89616995-2-2V2C0 .89616995.89616995 0 2 0z"/>
+    <g transform="translate(3 3)">
+      <rect width="24" height="24" x="0" y="0" fill="none" rx="0" ry="0"/>
+      <g transform="translate(4 4)">
+        <use fill-opacity="0" stroke="rgb(255,255,255)" stroke-width="4" mask="url(#mask-5)" xlink:href="#path-4"/>
+        <g mask="url(#mask-6)">
+          <rect width="24" height="24" x="0" y="0" fill="rgb(255,255,255)" rx="0" ry="0" transform="translate(-4 -4)"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
