@@ -24,7 +24,7 @@ class Create extends Component {
               //headerLeft: null,
               headerShown: false,
              }}
-             initialRouteName="Step1"
+             initialRouteName="Step5"
              >
             <Stack.Screen name="Step1" component={Step1}  />
             <Stack.Screen   name="Step2" component={Step2}  />

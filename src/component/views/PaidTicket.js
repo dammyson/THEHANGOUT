@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, StatusBar, NativeModules, } from "react-native";
+import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, StatusBar, NativeModules, SafeAreaView } from "react-native";
 import { Container, Content, View, Text, Button, Left, Toast, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
@@ -16,6 +16,7 @@ import {
 } from 'react-native-indicators';
 
 import Navbar from '../../component/Navbar';
+import ActivityIndicator from "./ActivityIndicator";
 
 
 const sports = [
@@ -66,9 +67,9 @@ export default class PaidTicket extends Component {
     }
 
     processAddTicket() {
-
+        const {  onComplete } = this.props;
         const { data, form_data } = this.state
-
+        
 
         if (form_data.length < 1) {
             Alert.alert('Validation failed', "Fields can not be empty", [{ text: 'Okay' }])
@@ -87,14 +88,6 @@ export default class PaidTicket extends Component {
             }
             if (form_data[i].Cost == null || form_data[i].Cost == '') {
                 Alert.alert('Validation failed', "Price field can not be empty", [{ text: 'Okay' }])
-                return
-            }
-            if (form_data[i].StartDate == null || form_data[i].StartDate == '') {
-                Alert.alert('Validation failed', "Please modify the start date", [{ text: 'Okay' }])
-                return
-            }
-            if (form_data[i].EndDate == null || form_data[i].EndDate == '') {
-                Alert.alert('Validation failed', "Please modify the end date", [{ text: 'Okay' }])
                 return
             }
             if (form_data[i].Status == null || form_data[i].Status == '') {
@@ -119,7 +112,7 @@ export default class PaidTicket extends Component {
 
 
         this.setState({ loading: true })
-        AsyncStorage.removeItem('currentT');
+       console.warn(URL.url + 'events/add-tickets')
         fetch(URL.url + 'events/add-tickets', {
             method: 'POST', headers: {
                 'Content-Type': 'application/json',
@@ -133,9 +126,7 @@ export default class PaidTicket extends Component {
         })
             .then(res => res.json())
             .then(res => {
-                console.warn(res);
                 if (res.status) {
-                    AsyncStorage.setItem('currentT', JSON.stringify(res.data));
                     Toast.show({
                         text: 'Ticket created sucessfully !',
                         position: 'bottom',
@@ -145,8 +136,8 @@ export default class PaidTicket extends Component {
                     });
                     setTimeout(() => {
                         this.setState({ loading: false })
-                        Actions.pop();
-                    }, 2000);
+                        onComplete(res.data)
+                    }, 1000);
 
                 } else {
                     Alert.alert('Action failed', res.message, [{ text: 'Okay' }])
@@ -157,19 +148,17 @@ export default class PaidTicket extends Component {
                 alert(error.message);
             });
 
-
     }
 
 
 
     onChangeText(text, i, name, ) {
-        console.warn(text, i)
-
+        var obj = {};
         var instant_array = []
         instant_array = this.state.form_data
 
         if (instant_array[i] == null) {
-            obj = {};
+           // obj = {};
 
             if (name == 'name') {
                 obj.Title = text
@@ -186,13 +175,6 @@ export default class PaidTicket extends Component {
                 obj.Status = text
             }
 
-            if (name == 'startdate') {
-                obj.StartDate = text
-            }
-
-            if (name == 'enddate') {
-                obj.EndDate = text
-            }
             if (name == 'min') {
                 obj.MinAllowed = text
             }
@@ -221,13 +203,6 @@ export default class PaidTicket extends Component {
                 obj.Status = text
             }
 
-            if (name == 'startdate') {
-                obj.StartDate = text
-            }
-
-            if (name == 'enddate') {
-                obj.EndDate = text
-            }
             if (name == 'min') {
                 obj.MinAllowed = text
             }
@@ -281,18 +256,13 @@ export default class PaidTicket extends Component {
 
         if (this.state.loading) {
             return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
-                    <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>Adding ticket</Text>
-                        <BarIndicator count={4} color={color.primary_color} />
-                        <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
-                    </View>
-                </View>
+                <ActivityIndicator message={'Adding tickects'} color={color.primary_color}/>
             );
         }
 
         return (
-            <Container style={[styles.main_container,{ backgroundColor: '#101023' }]}>
+          
+            <Container style={{ height: Dimensions.get('window').height, backgroundColor: '#101023', position: "absolute", }}>
                    <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" translucent={true} />
                 <Navbar left={left} title='Paid Ticket' bg='#101023' />
                 <Content>
@@ -327,6 +297,7 @@ export default class PaidTicket extends Component {
 
                 </Content>
             </Container>
+           
         );
     }
 
@@ -444,51 +415,6 @@ export default class PaidTicket extends Component {
 
                         </View>
                     </View>
-                    <View style={[styles.oneRow, { marginTop: 20 }]}>
-                        <View style={{ flex: 1 }}>
-                            <View>
-                                <Text style={[styles.hintText, { marginLeft: 30, }]}>Event Starts </Text>
-                            </View>
-                            <View style={styles.itemTwo}>
-
-                                <TouchableOpacity onPress={() => this.setState({ show_from_picker: true })}>
-                                    <Text style={styles.date_text}>{Moment(this.state.form_data.length > 0 + i ? this.state.form_data[i].StartDate : this.state.enddate).format('YYYY-MM-DD HH:mm')} </Text>
-                                </TouchableOpacity>
-
-                                <DateTimePickerModal
-                                    isVisible={this.state.show_from_picker}
-                                    mode="datetime"
-                                    onConfirm={(date) => { [this.setState({ show_from_picker: false, }), this.onChangeText(date, lol, 'startdate')] }}
-                                    onCancel={() => this.setState({ show_to_picker: false })}
-                                />
-                            </View>
-                        </View>
-                    </View>
-
-
-                    <View style={styles.oneRow}>
-
-                        <View style={{ flex: 1 }}>
-                            <View>
-                                <Text style={[styles.hintText, { marginLeft: 30, }]}>Event End </Text>
-                            </View>
-                            <View style={styles.itemTwo}>
-
-
-                                <TouchableOpacity onPress={() => this.setState({ show_to_picker: true })}>
-                                    <Text style={styles.date_text}>{Moment(this.state.form_data.length > 0 + i ? this.state.form_data[i].EndDate : this.state.enddate).format('YYYY-MM-DD HH:mm')} </Text>
-                                </TouchableOpacity>
-
-                                <DateTimePickerModal
-                                    isVisible={this.state.show_to_picker}
-                                    mode="datetime"
-                                    onConfirm={(date) => { [this.setState({ show_to_picker: false, }), this.onChangeText(date, lol, 'enddate')] }}
-                                    onCancel={() => this.setState({ show_to_picker: false })}
-                                />
-
-                            </View>
-                        </View>
-                    </View>
 
                     <View style={styles.oneRow}>
 
@@ -572,11 +498,13 @@ export default class PaidTicket extends Component {
         return items;
     }
 }
+
 PaidTicket;
 
 const styles = StyleSheet.create({
     main_container: {
-    
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
     },
     container: {
        flex:1

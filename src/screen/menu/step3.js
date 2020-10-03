@@ -45,7 +45,7 @@ export default class step5 extends Component {
 
 
   goBack() {
-    const {  goBack } = this.props.navigation; 
+    const { goBack } = this.props.navigation;
     goBack(null)
   }
 
@@ -228,7 +228,7 @@ export default class step5 extends Component {
 
     const { data, name, description, price, max, min, add_ons, delivery, img_url, cat, image, restaurant } = this.state
 
-    if (name == "" || description == '' || price == '' || max == '' || min == '' || delivery == '' || add_ons.length < 1) {
+    if (name == "" || description == '' || price == '' || max == '' || min == '' || delivery == '') {
       Alert.alert('Validation failed', 'field(s) cannot be empty', [{ text: 'Okay' }])
       return;
     }
@@ -247,8 +247,12 @@ export default class step5 extends Component {
         return;
       }
     }
+    if (add_ons.length > 1) {
+      var add_ons_id = this.pluck(add_ons, 'id')
+    } else {
 
-    var add_ons_id = this.pluck(add_ons, 'id')
+    }
+
 
     var request_body = JSON.stringify({
       Name: name,
@@ -284,7 +288,7 @@ export default class step5 extends Component {
             buttonText: 'Dismiss',
             duration: 3000
           });
-          this.props.navigation.replace('res_service_details',{id: restaurant.id})
+          this.props.navigation.replace('res_service_details', { id: restaurant.id })
         } else {
           Alert.alert('Operation failed', res.message, [{ text: 'Okay' }])
           this.setState({ loading: false })
@@ -347,7 +351,7 @@ export default class step5 extends Component {
       </Left>
     );
     return (
-      <Container style={{ backgroundColor:  "#010113" }}>
+      <Container style={{ backgroundColor: "#010113" }}>
         <Navbar left={left} title={this.state.name} bg='#101023' />
         <Content>
           <View style={styles.container}>

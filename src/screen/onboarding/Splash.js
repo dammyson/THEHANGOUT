@@ -11,8 +11,8 @@ export default class Splash extends Component {
 
   async componentDidMount() {
     setTimeout(() => {
-      this.initPage();
-    //  this.props.navigation.navigate('home');
+      //this.initPage();
+     this.props.navigation.navigate('home');
      
     }, 3000);
   }

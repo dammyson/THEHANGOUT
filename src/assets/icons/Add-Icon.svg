@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" viewBox="0 0 100 100">
+  <defs>
+    <ellipse id="ellipse-1" cx="50" cy="48" rx="30" ry="30"/>
+    <filter id="filter-2" width="200%" height="200%" x="-50%" y="-50%" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="2" in="SourceAlpha" result="shadow-1-feOffset-shadow"/>
+      <feGaussianBlur in="shadow-1-feOffset-shadow" result="shadow-1-feGaussianBlur-shadow" stdDeviation="12.048"/>
+      <feColorMatrix in="shadow-1-feGaussianBlur-shadow" result="shadow-1-feColorMatrix-shadow" type="matrix" values="0 0 0 0 0.9686274509803922  0 0 0 0 0.6431372549019608  0 0 0 0 0  0 0 0 0.35 0"/>
+    </filter>
+  </defs>
+  <g>
+    <g>
+      <use fill="black" stroke="black" stroke-opacity="0" stroke-width="0" filter="url(#filter-2)" xlink:href="#ellipse-1"/>
+      <use fill="rgb(247,164,0)" xlink:href="#ellipse-1"/>
+    </g>
+    <g transform="translate(42 40)">
+      <path fill="none" stroke="rgb(1,1,19)" stroke-width="2" d="M7.99801713 16V0"/>
+      <path fill="none" stroke="rgb(1,1,19)" stroke-width="2" d="M16.00198287 8.0000045l-16-.000009"/>
+    </g>
+  </g>
+</svg>

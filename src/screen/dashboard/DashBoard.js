@@ -9,11 +9,14 @@ import {
     BarIndicator,
 } from 'react-native-indicators';
 
+import SvgUri from 'react-native-svg-uri';
+
 import color from '../../component/color';
 const { width: screenWidth } = Dimensions.get('window')
 import Navbar from '../../component/Navbar';
 const URL = require("../../component/server");
 import Moment from 'moment';
+import TestSvgUri from '../../component/views/TestSvgUri';
 
 export default class Dashboard extends Component {
 
@@ -24,7 +27,7 @@ export default class Dashboard extends Component {
         this.likeUnlikeRequest = this.likeUnlikeRequest.bind(this);
 
         this.state = {
-            loading: true,
+          // loading: true,
             dataone: [
             ],
             datatwo: [
@@ -33,7 +36,7 @@ export default class Dashboard extends Component {
             nodata: false,
             slider1ActiveSlide: 0,
             selected: null, 
-            user:null,
+            user:{profilePicture:''},
             searchText:''
         };
     }
@@ -341,15 +344,16 @@ export default class Dashboard extends Component {
                             <View style={styles.row}>
                                 <View style={styles.rowchild}>
 
-                                    <TouchableOpacity onPress={() =>  this.props.navigation.navigate('events')} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
 
-                                        <Icon
+                                    <TouchableOpacity onPress={() =>  this.props.navigation.navigate('events')} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
+                                    <Icon
                                             active
                                             name="calendar-clock"
                                             type='material-community'
                                             color='#f9ba3f'
 
                                         />
+
                                     </TouchableOpacity>
 
                                     <Text style={styles.catName}>Events</Text>

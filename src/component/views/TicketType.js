@@ -23,106 +23,80 @@ export default class TicketType extends React.Component {
     }
 
     render() {
-        const { icon_bg } = this.props;
+        const { onClose, onSelect } = this.props;
         return (
             <View style={styles.container}>
 
-                                <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 1, paddingBottom: 10 }}>
-                                    <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 17, textAlign: 'left', paddingBottom: 10, marginTop: 25, flex: 1 }}> pin </Text>
-                                    <TouchableOpacity onPress={() => this.setState({ view_ticket: false })} style={{ marginLeft: 10, backgroundColor: '#000' }}>
-                                        <Icon
-                                            name="close"
-                                            size={20}
-                                            type='antdesign'
-                                            color="#fff"
-                                        />
-                                    </TouchableOpacity>
+                <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 1, paddingBottom: 10 }}>
+                    <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 17, textAlign: 'left', paddingBottom: 10, marginTop: 25, flex: 1 }}>  </Text>
+                    <TouchableOpacity onPress={() => onClose()} style={{ marginLeft: 10, marginRight: 20, }}>
+                        <Icon
+                            name="close"
+                            size={20}
+                            type='antdesign'
+                            color="#fff"
+                        />
+                    </TouchableOpacity>
+                </View>
+                <View style={{ paddingTop: 1, paddingBottom: 10, flex: 1, }}>
+                    <View style={{ flexDirection: 'row', marginRight: 20, marginLeft: 20, }}>
+                        <TouchableOpacity onPress={() => onSelect('PAID')} style={{ flex: 1, }}>
+
+                            <View elevation={5} style={styles.ticketContainer}>
+
+                                <View style={{ borderRadius: 10, }}>
+                                    <Avatar
+                                        rounded
+                                        size="small"
+                                        icon={{ name: 'ticket', type: 'entypo', color: '#FFF' }} ß
+                                        overlayContainerStyle={{ backgroundColor: '#F7A400', }}
+                                        onPress={() => console.log("Works!")}
+                                        activeOpacity={0.7}
+                                        containerStyle={{ marginLeft: 10, marginTop: 10, marginBottom: 40 }}
+                                    />
                                 </View>
-                                <View style={{ paddingTop: 1, paddingBottom: 10, flex: 1, }}>
-                                    <View style={{ flexDirection: 'row', marginRight: 20, marginLeft: 20, }}>
-                                        <TouchableOpacity onPress={() => [Actions.freeT(), this.setState({ view_ticket: false })]} style={{ flex: 1, }}>
-
-                                            <View elevation={5} style={styles.ticketContainer}>
-
-                                                <View style={{ borderRadius: 10, }}>
-                                                    <Avatar
-                                                        rounded
-                                                        size="small"
-                                                        icon={{ name: 'ticket', type: 'entypo', color: '#FFF' }}
-                                                        overlayContainerStyle={{ backgroundColor: '#DD352E', }}
-                                                        onPress={() => console.log("Works!")}
-                                                        activeOpacity={0.7}
-                                                        containerStyle={{ marginLeft: 10, marginTop: 10, marginBottom: 40 }}
-                                                    />
-                                                </View>
-                                                <View style={{ justifyContent: 'center', alignItems: 'center', }}>
-                                                    <Text style={{ fontSize: 15, textAlign: 'left', marginBottom: 10, fontWeight: '800', color: "#ffffff", }}>Free Tickets</Text>
-                                                    <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 5, fontWeight: '200', color: "#ffffff", margin: 5 }}>My event is totally free and attenders can register for free</Text>
-                                                </View>
-                                                <View style={{ height: 1, margin: 20, backgroundColor: '#5f5c7f', }}></View>
-
-                                                <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 16, fontWeight: '200', color: "#ffffff", margin: 5 }}>{'Limited \n '}</Text>
-                                            </View>
-
-                                        </TouchableOpacity>
-
-
-
-                                        <TouchableOpacity onPress={() => [Actions.paidT(), this.setState({ view_ticket: false })]} style={{ flex: 1, }}>
-
-                                            <View elevation={5} style={styles.ticketContainer}>
-
-                                                <View style={{ borderRadius: 10, }}>
-                                                    <Avatar
-                                                        rounded
-                                                        size="small"
-                                                        icon={{ name: 'ticket', type: 'entypo', color: '#FFF' }} ß
-                                                        overlayContainerStyle={{ backgroundColor: '#F7A400', }}
-                                                        onPress={() => console.log("Works!")}
-                                                        activeOpacity={0.7}
-                                                        containerStyle={{ marginLeft: 10, marginTop: 10, marginBottom: 40 }}
-                                                    />
-                                                </View>
-                                                <View style={{ justifyContent: 'center', alignItems: 'center', }}>
-                                                    <Text style={{ fontSize: 15, textAlign: 'left', marginBottom: 10, fontWeight: '800', color: "#ffffff", }}>Paid Event</Text>
-                                                    <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 5, fontWeight: '200', color: "#ffffff", margin: 5 }}>My event is a paid event and the attenders will purchase tickets</Text>
-                                                </View>
-                                                <View style={{ height: 1, margin: 20, backgroundColor: '#5f5c7f', }}></View>
-
-                                                <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 16, fontWeight: '200', color: "#ffffff", margin: 5 }}>{'We charge 2% on every \n Ticket sales'}</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', marginRight: 20, marginLeft: 20, }}>
-                                        <TouchableOpacity style={{ flex: 1, }}>
-
-                                            <View elevation={5} style={styles.ticketContainer}>
-
-                                                <View style={{ borderRadius: 10, }}>
-                                                    <Avatar
-                                                        rounded
-                                                        size="small"
-                                                        icon={{ name: 'ticket', type: 'entypo', color: '#FFF' }}
-                                                        overlayContainerStyle={{ backgroundColor: '#3A9EFD', }}
-                                                        onPress={() => console.log("Works!")}
-                                                        activeOpacity={0.7}
-                                                        containerStyle={{ marginLeft: 10, marginTop: 10, marginBottom: 40 }}
-                                                    />
-                                                </View>
-                                                <View style={{ justifyContent: 'center', alignItems: 'center', }}>
-                                                    <Text style={{ fontSize: 15, textAlign: 'left', marginBottom: 10, fontWeight: '800', color: "#ffffff", }}>Donation</Text>
-                                                    <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 5, fontWeight: '200', color: "#ffffff", margin: 5 }}>My event is a fund-raising event and my attenders will have to bid</Text>
-                                                </View>
-                                                <View style={{ height: 1, margin: 20, backgroundColor: '#5f5c7f', }}></View>
-
-                                                <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 16, fontWeight: '200', color: "#ffffff", margin: 5 }}>{'See Pricing within \n '}</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                        <View style={{ flex: 1, }}>
-                                        </View>
-                                    </View>
+                                <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+                                    <Text style={{ fontSize: 15, textAlign: 'left', marginBottom: 10, fontWeight: '800', color: "#ffffff", }}>Paid Event</Text>
+                                    <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 5, fontWeight: '200', color: "#ffffff", margin: 5 }}>My event is a paid event and the attenders will purchase tickets</Text>
                                 </View>
+                                <View style={{ height: 1, margin: 20, backgroundColor: '#5f5c7f', }}></View>
+
+                                <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 16, fontWeight: '200', color: "#ffffff", margin: 5 }}>{'We charge 2% on every \n Ticket sales'}</Text>
                             </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => onSelect('DONATION')} style={{ flex: 1, }}>
+
+                            <View elevation={5} style={styles.ticketContainer}>
+
+                                <View style={{ borderRadius: 10, }}>
+                                <Avatar
+                                        rounded
+                                        size="small"
+                                        icon={{ name: 'ticket', type: 'entypo', color: '#FFF' }}
+                                        overlayContainerStyle={{ backgroundColor: '#3A9EFD', }}
+                                        onPress={() => console.log("Works!")}
+                                        activeOpacity={0.7}
+                                        containerStyle={{ marginLeft: 10, marginTop: 10, marginBottom: 40 }}
+                                    />
+                                </View>
+                                <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+                                    <Text style={{ fontSize: 15, textAlign: 'left', marginBottom: 10, fontWeight: '800', color: "#ffffff", }}>Donation</Text>
+                                    <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 5, fontWeight: '200', color: "#ffffff", margin: 5 }}>My event is a fund-raising event and my attenders will have to bid</Text>
+                                </View>
+                                <View style={{ height: 1, margin: 20, backgroundColor: '#5f5c7f', }}></View>
+
+                                <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 16, fontWeight: '200', color: "#ffffff", margin: 5 }}>{'See Pricing within \n '}</Text>
+                            </View>
+
+                        </TouchableOpacity>
+
+
+
+
+                    </View>
+                 
+                </View>
+            </View>
         )
     }
 
@@ -134,6 +108,8 @@ const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
+        position: 'absolute',
+        backgroundColor: '#101023',
 
     },
     nameList: {

@@ -211,7 +211,7 @@ likeUnlikeRequest(id, pos){
 
     return (
       <Container style={{ backgroundColor: '#101023' }}>
-        <Navbar left={left} right={right} title='GTB FOOD & Drink' bg='#111123' />
+        <Navbar left={left} right={right} title={details.title}  bg='#111123' />
         <Content>
           <View style={styles.container}>
 

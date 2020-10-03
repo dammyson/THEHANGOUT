@@ -61,8 +61,7 @@ export default class ManagementPayment extends Component {
 
 
     componentDidMount() {
-        const { id  } = this.props.route.params;
-        this.setState({ id: id });
+       
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })
@@ -93,37 +92,7 @@ generateQrCode(){
     console.warn();
 }
 
-    processGetEvent() {
-        const { data, id, } = this.state
-
-        this.setState({ loading: true })
-        fetch(URL.url + 'events/' + id, {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            },
-        })
-            .then(res => res.json())
-            .then(res => {
-                console.warn(res);
-                if (res.status) {
-                    this.setState({
-                        loading: false,
-                        details: res.data,
-                    })
-                } else {
-                    Alert.alert('Action failed', res.message, [{ text: 'Okay' }])
-                    this.setState({ loading: false })
-                }
-            }).catch((error) => {
-                this.setState({ loading: false })
-                console.warn(error);
-                alert(error.message);
-            });
-
-
-    }
+ 
     segmentClicked = (index) => {
         this.setState({
             activeIndex: index
