@@ -144,7 +144,7 @@ export default class step5 extends Component {
 
         console.warn('responseJson', responseJson.data);
         this.setState({
-          img_url: 'http://hg.freewave.ng/' + responseJson.data.replace("Resources", "assets"),
+          img_url: URL.img + responseJson.data.replace("Resources", "assets"),
         });
         Toast.show({
           text: 'Picture uploaded sucessfully !',

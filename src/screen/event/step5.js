@@ -3,8 +3,7 @@ import { Image, Dimensions, ImageBackground, NativeModules, TouchableOpacity, Te
 import { Container, Content, View, Text, Button, Left, Right, Body, Toast, List, ListItem, } from 'native-base';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
-import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
-import { Actions } from 'react-native-router-flux';
+import { getSaveRestaurant, getData } from '../../component/utilities';
 const deviceHeight = Dimensions.get("window").height;
 
 import Modal, { SlideAnimation, ModalContent } from 'react-native-modals';
@@ -93,16 +92,11 @@ export default class step5 extends Component {
         goBack(null)
     }
 
-    componentWillMount() {
-        /*   AsyncStorage.getItem('data').then((value) => {
-             if (value == '') { } else {
-                 this.setState({ data: JSON.parse(value) })
-                 this.setState({ user: JSON.parse(value).user })
-             }
- 
-             this.getOrganizersRequest()
-         })
- 
+   async componentWillMount() {
+        this.setState({
+            data: JSON.parse(await getData()),
+            user: JSON.parse(await getData()).user
+          })
        const { data_moving } = this.props.route.params;
  
          this.setState({
@@ -112,7 +106,7 @@ export default class step5 extends Component {
              enddate: data_moving.enddate,
              venue: data_moving.venue,
  
-         })*/
+         })
     }
 
 
@@ -183,8 +177,9 @@ export default class step5 extends Component {
 
                 console.warn('responseJson', responseJson.data);
                 this.setState({
-                    img_url: 'http://hg.freewave.ng/' + responseJson.data.replace("Resources", "assets"),
+                    img_url: URL.img + responseJson.data.replace("Resources", "assets"),
                 });
+
                 Toast.show({
                     text: 'Picture uploaded sucessfully !',
                     position: 'bottom',
@@ -210,11 +205,15 @@ export default class step5 extends Component {
             Alert.alert('Validation failed', 'field(s) cannot be empty', [{ text: 'Okay' }])
             return;
         }
-
-        if (ticket == null) {
-            Alert.alert('Validation failed', 'field(s) Please add a ticket to save event', [{ text: 'Okay' }])
-            return;
+        if(type == 'Free'){
+           
+        }else{
+            if (ticket == null) {
+                Alert.alert('Validation failed', 'field(s) Please add a ticket to save event', [{ text: 'Okay' }])
+                return;
+            }
         }
+       
 
         if (image == null) {
             Alert.alert('Validation failed', 'Please select and image for the organizer', [{ text: 'Okay' }])
@@ -268,7 +267,7 @@ export default class step5 extends Component {
                         buttonText: 'Dismiss',
                         duration: 3000
                     });
-                    this.props.navigation.repl('merchant_home');
+                    this.props.navigation.replace('merchant_home');
                 } else {
                     Alert.alert('Operation failed', res.message, [{ text: 'Okay' }])
                     this.setState({ loading: false })

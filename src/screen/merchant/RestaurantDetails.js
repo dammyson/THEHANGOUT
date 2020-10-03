@@ -179,7 +179,7 @@ createMenu(){
                             <View style={{ marginLeft: 25, marginRight: 7, marginTop: 10, alignItems: 'flex-start' }}>
                                 <Text style={styles.titleText}>DASHBOARD</Text>
                                 <View style={{}}>
-                                    <Text style={{ marginLeft: 2, color: '#F7A400', fontSize: 10, fontWeight: '500' }}> The Plug Official</Text>
+                                    <Text style={{ marginLeft: 2, color: '#F7A400', fontSize: 10, fontWeight: '500' }}>{details.organizerName}</Text>
                                     <Text style={{ marginLeft: 2, color: '#fff', fontSize: 12, fontWeight: '200', opacity: 0.6, }}> See your summary </Text>
                                 </View>
                             </View>

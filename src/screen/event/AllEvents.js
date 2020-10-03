@@ -13,6 +13,9 @@ import {
     BarIndicator,
 } from 'react-native-indicators';
 import Moment from 'moment';
+import { getSaveRestaurant, getData } from '../../component/utilities';
+
+
 export default class Dashboard extends Component {
 
     constructor(props) {
@@ -39,15 +42,20 @@ export default class Dashboard extends Component {
 
 
 
-    componentDidMount() {
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-                this.setState({ user: JSON.parse(value).user })
-            }
+    componentWillUnmount() {
+        this._unsubscribe();
+      }
 
-            this.getEventsRequest()
-        })
+  async componentDidMount() {
+        this.setState({
+            data: JSON.parse(await getData()),
+            user: JSON.parse(await getData()).user
+          })
+
+        this.getEventsRequest()
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+           this.getEventsRequest()
+          });
     }
 
 

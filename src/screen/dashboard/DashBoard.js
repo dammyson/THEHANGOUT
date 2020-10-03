@@ -16,7 +16,8 @@ const { width: screenWidth } = Dimensions.get('window')
 import Navbar from '../../component/Navbar';
 const URL = require("../../component/server");
 import Moment from 'moment';
-import TestSvgUri from '../../component/views/TestSvgUri';
+
+import { getSaveRestaurant, getData } from '../../component/utilities';
 
 export default class Dashboard extends Component {
 
@@ -27,7 +28,7 @@ export default class Dashboard extends Component {
         this.likeUnlikeRequest = this.likeUnlikeRequest.bind(this);
 
         this.state = {
-          // loading: true,
+           loading: true,
             dataone: [
             ],
             datatwo: [
@@ -43,16 +44,23 @@ export default class Dashboard extends Component {
 
 
 
+      componentWillUnmount() {
+        this._unsubscribe();
+      }
 
-    componentDidMount() {
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-                this.setState({ user: JSON.parse(value).user })
-            }
 
-            this.getEventsRequest()
-        })
+
+   async componentDidMount() {
+        this.setState({
+            data: JSON.parse(await getData()),
+            user: JSON.parse(await getData()).user
+          })
+
+        
+        this.getEventsRequest()
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+           this.getEventsRequest()
+          });
     }
 
 

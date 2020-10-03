@@ -12,7 +12,7 @@ export default class step1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      titleText: 'hhhh',
+      titleText: '',
       data: '',
       count:140,
 
