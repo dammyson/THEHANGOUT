@@ -6409,6 +6409,14 @@ react-native-elements@^2.0.0:
     react-native-ratings "^6.5.0"
     react-native-status-bar-height "^2.2.0"
 
+react-native-firebase@^5.6.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.6.0.tgz#6f6123f53cb73477915dd55c55f3e1de91db38d2"
+  integrity sha512-I+o3zNLdIz4pxWTCSZH70M1BcPl+SdqKQfurOT0sWcaMSL2ecDqVy0PCTmN7ORt7/Z879Er6PLgA/psjArQlmw==
+  dependencies:
+    opencollective-postinstall "^2.0.0"
+    prop-types "^15.7.2"
+
 react-native-flip-card@^3.4.1:
   version "3.5.6"
   resolved "https://registry.yarnpkg.com/react-native-flip-card/-/react-native-flip-card-3.5.6.tgz#de26f0285aa6f8ee10bb4b696c60c6fb43bb580f"
@@ -6596,6 +6604,13 @@ react-native-svg-image@^2.0.1:
   dependencies:
     prop-types "^15.6.0"
 
+react-native-svg-uri@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/react-native-svg-uri/-/react-native-svg-uri-1.2.3.tgz#2f67f30564068a0fee68a751845332a5185a1aab"
+  integrity sha1-L2fzBWQGig/uaKdRhFMypRhaGqs=
+  dependencies:
+    xmldom "^0.1.22"
+
 react-native-svg@^12.1.0:
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-12.1.0.tgz#acfe48c35cd5fca3d5fd767abae0560c36cfc03d"
@@ -6689,6 +6704,14 @@ react-navigation-stack@0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-0.7.0.tgz#0b2f139ee1cba953037ef51353df992ec6c74fa2"
   integrity sha512-3Tbb/SsustBrM9R/qaI6XuOfyqYMVbwkeHFC8NbU890vB0aKZvjAtioWLZ18e/4LgbiOCmoTdp37z3gkGDyNDQ==
+
+react-navigation-stack@^2.8.2:
+  version "2.8.4"
+  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.8.4.tgz#b5fccb136f8a8028c7e6490657e0609e8c524a29"
+  integrity sha512-9ZZ52s6URWoXdTTU/BLEJwYiIFiIRZZF+GEfuLmM8I2w7RBxa0y01ylhL7bVy3aY0Gt/eCbBzslC/4sdRQFFKw==
+  dependencies:
+    color "^3.1.2"
+    react-native-iphone-x-helper "^1.2.1"
 
 react-navigation-tabs@0.8.4:
   version "0.8.4"
@@ -8286,7 +8309,7 @@ xmldoc@^1.1.2:
   dependencies:
     sax "^1.2.1"
 
-xmldom@0.1.x:
+xmldom@0.1.x, xmldom@^0.1.22:
   version "0.1.31"
   resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.31.tgz#b76c9a1bd9f0a9737e5a72dc37231cf38375e2ff"
   integrity sha512-yS2uJflVQs6n+CyjHoaBmVSqIDevTAWrzMmjG1Gc7h1qQ7uVozNhEPJAwZXWyGQ/Gafo3fCwrcaokezLPupVyQ==

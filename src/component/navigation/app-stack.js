@@ -55,6 +55,8 @@ import Teste from '../../screen/onboarding/Test';
 import CreateMenu from '../../screen/menu/CreateMenu';
 import RestaurantDetails from '../../screen/merchant/RestaurantDetails';
 import PlaceOrder from '../../screen/restaurant/PlaceOrder';
+import ForgetPassword from '../../screen/user/ForgetPassword';
+import ChangePassword from '../../screen/user/ChangePassword';
 
 //console.disableYellowBox = true;
 
@@ -126,6 +128,8 @@ class AppStack extends Component {
             <Stack.Screen name='res_service_details' component={RestaurantDetails}   />
 
             <Stack.Screen name='place_order' component={PlaceOrder}   />
+            <Stack.Screen name='forget_password' component={ForgetPassword}   />
+            <Stack.Screen name='change_password' component={ChangePassword}   />
            
 
              

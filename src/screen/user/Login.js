@@ -1,6 +1,6 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
-import { Alert, TextInput, ImageBackground, View, Dimensions, ActivityIndicator, Image, StyleSheet , AsyncStorage} from 'react-native';
+import { Alert, TextInput, ImageBackground, View, Dimensions, ActivityIndicator, TouchableOpacity, Image, StyleSheet, AsyncStorage } from 'react-native';
 import { Container, Content, Text, Icon, Button, Left, } from 'native-base';
 import {
   BarIndicator,
@@ -14,7 +14,7 @@ const URL = require("../../component/server");
 
 import Navbar from '../../component/Navbar';
 import color from '../../component/color';
-
+import { getToken } from '../../component/utilities';
 
 export default class Login extends Component {
   constructor(props) {
@@ -25,11 +25,14 @@ export default class Login extends Component {
       email: '',
       password: '',
       GuserInfo: {},
-     // gettingLoginStatus: true,
+      token:''
+      // gettingLoginStatus: true,
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    this.setState({token: await getToken() })
+    console.warn( await getToken())
     //initial configuration
     GoogleSignin.configure({
       //It is mandatory to call this method before attempting to call signIn()
@@ -38,9 +41,9 @@ export default class Login extends Component {
       webClientId: '823628556250-7nebjfacok8lcef9brdfe7j69i6u9uc1.apps.googleusercontent.com',
     });
     //Check if user is already signed in
-   // this._isSignedIn();
+    // this._isSignedIn();
 
-    
+
   }
 
   _isSignedIn = async () => {
@@ -61,7 +64,7 @@ export default class Login extends Component {
       const userInfo = await GoogleSignin.signInSilently();
       console.log('User Info --> ', userInfo);
       this.setState({ guserInfo: userInfo });
-      this._signInRequest(userInfo.user.email , userInfo.user.email , true);
+      this._signInRequest(userInfo.user.email, userInfo.user.email, true);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         alert('User has not signed in yet');
@@ -84,7 +87,7 @@ export default class Login extends Component {
       const userInfo = await GoogleSignin.signIn();
       console.warn('User Info --> ', userInfo);
       this.setState({ guserInfo: userInfo });
-      this._signInRequest(userInfo.user.email , userInfo.user.email , true);
+      this._signInRequest(userInfo.user.email, userInfo.user.email, true);
     } catch (error) {
       console.warn('Message', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -111,17 +114,17 @@ export default class Login extends Component {
   };
 
   processLogin() {
-    const {email, password } = this.state
+    const { email, password, token } = this.state
     if (email == "" || password == "") {
       Alert.alert('Validation failed', 'field(s) cannot be empty', [{ text: 'Okay' }])
       return;
     }
-    this._signInRequest(email, password, false);
+    this._signInRequest(email, password, token, false);
 
   }
 
-  _signInRequest(email, password, social){
-     console.warn(URL.url+ 'users/authenticate');
+  _signInRequest(email, password,token, social) {
+    console.warn(email, password,token);
     this.setState({ loading: true })
     fetch(URL.url + 'users/authenticate', {
       method: 'POST', headers: {
@@ -130,6 +133,7 @@ export default class Login extends Component {
       }, body: JSON.stringify({
         Username: email,
         Password: password,
+        Token:token,
         IsSocial: social
       }),
     })
@@ -146,15 +150,15 @@ export default class Login extends Component {
           AsyncStorage.setItem('token', res.token);
           AsyncStorage.setItem('user', res.user);
 
-          if(social){
+          if (social) {
             this._updateProfileRequest(res)
-          }else{
+          } else {
             AsyncStorage.setItem('user', JSON.stringify(res.user));
-            if(res.user.role == 'Customer'){
-              this.props.navigation.navigate('home');
-             }else{
-              this.props.navigation.navigate('merchant_home');
-             }
+            if (res.user.role == 'Customer') {
+              this.props.navigation.replace('home');
+            } else {
+              this.props.navigation.replace('merchant_home');
+            }
 
           }
         } else {
@@ -171,51 +175,51 @@ export default class Login extends Component {
 
 
 
-  _updateProfileRequest(data){
-    const {guserInfo } = this.state
+  _updateProfileRequest(data) {
+    const { guserInfo } = this.state
 
-   this.setState({ loading: true })
-   fetch(URL.url + 'users/'+ data.user.id, {
-     method: 'PUT', headers: {
-       'Content-Type': 'application/json',
-       Accept: 'application/json',
-       'Authorization': 'Bearer ' + data.token,
-     }, body: JSON.stringify({
-      Username: guserInfo.user.email,
-      Firstname: guserInfo.user.givenName,
-      Lastname: guserInfo.user.familyName,
-      profilePicture: guserInfo.user.photo
-     }),
-   })
-     .then(res => res.json())
-     .then(res => {
-      console.warn(res);
-       if (res.status) {
-         this.setState({ loading: false })
-         AsyncStorage.setItem('user', JSON.stringify(res.user));
-         if(res.user.role == 'Customer'){
-          this.props.navigation.navigate('home');
-         }else{
-          this.props.navigation.navigate('merchant_home');
-         }
-       } else {
-         Alert.alert('Login failed', res.message, [{ text: 'Okay' }])
-         this.setState({ loading: false })
-       }
-     }).catch((error) => {
-       this.setState({ loading: false })
-       console.warn(error);
-       alert(error.message);
-     });
+    this.setState({ loading: true })
+    fetch(URL.url + 'users/' + data.user.id, {
+      method: 'PUT', headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + data.token,
+      }, body: JSON.stringify({
+        Username: guserInfo.user.email,
+        Firstname: guserInfo.user.givenName,
+        Lastname: guserInfo.user.familyName,
+        profilePicture: guserInfo.user.photo
+      }),
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.warn(res);
+        if (res.status) {
+          this.setState({ loading: false })
+          AsyncStorage.setItem('user', JSON.stringify(res.user));
+          if (res.user.role == 'Customer') {
+            this.props.navigation.replace('home');
+          } else {
+            this.props.navigation.replace('merchant_home');
+          }
+        } else {
+          Alert.alert('Login failed', res.message, [{ text: 'Okay' }])
+          this.setState({ loading: false })
+        }
+      }).catch((error) => {
+        this.setState({ loading: false })
+        console.warn(error);
+        alert(error.message);
+      });
 
- }
+  }
 
 
   currencyFormat(n) {
-    return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
- }
+    return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+  }
 
-  
+
 
   render() {
     const { state, goBack } = this.props.navigation;
@@ -238,7 +242,7 @@ export default class Login extends Component {
 
     }
     return (
-      
+
       <ImageBackground
         source={require('../../assets/backgd.png')}
         style={styles.backgroundImage}
@@ -253,10 +257,10 @@ export default class Login extends Component {
                   style={styles.logo}
                   source={require('../../assets/logo.png')} />
               </View>
-              <Text style={{ color: '#FFF', margin: 20, fontWeight: '900', fontSize: 25, }}>HELLO! </Text>
+              <Text style={{ color: '#FFF', margin: 20,  fontFamily:'NunitoSans-ExtraBold', fontSize: 25, }}>HELLO! </Text>
               <View style={styles.bottom}>
                 <View style={{ flexDirection: "row", margin: 20, }}>
-                  <Text style={{ color: "#000", fontWeight: '500', fontSize: 20, flex: 1 }}>LOGIN</Text>
+                  <Text style={{ color: "#000", fontFamily:'NunitoSans-Bold', fontSize: 20, flex: 1 }}>LOGIN</Text>
                   <View style={styles.circlet} >
                     <Text style={{ color: "#FFFFFF", fontWeight: '900', fontSize: 16, }}>X</Text>
                   </View>
@@ -288,7 +292,7 @@ export default class Login extends Component {
                   style={styles.input}
                   inlineImageLeft='ios-call'
                   onChangeText={text => this.setState({ password: text })}
-                  ref={(input)=> this.passwordInput = input}
+                  ref={(input) => this.passwordInput = input}
                 />
                 {
                   this.state.loading ?
@@ -303,7 +307,19 @@ export default class Login extends Component {
                         <Text style={{ color: '#fdfdfd', fontWeight: '600' }}>SIGN IN </Text>
                       </Button>
                     </View>
+
                 }
+
+
+                <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
+
+                 
+                      <TouchableOpacity onPress={() => this.props.navigation.navigate('forget_password')}>
+                      <Text style={{ fontSize: 14, fontFamily:'NunitoSans-Bold',  color: '#3E3E3E', }}>Forgot Password?</Text>
+                      </TouchableOpacity>
+                     
+               
+                </View>
 
                 {/**
                  *   <View style={styles.inputContainer}>
@@ -324,7 +340,7 @@ export default class Login extends Component {
 
                 </View>
                  */}
-              
+
               </View>
 
             </View>
@@ -341,8 +357,7 @@ export default class Login extends Component {
 }
 const styles = StyleSheet.create({
   backgroundImage: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    flex: 1,
   },
   container: {
     flex: 1,
@@ -397,7 +412,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderBottomColor: '#000000',
     borderBottomWidth: 0.2,
-    marginTop: 1
+    marginTop: 1,
+    fontFamily:'NunitoSans-Regular',
   },
   actionbutton: {
     marginTop: 2,
@@ -406,7 +422,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#3E3E3E',
     textAlign: 'left',
-    fontWeight: '200'
+    fontWeight: '200',
+    fontFamily:'NunitoSans-Bold',
   },
   inputContainer: {
     flexDirection: "row",

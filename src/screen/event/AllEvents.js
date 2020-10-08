@@ -14,6 +14,7 @@ import {
 } from 'react-native-indicators';
 import Moment from 'moment';
 import { getSaveRestaurant, getData } from '../../component/utilities';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 
 export default class Dashboard extends Component {
@@ -394,13 +395,12 @@ goToMore(params){
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent >
-                    <Avatar
-                        rounded
-                        source={{
-                            uri: this.state.user.profilePicture
-                        }}
-                    />
+                <Button onPress={()=>this.props.navigation.goBack()} transparent >
+                <View style={{ transform:[{ rotateY: "180deg"}]}}>
+                <Icon  type='material-icons' name='exit-to-app' size={30} color='#FFF' />
+
+                    </View>
+               
                 </Button>
             </Left>
         );

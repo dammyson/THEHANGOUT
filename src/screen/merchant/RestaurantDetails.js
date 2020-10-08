@@ -16,6 +16,7 @@ const { width: screenWidth } = Dimensions.get('window')
 import Navbar from '../../component/Navbar';
 const URL = require("../../component/server");
 import Moment from 'moment';
+import Balance from '../../component/views/Balance';
 
 export default class RestaurantDetails extends Component {
 
@@ -25,7 +26,7 @@ export default class RestaurantDetails extends Component {
         this.state = {
             loading: true,
             data: '',
-            menu_list:[],
+            menu_list: [],
             nodata: false,
             slider1ActiveSlide: 0,
             selected: null,
@@ -39,19 +40,19 @@ export default class RestaurantDetails extends Component {
 
 
     goBack() {
-        const {  goBack } = this.props.navigation; 
+        const { goBack } = this.props.navigation;
         goBack(null)
-      }
+    }
 
-   async componentDidMount() {
-    const { id  } = this.props.route.params;
+    async componentDidMount() {
+        const { id } = this.props.route.params;
         this.setState({ id: id });
 
         AsyncStorage.removeItem('currentRES');
         this.setState({
             data: JSON.parse(await getData()),
             user: JSON.parse(await getData()).user
-          })
+        })
         this.getEventsRequest()
         AsyncStorage.getItem('bal').then((value) => {
             if (value == '') { } else {
@@ -60,15 +61,15 @@ export default class RestaurantDetails extends Component {
         })
     }
     currencyFormat(n) {
-        return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-     }
+        return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+    }
 
     getEventsRequest() {
         const { data, user, id } = this.state
         console.warn(user)
 
 
-        fetch(URL.url + 'merchant/dashboard/'+id+"/Restaurant", {
+        fetch(URL.url + 'merchant/dashboard/' + id + "/Restaurant", {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -82,7 +83,7 @@ export default class RestaurantDetails extends Component {
                     this.setState({
                         details: res.data,
                         loading: false,
-                        menu_list:  res.data.menuList,
+                        menu_list: res.data.menuList,
                     })
                 } else {
                     this.setState({
@@ -101,16 +102,16 @@ export default class RestaurantDetails extends Component {
     };
 
 
-createMenu(){
-    const { details } = this.state
-     console.warn(details);
-     var data={
-        id: details.id,
-        cat_id: details.categoriesList
-     }
-    AsyncStorage.setItem('currentRES', JSON.stringify(data));
-    this.props.navigation.navigate('createMenu')
-}
+    createMenu() {
+        const { details } = this.state
+        console.warn(details);
+        var data = {
+            id: details.id,
+            cat_id: details.categoriesList
+        }
+        AsyncStorage.setItem('currentRES', JSON.stringify(data));
+        this.props.navigation.navigate('createMenu')
+    }
 
 
     render() {
@@ -129,10 +130,10 @@ createMenu(){
         }
 
 
-         const { details } = this.state
+        const { details } = this.state
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={()=>this.goBack()}>
+                <Button transparent onPress={() => this.goBack()}>
                     <Icon
                         active
                         name="ios-arrow-back"
@@ -157,23 +158,17 @@ createMenu(){
 
         return (
             <Container style={{ backgroundColor: color.secondary_color }}>
-               <Navbar left={left} right={right} title={details.title} bg='#101023' />
+                <Navbar left={left} right={right} title={details.title} bg='#101023' />
                 <Content>
                     <View style={styles.container}>
                         <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
                         <View >
-                            <View style={{ flexDirection: 'row', backgroundColor: '#FFF', marginTop: 24, marginBottom: 24, marginLeft: 30, marginRight: 30, borderRadius: 5 }}>
-                                <View style={{ marginLeft: 20, flex: 1, alignItems: 'flex-start', marginTop: 10, marginBottom: 10 }}>
-                                    <Text style={{ color: '#010113', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>₦{this.state.bal}</Text>
-                                    <Text style={{ color: '#010113', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>My Wallet Balance</Text>
-
-                                </View>
-                                <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('withdraw')} style={{ backgroundColor: '#139F2A', alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
-                                        <Text style={{ color: "#fff", marginTop: 7, marginBottom: 7, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Withdraw Funds</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
+                            <Balance
+                                OnButtonPress={() => this.props.navigation.navigate('withdraw')}
+                                buttonColor={'#139F2A'}
+                                textColor={'#fff'}
+                                buttonText={'Withdraw Funds'}
+                            />
 
                             <View style={{ backgroundColor: '#FFF', marginTop: 10, marginLeft: 20, marginRight: 20, opacity: 0.77, height: 0.6 }}></View>
                             <View style={{ marginLeft: 25, marginRight: 7, marginTop: 10, alignItems: 'flex-start' }}>
@@ -191,27 +186,27 @@ createMenu(){
                                     <Text style={{ color: '#fff', fontSize: 24, fontWeight: '200', fontFamily: 'NunitoSans-Bold', marginTop: 10 }}>₦{this.currencyFormat(details.dashboard.grossSale)}</Text>
 
                                     <Text style={{ marginLeft: 2, color: '#fff', fontSize: 10, fontWeight: '200', opacity: 0.67, marginTop: 35 }}>Your Money </Text>
-                                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', marginTop: 10 }}>₦{ this.currencyFormat(details.dashboard.amount)}</Text>
+                                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', marginTop: 10 }}>₦{this.currencyFormat(details.dashboard.amount)}</Text>
                                 </View>
                                 <View style={{ flex: 1, borderLeftWidth: 1, paddingLeft: 10, borderLeftColor: '#808080' }}>
 
                                     <Text style={{ marginLeft: 2, color: '#fff', fontSize: 12, fontWeight: '200', opacity: 0.67, }}>Tickets Sold (pcs) </Text>
                                     <Text style={{ color: '#fff', fontSize: 24, fontWeight: '200', fontFamily: 'NunitoSans-Bold', marginTop: 10 }}>{details.dashboard.ticketsSold}</Text>
 
-                                   
+
                                 </View>
                             </View>
                             <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 15, justifyContent: 'center' }}>
-                                <TouchableOpacity  style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'red' }}>
+                                <TouchableOpacity style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'red' }}>
                                     <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: 'red' }}>Stop Ticket Sale</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        {this.state.menu_list.length ?  
-                        <View style={{ marginLeft: 25, marginRight: 7, marginTop: 10, alignItems: 'flex-start' }}>
-                            <Text style={styles.titleText}>MY MENU</Text>
-                        </View>
-                        :null}
+                        {this.state.menu_list.length ?
+                            <View style={{ marginLeft: 25, marginRight: 7, marginTop: 10, alignItems: 'flex-start' }}>
+                                <Text style={styles.titleText}>MY MENU</Text>
+                            </View>
+                            : null}
                         <View style={styles.agent_content}>
                             <ScrollView>
                                 {this.renderItem(this.state.menu_list)}
@@ -221,8 +216,8 @@ createMenu(){
                     </View>
                 </Content>
                 <View style={styles.fab}>
-                    <View style={{ flexDirection: 'row', flex:1 }}>
-                        <TouchableOpacity onPress={() => this.createMenu()}  style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
+                    <View style={{ flexDirection: 'row', flex: 1 }}>
+                        <TouchableOpacity onPress={() => this.createMenu()} style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <Icon
                                 active
                                 name="pluscircleo"
@@ -230,9 +225,9 @@ createMenu(){
                                 color='#DD352E'
                                 size={25}
                             />
-                              <Text style={{ fontSize: 12, margin: 10, fontWeight: '300', color: '#1E1E1E' }}>New Menu</Text>
+                            <Text style={{ fontSize: 12, margin: 10, fontWeight: '300', color: '#1E1E1E' }}>New Menu</Text>
                         </TouchableOpacity>
-                        <View style={{width:0.6, marginTop:3, marginBottom:3, backgroundColor:'rgba(128,128,128,0.4)'}} ></View>
+                        <View style={{ width: 0.6, marginTop: 3, marginBottom: 3, backgroundColor: 'rgba(128,128,128,0.4)' }} ></View>
                     </View>
                 </View>
 
@@ -262,7 +257,7 @@ createMenu(){
                             <View style={{ height: 8, width: 24, backgroundColor: '#139F2A' }} />
                         </View>
                         <Text style={styles.title}>{tickets[i].menuName}</Text>
-                        <Text style={{ marginLeft: 2, marginTop: 10, textAlign: 'left', color: '#1E1E1E', fontSize: 14, fontWeight: '100',   fontFamily: 'NunitoSans-Bold', }}> ₦ {tickets[i].menuAmount} </Text>
+                        <Text style={{ marginLeft: 2, marginTop: 10, textAlign: 'left', color: '#1E1E1E', fontSize: 14, fontWeight: '100', fontFamily: 'NunitoSans-Bold', }}> ₦ {tickets[i].menuAmount} </Text>
                         <Text style={{ marginLeft: 2, marginTop: 5, textAlign: 'left', color: 'gba(30,30,30,0.7)', fontSize: 14, fontWeight: '100', }}> Sales so far </Text>
 
                     </View>
@@ -320,18 +315,18 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         backgroundColor: '#fff',
         borderRadius: 20,
-        marginBottom:50
+        marginBottom: 50
 
     },
     fab: {
         height: 45,
-        width: Dimensions.get('window').width/2,
+        width: Dimensions.get('window').width / 2,
         borderRadius: 200,
         position: 'absolute',
         bottom: 15,
-        right: Dimensions.get('window').width/4,
+        right: Dimensions.get('window').width / 4,
         backgroundColor: '#fff',
-        elevation:5
+        elevation: 5
     },
     oneRow: {
         marginTop: 20,
@@ -340,7 +335,7 @@ const styles = StyleSheet.create({
         borderLeftWidth: 4,
         paddingBottom: 2,
         borderRadius: 10,
-        marginBottom:20
+        marginBottom: 20
     },
     title: {
         marginTop: 1,

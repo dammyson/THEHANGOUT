@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { TextInput, StyleSheet, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, ImageBackground } from 'react-native';
+import { TextInput, StyleSheet, TouchableOpacity, StatusBar, Image, AsyncStorage, Dimensions, ImageBackground } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
@@ -28,7 +28,7 @@ export default class Dashboard extends Component {
         this.likeUnlikeRequest = this.likeUnlikeRequest.bind(this);
 
         this.state = {
-           loading: true,
+            loading: true,
             dataone: [
             ],
             datatwo: [
@@ -36,40 +36,41 @@ export default class Dashboard extends Component {
             data: '',
             nodata: false,
             slider1ActiveSlide: 0,
-            selected: null, 
-            user:{profilePicture:''},
-            searchText:''
+            selected: null,
+            user: { profilePicture: '' },
+            searchText: ''
         };
     }
 
 
 
-      componentWillUnmount() {
+    componentWillUnmount() {
         this._unsubscribe();
-      }
+    }
 
 
 
-   async componentDidMount() {
+    async componentDidMount() {
         this.setState({
             data: JSON.parse(await getData()),
             user: JSON.parse(await getData()).user
-          })
+        })
 
-        
+
         this.getEventsRequest()
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
-           this.getEventsRequest()
-          });
+            this.getEventsRequest()
+        });
     }
 
 
     getEventsRequest() {
         const { data, user } = this.state
         console.warn(user)
+        // 
 
 
-        fetch(URL.url + 'events', {
+        fetch(URL.url + 'customer/dashboard', {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -79,11 +80,11 @@ export default class Dashboard extends Component {
             .then(res => res.json())
             .then(res => {
                 console.warn(res);
+                this.setState({ loading: false })
                 if (res.status) {
                     this.setState({
-                        dataone: res.data.trending,
-                       
-                        loading: false
+                        dataone: res.data
+
                     })
                 } else {
                     this.setState({
@@ -116,11 +117,11 @@ export default class Dashboard extends Component {
                 if (res.status) {
                     this.setState({
                         dataone: res.data.trending,
-                      
+
                         loading: false
                     })
                 } else {
-        
+
                 }
             })
             .catch(error => {
@@ -131,9 +132,9 @@ export default class Dashboard extends Component {
 
     };
 
-    likeUnlikeRequest(id, pos){
-        const { data,} = this.state
-        fetch(URL.url + 'events/like/'+ id, {
+    likeUnlikeRequest(id, pos) {
+        const { data, } = this.state
+        fetch(URL.url + 'events/like/' + id, {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -143,7 +144,7 @@ export default class Dashboard extends Component {
             .then(res => res.json())
             .then(res => {
                 if (res.status) {
-                    if(pos){
+                    if (pos) {
                         Toast.show({
                             text: 'Event remove from favorite !',
                             position: 'bottom',
@@ -151,7 +152,7 @@ export default class Dashboard extends Component {
                             buttonText: 'Dismiss',
                             duration: 2000
                         });
-                    }else{
+                    } else {
                         Toast.show({
                             text: 'Event Added to favorite !',
                             position: 'bottom',
@@ -160,7 +161,7 @@ export default class Dashboard extends Component {
                             duration: 2000
                         });
                     }
-                   
+
                     this.RgetEventsRequest()
                 } else {
 
@@ -173,75 +174,56 @@ export default class Dashboard extends Component {
             });
     };
 
+    getDetails(data){
+        if(data.type =='Event'){
+            this.props.navigation.navigate('eventD', { id: data.id })
+        }else  if(data.type =='Restaurant'){
+            this.props.navigation.navigate('restaurantD', { id: data.id })
+        }
+    }
 
-
-    _renderItem = ({ item, index }, parallaxProps)  =>{
+    _renderItem = ({ item, index }, parallaxProps) => {
         Moment.locale('en');
         return (
-            <TouchableOpacity onPress={() =>   this.props.navigation.naviagete('eventD', { id: item.id })} >
+            <TouchableOpacity onPress={() => this.getDetails(item)} >
                 <ImageBackground
                     opacity={0.5}
                     style={{ borderRadius: 12 }}
-                    source={{ uri: item.banner }}
+                    source={{ uri: item.bannerUrl }}
                     imageStyle={{ borderRadius: 20, backgroundColor: 'blue' }}
 
                 >
-
-
                     <View style={styles.details} >
                         <Text style={styles.date}>{Moment(item.startDate).format('llll')}</Text>
                         <Text style={styles.tittle}>{item.title}</Text>
                         <View style={styles.piceContainer}>
                             <View style={{ flex: 1, flexDirection: 'row', marginTop: 3, marginLeft: 15 }}>
-                                <Icon
-                                    active
-                                    name="ticket"
-                                    type='entypo'
-                                    color='#fff'
-                                    size={15}
-                                />
-                                <Text style={styles.price}>{item.type}</Text>
-                                <Icon
-                                    active
-                                    name="music"
-                                    type='foundation'
-                                    color='#fff'
-                                    size={15}
-                                />
-                                <Text style={styles.price}>{item.category}</Text>
-                            </View>
+                                <View style={{ flex: 1, }}>
 
-                            <View style={[styles.iconContainer, { marginRight: 15 }]}>
+                                </View>
 
-                                {item.isLike ? 
-                                 <TouchableOpacity onPress={()=> this.likeUnlikeRequest(item.id, item.isLike) }>
+                                {item.type == 'Event' ?
+                                    <View style={[styles.small_circle, { backgroundColor: '#fff7e7', }]}>
+                                        <Image
+                                            style={{ resizeMode: 'contain', height: 20, width: 20 }}
+                                            source={require('../../assets/icons/events.png')} />
 
-                                 <Icon
-                                     active
-                                     name="heart"
-                                     type='antdesign'
-                                     color='red'
-                                     size={15}
-                                 />
-                             </TouchableOpacity>
-                                
-                                : 
-                                
-                                <TouchableOpacity onPress={()=> this.likeUnlikeRequest(item.id , item.isLike) }>
+                                    </View>
+                                    :
+                                   
+                                    <View  style={[styles.small_circle, { backgroundColor: '#ffcccd', }]}>
 
-                                <Icon
-                                    active
-                                    name="hearto"
-                                    type='antdesign'
-                                    color='red'
-                                    size={15}
-                                />
-                            </TouchableOpacity>
+                                    <Image
+                                        style={{ resizeMode: 'contain', height: 20, width: 20 }}
+                                        source={require('../../assets/icons/restaurant.png')} />
+                                   </View>
                                 
                                 }
-                               
-                            </View>
 
+                                <View style={{ width: 20 }}>
+
+                                </View>
+                            </View>
                         </View>
 
                     </View>
@@ -261,25 +243,25 @@ export default class Dashboard extends Component {
         if (this.state.loading) {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
-                <View style={styles.welcome}>
-                <Text style={{ fontSize:15, color: '#fff'}}>Fetching all your goodies</Text>
-                <BarIndicator count={4} color={color.primary_color} />
-                <Text style={{fontSize:13,  flex: 1, color: '#fff'}}>Please wait...</Text>
+                    <View style={styles.welcome}>
+                        <Text style={{ fontSize: 15, color: '#fff' }}>Fetching all your goodies</Text>
+                        <BarIndicator count={4} color={color.primary_color} />
+                        <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
+                    </View>
                 </View>
-                </View>
-           );
+            );
         }
 
 
         const { slider1ActiveSlide } = this.state;
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() =>  this.props.navigation.naviagete('profile')}>
+                <Button transparent onPress={() => this.props.navigation.naviagete('profile')}>
                     <Avatar
                         rounded
                         source={{
-                           uri: this.state.user.profilePicture
-                               
+                            uri: this.state.user.profilePicture
+
                         }}
                     />
                 </Button>
@@ -304,7 +286,7 @@ export default class Dashboard extends Component {
                 <Navbar left={left} right={right} title="Home" bg='#101023' />
                 <Content>
                     <View style={styles.container}>
-                    <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
+                        <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
                         <View style={styles.header}>
                             <View style={styles.item}>
                                 <Icon active name="enviroment" type='antdesign' color='red'
@@ -353,14 +335,10 @@ export default class Dashboard extends Component {
                                 <View style={styles.rowchild}>
 
 
-                                    <TouchableOpacity onPress={() =>  this.props.navigation.navigate('events')} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
-                                    <Icon
-                                            active
-                                            name="calendar-clock"
-                                            type='material-community'
-                                            color='#f9ba3f'
-
-                                        />
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('events')} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
+                                        <Image
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
+                                            source={require('../../assets/icons/events.png')} />
 
                                     </TouchableOpacity>
 
@@ -368,16 +346,12 @@ export default class Dashboard extends Component {
 
                                     <TouchableOpacity style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
 
-                                        <Icon
-                                            active
-                                            name="movie"
-                                            type='material-community'
-                                            color='#2d98ff'
-
-                                        />
+                                        <Image
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
+                                            source={require('../../assets/icons/movies.png')} />
                                     </TouchableOpacity>
 
-                                    <Text style={styles.catName}>Tickets</Text>
+                                    <Text style={styles.catName}>Movies</Text>
 
 
                                 </View>
@@ -385,26 +359,18 @@ export default class Dashboard extends Component {
 
                                     <TouchableOpacity style={[styles.circle, { backgroundColor: '#ebd5ff', }]}>
 
-                                        <Icon
-                                            active
-                                            name="cards-club"
-                                            type='material-community'
-                                            color='#b057ff'
-
-                                        />
+                                        <Image
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
+                                            source={require('../../assets/icons/club.png')} />
                                     </TouchableOpacity>
 
                                     <Text style={styles.catName}>Clubs & lounge</Text>
 
-                                    <TouchableOpacity onPress={() =>  this.props.navigation.navigate('restaurants')} style={[styles.circle, { backgroundColor: '#ffcccd', }]}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('restaurants')} style={[styles.circle, { backgroundColor: '#ffcccd', }]}>
 
-                                        <Icon
-                                            active
-                                            name="restaurant"
-                                            type='material-icon'
-                                            color='#24a83a'
-
-                                        />
+                                        <Image
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
+                                            source={require('../../assets/icons/restaurant.png')} />
                                     </TouchableOpacity>
 
                                     <Text style={styles.catName}>Resturants</Text>
@@ -414,26 +380,18 @@ export default class Dashboard extends Component {
 
                                     <TouchableOpacity style={[styles.circle, { backgroundColor: '#d3ffdb', }]}>
 
-                                        <Icon
-                                            active
-                                            name="gamepad"
-                                            type='material-icon'
-                                            color='#644e5e'
+                                        <Image
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
+                                            source={require('../../assets/icons/parks.png')} />
 
-                                        />
                                     </TouchableOpacity>
 
                                     <Text style={styles.catName}>Parks & plays</Text>
 
                                     <TouchableOpacity style={[styles.circle, { backgroundColor: '#ffcccd', }]}>
-
-                                        <Icon
-                                            active
-                                            name="wifi"
-                                            type='font-awesome'
-                                            color='#644e5e'
-
-                                        />
+                                        <Image
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
+                                            source={require('../../assets/icons/club.png')} />
                                     </TouchableOpacity>
 
                                     <Text style={styles.catName}>My corners</Text>
@@ -548,6 +506,13 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         paddingBottom: 20,
         borderRadius: 40
+    },
+    small_circle: {
+        height: 35,
+        width: 35,
+        borderRadius: 40,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     catName: {
         marginRight: 13,

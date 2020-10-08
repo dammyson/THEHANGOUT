@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Dimensions, TouchableOpacity, StatusBar,  TextInput, AsyncStorage, StyleSheet, } from "react-native";
+import { Alert, Dimensions, TouchableOpacity, StatusBar, TextInput, AsyncStorage, StyleSheet, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 
 import { Card, Icon, SocialIcon } from 'react-native-elements'
@@ -32,79 +32,79 @@ export default class Create extends Component {
 
   componentDidMount() {
     AsyncStorage.getItem('data').then((value) => {
-        if (value == '') { } else {
-            this.setState({ data: JSON.parse(value) })
-            this.setState({ user: JSON.parse(value).user })
-        }
+      if (value == '') { } else {
+        this.setState({ data: JSON.parse(value) })
+        this.setState({ user: JSON.parse(value).user })
+      }
     })
 
     AsyncStorage.getItem('bal').then((value) => {
-        if (value == '') { } else {
-            this.setState({ bal: value })
-        }
+      if (value == '') { } else {
+        this.setState({ bal: value })
+      }
     })
-}
+  }
 
 
 
   processAddAgent() {
-      
+
     const { form_data, data } = this.state
 
-   
-    if (form_data.length < 1 ) {
-        Alert.alert('Validation failed', "Fields can not be empty", [{ text: 'Okay' }])
-        return
+
+    if (form_data.length < 1) {
+      Alert.alert('Validation failed', "Fields can not be empty", [{ text: 'Okay' }])
+      return
     }
-  
+
 
     for (let i = 0; i < form_data.length; i++) {
-        if(form_data[i].email  == null || form_data[i].email  =='' ){
-            Alert.alert('Validation failed', "FirstName field can not be empty", [{ text: 'Okay' }])
-            return
-        }
+      if (form_data[i].email == null || form_data[i].email == '') {
+        Alert.alert('Validation failed', "FirstName field can not be empty", [{ text: 'Okay' }])
+        return
+      }
     }
-   const payload = this.pluck(form_data, 'email')
+    const payload = this.pluck(form_data, 'email')
 
- 
+
     this.setState({ loading: true })
     fetch(URL.url + 'agent/add', {
-        method: 'POST', headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'Authorization': 'Bearer ' + data.token,
-        }, body: JSON.stringify({
-            emails: payload,
-        }),
+      method: 'POST', headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + data.token,
+      }, body: JSON.stringify({
+        emails: payload,
+      }),
     })
-        .then(res => res.json())
-        .then(res => {
-            console.warn(res);
-            if (res.status) {
-               
-                this.setState({ loading: false,  done: true })
-            } else {
-                Alert.alert('Process failed', res.message, [{ text: 'Okay' }])
-                this.setState({ loading: false })
-            }
-        }).catch((error) => {
-            console.warn(error);
-            this.setState({ loading: false })
-            alert(error.message);
-        });
-}
+      .then(res => res.json())
+      .then(res => {
+        console.warn(res);
+        if (res.status) {
 
-pluck(arr, key) { 
-  return arr.reduce(function(p, v) { 
-    return p.concat(v[key]); 
-  }, []); 
-}
+          this.setState({ loading: false, done: true })
+        } else {
+          Alert.alert('Process failed', res.message, [{ text: 'Okay' }])
+          this.setState({ loading: false })
+        }
+      }).catch((error) => {
+        console.warn(error);
+        this.setState({ loading: false })
+        alert(error.message);
+      });
+  }
+
+  pluck(arr, key) {
+    return arr.reduce(function (p, v) {
+      return p.concat(v[key]);
+    }, []);
+  }
 
   onChangeText(text, i) {
     var instant_array = []
     instant_array = this.state.form_data
     var obj;
-    if(instant_array[i] == null) {
+    if (instant_array[i] == null) {
       obj = {};
 
 
@@ -154,64 +154,64 @@ pluck(arr, key) {
 
     if (this.state.loading) {
       return (
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
-              <View style={styles.welcome}>
-                  <Text style={{ fontSize: 15, color: '#fff' }}>adding agents</Text>
-                  <BarIndicator count={4} color={color.primary_color} />
-                  <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
-              </View>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
+          <View style={styles.welcome}>
+            <Text style={{ fontSize: 15, color: '#fff' }}>adding agents</Text>
+            <BarIndicator count={4} color={color.primary_color} />
+            <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
           </View>
+        </View>
       );
-  }
+    }
 
-  if (this.state.done) {
-    return (
+    if (this.state.done) {
+      return (
         <Container style={{ backgroundColor: '#000' }}>
-            <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" translucent={true} />
+          <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" translucent={true} />
 
-            <Navbar left={left} title='' bg='#000' />
-            <Content>
-                <View style={styles.container}>
-
-
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-
-                        <View style={{ alignItems: 'center', margin: 20, }}>
-                            <TouchableOpacity style={{ backgroundColor: 'green', height: 74, width: 74, borderRadius: 37, justifyContent: 'center', alignItems: 'center', }}>
-                                <Icon
-                                    active
-                                    name="md-checkmark"
-                                    type='ionicon'
-                                    color='#fff'
-                                    size={34}
-                                />
-                            </TouchableOpacity>
-
-                            <Text style={{ color: '#fff', fontSize: 22, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>Success</Text>
-                            <Text style={{ textAlign: 'center', color: '#fff', fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.8 }}>You've added an agent successfully</Text>
-                        </View>
+          <Navbar left={left} title='' bg='#000' />
+          <Content>
+            <View style={styles.container}>
 
 
+              <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
+                <View style={{ alignItems: 'center', margin: 20, }}>
+                  <TouchableOpacity style={{ backgroundColor: 'green', height: 74, width: 74, borderRadius: 37, justifyContent: 'center', alignItems: 'center', }}>
+                    <Icon
+                      active
+                      name="md-checkmark"
+                      type='ionicon'
+                      color='#fff'
+                      size={34}
+                    />
+                  </TouchableOpacity>
 
-                        <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
-                            <TouchableOpacity onPress={() => [this.setState({done:false}), this.props.navigation.goBack()]} style={styles.enablebutton} block iconLeft>
-                                <Text style={{ color: '#fff', marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
-                            </TouchableOpacity>
-                        </View>
-
-
-                    </View>
-
-
-
+                  <Text style={{ color: '#fff', fontSize: 22, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>Success</Text>
+                  <Text style={{ textAlign: 'center', color: '#fff', fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.8 }}>You've added an agent successfully</Text>
                 </View>
 
 
-            </Content>
+
+
+                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
+                  <TouchableOpacity onPress={() => [this.setState({ done: false }), this.props.navigation.goBack()]} style={styles.enablebutton} block iconLeft>
+                    <Text style={{ color: '#fff', marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
+                  </TouchableOpacity>
+                </View>
+
+
+              </View>
+
+
+
+            </View>
+
+
+          </Content>
         </Container>
-    );
-}
+      );
+    }
 
     var left = (
       <Left style={{ flex: 1 }}>
@@ -255,11 +255,11 @@ pluck(arr, key) {
               </TouchableOpacity>
             </View>
 
-            <View style={{ backgroundColor: '#8d96a6', height:1, margin: 20, }}/>
+            <View style={{ backgroundColor: '#8d96a6', height: 1, margin: 20, }} />
 
 
             <View style={{ alignItems: 'flex-start', justifyContent: 'center', margin: 20, }}>
-                <Text style={{ color: '#fff', marginTop: 10, marginBottom: 10, fontSize: 16, fontFamily: 'NunitoSans-bold', }}>CHOOSE FROM PREVIOUS</Text>
+              <Text style={{ color: '#fff', marginTop: 10, marginBottom: 10, fontSize: 16, fontFamily: 'NunitoSans-bold', }}>CHOOSE FROM PREVIOUS</Text>
             </View>
 
           </View>
@@ -379,10 +379,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginLeft: 30,
     marginRight: 30,
-  },  
+  },
   welcome: {
     height: 90,
     alignItems: 'center',
     justifyContent: 'center',
-},
+  },
 });

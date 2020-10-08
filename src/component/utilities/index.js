@@ -10,4 +10,13 @@ export const getData = async () => {
 };
 
 
+export const getBalance = async () => {
+  return AsyncStorage.getItem('bal')
+};
+
+export const getToken = async () => {
+  return AsyncStorage.getItem('fcmToken')
+};
+
+
 

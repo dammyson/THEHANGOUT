@@ -12,6 +12,7 @@ import {
 } from  '@react-native-community/google-signin';
 import Navbar from '../../component/Navbar';
 import color from '../../component/color';
+import { getToken } from '../../component/utilities';
 
 
 
@@ -22,16 +23,20 @@ export default class Register extends Component {
       items: [],
       loading: false,
       email: '',
+      phone: '',
       password: '',
       name: '',
       role: 'Customer',
       userInfo: null,
       gettingLoginStatus: true,
+      token:''
     };
   }
 
 
-  componentDidMount() {
+  async componentDidMount() {
+    this.setState({token: await getToken() })
+    console.warn( await getToken())
     //initial configuration
     GoogleSignin.configure({
       //It is mandatory to call this method before attempting to call signIn()
@@ -118,7 +123,7 @@ export default class Register extends Component {
 
 
   _signInRequest(user){
-    const { role } = this.state
+    const { role, token } = this.state
      console.warn(URL.url);
     this.setState({ loading: true })
     fetch(URL.url + 'users/register', {
@@ -128,7 +133,9 @@ export default class Register extends Component {
       }, body: JSON.stringify({
         Firstname: user.givenName,
         Username: user.email,
+        Phone: '',
         Password: user.email,
+        Token:token,
         Lastname: user.familyName,
         ProfilePicture: user.photo,
         Role: role,
@@ -161,7 +168,7 @@ export default class Register extends Component {
 
   processRegistration() {
 
-    const { email, password, name, role } = this.state
+    const { email, password, name, role, phone, token } = this.state
     console.warn(email, password, name, role);
 
 
@@ -179,7 +186,9 @@ export default class Register extends Component {
       }, body: JSON.stringify({
         Firstname:name,
         Username: email,
+        Phone: phone,
         Password: password,
+        Token: token,
         Role: role,
       }),
     })
@@ -227,19 +236,22 @@ export default class Register extends Component {
         style={styles.backgroundImage}
         resizeMode="cover"
       >
+         <Container style={{ backgroundColor: 'transparent' }}>
+
+          <Content>
         <View style={styles.body}>
           <View style={styles.top}>
             <Image
               style={styles.logo}
               source={require('../../assets/logo.png')} />
           </View>
-          <Text style={{ color: '#FFF', margin: 15, fontWeight: '900', fontSize: 25, }}>HELLO! </Text>
+          <Text style={{ color: '#FFF', margin: 15,fontFamily:'NunitoSans-ExtraBold',  fontSize: 25, }}>HELLO! </Text>
           <View style={styles.bottom}>
             <View style={{ flexDirection: "row", margin: 10, }}>
-              <Text style={{ color: "#000", fontWeight: '500', fontSize: 20, flex: 1 }}>LET'S GET STARTED</Text>
-              <View style={styles.circlet} >
+              <Text style={{ color: "#000", fontFamily:'NunitoSans-Bold', fontSize: 20, flex: 1 }}>LET'S GET STARTED</Text>
+              <TouchableOpacity onPress={()=> this.props.navigation.goBack()}  style={styles.circlet} >
                 <Text style={{ color: "#FFFFFF", fontWeight: '900', fontSize: 16, }}>X</Text>
-              </View>
+              </TouchableOpacity>
 
             </View>
             <Text style={styles.actionbutton}>Name</Text>
@@ -260,7 +272,7 @@ export default class Register extends Component {
               placeholder="Enter your email address"
               placeholderTextColor='#3E3E3E'
               returnKeyType="next"
-              onSubmitEditing={() => this.passwordInput.focus()}
+              onSubmitEditing={() => this.phoneInput.focus()}
               keyboardType='email-address'
               autoCapitalize="none"
               autoCorrect={false}
@@ -268,6 +280,20 @@ export default class Register extends Component {
               inlineImageLeft='ios-call'
               onChangeText={text => this.setState({ email: text })}
               ref={(input)=> this.emailInput = input}
+            />
+             <Text style={styles.actionbutton}>Phone</Text>
+            <TextInput
+              placeholder="Enter your phone number"
+              placeholderTextColor='#3E3E3E'
+              returnKeyType="next"
+              onSubmitEditing={() => this.passwordInput.focus()}
+              keyboardType='email-address'
+              autoCapitalize="none"
+              autoCorrect={false}
+              style={styles.input}
+              inlineImageLeft='ios-call'
+              onChangeText={text => this.setState({ email: text })}
+              ref={(input)=> this.phoneInput = input}
             />
             <Text style={styles.actionbutton}>Password</Text>
             <TextInput
@@ -353,6 +379,8 @@ export default class Register extends Component {
 
          </View>
         </View>
+        </Content>
+        </Container>
 
       </ImageBackground>
     );
@@ -364,8 +392,7 @@ export default class Register extends Component {
 }
 const styles = StyleSheet.create({
   backgroundImage: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    flex: 1,
   },
   container: {
     flex: 1,
@@ -413,7 +440,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     borderBottomColor: '#000000',
     borderBottomWidth: 0.2,
-    marginTop: 1
+    marginTop: 1,
+    fontFamily:'NunitoSans-Regular',
   },
   actionbutton: {
     marginTop: 2,
@@ -422,7 +450,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#3E3E3E',
     textAlign: 'left',
-    fontWeight: '200'
+    fontWeight: '200',
+    fontFamily:'NunitoSans-Bold',
   },
   inputContainer: {
     flexDirection: "row",

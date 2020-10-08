@@ -139,7 +139,7 @@ this.setState({ visible: false, })
 
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
         <View style={styles.welcome}>
-            <Text style={{ fontSize: 15, color: '#fff' }}>Fetching all events</Text>
+            <Text style={{ fontSize: 15, color: '#fff' }}>Processing Payment</Text>
             <BarIndicator count={4} color={color.primary_color} />
             <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
         </View>

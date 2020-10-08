@@ -201,12 +201,10 @@ export default class Dashboard extends Component {
         var left = (
             <Left style={{ flex: 1 }}>
             <Button transparent onPress={() =>this.props.navigation.goBack()}>
-              <Icon
-                active
-                name="left"
-                type='antdesign'
-                color='#FFF'
-              />
+            <View style={{ transform:[{ rotateY: "180deg"}]}}>
+                <Icon  type='material-icons' name='exit-to-app' size={30} color='#FFF' />
+
+                    </View>
             </Button>
           </Left>
         );
