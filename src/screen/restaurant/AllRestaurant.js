@@ -13,6 +13,7 @@ import {
     BarIndicator,
 } from 'react-native-indicators';
 import Moment from 'moment';
+import { getSaveRestaurant, getData } from '../../component/utilities';
 export default class Dashboard extends Component {
 
     constructor(props) {
@@ -37,17 +38,23 @@ export default class Dashboard extends Component {
     }
 
 
+    componentWillUnmount() {
+        this._unsubscribe();
+    }
 
 
-    componentDidMount() {
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-                this.setState({ user: JSON.parse(value).user })
-            }
 
-            this.getEventsRequest()
+    async componentDidMount() {
+        this.setState({
+            data: JSON.parse(await getData()),
+            user: JSON.parse(await getData()).user
         })
+
+
+        this.getEventsRequest()
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.getEventsRequest()
+        });
     }
 
 
@@ -245,7 +252,7 @@ export default class Dashboard extends Component {
                             </View>
 
                             <View style={{ marginLeft: 10, marginRight: 7, flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={styles.titleText}>POPULAR RESTAURANTS</Text>
+                                <Text style={styles.titleText}>SPECIAL OFFERS</Text>
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate('moreR',{ prams: 'all' })}style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
                                     <Text style={{ fontSize: 12, color: 'red', }}>View all </Text>
                                     <Icon

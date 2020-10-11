@@ -59,7 +59,7 @@ export default class Services extends Component {
     getEventsRequest() {
         const { data, user } = this.state
         console.warn(user)
-
+        console.warn(URL.url + 'merchant/services')
 
         fetch(URL.url + 'merchant/services', {
             method: 'GET', headers: {
