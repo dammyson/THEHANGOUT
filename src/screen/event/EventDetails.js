@@ -36,6 +36,7 @@ export default class EventDetails extends Component {
 
   componentWillMount() {
     const { id  } = this.props.route.params;
+    
     this.setState({ id: id });
     AsyncStorage.getItem('data').then((value) => {
       if (value == '') { } else {
@@ -53,8 +54,8 @@ export default class EventDetails extends Component {
 
   processGetEvent() {
     const { data, id, } = this.state
-
-    this.setState({ loading: true })
+    console.warn(id);
+   
     fetch(URL.url + 'events/'+ id, {
       method: 'GET', headers: {
         'Content-Type': 'application/json',
@@ -64,15 +65,15 @@ export default class EventDetails extends Component {
     })
       .then(res => res.json())
       .then(res => {
+       
         console.warn(res);
         if (res.status) {
           this.setState({
-            loading: false,
             details: res.data,
+            loading: false 
           })
         } else {
           Alert.alert('Action failed', res.message, [{ text: 'Okay' }])
-          this.setState({ loading: false })
         }
       }).catch((error) => {
         this.setState({ loading: false })

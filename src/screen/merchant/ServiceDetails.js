@@ -8,7 +8,7 @@ import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel'
 import {
     BarIndicator,
 } from 'react-native-indicators';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { getBalance, getData } from '../../component/utilities';
 
 
 import color from '../../component/color';
@@ -16,6 +16,7 @@ const { width: screenWidth } = Dimensions.get('window')
 import Navbar from '../../component/Navbar';
 const URL = require("../../component/server");
 import Moment from 'moment';
+import Balance from '../../component/views/Balance';
 
 export default class ServiceDetails extends Component {
 
@@ -39,24 +40,32 @@ export default class ServiceDetails extends Component {
 
 
 
-    componentDidMount() {
+
+
+    componentWillUnmount() {
+        this._unsubscribe();
+    }
+
+
+
+    async componentDidMount() {
         const { id  } = this.props.route.params;
         this.setState({ id: id });
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-                this.setState({ user: JSON.parse(value).user })
-            }
-
-             this.getEventsRequest()
+        this.setState({
+            data: JSON.parse(await getData()),
+            user: JSON.parse(await getData()).user,
+            bal: await getBalance()
         })
+        
 
-        AsyncStorage.getItem('bal').then((value) => {
-            if (value == '') { } else {
-                this.setState({ bal: value })
-            }
-        })
+
+        this.getEventsRequest()
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.getEventsRequest()
+        });
     }
+
+
     currencyFormat(n) {
         return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
      }
@@ -156,24 +165,17 @@ export default class ServiceDetails extends Component {
                     <View style={styles.container}>
                         <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
                         <View >
-                            <View style={{ flexDirection: 'row', backgroundColor: '#FFF', marginTop: 24, marginBottom: 24, marginLeft: 30, marginRight: 30, borderRadius: 5 }}>
-                                <View style={{ marginLeft: 20, flex: 1, alignItems: 'flex-start', marginTop: 10, marginBottom: 10 }}>
-                                    <Text style={{ color: '#010113', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>₦{this.state.bal}</Text>
-                                    <Text style={{ color: '#010113', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>My Wallet Balance</Text>
-
-                                </View>
-                                <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('withdraw')} style={{ backgroundColor: '#139F2A', alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
-                                        <Text style={{ color: "#fff", marginTop: 7, marginBottom: 7, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Withdraw Funds</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-
+                        <Balance 
+                                OnButtonPress={()=> this.props.navigation.navigate('withdraw')} 
+                                buttonColor={'#139F2A'} 
+                                textColor={'#fff'}
+                                buttonText={'Withdraw Funds'}
+                                />
                             <View style={{ backgroundColor: '#FFF', marginTop: 10, marginLeft: 20, marginRight: 20, opacity: 0.77, height: 0.6 }}></View>
                             <View style={{ marginLeft: 25, marginRight: 7, marginTop: 10, alignItems: 'flex-start' }}>
                                 <Text style={styles.titleText}>DASHBOARD</Text>
                                 <View style={{}}>
-                                    <Text style={{ marginLeft: 2, color: '#F7A400', fontSize: 10, fontWeight: '500' }}> The Plug Official</Text>
+                                    <Text style={{ marginLeft: 2, color: '#F7A400', fontSize: 10, fontWeight: '500' }}> {details.organizerName}</Text>
                                     <Text style={{ marginLeft: 2, color: '#fff', fontSize: 12, fontWeight: '200', opacity: 0.6, }}> See your summary </Text>
                                 </View>
                             </View>

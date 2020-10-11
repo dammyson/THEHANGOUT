@@ -13,6 +13,10 @@ import {
     BarIndicator,
 } from 'react-native-indicators';
 import Moment from 'moment';
+import { getSaveRestaurant, getData } from '../../component/utilities';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+
+
 export default class Dashboard extends Component {
 
     constructor(props) {
@@ -39,15 +43,20 @@ export default class Dashboard extends Component {
 
 
 
-    componentDidMount() {
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-                this.setState({ user: JSON.parse(value).user })
-            }
+    componentWillUnmount() {
+        this._unsubscribe();
+      }
 
-            this.getEventsRequest()
-        })
+  async componentDidMount() {
+        this.setState({
+            data: JSON.parse(await getData()),
+            user: JSON.parse(await getData()).user
+          })
+
+        this.getEventsRequest()
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+           this.getEventsRequest()
+          });
     }
 
 
@@ -386,13 +395,12 @@ goToMore(params){
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent >
-                    <Avatar
-                        rounded
-                        source={{
-                            uri: this.state.user.profilePicture
-                        }}
-                    />
+                <Button onPress={()=>this.props.navigation.goBack()} transparent >
+                <View style={{ transform:[{ rotateY: "180deg"}]}}>
+                <Icon  type='material-icons' name='exit-to-app' size={30} color='#FFF' />
+
+                    </View>
+               
                 </Button>
             </Left>
         );

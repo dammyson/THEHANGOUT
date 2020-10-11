@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Dimensions, TouchableOpacity,Image,StatusBar, TextInput, StyleSheet, AsyncStorage, ScrollView } from "react-native";
+import { Alert, Dimensions, TouchableOpacity, Image, StatusBar, TextInput, StyleSheet, AsyncStorage, ScrollView } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 
 import { Card, Icon, SocialIcon, Avatar } from 'react-native-elements'
@@ -18,10 +18,10 @@ export default class Pay extends Component {
             bal: 0,
             images_list: [],
             user: {},
-            form_data:[],
-            loading: true ,
+            form_data: [],
+            loading: true,
             done: false,
-            general_amount:''
+            general_amount: ''
         };
     }
 
@@ -61,10 +61,10 @@ export default class Pay extends Component {
             .then(res => {
                 console.warn(res);
                 if (res.status) {
-                   
+
                     this.setState({
                         loading: false,
-                        images_list:res.data
+                        images_list: res.data
                     })
                 } else {
                     this.setState({
@@ -84,23 +84,23 @@ export default class Pay extends Component {
 
 
     processPayAgent() {
-      
+
         const { form_data, data } = this.state
         console.warn(form_data);
-       
-       if (form_data.length < 1 ) {
+
+        if (form_data.length < 1) {
             Alert.alert('Validation failed', "Fields can not be empty", [{ text: 'Okay' }])
             return
         }
-      
-          var all=[];
+
+        var all = [];
         for (let i = 0; i < form_data.length; i++) {
-            if(form_data[i].amount  == null || form_data[i].amount  =='' ){
+            if (form_data[i].amount == null || form_data[i].amount == '') {
                 Alert.alert('Validation failed', "FirstName field can not be empty", [{ text: 'Okay' }])
                 return
             }
         }
-     
+
         this.setState({ loading: true })
         fetch(URL.url + 'agent/pay', {
             method: 'POST', headers: {
@@ -116,9 +116,9 @@ export default class Pay extends Component {
                 console.warn(res);
                 if (res.status) {
                     AsyncStorage.setItem('bal', this.currencyFormat(res.data.balance));
-                    this.setState({ loading: false,  done: true })
-                  
-    
+                    this.setState({ loading: false, done: true })
+
+
                 } else {
                     Alert.alert('Process failed', res.message, [{ text: 'Okay' }])
                     this.setState({ loading: false })
@@ -132,22 +132,22 @@ export default class Pay extends Component {
 
 
     processPayALLAgent() {
-      
+
         const { images_list, data, general_amount } = this.state
-       
-       
-       if (images_list.length < 1 ||  general_amount=="") {
+
+
+        if (images_list.length < 1 || general_amount == "") {
             Alert.alert('Validation failed', "Fields can not be empty", [{ text: 'Okay' }])
             return
         }
-      
-       var all =[]
+
+        var all = []
         for (let i = 0; i < images_list.length; i++) {
-           all.push({id:images_list[i].id, amount: general_amount })
+            all.push({ id: images_list[i].id, amount: general_amount })
         }
 
         console.warn(all)
-    
+
         this.setState({ loading: true })
         fetch(URL.url + 'agent/pay', {
             method: 'POST', headers: {
@@ -163,9 +163,9 @@ export default class Pay extends Component {
                 console.warn(res);
                 if (res.status) {
                     AsyncStorage.setItem('bal', this.currencyFormat(res.data.balance));
-                    this.setState({ loading: false,  done: true })
-                  
-    
+                    this.setState({ loading: false, done: true })
+
+
                 } else {
                     Alert.alert('Process failed', res.message, [{ text: 'Okay' }])
                     this.setState({ loading: false })
@@ -175,19 +175,19 @@ export default class Pay extends Component {
                 this.setState({ loading: false })
                 alert(error.message);
             });
-            
+
     }
 
     currencyFormat(n) {
-        return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-     }
+        return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+    }
 
-    onChangeText(text, i){
-        const {images_list} = this.state
+    onChangeText(text, i) {
+        const { images_list } = this.state
         var instant_array = []
         instant_array = this.state.form_data
 
-          var obj;
+        var obj;
         if (instant_array[i] == null) {
             obj = {};
             obj.amount = text
@@ -216,20 +216,54 @@ export default class Pay extends Component {
     }
 
 
-    delete(i) {
-
-        var instant_array_count = []
-        instant_array_count = this.state.agent_count_array
-        instant_array_count.splice(i, 1);
-        this.setState({ ticket_count_array: instant_array_count })
-
-
-        var instant_array = []
-        instant_array = this.state.form_data
-        instant_array.splice(i, 1);
-        this.setState({ form_data: instant_array })
+    deleteAgent(data) {
+        Alert.alert(
+            'Delete Agent',
+            'Are you sure you want to delete '+ data.name+' from your list of agents',
+            [
+              { text: 'Cancel', onPress: () => console.log('Cancel Pressed!') },
+              { text: 'OK', onPress: () => this.processDeleteAgent(data.id) },
+            ],
+            { cancelable: false }
+          )
+          return
 
     }
+
+    processDeleteAgent(i) {
+        console.warn(i)
+        const { data } = this.state
+        this.setState({
+            loading: true,
+        })
+
+        fetch(URL.url + 'agent/'+i, {
+            method: 'DELETE', headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Authorization': 'Bearer ' + data.token,
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.warn(res);
+                this.setState({loading: false })
+                if (res.status) {
+                    Alert.alert('Process Successfull', "Agent Deleted", [{ text: 'Okay' }])
+                    this.getAgentsRequest()
+                } else {
+                    Alert.alert('Process Failed', "Agent not Deleted", [{ text: 'Okay' }])
+                }
+            })
+            .catch(error => {
+                this.setState({ loading: false })
+                alert(error.message);
+                console.warn(error);
+               
+            });
+
+ 
+     }
 
     render() {
 
@@ -265,14 +299,14 @@ export default class Pay extends Component {
             return (
                 <Container style={{ backgroundColor: '#000' }}>
                     <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" translucent={true} />
-        
+
                     <Navbar left={left} title='' bg='#000' />
                     <Content>
-                        <View style={{  width: Dimensions.get('window').width, height: Dimensions.get('window').height,}}>
-        
-        
+                        <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, }}>
+
+
                             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        
+
                                 <View style={{ alignItems: 'center', margin: 20, }}>
                                     <TouchableOpacity style={{ backgroundColor: 'green', height: 74, width: 74, borderRadius: 37, justifyContent: 'center', alignItems: 'center', }}>
                                         <Icon
@@ -283,28 +317,28 @@ export default class Pay extends Component {
                                             size={34}
                                         />
                                     </TouchableOpacity>
-        
+
                                     <Text style={{ color: '#fff', fontSize: 22, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>Success</Text>
                                     <Text style={{ textAlign: 'center', color: '#fff', fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.8 }}>You've Paid agents successfully</Text>
                                 </View>
-        
-        
-        
-        
+
+
+
+
                                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
-                                    <TouchableOpacity onPress={() => [this.setState({done:false}),this.props.navigation.goBack()]} style={styles.enablebutton} block iconLeft>
+                                    <TouchableOpacity onPress={() => [this.setState({ done: false }), this.props.navigation.goBack()]} style={styles.enablebutton} block iconLeft>
                                         <Text style={{ color: '#fff', marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
                                     </TouchableOpacity>
                                 </View>
-        
-        
+
+
                             </View>
-        
-        
-        
+
+
+
                         </View>
-        
-        
+
+
                     </Content>
                 </Container>
             );
@@ -316,7 +350,7 @@ export default class Pay extends Component {
                 <Navbar left={left} title="Pay your agents" bg='#000' />
                 <Content>
                     <View style={styles.container}>
-                   
+
 
 
                         <View style={{ flexDirection: 'row', backgroundColor: '#fff', marginTop: 24, marginBottom: 24, marginLeft: 20, marginRight: 20, borderRadius: 5 }}>
@@ -334,77 +368,77 @@ export default class Pay extends Component {
 
 
                         {this.state.images_list.length ?
-                        <View>
-                        <View style={styles.main_content}>
-                            <Text style={{ marginLeft: 20, color: '#fff', marginTop: 10, marginBottom: 10, fontSize: 16, fontFamily: 'NunitoSans-bold', }}>Quick Payment</Text>
-                            <View onPress={() => this.incrememntTicketCount()} style={{ marginRight: 20, flexDirection: 'row', }}>
-                                <Text style={{ marginLeft: 20, fontSize: 10, color: '#FFF', opacity: 0.7 }}>Send equal amount to multiple agents</Text>
+                            <View>
+                                <View style={styles.main_content}>
+                                    <Text style={{ marginLeft: 20, color: '#fff', marginTop: 10, marginBottom: 10, fontSize: 16, fontFamily: 'NunitoSans-bold', }}>Quick Payment</Text>
+                                    <View onPress={() => this.incrememntTicketCount()} style={{ marginRight: 20, flexDirection: 'row', }}>
+                                        <Text style={{ marginLeft: 20, fontSize: 10, color: '#FFF', opacity: 0.7 }}>Send equal amount to multiple agents</Text>
+                                    </View>
+
+                                    <View style={styles.item}>
+
+                                        <TextInput
+                                            placeholder="Enter amount"
+                                            placeholderTextColor='#8d96a6'
+                                            returnKeyType="next"
+                                            onSubmitEditing={() => this.processPayALLAgent()}
+                                            keyboardType='numeric'
+                                            autoCapitalize="none"
+                                            autoCorrect={false}
+                                            style={styles.menu}
+                                            onChangeText={text => this.setState({ general_amount: text })}
+                                        />
+
+
+                                    </View>
+
+
+                                    <View onPress={() => this.incrememntTicketCount()} style={{ marginRight: 20, flexDirection: 'row', }}>
+                                        <Text style={{ marginLeft: 20, fontSize: 11, color: '#FFF', opacity: 1 }}>Select agents</Text>
+                                    </View>
+
+                                    <ScrollView horizontal style={{ marginRight: 20, marginLeft: 20, marginBottom: 20, marginTop: 15 }}>
+                                        <TouchableOpacity onPress={() => this.props.navigation.naviagete('agent_create')} style={{ height: 80, width: 80, borderRadius: 5, backgroundColor: '#5F5C7F', borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
+
+                                            <Icon
+                                                active
+                                                name="plus-circle"
+                                                type='material-community'
+                                                color='#FFF'
+                                                size={30}
+                                            />
+                                            <Text style={{ color: '#fff', textAlign: 'center', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>Add A New Agent</Text>
+                                        </TouchableOpacity>
+                                        {this.renderResuts(this.state.images_list)}
+                                    </ScrollView>
+
+                                    <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
+                                        <TouchableOpacity onPress={() => this.processPayALLAgent()} style={styles.greenbutton} block iconLeft>
+                                            <Text style={{ color: '#fff', marginTop: 10, marginBottom: 10, fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay Agents</Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                </View>
+
+                                {this.renderAgents(this.state.images_list)}
+
+                                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
+                                    <TouchableOpacity onPress={() => this.processPayAgent()} style={styles.enablebutton} block iconLeft>
+                                        <Text style={{ color: '#000', marginTop: 10, marginBottom: 10, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay</Text>
+                                    </TouchableOpacity>
+                                </View>
+
                             </View>
-
-                            <View style={styles.item}>
-
-                                <TextInput
-                                    placeholder="Enter amount"
-                                    placeholderTextColor='#8d96a6'
-                                    returnKeyType="next"
-                                    onSubmitEditing={() => this.processPayALLAgent()}
-                                    keyboardType='numeric'
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                    style={styles.menu}
-                                    onChangeText={text => this.setState({general_amount: text})}
-                                />
-
-
-                            </View>
-
-
-                            <View onPress={() => this.incrememntTicketCount()} style={{ marginRight: 20, flexDirection: 'row', }}>
-                                <Text style={{ marginLeft: 20, fontSize: 11, color: '#FFF', opacity: 1 }}>Select agents</Text>
-                            </View>
-
-                            <ScrollView horizontal style={{ marginRight: 20, marginLeft: 20, marginBottom: 20, marginTop: 15 }}>
-                                <TouchableOpacity onPress={() => this.props.navigation.naviagete('agent_create')} style={{ height: 80, width: 80, borderRadius: 5, backgroundColor: '#5F5C7F', borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
-
-                                    <Icon
-                                        active
-                                        name="plus-circle"
-                                        type='material-community'
-                                        color='#FFF'
-                                        size={30}
-                                    />
-                                    <Text style={{ color: '#fff', textAlign: 'center', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>Add A New Agent</Text>
-                                </TouchableOpacity>
-                                {this.renderResuts(this.state.images_list)}
-                            </ScrollView>
+                            :
 
                             <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
-                                <TouchableOpacity onPress={()=> this.processPayALLAgent()} style={styles.greenbutton} block iconLeft>
-                                    <Text style={{ color: '#fff', marginTop: 10, marginBottom: 10, fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay Agents</Text>
+                                <Text style={[styles.titlesubText, { marginBottom: 20 }]}>You do not have any agent at the moment</Text>
+                                <TouchableOpacity onPress={() => this.props.navigation.replace('agent_create')} style={styles.enablebutton} block iconLeft>
+                                    <Text style={{ color: '#000', marginTop: 10, marginBottom: 10, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Add Agent</Text>
                                 </TouchableOpacity>
                             </View>
 
-                        </View>
-
-                        {this.renderAgents(this.state.images_list)}
-
-                        <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
-                            <TouchableOpacity onPress={() => this.processPayAgent()} style={styles.enablebutton} block iconLeft>
-                                <Text style={{ color: '#000', marginTop: 10, marginBottom: 10, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        </View>
-                        :
-
-                        <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
-                                 <Text style={[styles.titlesubText,{marginBottom:20}]}>You do not have any agent at the moment</Text>
-                        <TouchableOpacity onPress={() => this.processAddAgent()} style={styles.enablebutton} block iconLeft>
-                            <Text style={{ color: '#000', marginTop: 10, marginBottom: 10, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Add Agent</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                            }
+                        }
 
 
                     </View>
@@ -417,21 +451,32 @@ export default class Pay extends Component {
 
         let cat = [];
         for (var i = 0; i < data.length; i++) {
+            let r = i;
             cat.push(
 
-                <View style={{ backgroundColor: '#fff', height: 80, width: 80, marginLeft: 10, marginRight: 10, borderRadius: 5, alignItems: 'center', justifyContent: 'center' }}>
-                    <Avatar
-                        rounded
-                        source={{
-                            uri: data[i].imageUrl
+                <View>
+                    <View style={{ backgroundColor: '#fff', height: 80, width: 80, marginLeft: 10, marginRight: 10, borderRadius: 5, alignItems: 'center', justifyContent: 'center' }}>
 
-                        }}
-                        overlayContainerStyle={{ backgroundColor: 'white', borderColor: color.primary_color, borderWidth: 2 }}
+                        <Avatar
+                            rounded
+                            source={{
+                                uri: data[i].imageUrl
+
+                            }}
+                            overlayContainerStyle={{ backgroundColor: 'white', borderColor: color.primary_color, borderWidth: 2 }}
+                        />
+                        <Text style={{ color: '#000', textAlign: 'center', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>{data[i].name}</Text>
+                    </View>
+
+                    <TouchableOpacity  onPress={()=> this.deleteAgent(data[r])} style={{ width:30 }}>
+                    <Icon
+                        active
+                        name="close"
+                        type='antdesign'
+                        color='red'
                     />
-                    <Text style={{ color: '#000', textAlign: 'center', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>{data[i].name}</Text>
+                    </TouchableOpacity>
                 </View>
-
-
 
             );
         }
@@ -445,20 +490,20 @@ export default class Pay extends Component {
             let id = i;
             cat.push(
 
-                <View style={{ paddingLeft:10, backgroundColor: '#fff', height: 90, marginTop: 10, paddingBottom:10, paddingTop:13, marginLeft: 20, marginRight: 20, borderRadius: 5, flexDirection: 'row' }}>
+                <View style={{ paddingLeft: 10, backgroundColor: '#fff', height: 90, marginTop: 10, paddingBottom: 10, paddingTop: 13, marginLeft: 20, marginRight: 20, borderRadius: 5, flexDirection: 'row' }}>
                     <Image
-                       style={styles.logo}
+                        style={styles.logo}
                         source={{
                             uri: data[i].imageUrl
                         }}
-                        overlayContainerStyle={{marginLeft: 10, backgroundColor: 'white', borderColor: color.primary_color, borderWidth: 2,  }}
+                        overlayContainerStyle={{ marginLeft: 10, backgroundColor: 'white', borderColor: color.primary_color, borderWidth: 2, }}
                     />
-                    <View style={{ flex:1 }}>
-                    <Text style={{ color: '#000',   marginLeft: 20, fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>{data[i].name}</Text>
-             
+                    <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#000', marginLeft: 20, fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>{data[i].name}</Text>
+
                         <View style={styles.item_two}>
                             <TextInput
-                              placeholder="Enter amount"
+                                placeholder="Enter amount"
                                 placeholderTextColor='#8d96a6'
                                 returnKeyType="next"
                                 onSubmitEditing={() => this.nextStep()}
@@ -525,7 +570,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'left',
         fontFamily: 'NunitoSans-Bold',
-      flex:1
+        flex: 1
     },
     qrbuttonContainer: {
         flexDirection: 'row',
@@ -576,7 +621,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         borderRadius: 5,
-        marginTop:5
+        marginTop: 5
     },
     menu_two: {
         height: 35,
@@ -586,16 +631,16 @@ const styles = StyleSheet.create({
         color: '#000',
         textAlign: 'left',
         fontFamily: 'NunitoSans-Bold',
-        flex:1
+        flex: 1
 
     },
-    logo:{
-        width:60,
-        height:60,
+    logo: {
+        width: 60,
+        height: 60,
         justifyContent: 'center',
-        borderRadius:6,
-        borderWidth:2,
-        borderColor:color.primary_color,
+        borderRadius: 6,
+        borderWidth: 2,
+        borderColor: color.primary_color,
     },
     welcome: {
         height: 90,

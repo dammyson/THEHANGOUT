@@ -315,7 +315,7 @@ export default class Details extends Component {
                 <View style={styles.map}>
                 </View>
 
-                <Text style={styles.headings}> EVENT DETAILS </Text>
+                <Text style={styles.headings}> RESTAURANT DETAILS </Text>
                 <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, marginTop: 15, }}>  {details.description} </Text>
                 <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200', opacity: 0.6, marginTop: 15, }}> Read more</Text>
 

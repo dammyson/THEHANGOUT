@@ -15,7 +15,7 @@ export default class step4 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      venue: 'kkkk',
+      venue: '',
       data: '',
 
     };
