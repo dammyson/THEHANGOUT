@@ -97,6 +97,7 @@ export default class Details extends Component {
 
     render() {
         const { details, } = this.state
+        const { state, goBack } = this.props.navigation;
         const ticketVisibility = {
             label: 'Select visibility',
             value: null,
@@ -106,7 +107,7 @@ export default class Details extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={() => goBack()}>
                     <Icon
                         active
                         name="ios-arrow-back"
@@ -119,7 +120,7 @@ export default class Details extends Component {
 
         var right = (
             <Right style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent >
                     <Icon
                         active
                         name="md-more"
@@ -196,7 +197,7 @@ export default class Details extends Component {
                         
                         <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#111123', flexDirection: 'row' }}>
 
-                        <TouchableOpacity onPress={() => Actions.reserveT({ resturant: details, type: 'replace' })} style={{ height: 45, flexDirection: 'row', paddingRight: 30, paddingLeft: 30, marginTop: 20, marginBottom: 20, margin: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: 'red' }}>
+                        <TouchableOpacity onPress={() =>  this.props.navigation.navigate('reserveT', { resturant: details, type: 'replace' })}  style={{ height: 45, flexDirection: 'row', paddingRight: 30, paddingLeft: 30, marginTop: 20, marginBottom: 20, margin: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: 'red' }}>
                             <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>RESERVE NOW</Text>
                         </TouchableOpacity>
                     </View>
@@ -262,7 +263,7 @@ export default class Details extends Component {
     renderItem = ({ item, }) => {
         const { details, } = this.state
         return (
-            <TouchableOpacity onPress={() => Actions.place_order({restaurant: details.name, res_id: details.id, menu_id: item.id,  })} style={{borderBottomColor: "#ffffff60", borderBottomWidth: 0.7, flexDirection: 'row', marginLeft: 25, paddingBottom:15, marginRight: 20, marginTop: 10 }} >
+            <TouchableOpacity onPress={() =>   this.props.navigation.navigate('place_order', {restaurant: details.name, res_id: details.id, menu_id: item.id,  })} style={{borderBottomColor: "#ffffff60", borderBottomWidth: 0.7, flexDirection: 'row', marginLeft: 25, paddingBottom:15, marginRight: 20, marginTop: 10 }} >
                 <View style={styles.resultTextDescription}>
         <Text style={{ fontFamily: 'NunitoSans-Bold', color: '#fff', fontWeight: '700', fontSize: 12, marginBottom:10 }}>{item.name}</Text>
                     <Text style={{ fontFamily: 'NunitoSans-Regular',color: '#fff', fontWeight: '200', fontSize: 12,marginBottom:10 }}>{item.description}</Text>

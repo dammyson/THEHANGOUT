@@ -27,6 +27,8 @@ export default class Dashboard extends Component {
             ],
             datatwo: [
             ],
+            special_offers: [
+            ],
             data: '',
             nodata: false,
             slider1ActiveSlide: 0,
@@ -52,6 +54,7 @@ export default class Dashboard extends Component {
 
 
         this.getEventsRequest()
+        this.getSpecialOffer()
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
             this.getEventsRequest()
         });
@@ -96,36 +99,73 @@ export default class Dashboard extends Component {
 
     };
 
+    getSpecialOffer() {
+        const { data, user } = this.state
+
+        fetch(URL.url + 'food/special-offers', {
+            method: 'GET', headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Authorization': 'Bearer ' + data.token,
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.warn(res);
+                if (res.status) {
+                    this.setState({
+                        special_offers:res.data,
+                        loading: false
+                    })
+                } else {
+                    this.setState({
+                        nodate: true,
+                        loading: false
+                    })
+                }
+            })
+            .catch(error => {
+                alert(error.message);
+                console.warn(error);
+                this.setState({ loading: false })
+            });
 
 
+    };
+
+
+    currencyFormat(n) {
+        return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+    }
 
     _renderItem = ({ item, index }, parallaxProps) => {
         Moment.locale('en');
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('restaurantD',{ id: item.id }) } >
+            <TouchableOpacity onPress={() =>  this.props.navigation.navigate('place_order', {restaurant: item.restaurant, res_id: item.restaurantId, menu_id: item.menuId,  })}  >
                 <ImageBackground
                     opacity={0.5}
                     style={{ borderRadius: 12 }}
-                    source={{ uri: item.banner }}
-                    imageStyle={{ borderRadius: 20, backgroundColor: 'blue' }}
+                    source={{ uri: item.bannerUrl }}
+                    imageStyle={{ borderRadius: 5, backgroundColor: 'blue' }}
 
                 >
 
 
-                    <View style={styles.details} >
-                        <Text style={styles.date}>Opens {item.openingTime}</Text>
-                        <Text style={styles.tittle}>{item.name}</Text>
+                    <View style={{ marginTop: 120, paddingTop:5,  backgroundColor:'#fff'}} >
+                        <Text style={{ marginRight: 13,marginTop: 7, marginLeft: 13,fontSize: 13,color: '#000', textAlign: 'left',fontFamily: 'NunitoSans-SemiBold'}}>{item.menuName}</Text>
+                        <Text style={ { marginRight: 5, marginLeft: 13,fontSize: 13, color: '#000', textAlign: 'left', fontFamily: 'NunitoSans-Bold'}}>₦{this.currencyFormat(item.amount)}</Text>
 
                         <View style={styles.piceContainer}>
-                            <View style={{ flex: 1, flexDirection: 'row', marginTop: 3, marginLeft: 15 }}>
+                            <View style={{ flex: 1, flexDirection: 'row', marginTop: 3, marginLeft: 1, marginBottom:15 }}>
+                            <Text style={{ marginRight: 5,marginLeft: 13,fontSize: 10,color: '#000',textAlign: 'left', fontFamily: 'NunitoSans-light'}}>{item.restaurant}</Text>
                                 <Icon
                                     active
                                     name="location-pin"
                                     type='entypo'
-                                    color='#fff'
+                                    color='#000'
                                     size={15}
                                 />
-                                <Text style={styles.price}>{item.location}</Text>
+                                <Text style={{ marginRight: 5,marginLeft: 13,fontSize: 10,color: '#000',textAlign: 'left', fontFamily: 'NunitoSans-light'}}>{Moment(item.startDate).format('llll')}</Text>
 
                             </View>
 
@@ -155,7 +195,7 @@ export default class Dashboard extends Component {
 
                 <Carousel
                     ref={(c) => { this._carousel = c; }}
-                    data={this.state.dataone}
+                    data={this.state.special_offers}
                     renderItem={this._renderItem}
                     sliderWidth={Dimensions.get('window').width}
                     itemWidth={Dimensions.get('window').width / 1.4}

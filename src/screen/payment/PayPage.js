@@ -86,7 +86,7 @@ chargeCard() {
   const {cardDetails, } = this.state
 
   console.warn(cardDetails)
-  /*
+
 var res = cardDetails.values.expiry.split("/");
 
 RNPaystack.chargeCard({
@@ -99,14 +99,13 @@ RNPaystack.chargeCard({
 })
 .then(response => {
   console.warn(response); // card charged successfully, get reference here
- // this.processGetEventTickets(response) 
+  this.processGetEventTickets(response) 
 })
 .catch(error => {
   console.warn(error);
   console.warn(error.message);
     console.warn(error.code); // error is a javascript Error object
 })
-*/
 }
 
 _onChange = (formData) => {

@@ -11,10 +11,12 @@ import RNPickerSelect from 'react-native-picker-select';
 import {
     BarIndicator,
 } from 'react-native-indicators';
-import Moment from 'moment';
+import { getSaveRestaurant, getData } from '../../component/utilities';
 
 import Navbar from '../../component/Navbar';
 import Success from "../../component/views/Success";
+import CardPay from "../../component/views/CardPay";
+import Balance from '../../component/views/Balance';
 
 const type = [
     {
@@ -37,7 +39,8 @@ export default class BuyPaidTicket extends Component {
         super(props);
         this.state = {
             loading: false,
-            done: true,
+            done: false,
+            show_card: false,
             data: '',
             name: '',
             id: '',
@@ -50,7 +53,8 @@ export default class BuyPaidTicket extends Component {
             tickets: [],
             bal: '',
             ticket_buy: [],
-            ticketsPrice: 0
+            ticketsPrice: 0,
+            pay_type: 0,
 
 
         }
@@ -58,16 +62,13 @@ export default class BuyPaidTicket extends Component {
 
 
 
-    componentWillMount() {
+    async componentWillMount() {
 
         const { id, ticket } = this.props.route.params;
         this.setState({ id: id });
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-                this.setState({ user: JSON.parse(value).user })
-            }
-            // this.processGetEvent();
+        this.setState({
+            data: JSON.parse(await getData()),
+            user: JSON.parse(await getData()).user
         })
 
         AsyncStorage.getItem('bal').then((value) => {
@@ -81,11 +82,17 @@ export default class BuyPaidTicket extends Component {
         }
     }
 
+    segmentClicked = (index) => {
+        this.setState({
+            pay_type: index
+        })
+    }
+
 
     onChangeText(text, i, name,) {
         var instant_array = []
         instant_array = this.state.form_data
-
+        var obj;
         if (instant_array[i] == null) {
             obj = {};
 
@@ -170,13 +177,8 @@ export default class BuyPaidTicket extends Component {
 
     }
 
-
-
-    processGetEventTickets() {
-
-        const { form_data, data, ticket_buy } = this.state
-
-        console.warn(form_data);
+    handleButtonClick() {
+        const { form_data, pay_type, ticketsPrice } = this.state
 
         if (form_data.length < 1) {
             Alert.alert('Validation failed', "Fields can not be empty", [{ text: 'Okay' }])
@@ -199,6 +201,24 @@ export default class BuyPaidTicket extends Component {
             }
         }
 
+        console.warn(ticketsPrice)
+        if(pay_type == 0){
+            this.processGetEventTickets('no ref', true)
+        }else{
+            this.setState({ show_card: true })
+        }
+    }
+
+    processGetEventTickets(ref, isWallet) {
+
+        const { form_data, data, ticket_buy, pay_type } = this.state
+
+        console.warn(form_data);
+        console.warn(JSON.stringify({
+            ticketsList: form_data,
+            isWallet: isWallet,
+            PaymentRef: ref}))
+
         this.setState({ loading: true })
         fetch(URL.url + 'tickets/subscribe', {
             method: 'POST', headers: {
@@ -207,6 +227,8 @@ export default class BuyPaidTicket extends Component {
                 'Authorization': 'Bearer ' + data.token,
             }, body: JSON.stringify({
                 ticketsList: form_data,
+                isWallet: isWallet,
+                PaymentRef: ref
             }),
         })
             .then(res => res.json())
@@ -225,6 +247,7 @@ export default class BuyPaidTicket extends Component {
                 this.setState({ loading: false })
                 alert(error.message);
             });
+
 
     }
 
@@ -323,7 +346,7 @@ export default class BuyPaidTicket extends Component {
 
 
                                     <View style={{ flexDirection: 'row', marginTop: 6, marginLeft: 32, marginRight: 32 }}>
-                                        <TouchableOpacity style={styles.activeType} >
+                                        <TouchableOpacity onPress={() => this.segmentClicked(0)} style={[this.state.pay_type == 0 ? styles.activeType : styles.inActiveType]} >
                                             <Icon
                                                 active
                                                 name="wallet"
@@ -333,7 +356,7 @@ export default class BuyPaidTicket extends Component {
                                             />
                                             <Text style={{ color: '#000', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with wallet</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={styles.inActiveType} >
+                                        <TouchableOpacity onPress={() => this.segmentClicked(1)} style={[this.state.pay_type == 1 ? styles.activeType : styles.inActiveType]} >
                                             <Icon
                                                 active
                                                 name="bank"
@@ -341,7 +364,7 @@ export default class BuyPaidTicket extends Component {
                                                 color='#5F5C7F'
                                                 size={26}
                                             />
-                                            <Text style={{ color: '#5F5C7F', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with wallet</Text>
+                                            <Text style={{ color: '#5F5C7F', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with Bank</Text>
                                         </TouchableOpacity>
                                     </View>
 
@@ -351,18 +374,18 @@ export default class BuyPaidTicket extends Component {
 
 
                                     <View style={{ backgroundColor: '#fff', marginTop: 20, marginBottom: 20, marginLeft: 20, marginRight: 20, }}>
-                                        <View style={{ flexDirection: 'row', backgroundColor: '#111124', marginTop: 24, marginBottom: 24, marginLeft: 20, marginRight: 20, borderRadius: 5 }}>
-                                            <View style={{ marginLeft: 20, flex: 1, alignItems: 'flex-start', marginTop: 10, marginBottom: 10 }}>
-                                                <Text style={{ color: '#fff', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>₦{this.state.bal}</Text>
-                                                <Text style={{ color: '#fff', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>My Wallet Balance</Text>
 
-                                            </View>
-                                            <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
-                                                <TouchableOpacity onPress={() =>  this.props.navigation.navigate('fundW')} style={{ backgroundColor: color.primary_color, alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
-                                                    <Text style={{ color: "#010113", marginTop: 7, marginBottom: 7, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Fund Wallet</Text>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
+
+                                        <Balance
+
+                                            OnButtonPress={() => this.props.navigation.navigate('fundW')}
+                                            backgroundColor={'#111124'}
+                                            buttonColor={color.primary_color}
+                                            textColor={'#010113'}
+                                            buttonText={'Fund Wallet'}
+                                            balTextColor={'#fff'}
+                                            commentTextColor={'#fff'}
+                                        />
 
                                         <View style={styles.inputView}>
                                             <Text style={{ color: '#000', fontSize: 12, fontWeight: '200', margin: 10, fontFamily: 'NunitoSans', }}>You will not be charged for this transaction</Text>
@@ -386,7 +409,7 @@ export default class BuyPaidTicket extends Component {
                             </View>
                             <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 10, }}>
-                                    <TouchableOpacity onPress={() => this.processGetEventTickets()} style={styles.enablebutton} block iconLeft>
+                                    <TouchableOpacity onPress={() => this.handleButtonClick()} style={styles.enablebutton} block iconLeft>
                                         <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 10, fontSize: 14, fontWeight: '200', fontFamily: 'NunitoSans', }}>PAY ₦  {this.currencyFormat(this.state.ticketsPrice)}  </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -399,9 +422,8 @@ export default class BuyPaidTicket extends Component {
                     </Content>
 
                 </Container>
-                {this.state.done ?
-                    this.success() :
-                    null}
+                {this.state.done ? this.success() : null}
+                {this.state.show_card ? this.renderCardPay() : null}
             </>);
     }
     renderUpcomming() {
@@ -555,9 +577,9 @@ export default class BuyPaidTicket extends Component {
         };
         return items;
     }
-    onPress () {
+    onPress() {
         this.props.navigation.replace('listT');
-      }
+    }
     success() {
         return (
             <Success
@@ -572,6 +594,26 @@ export default class BuyPaidTicket extends Component {
             />
 
         );
+    }
+onSuccess(res){
+    this.setState({ show_card: false })
+    this.processGetEventTickets(res.reference, false)
+}
+onFailed(){
+    this.setState({ show_card: false })
+    Alert.alert('Process failed', 'Check your card and try again or use another payment method', [{ text: 'Okay' }])
+}
+    renderCardPay() {
+        const { ticketsPrice} = this.state
+        const amount = ticketsPrice * 100
+        return (
+            <CardPay
+                onClose={(v) => this.setState({ show_card: false })}
+                onSuccess={(res)=> this.onSuccess(res)}
+                onFailed={() => this.onFailed()}
+                amount={amount}
+            />
+        )
     }
 
 }

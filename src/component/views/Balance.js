@@ -65,12 +65,12 @@ export default class Balance extends Component {
     }
 
     render() {
-        const { OnButtonPress,buttonColor, textColor, buttonText } = this.props;
+        const { OnButtonPress,buttonColor, textColor, buttonText, backgroundColor , balTextColor, commentTextColor} = this.props;
         return (
-            <View style={{ flexDirection: 'row', backgroundColor: '#FFF', marginTop: 24, marginBottom: 24, marginLeft: 30, marginRight: 30, borderRadius: 5 }}>
+            <View style={{ flexDirection: 'row', backgroundColor: backgroundColor, marginTop: 24, marginBottom: 24, marginLeft: 30, marginRight: 30, borderRadius: 5 }}>
                 <View style={{ marginLeft: 20, flex: 1, alignItems: 'flex-start', marginTop: 10, marginBottom: 10 }}>
-                    <Text style={{ color: '#010113', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>₦{this.state.bal}</Text>
-                    <Text style={{ color: '#010113', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>My Wallet Balance</Text>
+                    <Text style={{ color: balTextColor, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>₦{this.state.bal}</Text>
+                    <Text style={{ color: commentTextColor, fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>My Wallet Balance</Text>
 
                 </View>
                 <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
