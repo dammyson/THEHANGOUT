@@ -337,7 +337,7 @@ export default class ListTickets extends Component {
                                     color='#FFF'
                                     size={16}
                                 />
-                                <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}> {tickets[i].numberOfTickets} Tickets </Text>
+                                <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}> {tickets[i].numberOfTickets} </Text>
                             </View>
 
                         </View>

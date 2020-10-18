@@ -75,7 +75,7 @@ class AppStack extends Component {
                 headerStyle: { backgroundColor: '#7862ff' }, 
                 headerShown: false,
                }}
-               initialRouteName="Splash">
+               initialRouteName="restaurants">
   
             <Stack.Screen name="Splash" component={Splash}  />
             <Stack.Screen name="sorting" component={Sorting}   />
@@ -104,6 +104,7 @@ class AppStack extends Component {
             <Stack.Screen name='transaction' component={Transaction}   />
             <Stack.Screen name='fundW' component={FundWalet}   />
             <Stack.Screen name='more' component={MoreEvent}   />
+            
             <Stack.Screen name='pay' component={PayPage}   />
             <Stack.Screen name='qr' component={QRcode}   />
             <Stack.Screen name='withdraw' component={WithDraw}   />
