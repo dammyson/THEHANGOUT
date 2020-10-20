@@ -1,20 +1,12 @@
 import React, { Component } from "react";
-import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, StatusBar, NativeModules, SafeAreaView } from "react-native";
+import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, StatusBar, NativeModules, SafeAreaView, ScrollView } from "react-native";
 import { Container, Content, View, Text, Button, Left, Toast, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
-const deviceHeight = Dimensions.get("window").height;
-import DatePicker from 'react-native-datepicker'
+
 const URL = require("../../component/server");
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import Moment from 'moment';
 import color from '../../component/color';
 const { width: screenWidth } = Dimensions.get('window')
 import RNPickerSelect from 'react-native-picker-select';
-import {
-    BarIndicator,
-} from 'react-native-indicators';
-
 import Navbar from '../../component/Navbar';
 import ActivityIndicator from "./ActivityIndicator";
 
@@ -67,9 +59,9 @@ export default class PaidTicket extends Component {
     }
 
     processAddTicket() {
-        const {  onComplete } = this.props;
+        const { onComplete } = this.props;
         const { data, form_data } = this.state
-        
+
 
         if (form_data.length < 1) {
             Alert.alert('Validation failed', "Fields can not be empty", [{ text: 'Okay' }])
@@ -112,7 +104,7 @@ export default class PaidTicket extends Component {
 
 
         this.setState({ loading: true })
-       console.warn(URL.url + 'events/add-tickets')
+        console.warn(URL.url + 'events/add-tickets')
         fetch(URL.url + 'events/add-tickets', {
             method: 'POST', headers: {
                 'Content-Type': 'application/json',
@@ -152,13 +144,13 @@ export default class PaidTicket extends Component {
 
 
 
-    onChangeText(text, i, name, ) {
+    onChangeText(text, i, name,) {
         var obj = {};
         var instant_array = []
         instant_array = this.state.form_data
 
         if (instant_array[i] == null) {
-           // obj = {};
+            // obj = {};
 
             if (name == 'name') {
                 obj.Title = text
@@ -256,48 +248,42 @@ export default class PaidTicket extends Component {
 
         if (this.state.loading) {
             return (
-                <ActivityIndicator message={'Adding tickects'} color={color.primary_color}/>
+                <ActivityIndicator message={'Adding tickects'} color={color.primary_color} />
             );
         }
 
         return (
-          
-            <Container style={{ height: Dimensions.get('window').height, backgroundColor: '#101023', position: "absolute", }}>
-                   <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" translucent={true} />
+            <Container style={{ height: Dimensions.get('window').height, backgroundColor: '#101023', position: "absolute", top:10 }}>
+                <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" translucent={true} />
                 <Navbar left={left} title='Paid Ticket' bg='#101023' />
                 <Content>
-                    <View style={styles.container}>
-                        {this.renderUpcomming()}
-
-                        <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                            <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 10, }}>
-                                <TouchableOpacity onPress={() => this.incrememntTicketCount()} style={styles.enablebutton} block iconLeft>
-                                    <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 10, fontSize: 14, fontWeight: '200', fontFamily: 'NunitoSans', }}>Add</Text>
-                                </TouchableOpacity>
-                            </View>
-
-                        </View>
-
-                        <TouchableOpacity style={styles.fab} onPress={() => this.processAddTicket()}>
-                            <Icon
-                                active
-                                name="check"
-                                type='feather'
-                                color='green'
-                                size={25}
-                            />
+                    <ScrollView>
+                    <>
+                    {this.renderUpcomming()}
+                    <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 10, }}>
+                        <TouchableOpacity onPress={() => this.incrememntTicketCount()} style={styles.enablebutton} block iconLeft>
+                            <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 10, fontSize: 14, fontWeight: '200', fontFamily: 'NunitoSans', }}>Add</Text>
                         </TouchableOpacity>
-
-                        <View style={{ height: 4 }} >
-
-                        </View>
-
                     </View>
 
+                    <TouchableOpacity style={styles.fab} onPress={() => this.processAddTicket()}>
+                        <Icon
+                            active
+                            name="check"
+                            type='feather'
+                            color='green'
+                            size={25}
+                        />
+                    </TouchableOpacity>
+
+                    <View style={{ height: 400 }} >
+
+                    </View>
+                    </>
+                    </ScrollView>
 
                 </Content>
             </Container>
-           
         );
     }
 
@@ -506,10 +492,6 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
     },
-    container: {
-       flex:1
-        
-    },
     oneRow: {
         marginBottom: 10,
         width: Dimensions.get('window').width,
@@ -549,7 +531,7 @@ const styles = StyleSheet.create({
         width: 60,
         borderRadius: 200,
         position: 'absolute',
-        bottom: 10,
+        bottom: 370,
         right: 20,
         justifyContent: 'center',
         alignItems: 'center',

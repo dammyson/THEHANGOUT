@@ -16,6 +16,7 @@ import {
 import Moment, { max } from 'moment';
 
 import Navbar from '../../component/Navbar';
+import Balance from "../../component/views/Balance";
 
 
 
@@ -33,7 +34,7 @@ export default class FundWallet extends Component {
       pay: false,
       amount: 0,
       bal: '',
-      done:false
+      done: false
 
 
     };
@@ -52,13 +53,13 @@ export default class FundWallet extends Component {
 
     })
 
-    
+
 
     AsyncStorage.getItem('bal').then((value) => {
       if (value == '') { } else {
-          this.setState({ bal:  value})
+        this.setState({ bal: value })
       }
-  })
+    })
 
 
   }
@@ -81,7 +82,7 @@ export default class FundWallet extends Component {
         console.warn(res);
         if (res.status) {
           AsyncStorage.setItem('bal', this.currencyFormat(res.data.balance));
-          this.setState({ 
+          this.setState({
             bal: this.currencyFormat(res.data.balance),
             loading: false,
             pay: false,
@@ -100,9 +101,9 @@ export default class FundWallet extends Component {
   }
 
   chargeCard() {
-  
-    const { cardDetails,amount, user } = this.state
-    
+
+    const { cardDetails, amount, user } = this.state
+
     var res = cardDetails.values.expiry.split("/");
     this.setState({ loading: true })
     RNPaystack.chargeCard({
@@ -117,7 +118,7 @@ export default class FundWallet extends Component {
         console.warn(response); // card charged successfully, get reference here
         this.processFundWallet(response)
       })
-      .catch(error => { 
+      .catch(error => {
         this.setState({ loading: false })
         console.warn(error);
         Alert.alert('Process failed', error.message, [{ text: 'Okay' }])// error is a javascript Error object
@@ -132,8 +133,8 @@ export default class FundWallet extends Component {
   _onFocus = (field) => console.log("focusing", field);
 
   currencyFormat(n) {
-    return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
- }
+    return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+  }
 
   displayCard() {
 
@@ -149,7 +150,7 @@ export default class FundWallet extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={() => this.props.navigation.goBack() }>
+        <Button transparent onPress={() => this.props.navigation.goBack()}>
           <Icon
             active
             name="ios-arrow-back"
@@ -185,57 +186,57 @@ export default class FundWallet extends Component {
     }
 
 
-    if(this.state.done){
+    if (this.state.done) {
       return (
         <Container style={{ backgroundColor: '#000' }}>
-         <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "transparent" translucent = {true}/>
-               
+          <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" translucent={true} />
+
           <Navbar left={left} right={right} title='Success' bg='#111124' />
           <Content>
             <View style={styles.container}>
-  
-  
-              <View style={{ flex: 1, alignItems: 'center', justifyContent:'center'}}>
-                
-                    <View style={{ alignItems: 'center', margin: 20,  }}>
-                    <TouchableOpacity  style={{backgroundColor:'#25AE88', height:74, width:74, borderRadius:37, justifyContent:'center', alignItems: 'center',}}>
-                     <Icon
-                          active
-                          name="md-checkmark"
-                          type='ionicon'
-                          color='#fff'
-                          size={34}
-                      />
-                </TouchableOpacity>
-                    
-                      <Text style={{ color: '#fff', fontSize: 22, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>Success</Text>
-                      <Text style={{ textAlign:'center', color: '#fff', fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.8 }}>Funding wallet was successful.</Text>
-                    </View>
-  
-  
-               
-  
-     <View style={{ alignItems: 'center', justifyContent:'center', marginTop: 20, marginBottom: 20 , }}>
-     <TouchableOpacity  onPress={()=>   this.setState({done:false})} style={styles.enablebutton } block iconLeft>
-                                  <Text style={{ color: color.secondary_color, marginTop: 15, marginBottom: 15 ,fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
-                              </TouchableOpacity>
-     </View>
-               
-  
+
+
+              <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+
+                <View style={{ alignItems: 'center', margin: 20, }}>
+                  <TouchableOpacity style={{ backgroundColor: '#25AE88', height: 74, width: 74, borderRadius: 37, justifyContent: 'center', alignItems: 'center', }}>
+                    <Icon
+                      active
+                      name="md-checkmark"
+                      type='ionicon'
+                      color='#fff'
+                      size={34}
+                    />
+                  </TouchableOpacity>
+
+                  <Text style={{ color: '#fff', fontSize: 22, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>Success</Text>
+                  <Text style={{ textAlign: 'center', color: '#fff', fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.8 }}>Funding wallet was successful.</Text>
+                </View>
+
+
+
+
+                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
+                  <TouchableOpacity onPress={() => this.setState({ done: false })} style={styles.enablebutton} block iconLeft>
+                    <Text style={{ color: color.secondary_color, marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
+                  </TouchableOpacity>
+                </View>
+
+
               </View>
-  
-  
-  
+
+
+
             </View>
-  
-  
+
+
           </Content>
         </Container>
       );
     }
 
     return (
-      <Container style={{ backgroundColor: '#000', paddingTop:10 }}>
+      <Container style={{ backgroundColor: '#000', paddingTop: 10 }}>
         <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" translucent={true} />
 
         <Navbar left={left} right={right} title='Fund Wallet' bg='#111124' />
@@ -281,14 +282,17 @@ export default class FundWallet extends Component {
 
               <View style={{ marginTop: 20 }}>
 
-                <View style={{ flexDirection: 'row', backgroundColor: '#fff', marginTop: 24, marginBottom: 24, marginLeft: 30, marginRight: 20, borderRadius: 5 }}>
-                  <View style={{ marginLeft: 20, flex: 1, alignItems: 'flex-start', marginTop: 10, marginBottom: 10 }}>
-                    <Text style={{ color: '#111124', fontSize: 18, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>₦{this.state.bal}</Text>
-                    <Text style={{ color: '#111124', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>My Wallet Balance</Text>
+                <Balance
+                  OnButtonPress={() => console.warn('l')}
+                  buttonColor={'#fff'}
+                  textColor={'#000'}
+                  buttonText={''}
+                  textColor={'#000'}
+                  balTextColor={'#000'}
+                  commentTextColor={'#000'}
+                  backgroundColor={'#fff'}
+                />
 
-                  </View>
-
-                </View>
                 <View style={{ justifyContent: 'center' }}>
                   <Text style={{ color: '#fff', fontSize: 12, marginLeft: 30, marginRight: 20, fontFamily: 'NunitoSans', opacity: 0.77 }}>Enter amount to fund your walet</Text>
                   <View style={[styles.inputTextView]}>

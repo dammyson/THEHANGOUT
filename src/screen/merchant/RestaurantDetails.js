@@ -165,9 +165,13 @@ export default class RestaurantDetails extends Component {
                         <View >
                             <Balance
                                 OnButtonPress={() => this.props.navigation.navigate('withdraw')}
-                                buttonColor={'#139F2A'}
+                                buttonColor={'#139F2A'} 
                                 textColor={'#fff'}
                                 buttonText={'Withdraw Funds'}
+                                textColor={'#fff'}
+                                balTextColor={'#000'}
+                                commentTextColor={'#000'}
+                                backgroundColor={'#fff'}
                             />
 
                             <View style={{ backgroundColor: '#FFF', marginTop: 10, marginLeft: 20, marginRight: 20, opacity: 0.77, height: 0.6 }}></View>

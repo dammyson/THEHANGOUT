@@ -362,4 +362,4 @@ enablebutton:{
  
 });
 
-export default withNavigationFocus(QRcode);
+export default QRcode;

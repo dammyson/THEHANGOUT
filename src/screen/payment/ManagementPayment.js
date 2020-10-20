@@ -15,6 +15,7 @@ import {
 import { Base64 } from 'js-base64';
 
 import Navbar from '../../component/Navbar';
+import Balance from "../../component/views/Balance";
 
 const type = [
     {
@@ -152,18 +153,16 @@ generateQrCode(){
                 <Content>
                     <View style={styles.container}>
                         <View style={{ flex: 1, }}>
-                            <View style={{ flexDirection: 'row', backgroundColor: '#fff', marginTop: 24, marginBottom: 24, marginLeft: 30, marginRight: 30, borderRadius: 5 }}>
-                                <View style={{ marginLeft: 20, flex: 1, alignItems: 'flex-start', marginTop: 10, marginBottom: 10 }}>
-                                    <Text style={{ color: '#111124', fontSize: 18, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>₦{this.state.bal}</Text>
-                                    <Text style={{ color: '#111124', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>My Wallet Balance</Text>
-
-                                </View>
-                                <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
-                                    <TouchableOpacity onPress={()=> this.props.navigation.navigate('fundW')} style={{ backgroundColor: color.primary_color, alignItems: 'center', alignContent: 'space-around', paddingLeft: 13.5, paddingRight: 13.5, borderRadius: 5, }} block iconLeft>
-                                        <Text style={{ color: "#010113", marginTop: 7, marginBottom: 7, fontSize: 13, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.77 }}>Fund Wallet</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
+                            <Balance 
+                                OnButtonPress={()=> this.props.navigation.navigate('fundW')} 
+                                buttonColor={color.primary_color} 
+                                textColor={'#000'}
+                                buttonText={'Fund Wallet'}
+                                textColor={'#000'}
+                                balTextColor={'#000'}
+                                commentTextColor={'#000'}
+                                backgroundColor={'#fff'}
+                                />
 
                             <View style={{ flexDirection: 'row', marginTop: 15, marginLeft: 20, marginRight: 20 }}>
 

@@ -171,7 +171,7 @@ export default class Tables extends Component {
         }
 
         return (
-            <View style={{ backgroundColor: '#000' }}>
+            <View style={{ backgroundColor: '#000',  height: Dimensions.get('window').height, }}>
                 <Navbar left={left} right={right} title='My Tables' bg='#111124' />
                     <View style={styles.container}>
                         <View style={{ flexDirection: 'row', marginTop: 15, marginLeft: 20, marginRight: 20 }}>
@@ -455,7 +455,7 @@ export default class Tables extends Component {
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height - 80,
+        height: Dimensions.get('window').height,
 
     },
     activeType: {

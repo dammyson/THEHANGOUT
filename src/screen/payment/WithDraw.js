@@ -15,6 +15,7 @@ import {
 
 
 import Navbar from '../../component/Navbar';
+import Balance from "../../component/views/Balance";
 
 
 
@@ -35,7 +36,7 @@ export default class WithDraw extends Component {
       done: false,
       bank_name: 'Select Bank',
       view_bank: false,
-      bank_code:''
+      bank_code: ''
 
 
     };
@@ -93,13 +94,13 @@ export default class WithDraw extends Component {
   };
 
   processWithdrwaWallet() {
-    const { data, amount,  bank_name, account_number, bank_code  } = this.state
+    const { data, amount, bank_name, account_number, bank_code } = this.state
 
     if (bank_name == "Select Bank'" || account_number == '' || bank_code == '') {
       Alert.alert('Validation failed', 'field(s) cannot be empty', [{ text: 'Okay' }])
       return;
     }
-    
+
     this.setState({ loading: true })
     fetch(URL.url + 'wallet/withdraw', {
       method: 'POST', headers: {
@@ -228,7 +229,7 @@ export default class WithDraw extends Component {
     }
 
     return (
-      <Container style={{ backgroundColor: '#000' ,paddingTop:10}}>
+      <Container style={{ backgroundColor: '#000', paddingTop: 10 }}>
         <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" translucent={true} />
 
         <Navbar left={left} right={right} title='Withdraw Fund ' bg='#111124' />
@@ -238,26 +239,28 @@ export default class WithDraw extends Component {
 
             <View style={{ marginTop: 20 }}>
 
-              <View style={{ flexDirection: 'row', backgroundColor: '#fff', marginTop: 24, marginBottom: 24, marginLeft: 30, marginRight: 20, borderRadius: 5 }}>
-                <View style={{ marginLeft: 20, flex: 1, alignItems: 'flex-start', marginTop: 10, marginBottom: 10 }}>
-                  <Text style={{ color: '#111124', fontSize: 18, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>₦{this.state.bal}</Text>
-                  <Text style={{ color: '#111124', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>My Wallet Balance</Text>
-
-                </View>
-
-              </View>
+              <Balance
+                OnButtonPress={() => console.warn('l')}
+                buttonColor={'#fff'}
+                textColor={'#000'}
+                buttonText={''}
+                textColor={'#000'}
+                balTextColor={'#000'}
+                commentTextColor={'#000'}
+                backgroundColor={'#fff'}
+              />
               <View style={{ justifyContent: 'center' }}>
 
                 <View style={styles.oneRow}>
 
-                  <View style={{flex: 1 }}>
+                  <View style={{ flex: 1 }}>
                     <View>
-                    <Text style={{ color: '#fff', fontSize: 13, marginLeft: 30, marginRight: 20, fontFamily: 'NunitoSans', opacity: 0.77, marginBottom:10, }}>Select Bank</Text>
-              
+                      <Text style={{ color: '#fff', fontSize: 13, marginLeft: 30, marginRight: 20, fontFamily: 'NunitoSans', opacity: 0.77, marginBottom: 10, }}>Select Bank</Text>
+
                     </View>
                     <View onPress={() => this.setState({ view_organizer: true })} style={styles.item}>
                       <TouchableOpacity onPress={() => this.setState({ view_bank: true })}>
-                        <Text style={{  fontSize: 16, color: color.primary_color, fontFamily: 'NunitoSans', marginBottom: 10, marginTop: 10, flex: 1 }}> {this.state.bank_name} </Text>
+                        <Text style={{ fontSize: 16, color: color.primary_color, fontFamily: 'NunitoSans', marginBottom: 10, marginTop: 10, flex: 1 }}> {this.state.bank_name} </Text>
                       </TouchableOpacity>
                       <View style={{ flex: 1 }}></View>
                       <TouchableOpacity style={{ marginRight: 10, marginRight: 10, }}>
@@ -308,7 +311,7 @@ export default class WithDraw extends Component {
                     inlineImageLeft='ios-call'
                     style={{ marginLeftt: 20, flex: 1, fontSize: 16, color: color.primary_color }}
                     onChangeText={text => this.setState({ amount: text })}
-                    ref={(input)=> this.passwordInput = input}
+                    ref={(input) => this.passwordInput = input}
 
                   />
 
@@ -328,51 +331,51 @@ export default class WithDraw extends Component {
 
           </View>
           <Modal
-                        visible={this.state.view_bank}
-                        modalAnimation={new SlideAnimation({
-                            slideFrom: 'right',
-                        })}
-                    >
-                        <ModalContent style={styles.modal}>
-                            <View style={{ flex: 1 }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 1, paddingBottom: 10 }}> 
-                                <TouchableOpacity onPress={() => this.getBanksRequest()} style={{ marginLeft: 10, backgroundColor: '#000' }}>
-                                 <Icon
-                                            name="refresh"
-                                            size={20}
-                                            type='material-icon'
-                                            color="#fff"
-                                            size={30}
-                                        />
-                                    </TouchableOpacity>
-                                    <View style={{ paddingTop: 1, paddingBottom: 10, flex: 1, alignItems:'center' }}>
-                                    <Text style={{ fontFamily: 'Montserrat-Bold', color:'#fff', fontSize: 17, textAlign: 'left', paddingBottom: 10, marginTop: 25, }}> Banks </Text>
-                                    </View> 
-                                    <TouchableOpacity onPress={() => this.setState({ view_bank: false })} style={{ marginLeft: 10, backgroundColor: '#000' }}>
-                                        <Icon
-                                            name="close"
-                                            size={20}
-                                            type='antdesign'
-                                            color="#fff"
-                                        />
-                                    </TouchableOpacity>
+            visible={this.state.view_bank}
+            modalAnimation={new SlideAnimation({
+              slideFrom: 'right',
+            })}
+          >
+            <ModalContent style={styles.modal}>
+              <View style={{ flex: 1 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 1, paddingBottom: 10 }}>
+                  <TouchableOpacity onPress={() => this.getBanksRequest()} style={{ marginLeft: 10, backgroundColor: '#000' }}>
+                    <Icon
+                      name="refresh"
+                      size={20}
+                      type='material-icon'
+                      color="#fff"
+                      size={30}
+                    />
+                  </TouchableOpacity>
+                  <View style={{ paddingTop: 1, paddingBottom: 10, flex: 1, alignItems: 'center' }}>
+                    <Text style={{ fontFamily: 'Montserrat-Bold', color: '#fff', fontSize: 17, textAlign: 'left', paddingBottom: 10, marginTop: 25, }}> Banks </Text>
+                  </View>
+                  <TouchableOpacity onPress={() => this.setState({ view_bank: false })} style={{ marginLeft: 10, backgroundColor: '#000' }}>
+                    <Icon
+                      name="close"
+                      size={20}
+                      type='antdesign'
+                      color="#fff"
+                    />
+                  </TouchableOpacity>
 
-                                </View>
-                                <View style={{ paddingTop: 1, paddingBottom: 10, flex: 1, }}>
-                                    <FlatList
-                                        style={{ paddingBottom: 5 }}
-                                        data={this.state.banks}
-                                        renderItem={this.renderItem}
-                                        keyExtractor={item => item.id}
-                                        ItemSeparatorComponent={this.renderSeparator}
-                                        ListHeaderComponent={this.renderHeader}
-                                    />
+                </View>
+                <View style={{ paddingTop: 1, paddingBottom: 10, flex: 1, }}>
+                  <FlatList
+                    style={{ paddingBottom: 5 }}
+                    data={this.state.banks}
+                    renderItem={this.renderItem}
+                    keyExtractor={item => item.id}
+                    ItemSeparatorComponent={this.renderSeparator}
+                    ListHeaderComponent={this.renderHeader}
+                  />
 
-                                      
-                                </View>
-                            </View>
-                        </ModalContent>
-                    </Modal>
+
+                </View>
+              </View>
+            </ModalContent>
+          </Modal>
 
         </Content>
       </Container>
@@ -383,26 +386,26 @@ export default class WithDraw extends Component {
   _handleCategorySelect = (index) => {
     this.setState({ bank_code: index.code, bank_name: index.name, view_bank: false });
 
-}
-renderItem = ({ item, }) => {
+  }
+  renderItem = ({ item, }) => {
     return (
-        <TouchableOpacity style={{ marginLeft: 20, marginRight: 20, marginBottom: 10 }}
-            onPress={() => this._handleCategorySelect(item)} underlayColor="red">
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-                <Text style={styles.nameList}>{item.name}</Text>
-                <Icon
-                    active
-                    name="dots-vertical"
-                    type='material-community'
-                    color='#FFF'
-                />
-            </View>
+      <TouchableOpacity style={{ marginLeft: 20, marginRight: 20, marginBottom: 10 }}
+        onPress={() => this._handleCategorySelect(item)} underlayColor="red">
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <Text style={styles.nameList}>{item.name}</Text>
+          <Icon
+            active
+            name="dots-vertical"
+            type='material-community'
+            color='#FFF'
+          />
+        </View>
 
-        </TouchableOpacity>
+      </TouchableOpacity>
 
     )
 
-}
+  }
 }
 
 const styles = StyleSheet.create({
@@ -467,7 +470,7 @@ const styles = StyleSheet.create({
     borderColor: color.primary_color,
     borderWidth: 1,
     borderRadius: 5,
-    paddingLeft:10
+    paddingLeft: 10
   },
   label: {
     color: "white",
@@ -483,17 +486,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 10,
     width: Dimensions.get('window').width,
-},
-hintText: {
+  },
+  hintText: {
     fontSize: 12,
     color: '#ffffff',
     opacity: 0.6
-},
-importText: {
+  },
+  importText: {
     fontSize: 12,
     color: '#8d96a6',
-},
-item: {
+  },
+  item: {
     flexDirection: 'row',
     borderColor: '#8d96a6',
     borderWidth: 0.6,
@@ -504,23 +507,23 @@ item: {
     borderColor: color.primary_color,
     borderWidth: 1,
     borderRadius: 5,
-    paddingLeft:10
+    paddingLeft: 10
 
-},
-menu: {
+  },
+  menu: {
     flex: 1,
     fontSize: 15,
     color: '#ffffff',
     textAlign: 'left',
     fontFamily: 'NunitoSans-Bold',
-},
-itemTwo: {
+  },
+  itemTwo: {
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: 30,
 
-},
-inputPicker: {
+  },
+  inputPicker: {
     fontSize: 16,
     paddingHorizontal: 10,
     paddingVertical: 8,
@@ -529,18 +532,18 @@ inputPicker: {
     borderRadius: 8,
     color: 'black',
     paddingRight: 30, // to ensure the text is never behind the icon
-},
-modal: {
+  },
+  modal: {
     width: Dimensions.get('window').width,
     height: URL.height,
     backgroundColor: "#010113"
 
-},
-nameList: {
+  },
+  nameList: {
     fontSize: 17,
     color: '#ffffff',
     flex: 1,
     marginLeft: 10
-},
+  },
 });
 
