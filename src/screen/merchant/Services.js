@@ -96,7 +96,10 @@ export default class Services extends Component {
 
 
 
-
+    goBack() {
+        const { goBack } = this.props.navigation;
+        goBack(null)
+    }
     render() {
 
         if (this.state.loading) {
@@ -114,13 +117,12 @@ export default class Services extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => this.props.navigation.navigate('profile')}>
-                    <Avatar
-                        rounded
-                        source={{
-                            uri: this.state.user.profilePicture
-
-                        }}
+                <Button transparent onPress={()=>this.goBack()}>
+                    <Icon
+                        active
+                        name="ios-arrow-back"
+                        type='ionicon'
+                        color='#FFF'
                     />
                 </Button>
             </Left>

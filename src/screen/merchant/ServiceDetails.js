@@ -170,6 +170,10 @@ export default class ServiceDetails extends Component {
                                 buttonColor={'#139F2A'} 
                                 textColor={'#fff'}
                                 buttonText={'Withdraw Funds'}
+                                textColor={'#fff'}
+                                balTextColor={'#000'}
+                                commentTextColor={'#000'}
+                                backgroundColor={'#fff'}
                                 />
                             <View style={{ backgroundColor: '#FFF', marginTop: 10, marginLeft: 20, marginRight: 20, opacity: 0.77, height: 0.6 }}></View>
                             <View style={{ marginLeft: 25, marginRight: 7, marginTop: 10, alignItems: 'flex-start' }}>

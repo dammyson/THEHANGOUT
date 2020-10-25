@@ -1,6 +1,6 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
-import { Alert, TextInput, ImageBackground, View, Dimensions, ActivityIndicator, Image, StyleSheet , AsyncStorage, TouchableOpacity} from 'react-native';
+import { Alert, TextInput, ImageBackground, View, Dimensions, ActivityIndicator, Image, StyleSheet , Toast, TouchableOpacity} from 'react-native';
 import { Container, Content, Text, Icon, Button, Left, } from 'native-base';
 import {
   BarIndicator,

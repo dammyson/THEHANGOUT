@@ -151,7 +151,7 @@ export default class Dashboard extends Component {
                 >
 
 
-                    <View style={{ marginTop: 120, paddingTop:5,  backgroundColor:'#fff'}} >
+                    <View style={{ marginTop: 120, paddingTop:5,  backgroundColor:'#fff',borderBottomRightRadius: 5, borderBottomLeftRadius:5}} >
                         <Text style={{ marginRight: 13,marginTop: 7, marginLeft: 13,fontSize: 13,color: '#000', textAlign: 'left',fontFamily: 'NunitoSans-SemiBold'}}>{item.menuName}</Text>
                         <Text style={ { marginRight: 5, marginLeft: 13,fontSize: 13, color: '#000', textAlign: 'left', fontFamily: 'NunitoSans-Bold'}}>₦{this.currencyFormat(item.amount)}</Text>
 

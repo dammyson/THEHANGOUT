@@ -311,9 +311,7 @@ export default class step5 extends Component {
                 <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
                 <Navbar left={left} title='Confirm Details' bg='#101023' />
                 <Content>
-
                     {this.renderBody()}
-
                 </Content>
                 <TouchableOpacity style={styles.fab} onPress={() => this.processCreateEvent()}>
                     <Icon
@@ -598,7 +596,7 @@ export default class step5 extends Component {
                             </View>
                         </View>
                     </View>
-                    {this.state.type == 'Free'?
+                    {this.state.type == 'Freee'?
                     null
                     
 
@@ -681,12 +679,13 @@ export default class step5 extends Component {
         // instant_array.concat(operation)
 
         for (var i = 0; i < operation.length; i++) {
+            instant_array.push(operation[i])
             instant_array_two.push(operation[i].id)
         }
 
         this.setState({
             ticket: instant_array_two,
-            ticket_list: operation,
+            ticket_list: instant_array,
             show_ticket_paid: false,
         })
 
