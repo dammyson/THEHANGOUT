@@ -75,7 +75,7 @@ class AppStack extends Component {
                 headerStyle: { backgroundColor: '#7862ff' }, 
                 headerShown: false,
                }}
-               initialRouteName="restaurants">
+               initialRouteName="Splash">
   
             <Stack.Screen name="Splash" component={Splash}  />
             <Stack.Screen name="sorting" component={Sorting}   />
