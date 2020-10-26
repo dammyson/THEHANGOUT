@@ -10,7 +10,8 @@ import Modal, { SlideAnimation, ModalContent } from 'react-native-modals';
 import {
     BarIndicator,
 } from 'react-native-indicators';
-
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import Moment from 'moment';
 
 import color from '../../component/color';
 const { width: screenWidth } = Dimensions.get('window')
@@ -27,37 +28,19 @@ import SelectOrganizer from "../../component/views/SelectOrganizer";
 
 const type = [
     {
-        label: 'Free',
+        label: 'Free                             ',
         value: 'Free',
     },
     {
-        label: 'Paid',
+        label: 'Paid                            ',
         value: 'Paid',
     },
     {
-        label: 'Donation',
+        label: 'Donation                     ',
         value: 'Donation',
     },
 ];
 
-const cat = [
-    {
-        label: 'Movies',
-        value: 'Movies',
-    },
-    {
-        label: 'Clubs ',
-        value: 'Clubs ',
-    },
-    {
-        label: 'Party',
-        value: 'Party',
-    },
-    {
-        label: 'Music ',
-        value: 'Music ',
-    }
-];
 
 export default class step5 extends Component {
     constructor(props) {
@@ -81,7 +64,10 @@ export default class step5 extends Component {
             type: 'Free',
             cat: '',
             ticket: [],
-            ticket_list: []
+            ticket_list: [],
+            cat_list: [],
+            show_from_picker: false,
+            show_to_picker: false
         };
     }
 
@@ -92,24 +78,71 @@ export default class step5 extends Component {
         goBack(null)
     }
 
-   async componentWillMount() {
+    async componentWillMount() {
         this.setState({
             data: JSON.parse(await getData()),
             user: JSON.parse(await getData()).user
-          })
-       const { data_moving } = this.props.route.params;
- 
-         this.setState({
-             name: data_moving.title,
-             description: data_moving.description,
-             startdate: data_moving.startdate,
-             enddate: data_moving.enddate,
-             venue: data_moving.venue,
- 
-         })
+        })
+        const { data_moving } = this.props.route.params;
+
+        this.setState({
+            name: data_moving.title,
+            description: data_moving.description,
+            startdate: data_moving.startdate,
+            enddate: data_moving.enddate,
+            venue: data_moving.venue,
+
+        })
+
+        this.getCategoryRequest()
     }
 
 
+
+    getCategoryRequest() {
+        const { data } = this.state
+        fetch(URL.url + 'categories/Events', {
+            method: 'GET', headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Authorization': 'Bearer ' + data.token,
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.status) {
+                    this.sortCategories(res.data)
+                } else {
+                    this.setState({
+                        loading: false
+                    })
+                }
+            })
+            .catch(error => {
+                alert(error.message);
+                console.warn(error);
+                this.setState({ loading: false })
+            });
+
+
+    };
+
+
+    sortCategories(list) {
+
+        let instant_array = [];
+        for (let i = 0; i < list.length; i++) {
+            instant_array.push(
+
+                {
+                    label: list[i].name,
+                    value: list[i].name,
+                },
+            )
+        }
+
+        this.setState({ cat_list: instant_array })
+    }
 
 
     pickSingle(cropit, circular = false, mediaType) {
@@ -205,15 +238,15 @@ export default class step5 extends Component {
             Alert.alert('Validation failed', 'field(s) cannot be empty', [{ text: 'Okay' }])
             return;
         }
-        if(type == 'Free'){
-           
-        }else{
+        if (type == 'Free') {
+
+        } else {
             if (ticket == null) {
                 Alert.alert('Validation failed', 'field(s) Please add a ticket to save event', [{ text: 'Okay' }])
                 return;
             }
         }
-       
+
 
         if (image == null) {
             Alert.alert('Validation failed', 'Please select and image for the organizer', [{ text: 'Okay' }])
@@ -340,7 +373,7 @@ export default class step5 extends Component {
             color: '#000',
         };
         const typePlaceholder = {
-            label: 'Select type...',
+            label: 'Select type...             ',
             value: null,
             color: '#000',
         };
@@ -489,11 +522,18 @@ export default class step5 extends Component {
                             <View>
                                 <Text style={styles.hintText}>Event Starts </Text>
                             </View>
-                            <View style={styles.itemTwo}>
+                            <TouchableOpacity onPress={() => this.setState({ show_from_picker: true })} style={styles.itemTwo}>
                                 <Text style={{ color: '#fff', marginBottom: 10, marginTop: 10 }}> {this.state.startdate} </Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
+                    <DateTimePickerModal
+                        isVisible={this.state.show_from_picker}
+                        mode="datetime"
+                        onConfirm={(date) => this.setState({ show_from_picker: false, startdate: Moment(date).format('llll') })}
+                        onCancel={() => this.setState({ show_from_picker: false })}
+                    />
+
 
 
                     <View style={styles.oneRow}>
@@ -502,11 +542,18 @@ export default class step5 extends Component {
                             <View>
                                 <Text style={styles.hintText}>Event End </Text>
                             </View>
-                            <View style={styles.itemTwo}>
+                            <TouchableOpacity onPress={() => this.setState({ show_to_picker: true })} style={styles.itemTwo}>
                                 <Text style={{ color: '#fff', marginBottom: 10, marginTop: 10 }}>  {this.state.enddate} </Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
+                    <DateTimePickerModal
+                        isVisible={this.state.show_to_picker}
+                        mode="datetime"
+                        onConfirm={(date) => this.setState({ show_to_picker: false, enddate: Moment(date).format('llll') })}
+                        onCancel={() => this.setState({ show_to_picker: false })}
+                    />
+
                     <View style={[styles.oneRow, { marginTop: 40 }]}>
                         <View style={{ margin: 20, }}>
                             <Icon
@@ -580,8 +627,7 @@ export default class step5 extends Component {
                             <View style={styles.item}>
                                 <RNPickerSelect
                                     placeholder={catPlaceholder}
-                                    items={cat}
-
+                                    items={this.state.cat_list}
                                     onValueChange={value => {
                                         this.setState({
                                             cat: value,
@@ -596,68 +642,68 @@ export default class step5 extends Component {
                             </View>
                         </View>
                     </View>
-                    {this.state.type == 'Freee'?
-                    null
-                    
+                    {this.state.type == 'Free' ?
+                        null
 
-                    :
-                    
-                    <>
-                    <View style={[styles.oneRow, { marginTop: 40 }]}>
-                        <View style={{ margin: 20, }}>
-                            <Icon
-                                active
-                                name="ticket"
-                                type='entypo'
-                                color='#FFF'
-                                size={35}
-                            />
-                        </View>
-                        <View style={{ flex: 1 }}>
-                            <View>
-                                <Text style={styles.hintText}>Tickets </Text>
-                            </View>
-                            <TouchableOpacity onPress={() => this.setState({ show_ticket_type: true })} style={styles.item}>
-                                <Text style={[styles.menu, { marginBottom: 10, marginTop: 10 }]}> Select Tickets </Text>
 
-                                <Icon
-                                    active
-                                    name="plus"
-                                    type='feather'
-                                    color='#FFF'
-                                    size={15}
-                                />
+                        :
 
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    <View style={[styles.oneRow, { marginBottom: 30 }]}>
-                        <View style={{ marginLeft: 75, flex: 1 }}>
-                            <View style={{ flexDirection: 'row', marginRight: 55, marginBottom: 10 }}>
-                                <View style={{ flex: 1, }}>
-                                    <Text style={styles.hintText}>Tickets </Text>
+                        <>
+                            <View style={[styles.oneRow, { marginTop: 40 }]}>
+                                <View style={{ margin: 20, }}>
+                                    <Icon
+                                        active
+                                        name="ticket"
+                                        type='entypo'
+                                        color='#FFF'
+                                        size={35}
+                                    />
                                 </View>
-                                <TouchableOpacity onPress={() => this.setState({ show_add_on: true })} ><Icon
-                                    active
-                                    name="pluscircle"
-                                    type='antdesign'
-                                    color='#fff'
+                                <View style={{ flex: 1 }}>
+                                    <View>
+                                        <Text style={styles.hintText}>Tickets </Text>
+                                    </View>
+                                    <TouchableOpacity onPress={() => this.setState({ show_ticket_type: true })} style={styles.item}>
+                                        <Text style={[styles.menu, { marginBottom: 10, marginTop: 10 }]}> Select Tickets </Text>
 
-                                /></TouchableOpacity>
+                                        <Icon
+                                            active
+                                            name="plus"
+                                            type='feather'
+                                            color='#FFF'
+                                            size={15}
+                                        />
+
+                                    </TouchableOpacity>
+                                </View>
                             </View>
 
-                            <ScrollView horizontal style={{}}>
+                            <View style={[styles.oneRow, { marginBottom: 30 }]}>
+                                <View style={{ marginLeft: 75, flex: 1 }}>
+                                    <View style={{ flexDirection: 'row', marginRight: 55, marginBottom: 10 }}>
+                                        <View style={{ flex: 1, }}>
+                                            <Text style={styles.hintText}>Tickets </Text>
+                                        </View>
+                                        <TouchableOpacity onPress={() => this.setState({ show_add_on: true })} ><Icon
+                                            active
+                                            name="pluscircle"
+                                            type='antdesign'
+                                            color='#fff'
 
-                                {this.renderResuts(this.state.ticket_list)}
+                                        /></TouchableOpacity>
+                                    </View>
 
-                            </ScrollView>
-                        </View>
-                    </View>
+                                    <ScrollView horizontal style={{}}>
+
+                                        {this.renderResuts(this.state.ticket_list)}
+
+                                    </ScrollView>
+                                </View>
+                            </View>
 
 
-                    </>
-                      }
+                        </>
+                    }
 
                     <View>
                     </View>

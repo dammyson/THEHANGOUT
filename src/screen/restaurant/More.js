@@ -103,7 +103,7 @@ export default class More extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={() => this.props.navigation.goBack()}>
                     <Icon
                         active
                         name="ios-arrow-back"
@@ -116,7 +116,7 @@ export default class More extends Component {
 
         var right = (
             <Right style={{ flex: 1 }}>
-                <Button transparent onPress={() => Actions.pop()}>
+                <Button transparent onPress={() => this.props.navigation.goBack()}>
                     <Icon
                         active
                         name="md-more"

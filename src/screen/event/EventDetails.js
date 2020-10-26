@@ -307,7 +307,7 @@ export default class EventDetails extends Component {
                     <View style={styles.lineStyle} />
 
                     <Text style={styles.headings}> EVENT DETAILS </Text>
-                    <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, marginTop: 15, }}> Launching a startup isn’t just about building a product. Telling your startup story is also very important and we are giving startup founders a chance to tell their story on our platformPlot 1 water Corporation Drive Oniri Estate Victoria Island, LagosGTCenter Plot 1 water Corporation Drive Oniri Estate Victoria Island, Lagos </Text>
+                    <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, marginTop: 15, }}>  {details.description}</Text>
                     <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200', opacity: 0.6, marginTop: 15, }}> Read more</Text>
 
                     <Text style={styles.headings}> LOCATION </Text>
