@@ -65,6 +65,7 @@ export default class BuyPaidTicket extends Component {
     async componentWillMount() {
 
         const { id, ticket } = this.props.route.params;
+        console.warn( id, ticket )
         this.setState({ id: id });
         this.setState({
             data: JSON.parse(await getData()),
@@ -356,7 +357,7 @@ export default class BuyPaidTicket extends Component {
                                             />
                                             <Text style={{ color: '#000', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with wallet</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => this.segmentClicked(1)} style={[this.state.pay_type == 1 ? styles.activeType : styles.inActiveType]} >
+                                        <TouchableOpacity onPress={() => this.state.tickets[0].id == 3 ? null: this.segmentClicked(1)} style={[this.state.pay_type == 1 ? styles.activeType : styles.inActiveType]} >
                                             <Icon
                                                 active
                                                 name="bank"
@@ -367,11 +368,6 @@ export default class BuyPaidTicket extends Component {
                                             <Text style={{ color: '#5F5C7F', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with Bank</Text>
                                         </TouchableOpacity>
                                     </View>
-
-
-
-
-
 
                                     <View style={{ backgroundColor: '#fff', marginTop: 20, marginBottom: 20, marginLeft: 20, marginRight: 20, }}>
 
