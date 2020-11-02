@@ -749,7 +749,7 @@ export default class step5 extends Component {
     onSelect(operation) {
         if (operation == "FREE") {
             this.setState({
-                ticket: [],
+                ticket: [3],
                 show_ticket_type: false,
             })
         } else if (operation == 'PAID') {

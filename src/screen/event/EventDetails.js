@@ -347,12 +347,10 @@ export default class EventDetails extends Component {
                 <Text style={{ marginLeft: 20, color: '#fff', fontSize: 15, fontWeight: '600' }}>  {details.type} </Text>
               </View>
 
-                { details.type =='Free' ? null 
-                :
               <TouchableOpacity onPress={() => this.props.navigation.navigate('buyPT', { id: details.id, ticket: details.eventTickets, type: 'replace' })} style={{ height: 50, flexDirection: 'row', marginTop: 20, marginBottom: 20, margin: 10, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.primary_color }}>
                 <Text style={{ color: '#000', fontSize: 15, fontWeight: '600' }}>BUY TICKETS</Text>
               </TouchableOpacity>
-              }
+              
             </View>
 
 
