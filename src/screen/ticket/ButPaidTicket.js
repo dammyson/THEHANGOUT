@@ -42,6 +42,7 @@ export default class BuyPaidTicket extends Component {
             done: false,
             show_card: false,
             data: '',
+            event: '',
             name: '',
             id: '',
             details: {},
@@ -64,9 +65,8 @@ export default class BuyPaidTicket extends Component {
 
     async componentWillMount() {
 
-        const { id, ticket } = this.props.route.params;
-        console.warn( id, ticket )
-        this.setState({ id: id });
+        const { id, ticket, event } = this.props.route.params;
+        this.setState({ id: id, event: event });
         this.setState({
             data: JSON.parse(await getData()),
             user: JSON.parse(await getData()).user
@@ -357,7 +357,7 @@ export default class BuyPaidTicket extends Component {
                                             />
                                             <Text style={{ color: '#000', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with wallet</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => this.state.tickets[0].id == 3 ? null: this.segmentClicked(1)} style={[this.state.pay_type == 1 ? styles.activeType : styles.inActiveType]} >
+                                        <TouchableOpacity onPress={() => this.state.event.type == 'Free' ? null: this.segmentClicked(1)} style={[this.state.pay_type == 1 ? styles.activeType : styles.inActiveType]} >
                                             <Icon
                                                 active
                                                 name="bank"
@@ -365,7 +365,7 @@ export default class BuyPaidTicket extends Component {
                                                 color='#5F5C7F'
                                                 size={26}
                                             />
-                                            <Text style={{ color: '#5F5C7F', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with Bank</Text>
+                                            <Text style={{ color: '#5F5C7F', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with Card</Text>
                                         </TouchableOpacity>
                                     </View>
 

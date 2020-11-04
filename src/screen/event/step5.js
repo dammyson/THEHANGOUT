@@ -232,16 +232,16 @@ export default class step5 extends Component {
     async processCreateEvent() {
 
         const { data, name, description, startdate, org, org_name, ticket, venue, enddate, type, cat, img_url, image } = this.state
-
+        var used_ticket = ticket;
 
         if (org_name == "Select Organizer" || type == null || cat == null) {
             Alert.alert('Validation failed', 'field(s) cannot be empty', [{ text: 'Okay' }])
             return;
         }
         if (type == 'Free') {
-
+            var used_ticket = [3]
         } else {
-            if (ticket == null) {
+            if (used_ticket == null) {
                 Alert.alert('Validation failed', 'field(s) Please add a ticket to save event', [{ text: 'Okay' }])
                 return;
             }
@@ -282,7 +282,7 @@ export default class step5 extends Component {
                 EndDate: enddate,
                 Type: type,
                 Banner: img_url,
-                Tickets: ticket.toString(),
+                Tickets: used_ticket.toString(),
                 OrganizerId: org,
                 City: venue,
                 venue: venue,

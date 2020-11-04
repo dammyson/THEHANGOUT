@@ -31,12 +31,17 @@ class QRcode extends Component {
       status: false,
       view_create: false,
       show_card: false,
-      scan_data: ''
+      scan_data: '',
+      card_amount: ''
     };
   }
 
   onSuccess = (e) => {
-    this.setState({ scan_data: e, can_scan: false, view_create: true });
+    const result = e.data
+    var temp = Base64.decode(result);
+    var res = temp.split("|");
+    const amount = res[1] * 100
+    this.setState({ scan_data: e, can_scan: false, view_create: true, card_amount: amount });
   }
 
 
@@ -224,14 +229,13 @@ class QRcode extends Component {
     Alert.alert('Process failed', 'Check your card and try again or use another payment method', [{ text: 'Okay' }])
   }
   renderCardPay() {
-    const { ticketsPrice } = this.state
-    const amount = ticketsPrice * 100
+    const { card_amount } = this.state
     return (
       <CardPay
         onClose={(v) => this.setState({ show_card: false })}
         onSuccess={(res) => this.onSuccess(res)}
         onFailed={() => this.onFailed()}
-        amount={amount}
+        amount={card_amount}
       />
     )
   }
@@ -345,7 +349,7 @@ class QRcode extends Component {
                 />
                 <Text style={{ color: '#000', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with wallet</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.handlePayWithCard} style={[styles.activeType]} >
+              <TouchableOpacity onPress={() => this.handlePayWithCard()} style={[styles.activeType]} >
                 <Icon
                   active
                   name="bank"
@@ -353,7 +357,7 @@ class QRcode extends Component {
                   color='#5F5C7F'
                   size={26}
                 />
-                <Text style={{ color: '#5F5C7F', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with Bank</Text>
+                <Text style={{ color: '#5F5C7F', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with Card</Text>
               </TouchableOpacity>
             </View>
 

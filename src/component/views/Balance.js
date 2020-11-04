@@ -42,7 +42,6 @@ export default class Balance extends Component {
             .then(res => res.json())
             .then(res => {
                 this.setState({ loading: false})
-                console.warn(res);
                 if (res.status) {
                     this.setState({ bal: this.currencyFormat(res.data)})
                     AsyncStorage.setItem('bal', this.currencyFormat(res.data));

@@ -65,7 +65,7 @@ export default class BuyTicket extends Component {
 
   processGetEvent() {
     const { data, id, } = this.state
-
+   
     this.setState({ loading: true })
     fetch(URL.url + 'events/' + id, {
       method: 'GET', headers: {
