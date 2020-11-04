@@ -425,7 +425,7 @@ export default class PlaceOrder extends Component {
                                                 color='#5F5C7F'
                                                 size={26}
                                             />
-                                            <Text style={{ color: '#5F5C7F', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with Bank</Text>
+                                            <Text style={{ color: '#5F5C7F', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with Card</Text>
                                         </TouchableOpacity>
                                     </View>
 

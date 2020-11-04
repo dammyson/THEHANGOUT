@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { TextInput, StyleSheet, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, ImageBackground, ScrollView } from 'react-native';
+import { TextInput, StyleSheet, TouchableOpacity, StatusBar, Alert, Dimensions, ImageBackground, ScrollView } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
@@ -107,7 +107,55 @@ export default class ServiceDetails extends Component {
 
     };
 
+    deleteAgent(data) {
+        console.warn(data)
+        Alert.alert(
+            'Delete Agent',
+            'Are you sure you want to delete '+ data.agentName+' from your list of agents',
+            [
+              { text: 'Cancel', onPress: () => console.log('Cancel Pressed!') },
+              { text: 'OK', onPress: () => this.processDeleteAgent(data.agentId) },
+            ],
+            { cancelable: false }
+          )
+          return
 
+    }
+
+    processDeleteAgent(i) {
+        console.warn(i)
+        const { data } = this.state
+        this.setState({
+            loading: true,
+        })
+
+        fetch(URL.url + 'agent/'+i, {
+            method: 'DELETE', headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Authorization': 'Bearer ' + data.token,
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.warn(res);
+                this.setState({loading: false })
+                if (res.status) {
+                    Alert.alert('Process Successfull', "Agent Deleted", [{ text: 'Okay' }])
+                    this.getEventsRequest()
+                } else {
+                    Alert.alert('Process Failed', "Agent not Deleted", [{ text: 'Okay' }])
+                }
+            })
+            .catch(error => {
+                this.setState({ loading: false })
+                alert(error.message);
+                console.warn(error);
+               
+            });
+
+ 
+     }
 
     goBack() {
         const {  goBack } = this.props.navigation; 
@@ -259,6 +307,8 @@ export default class ServiceDetails extends Component {
 
         let items = [];
         for (let i = 0; i < tickets.length; i++) {
+            let r = i;
+           
             items.push(
                 <TouchableOpacity style={styles.oneRow}>
 
@@ -275,10 +325,23 @@ export default class ServiceDetails extends Component {
                         <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 20 }}>
                             <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 8, color: '#139F2A', }}> active </Text>
                             <View style={{ height: 8, width: 24, backgroundColor: '#139F2A' }} />
+                           
                         </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 20 }}>
+                            <View style={{flex:1}}>
                         <Text style={styles.title}>{tickets[i].agentName}</Text>
                         <Text style={{ marginLeft: 2, marginTop: 10, textAlign: 'left', color: '#1E1E1E', fontSize: 14, fontWeight: '100', }}> {tickets[i].agentAmount} </Text>
                         <Text style={{ marginLeft: 2, marginTop: 5, textAlign: 'left', color: 'gba(30,30,30,0.7)', fontSize: 14, fontWeight: '100', }}> Sales so far </Text>
+</View>
+                        <TouchableOpacity  onPress={()=> this.deleteAgent(tickets[r])} style={{ width:30 }}>
+                    <Icon
+                        active
+                        name="delete"
+                        type='materia-community'
+                        color='#EA3C1780'
+                    />
+                    </TouchableOpacity>
+                    </View>
 
                     </View>
 
@@ -353,7 +416,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#F2F1FF',
         borderLeftWidth: 4,
         paddingBottom: 2,
-        borderRadius: 10
+        borderRadius: 10,
+        marginBottom: 20,
     },
     title: {
         marginTop: 1,

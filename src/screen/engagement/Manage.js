@@ -18,7 +18,7 @@ export default class Manage extends Component {
         super(props);
         this.state = {
             data: '',
-            user: '',
+            user: {profilePicture:'ll'},
             visible_log_merchant: false
 
         };

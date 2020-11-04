@@ -321,7 +321,6 @@ export default class PaidTicket extends Component {
                                     placeholder="Enter what you'd like to call your ticket "
                                     placeholderTextColor='#6d706e'
                                     returnKeyType="next"
-
                                     keyboardType='default'
                                     autoCapitalize="none"
                                     autoCorrect={false}
@@ -518,7 +517,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#ffffff',
         textAlign: 'left',
-        fontFamily: 'NunitoSans-Bold',
+        fontFamily: 'NunitoSans-Light',
     },
     itemTwo: {
         flexDirection: 'row',

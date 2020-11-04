@@ -11,7 +11,7 @@ const { width: screenWidth } = Dimensions.get('window')
 import Navbar from '../../component/Navbar';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Moment from 'moment';
-
+Moment.locale('en');
 
 
 export default class step3 extends Component {

@@ -443,7 +443,7 @@ goToMore(params){
 
                             <View style={{ marginLeft: 10, marginRight: 7, flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={styles.titleText}>TRENDING</Text>
-                                <TouchableOpacity    onPress={() => this.goToMore('eventListing/Trending/7')}   style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
+                                <TouchableOpacity    onPress={() => this.goToMore('eventListing/Trending/50')}   style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
                                     <Text style={{ fontSize: 12, color: 'orange', }}>Full List </Text>
                                     <Icon
                                         active

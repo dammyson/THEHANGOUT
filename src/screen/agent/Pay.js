@@ -216,54 +216,7 @@ export default class Pay extends Component {
     }
 
 
-    deleteAgent(data) {
-        Alert.alert(
-            'Delete Agent',
-            'Are you sure you want to delete '+ data.name+' from your list of agents',
-            [
-              { text: 'Cancel', onPress: () => console.log('Cancel Pressed!') },
-              { text: 'OK', onPress: () => this.processDeleteAgent(data.id) },
-            ],
-            { cancelable: false }
-          )
-          return
-
-    }
-
-    processDeleteAgent(i) {
-        console.warn(i)
-        const { data } = this.state
-        this.setState({
-            loading: true,
-        })
-
-        fetch(URL.url + 'agent/'+i, {
-            method: 'DELETE', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            }
-        })
-            .then(res => res.json())
-            .then(res => {
-                console.warn(res);
-                this.setState({loading: false })
-                if (res.status) {
-                    Alert.alert('Process Successfull', "Agent Deleted", [{ text: 'Okay' }])
-                    this.getAgentsRequest()
-                } else {
-                    Alert.alert('Process Failed', "Agent not Deleted", [{ text: 'Okay' }])
-                }
-            })
-            .catch(error => {
-                this.setState({ loading: false })
-                alert(error.message);
-                console.warn(error);
-               
-            });
-
- 
-     }
+  
 
     render() {
 
@@ -468,14 +421,6 @@ export default class Pay extends Component {
                         <Text style={{ color: '#000', textAlign: 'center', fontSize: 12, fontFamily: 'NunitoSans', opacity: 0.77 }}>{data[i].name}</Text>
                     </View>
 
-                    <TouchableOpacity  onPress={()=> this.deleteAgent(data[r])} style={{ width:30 }}>
-                    <Icon
-                        active
-                        name="close"
-                        type='antdesign'
-                        color='red'
-                    />
-                    </TouchableOpacity>
                 </View>
 
             );

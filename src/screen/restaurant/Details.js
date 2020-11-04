@@ -27,7 +27,7 @@ export default class Details extends Component {
             name: '',
             id: '1',
             details: {},
-            menu_list:[]
+            menu_list: []
 
 
         };
@@ -36,7 +36,7 @@ export default class Details extends Component {
 
 
     componentWillMount() {
-        const { id  } = this.props.route.params;
+        const { id } = this.props.route.params;
         this.setState({ id: id });
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
@@ -50,8 +50,8 @@ export default class Details extends Component {
     }
 
     currencyFormat(n) {
-        return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-     }
+        return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+    }
 
 
 
@@ -73,7 +73,7 @@ export default class Details extends Component {
                     this.setState({
                         loading: false,
                         details: res.data,
-                       menu_list: res.data.menuList
+                        menu_list: res.data.menuList
                     })
                 } else {
                     Alert.alert('Action failed', res.message, [{ text: 'Okay' }])
@@ -158,6 +158,17 @@ export default class Details extends Component {
                                         source={{ uri: details.banner }}
                                         imageStyle={{ backgroundColor: 'blue', alignItems: 'flex-end', justifyContent: 'flex-end' }}
                                     >
+                                        <View style={{ paddingTop:20, marginLeft:20 }}>
+                                            <Button transparent onPress={() => this.props.navigation.goBack()}>
+                                                <Icon
+                                                    active
+                                                    name="ios-arrow-back"
+                                                    type='ionicon'
+                                                    color='#FFF'
+                                                    size={30}
+                                                />
+                                            </Button>
+                                        </View>
                                         <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'flex-end' }}>
                                             <View style={styles.details} >
                                                 <Text style={styles.date}>Opens {details.openingTime}</Text>
@@ -193,17 +204,17 @@ export default class Details extends Component {
 
                             </ScrollView>
                         </View>
-                        {this.state.activeHead == 0 ? null : 
-                        
-                        <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#111123', flexDirection: 'row' }}>
+                        {this.state.activeHead == 0 ? null :
 
-                        <TouchableOpacity onPress={() =>  this.props.navigation.navigate('reserveT', { resturant: details, type: 'replace' })}  style={{ height: 45, flexDirection: 'row', paddingRight: 30, paddingLeft: 30, marginTop: 20, marginBottom: 20, margin: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: 'red' }}>
-                            <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>RESERVE NOW</Text>
-                        </TouchableOpacity>
-                    </View>
+                            <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#111123', flexDirection: 'row' }}>
+
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('reserveT', { resturant: details, type: 'replace' })} style={{ height: 45, flexDirection: 'row', paddingRight: 30, paddingLeft: 30, marginTop: 20, marginBottom: 20, margin: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: 'red' }}>
+                                    <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>RESERVE NOW</Text>
+                                </TouchableOpacity>
+                            </View>
                         }
 
-                      
+
 
 
                     </View>
@@ -240,21 +251,21 @@ export default class Details extends Component {
         })
     }
 
-    renderMenu(){
-        return(
+    renderMenu() {
+        return (
             <>
-             <View style={{ marginTop: 15, flex: 1 }}>
+                <View style={{ marginTop: 15, flex: 1 }}>
 
-<FlatList
-    style={{ paddingBottom: 5 }}
-    data={this.state.menu_list}
-    renderItem={this.renderItem}
-    keyExtractor={item => item.id}
-    ItemSeparatorComponent={this.renderSeparator}
-    ListHeaderComponent={this.renderHeader}
-/>
+                    <FlatList
+                        style={{ paddingBottom: 5 }}
+                        data={this.state.menu_list}
+                        renderItem={this.renderItem}
+                        keyExtractor={item => item.id}
+                        ItemSeparatorComponent={this.renderSeparator}
+                        ListHeaderComponent={this.renderHeader}
+                    />
 
-</View>
+                </View>
 
             </>
         )
@@ -263,11 +274,11 @@ export default class Details extends Component {
     renderItem = ({ item, }) => {
         const { details, } = this.state
         return (
-            <TouchableOpacity onPress={() =>   this.props.navigation.navigate('place_order', {restaurant: details.name, res_id: details.id, menu_id: item.id,  })} style={{borderBottomColor: "#ffffff60", borderBottomWidth: 0.7, flexDirection: 'row', marginLeft: 25, paddingBottom:15, marginRight: 20, marginTop: 10 }} >
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('place_order', { restaurant: details.name, res_id: details.id, menu_id: item.id, })} style={{ borderBottomColor: "#ffffff60", borderBottomWidth: 0.7, flexDirection: 'row', marginLeft: 25, paddingBottom: 15, marginRight: 20, marginTop: 10 }} >
                 <View style={styles.resultTextDescription}>
-        <Text style={{ fontFamily: 'NunitoSans-Bold', color: '#fff', fontWeight: '700', fontSize: 12, marginBottom:10 }}>{item.name}</Text>
-                    <Text style={{ fontFamily: 'NunitoSans-Regular',color: '#fff', fontWeight: '200', fontSize: 12,marginBottom:10 }}>{item.description}</Text>
-                    <Text style={{ fontFamily: 'NunitoSans-Bold', color: '#fff', fontWeight: '700', fontSize: 12,}}>₦{this.currencyFormat(item.amount)}</Text>
+                    <Text style={{ fontFamily: 'NunitoSans-Bold', color: '#fff', fontWeight: '700', fontSize: 12, marginBottom: 10 }}>{item.name}</Text>
+                    <Text style={{ fontFamily: 'NunitoSans-Regular', color: '#fff', fontWeight: '200', fontSize: 12, marginBottom: 10 }}>{item.description}</Text>
+                    <Text style={{ fontFamily: 'NunitoSans-Bold', color: '#fff', fontWeight: '700', fontSize: 12, }}>₦{this.currencyFormat(item.amount)}</Text>
                 </View>
 
             </TouchableOpacity>
@@ -277,15 +288,15 @@ export default class Details extends Component {
     renderSwitch() {
         return (
             <View style={{ borderBottomColor: "#ffffff60", borderBottomWidth: 0.7, flexDirection: 'row', marginTop: 15, marginLeft: 20, marginRight: 20, }}>
-                <View style={{flexDirection: 'row', flex: 1 }}>
-                <TouchableOpacity style={[this.state.activeHead == 0 ? styles.activeHead : styles.inActiveHead]}
-                    onPress={() => this.headClicked(0)}
-                >
+                <View style={{ flexDirection: 'row', flex: 1 }}>
+                    <TouchableOpacity style={[this.state.activeHead == 0 ? styles.activeHead : styles.inActiveHead]}
+                        onPress={() => this.headClicked(0)}
+                    >
                         <Text style={[this.state.activeHead == 0 ? styles.toggleHeadText : styles.toggleHeadTextInactive]}> MENU </Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[this.state.activeHead == 1 ? styles.activeHead : styles.inActiveHead]}
-                    onPress={() => this.headClicked(1)}
-                >
+                        onPress={() => this.headClicked(1)}
+                    >
                         <Text style={[this.state.activeHead == 1 ? styles.toggleHeadText : styles.toggleHeadTextInactive]}> RESTAURANT INFO </Text>
                     </TouchableOpacity>
                 </View>
