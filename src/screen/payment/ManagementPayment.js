@@ -84,8 +84,9 @@ export default class ManagementPayment extends Component {
 generateQrCode(){
     const { cost, event_code, cashier, description, user } = this.state
     var ran = Math.floor(100000000 + Math.random() * 900000000)
+    const total_cost = cost + (cost  * 0.05)
    this.setState({ ref_number: ran})
-    const details = user.id+'|'+cost+'|'+description +'|'+cashier+'|'+event_code+'|'+ran;
+    const details = user.id+'|'+total_cost+'|'+description +'|'+cashier+'|'+event_code+'|'+ran;
     var temp = Base64.encode(details);
     this.setState({ qrCodeData: temp })
    
@@ -161,7 +162,7 @@ generateQrCode(){
                                 textColor={'#000'}
                                 balTextColor={'#000'}
                                 commentTextColor={'#000'}
-                                backgroundColor={'#fff'}
+                                backgroundColor={'#fff'}Z
                                 />
 
                             <View style={{ flexDirection: 'row', marginTop: 15, marginLeft: 20, marginRight: 20 }}>

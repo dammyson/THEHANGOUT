@@ -348,7 +348,7 @@ export default class EventDetails extends Component {
               </View>
 
               <TouchableOpacity onPress={() => this.props.navigation.navigate('buyPT', { id: details.id, ticket: details.eventTickets, event: details})} style={{ height: 50, flexDirection: 'row', marginTop: 20, marginBottom: 20, margin: 10, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.primary_color }}>
-                <Text style={{ color: '#000', fontSize: 15, fontWeight: '600' }}>BUY TICKETS</Text>
+                <Text style={{ color: '#000', fontSize: 15, fontWeight: '600' }}>{details.type=='Free'? 'GET TICKETS' : 'BUY TICKETS'}</Text>
               </TouchableOpacity>
               
             </View>

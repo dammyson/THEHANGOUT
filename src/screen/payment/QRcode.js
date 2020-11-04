@@ -41,6 +41,7 @@ class QRcode extends Component {
     var temp = Base64.decode(result);
     var res = temp.split("|");
     const amount = res[1] * 100
+    console.warn('scan is done'+ res, amount)
     this.setState({ scan_data: e, can_scan: false, view_create: true, card_amount: amount });
   }
 
@@ -86,6 +87,7 @@ class QRcode extends Component {
   }
 
   makePaymentRequest = (ref, isWallet) => {
+    console.warn( 'going to back'+ ref, isWallet)
     const { data, scan_data } = this.state
     const result = scan_data.data
     this.setState({ loading: true });
@@ -110,8 +112,9 @@ class QRcode extends Component {
     })
       .then(res => res.json())
       .then(res => {
+        console.warn('got to back'+res);
         this.setState({ done: true })
-        console.warn(res);
+
         if (res.status) {
 
           this.setState({
@@ -167,7 +170,8 @@ class QRcode extends Component {
 
   renderActivityIndicator() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
+      <View style={{ flex: 1,  width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height, position: "absolute", alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
         <View style={styles.welcome}>
           <Text style={{ fontSize: 15, color: '#fff' }}>Processing Payment</Text>
           <BarIndicator count={4} color={color.primary_color} />
@@ -220,12 +224,14 @@ class QRcode extends Component {
     );
   }
 
-  onSuccess(res) {
-    this.setState({ show_card: false })
+  onPaySuccess(res) {
+    console.warn('i am done paying' + res);
+    // card charged successfully, get reference here
+    this.setState({ show_card: false , view_create: false})
     this.makePaymentRequest(res.reference, false)
   }
-  onFailed() {
-    this.setState({ show_card: false })
+  onPayFailed() {
+    this.setState({ show_card: false , view_create: false})
     Alert.alert('Process failed', 'Check your card and try again or use another payment method', [{ text: 'Okay' }])
   }
   renderCardPay() {
@@ -233,8 +239,8 @@ class QRcode extends Component {
     return (
       <CardPay
         onClose={(v) => this.setState({ show_card: false })}
-        onSuccess={(res) => this.onSuccess(res)}
-        onFailed={() => this.onFailed()}
+        onSuccess={(res) => this.onPaySuccess(res)}
+        onFailed={() => this.onPayFailed()}
         amount={card_amount}
       />
     )

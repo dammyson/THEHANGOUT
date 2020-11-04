@@ -51,7 +51,7 @@ export default class CardPay extends Component {
         const { cardDetails, user} = this.state
         const {onSuccess, onFailed, amount } = this.props;
         console.warn(amount)
-
+        console.warn('i am paying');
         var res = cardDetails.values.expiry.split("/");
         this.setState({ loading: true })
         RNPaystack.chargeCard({
@@ -64,10 +64,11 @@ export default class CardPay extends Component {
         })
             .then(response => {
                 this.setState({ loading: false })
-              // card charged successfully, get reference here
+                console.warn('Good to go');
                 onSuccess(response)
             })
             .catch(error => {
+                console.warn('could not pay');
                 console.warn(error);
                 console.warn(error.message);
                 console.warn(error.code); 
