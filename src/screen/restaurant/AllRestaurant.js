@@ -165,8 +165,7 @@ export default class Dashboard extends Component {
                                     color='#000'
                                     size={15}
                                 />
-                                <Text style={{ marginRight: 5,marginLeft: 13,fontSize: 10,color: '#000',textAlign: 'left', fontFamily: 'NunitoSans-light'}}>{Moment(item.startDate).format('llll')}</Text>
-
+                                
                             </View>
 
                         </View>
