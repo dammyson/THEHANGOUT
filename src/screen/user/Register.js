@@ -153,6 +153,7 @@ export default class Register extends Component {
           AsyncStorage.setItem('social', JSON.stringify(false));
           AsyncStorage.setItem('role', res.user.role);
           AsyncStorage.setItem('token', res.token);
+          AsyncStorage.setItem('user',  JSON.stringify(res.user));
           this.props.navigation.navigate('category')
         } else {
           Alert.alert('Login failed', res.message, [{ text: 'Okay' }])
@@ -203,6 +204,7 @@ export default class Register extends Component {
           AsyncStorage.setItem('social', JSON.stringify(false));
           AsyncStorage.setItem('role', res.user.role);
           AsyncStorage.setItem('token', res.token);
+          AsyncStorage.setItem('user',  JSON.stringify(res.user));
           this.props.navigation.navigate('category');
         } else {
           Alert.alert('Registration failed', res.message, [{ text: 'Okay' }])
@@ -292,7 +294,7 @@ export default class Register extends Component {
               autoCorrect={false}
               style={styles.input}
               inlineImageLeft='ios-call'
-              onChangeText={text => this.setState({ email: text })}
+              onChangeText={text => this.setState({ phone: text })}
               ref={(input)=> this.phoneInput = input}
             />
             <Text style={styles.actionbutton}>Password</Text>

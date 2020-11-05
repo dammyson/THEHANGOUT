@@ -4,79 +4,63 @@ import { Platform, StyleSheet, AsyncStorage, Image, Dimensions, TouchableOpacity
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
 
 import { Avatar, Badge, } from 'react-native-elements';
-import {  Icon, } from 'react-native-elements'
-
-
+import { Icon, } from 'react-native-elements'
 import color from '../../component/color';
 
 import Navbar from '../../component/Navbar';
-import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 import Modal, { ModalContent } from 'react-native-modals';
+import { getData } from '../../component/utilities';
 
 export default class Manage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             data: '',
-            user: {profilePicture:'ll'},
+            user: { profilePicture: 'll' },
             visible_log_merchant: false
 
         };
     }
 
 
-    componentWillMount() {
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-            }
-        })
-
-        AsyncStorage.getItem('user').then((value) => {
-            if (value == '') { } else {
-                this.setState({ user: JSON.parse(value) })
-            }
-            console.warn(this.state.data.user);
+    async componentWillMount() {
+        this.setState({
+            data: JSON.parse(await getData()),
+            user: JSON.parse(await getData()).user
         })
 
     }
 
-    logOut(){
+    logOut() {
         try {
-
-           this.setState({ visible_log_merchant: false })
-           AsyncStorage.removeItem('login');
-           AsyncStorage.removeItem('data');
-           AsyncStorage.removeItem('bal');
-           AsyncStorage.removeItem('user');
-           setTimeout(() => {
-            this.props.navigation.replace('intro')
-                }, 2000);
-
-               
-          
+            this.setState({ visible_log_merchant: false })
+            AsyncStorage.removeItem('login');
+            AsyncStorage.removeItem('data');
+            AsyncStorage.removeItem('bal');
+            AsyncStorage.removeItem('user');
+            setTimeout(() => {
+                this.props.navigation.replace('intro')
+            }, 2000);
             return true;
         }
-        catch(exception) {
+        catch (exception) {
             return false;
         }
-   
+
     }
 
     render() {
-
-
         const { user } = this.state
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() =>  this.props.navigation.navigate('profile')}>
-                    <Avatar
+                <Button transparent onPress={() => this.props.navigation.navigate('profile')}>
+                       <Avatar
                         rounded
                         source={{
-                            uri:user.profilePicture,
-                        }}
-                    />
+                            uri: user.profilePicture,
+                        }}  
+                    />  
                 </Button>
             </Left>
         );
@@ -103,7 +87,7 @@ export default class Manage extends Component {
 
                             <View>
 
-                                <Avatar
+                                  <Avatar
                                     rounded
                                     source={{
                                         uri: user.profilePicture,
@@ -114,6 +98,7 @@ export default class Manage extends Component {
                                     overlayContainerStyle={{ backgroundColor: 'white', borderColor: color.primary_color, borderWidth: 2 }}
                                     editButton={{ name: 'pluscircle', type: 'antdesign', color: color.primary_color, underlayColor: '#000' }}
                                 />
+                                
 
                             </View>
                             <Text style={{ fontSize: 14, margin: 15, marginTop: 10, textAlign: 'left', fontWeight: '800', color: "#ffffff", }}>{user.userName}</Text>
@@ -123,9 +108,8 @@ export default class Manage extends Component {
 
 
                         <View style={styles.body}>
-
                             <View>
-                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate('withdraw')}  style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('withdraw')} style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
                                     <Avatar
                                         rounded
                                         size="small"
@@ -149,10 +133,8 @@ export default class Manage extends Component {
                                 <View style={styles.lineStyle} />
                             </View>
 
-
-
                             <View style={{ marginTop: 20, }}>
-                                <TouchableOpacity onPress={() =>  this.props.navigation.navigate('transaction')} style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('transaction')} style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
                                     <Avatar
                                         rounded
                                         size="small"
@@ -175,12 +157,8 @@ export default class Manage extends Component {
                                 </TouchableOpacity>
                                 <View style={styles.lineStyle} />
                             </View>
-
-
-
-
-                                <View style={{ marginTop: 20 }}>
-                            <TouchableOpacity onPress={() => this.setState({ visible_log_merchant: true })}  style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
+                            <View style={{ marginTop: 20 }}>
+                                <TouchableOpacity onPress={() => this.setState({ visible_log_merchant: true })} style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
                                     <Avatar
                                         rounded
                                         size="small"
@@ -203,8 +181,6 @@ export default class Manage extends Component {
                                 </TouchableOpacity>
                                 <View style={styles.lineStyle} />
                             </View>
-
-
 
                             <View style={{ marginTop: 20 }}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
@@ -237,47 +213,47 @@ export default class Manage extends Component {
                     </View>
 
                     <Modal
-          visible={this.state.visible_log_merchant}
-        >
-          <ModalContent style={styles.modal}>
-            <View>
+                        visible={this.state.visible_log_merchant}
+                    >
+                        <ModalContent style={styles.modal}>
+                            <View>
 
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingTop: 1, paddingBottom: 10 }}>
-                <TouchableOpacity onPress={() => this.setState({ visible_log_merchant: false })} style={{ marginLeft: 10, backgroundColor: '#000' }}>
-                  <Icon
-                    name="close"
-                    size={20}
-                    type='antdesign'
-                    color="#fff"
-                  />
-                </TouchableOpacity>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingTop: 1, paddingBottom: 10 }}>
+                                    <TouchableOpacity onPress={() => this.setState({ visible_log_merchant: false })} style={{ marginLeft: 10, backgroundColor: '#000' }}>
+                                        <Icon
+                                            name="close"
+                                            size={20}
+                                            type='antdesign'
+                                            color="#fff"
+                                        />
+                                    </TouchableOpacity>
 
-              </View>
-              <View style={styles.delavartar}>
-                <Avatar
-                  size="large"
-                  icon={{ name: 'log-out', type: 'feather', color: '#FFF' }}
-                  overlayContainerStyle={{ backgroundColor: '#0974ed' }}
-                    onPress={() => console.log("Works!")}
-                    activeOpacity={0.7}
-                    containerStyle={{}}
-                />
-              </View>
+                                </View>
+                                <View style={styles.delavartar}>
+                                    <Avatar
+                                        size="large"
+                                        icon={{ name: 'log-out', type: 'feather', color: '#FFF' }}
+                                        overlayContainerStyle={{ backgroundColor: '#0974ed' }}
+                                        onPress={() => console.log("Works!")}
+                                        activeOpacity={0.7}
+                                        containerStyle={{}}
+                                    />
+                                </View>
 
 
-              <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 17, textAlign: 'center', paddingBottom: 10, marginTop: 25, }}>Leaving so soon ?</Text>
-              <View style={{ flexDirection: 'row', justifyContent:'center' }}>
-                <Button onPress={() => this.logOut()} style={styles.modalbuttonContainer} block iconLeft>
-                  <Text style={{ color: '#fdfdfd', fontWeight: '400' }}>Yes </Text>
-                </Button>
-                <Button onPress={() => this.setState({ visible_log_merchant: false })}  style={styles.modalTansButtonContainer} block iconLeft>
-                  <Text style={{ color: color.button_blue, fontWeight: '400' }}>No </Text>
-                </Button>
-              </View>
+                                <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 17, textAlign: 'center', paddingBottom: 10, marginTop: 25, }}>Leaving so soon ?</Text>
+                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                    <Button onPress={() => this.logOut()} style={styles.modalbuttonContainer} block iconLeft>
+                                        <Text style={{ color: '#fdfdfd', fontWeight: '400' }}>Yes </Text>
+                                    </Button>
+                                    <Button onPress={() => this.setState({ visible_log_merchant: false })} style={styles.modalTansButtonContainer} block iconLeft>
+                                        <Text style={{ color: color.button_blue, fontWeight: '400' }}>No </Text>
+                                    </Button>
+                                </View>
 
-            </View>
-          </ModalContent>
-        </Modal>
+                            </View>
+                        </ModalContent>
+                    </Modal>
                 </Content>
             </Container>
         );
@@ -324,35 +300,35 @@ const styles = StyleSheet.create({
     },
     modal: {
         width: Dimensions.get('window').width - 60,
-      
-      },
-      modalbuttonContainer: {
+
+    },
+    modalbuttonContainer: {
         backgroundColor: color.slide_color_dark,
         marginLeft: 10,
         marginRight: 10,
         borderRadius: 15,
         marginTop: 15,
         marginBottom: 30,
-        flex:1
-      },
-      modalTansButtonContainer: {
-       borderColor: color.button_blue,
-       borderWidth:1,
+        flex: 1
+    },
+    modalTansButtonContainer: {
+        borderColor: color.button_blue,
+        borderWidth: 1,
         marginLeft: 10,
         marginRight: 10,
         borderRadius: 15,
         marginTop: 15,
         marginBottom: 30,
-        backgroundColor:'transparent',
-        flex:1
-      },
-      
-      borderStyleHighLighted: {
+        backgroundColor: 'transparent',
+        flex: 1
+    },
+
+    borderStyleHighLighted: {
         borderColor: "red",
-      },
-      delavartar: {
+    },
+    delavartar: {
         justifyContent: 'center',
         alignItems: 'center',
         margin: 10,
-      },
+    },
 });

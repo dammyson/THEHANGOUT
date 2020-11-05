@@ -17,6 +17,7 @@ import {
     GoogleSigninButton,
     statusCodes,
   } from '@react-native-community/google-signin';
+  import {getData } from '../../component/utilities';
 
 export default class Profile extends Component {
     constructor(props) {
@@ -31,24 +32,18 @@ export default class Profile extends Component {
     }
 
 
-    componentWillMount() {
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-            }
+   async componentWillMount() {
+        this.setState({
+            data: JSON.parse(await getData()),
+            user: JSON.parse(await getData()).user
+           // user: JSON.parse(await getUser())
         })
 
-        AsyncStorage.getItem('user').then((value) => {
-            if (value == '') { } else {
-                this.setState({ user: JSON.parse(value) })
-            }
-            console.warn(this.state.data.user);
-        })
+        console.warn( JSON.parse(await  getData()).user)
 
         AsyncStorage.getItem('social').then((value) => {
             if (value == '') { } else {
                 this.setState({ social: JSON.parse(value) })
-                console.warn(value)
             }
         })
 
@@ -87,12 +82,12 @@ export default class Profile extends Component {
         var left = (
             <Left style={{ flex: 1 }}>
                 <Button transparent >
-                    <Avatar
+                   {/** <Avatar
                         rounded
                         source={{
                             uri:user.profilePicture,
                         }}
-                    />
+                    /> */} 
                 </Button>
             </Left>
         );
@@ -119,7 +114,7 @@ export default class Profile extends Component {
 
                             <View>
 
-                                <Avatar
+                               <Avatar
                                     rounded
                                     source={{
                                         uri: user.profilePicture,
@@ -133,7 +128,7 @@ export default class Profile extends Component {
                                 />
 
                             </View>
-                            <Text style={{ fontSize: 14, margin: 15, marginTop: 10, textAlign: 'left', fontWeight: '800', color: "#ffffff", }}>{user.userName}</Text>
+                             <Text style={{ fontSize: 14, margin: 15, marginTop: 10, textAlign: 'left', fontWeight: '800', color: "#ffffff", }}>{user.userName}</Text> 
 
                         </View>
 

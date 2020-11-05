@@ -256,7 +256,7 @@ export default class Dashboard extends Component {
         const { slider1ActiveSlide } = this.state;
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => this.props.navigation.naviagete('profile')}>
+                <Button transparent onPress={() => this.props.navigation.navigate('Manage')}>
                     <Avatar
                         rounded
                         source={{
