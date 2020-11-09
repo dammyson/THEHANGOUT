@@ -321,8 +321,8 @@ export default class Login extends Component {
                
                 </View>
 
-                {/**
-                 *   <View style={styles.inputContainer}>
+                
+                   <View style={styles.inputContainer}>
                   <View style={styles.lineStyle} />
                   <Text style={{ color: 'black', margin: 10, fontSize: 15, fontWeight: '200' }}>or</Text>
                   <View style={styles.lineStyle} />
@@ -339,7 +339,7 @@ export default class Login extends Component {
                   />
 
                 </View>
-                 */}
+               
 
               </View>
 

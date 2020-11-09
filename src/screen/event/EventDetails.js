@@ -226,10 +226,6 @@ export default class EventDetails extends Component {
                     source={{ uri: details.banner }}
                     imageStyle={{ backgroundColor: 'blue', alignItems: 'flex-start', justifyContent: 'flex-start' }}
                   >
-
-
-
-
                     <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', padding: 20 }}>
                       <View style={[styles.iconContainer, { marginRight: 15 }]}>
                         {details.isLike ?

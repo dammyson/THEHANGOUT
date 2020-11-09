@@ -174,10 +174,10 @@ export default class Dashboard extends Component {
             });
     };
 
-    getDetails(data){
-        if(data.type =='Event'){
+    getDetails(data) {
+        if (data.type == 'Event') {
             this.props.navigation.navigate('eventD', { id: data.id })
-        }else  if(data.type =='Restaurant'){
+        } else if (data.type == 'Restaurant') {
             this.props.navigation.navigate('restaurantD', { id: data.id })
         }
     }
@@ -210,14 +210,14 @@ export default class Dashboard extends Component {
 
                                     </View>
                                     :
-                                   
-                                    <View  style={[styles.small_circle, { backgroundColor: '#ffcccd', }]}>
 
-                                    <Image
-                                        style={{ resizeMode: 'contain', height: 20, width: 20 }}
-                                        source={require('../../assets/icons/restaurant.png')} />
-                                   </View>
-                                
+                                    <View style={[styles.small_circle, { backgroundColor: '#ffcccd', }]}>
+
+                                        <Image
+                                            style={{ resizeMode: 'contain', height: 20, width: 20 }}
+                                            source={require('../../assets/icons/restaurant.png')} />
+                                    </View>
+
                                 }
 
                                 <View style={{ width: 20 }}>
@@ -357,7 +357,7 @@ export default class Dashboard extends Component {
                                 </View>
                                 <View style={styles.rowchild}>
 
-                                    <TouchableOpacity style={[styles.circle, { backgroundColor: '#ebd5ff', }]}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('clubs')} style={[styles.circle, { backgroundColor: '#ebd5ff', }]}>
 
                                         <Image
                                             style={{ resizeMode: 'contain', height: 30, width: 30 }}
@@ -373,7 +373,7 @@ export default class Dashboard extends Component {
                                             source={require('../../assets/icons/restaurant.png')} />
                                     </TouchableOpacity>
 
-                                    <Text style={styles.catName}>Resturants</Text>
+                                    <Text style={styles.catName}>Food</Text>
                                 </View>
 
                                 <View style={styles.rowchild}>
@@ -395,7 +395,6 @@ export default class Dashboard extends Component {
                                     </TouchableOpacity>
 
                                     <Text style={styles.catName}>My corners</Text>
-
 
                                 </View>
                             </View>

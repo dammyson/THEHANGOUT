@@ -273,7 +273,7 @@ export default class step6 extends Component {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>Adding Event</Text>
+                        <Text style={{ fontSize: 15, color: '#fff' }}>Adding Restaurant</Text>
                         <BarIndicator count={4} color={color.primary_color} />
                         <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
                     </View>

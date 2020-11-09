@@ -217,7 +217,7 @@ export default class FundWallet extends Component {
 
 
                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
-                  <TouchableOpacity onPress={() => this.setState({ done: false })} style={styles.enablebutton} block iconLeft>
+                  <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={styles.enablebutton} block iconLeft>
                     <Text style={{ color: color.secondary_color, marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
                   </TouchableOpacity>
                 </View>

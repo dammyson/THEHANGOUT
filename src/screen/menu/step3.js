@@ -228,6 +228,7 @@ export default class step5 extends Component {
 
     const { data, name, description, price, max, min, add_ons, delivery, img_url, cat, image, restaurant } = this.state
 
+    console.warn(add_ons)
     if (name == "" || description == '' || price == '' || max == '' || min == '' || delivery == '') {
       Alert.alert('Validation failed', 'field(s) cannot be empty', [{ text: 'Okay' }])
       return;
@@ -247,13 +248,13 @@ export default class step5 extends Component {
         return;
       }
     }
-    if (add_ons.length > 1) {
+    if (add_ons.length > 0) {
       var add_ons_id = this.pluck(add_ons, 'id')
     } else {
 
     }
 
-
+console.warn('add_ons_id'+add_ons_id)
     var request_body = JSON.stringify({
       Name: name,
       Description: description,
@@ -305,7 +306,7 @@ export default class step5 extends Component {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
           <View style={styles.welcome}>
-            <Text style={{ fontSize: 15, color: '#fff' }}>Processing For Restaurant</Text>
+            <Text style={{ fontSize: 15, color: '#fff' }}>Processing For Menu</Text>
             <BarIndicator count={4} color={color.primary_color} />
             <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
           </View>
@@ -315,7 +316,6 @@ export default class step5 extends Component {
 
     return (
       <View style={{ flex: 1 }} >
-
         {this.state.show_add_on ?
           this.add_add_on()
           : this.step3Content()
@@ -558,7 +558,7 @@ export default class step5 extends Component {
                       placeholder="1"
                       placeholderTextColor='#ffffff60'
                       returnKeyType="next"
-                      keyboardType='default'
+                      keyboardType='numeric'
                       autoCapitalize="none"
                       autoCorrect={false}
                       style={styles.menu}
@@ -584,7 +584,7 @@ export default class step5 extends Component {
                       placeholder="2"
                       placeholderTextColor='#ffffff60'
                       returnKeyType="next"
-                      keyboardType='default'
+                      keyboardType='numeric'
                       autoCapitalize="none"
                       autoCorrect={false}
                       style={styles.menu}
@@ -630,10 +630,12 @@ export default class step5 extends Component {
   }
 
   handleSuccessAddAddON(data) {
+    console.warn(data)
     this.setState({ show_add_on: false })
     var instant_array = []
     instant_array = this.state.add_ons
     instant_array.push(data)
+    console.warn(instant_array)
     this.setState({ add_ons: instant_array })
 
   }

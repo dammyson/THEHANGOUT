@@ -94,6 +94,18 @@ class QRcode extends Component {
     var temp = Base64.decode(result);
     var res = temp.split("|");
 
+
+    console.warn(JSON.stringify({
+      Recipient: res[0],
+      Amount: res[1],
+      Description: res[2],
+      CashierCode: res[3],
+      EventCode: res[4],
+      PaymentRef: res[5],
+      isWallet: isWallet,
+      PaymentRef: ref
+    }))
+console.warn(data.token)
     fetch(URL.url + 'wallet/transfer', {
       method: 'POST', headers: {
         'Content-Type': 'application/json',

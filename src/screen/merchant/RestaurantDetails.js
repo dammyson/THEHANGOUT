@@ -165,7 +165,7 @@ export default class RestaurantDetails extends Component {
                         <View >
                             <Balance
                                 OnButtonPress={() => this.props.navigation.navigate('withdraw')}
-                                buttonColor={'#139F2A'} 
+                                buttonColor={'#139F2A'}
                                 textColor={'#fff'}
                                 buttonText={'Withdraw Funds'}
                                 textColor={'#fff'}
@@ -200,11 +200,8 @@ export default class RestaurantDetails extends Component {
 
                                 </View>
                             </View>
-                            <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 15, justifyContent: 'center' }}>
-                                <TouchableOpacity style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'red' }}>
-                                    <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: 'red' }}>Stop Ticket Sale</Text>
-                                </TouchableOpacity>
-                            </View>
+                            <View style={{ height: 20 }} />
+
                         </View>
                         {this.state.menu_list.length ?
                             <View style={{ marginLeft: 25, marginRight: 7, marginTop: 10, alignItems: 'flex-start' }}>

@@ -55,7 +55,7 @@ export default class Search extends Component {
         this.setState({
             loading: true
         })
-        fetch(URL.url + 'restaurants/search?Location='+ searchText, {
+        fetch(URL.url + 'events/search?Location='+ searchText, {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -99,7 +99,7 @@ export default class Search extends Component {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>Fetching all restaurants</Text>
+                        <Text style={{ fontSize: 15, color: '#fff' }}>Fetching all events</Text>
                         <BarIndicator count={4} color={color.primary_color} />
                         <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
                     </View>
@@ -111,7 +111,7 @@ export default class Search extends Component {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>No restaurant at the moment </Text>
+                        <Text style={{ fontSize: 15, color: '#fff' }}>No event at the moment </Text>
 
                     </View>
                 </View>
@@ -121,7 +121,7 @@ export default class Search extends Component {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>No restaurant at the moment </Text>
+                        <Text style={{ fontSize: 15, color: '#fff' }}>No event at the moment </Text>
 
                     </View>
                 </View>
@@ -165,13 +165,12 @@ export default class Search extends Component {
                                 <Icon active name="enviroment" type='antdesign' color='red'
                                 />
                                 <TextInput
-                                    placeholder="Search Restaurant"
+                                    placeholder="Location"
                                     placeholderTextColor='#fff'
                                     returnKeyType="next"
                                     onSubmitEditing={() => this.search()}
                                     keyboardType="default"
                                     autoCapitalize="none"
-                                    defaultValue={this.state.searchText}
                                     autoCorrect={false}
                                     style={styles.menu}
                                     onChangeText={text => this.setState({ searchText: text })}
@@ -186,6 +185,8 @@ export default class Search extends Component {
 
 
                         {this.renderItem(this.state.searchResult)}
+
+
                        
                     </View>
                 </Content>
@@ -200,9 +201,9 @@ export default class Search extends Component {
         let items = [];
         for (let i = 0; i < tickets.length; i++) {
             items.push(
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('restaurantD',{id: tickets[i].id})} style={styles.oneRow}>
+                <TouchableOpacity onPress={() =>  this.props.navigation.navigate('eventD', { id: tickets[i].id })} style={styles.oneRow}>
                     <View style={{ marginRight: 20 , marginLeft:20}}>
-            <Text style={styles.title}> {tickets[i].name}     {tickets[i].id}</Text>
+                        <Text style={styles.title}> {tickets[i].title}</Text>
                         <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 12, fontWeight: '100', marginRight: 40, opacity: 0.59 }}> {tickets[i].description} </Text>
                        
                         <View style={{  backgroundColor: '#111123', marginTop: 10, opacity: 0.5 }}>
@@ -305,7 +306,7 @@ const styles = StyleSheet.create({
         fontFamily: 'NunitoSans-Bold'
     },
   
-
+  
   
     list: {
         flex: 1,

@@ -43,52 +43,52 @@ export default class Transaction extends Component {
                 this.setState({ data: JSON.parse(value) })
                 this.setState({ user: JSON.parse(value).user })
             }
-             this.processTransaction();
+            this.processTransaction();
         })
 
 
     }
     currencyFormat(n) {
-        return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+        return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 
 
-     }
+    }
     processTransaction() {
         const { data } = this.state
         this.setState({ loading: true })
         fetch(URL.url + 'wallet/transaction/history', {
-          method: 'POST', headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'Authorization': 'Bearer ' + data.token,
-          }, body: JSON.stringify({
-            StartDate: "",
-            EndDate: "",
-          }),
+            method: 'POST', headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Authorization': 'Bearer ' + data.token,
+            }, body: JSON.stringify({
+                StartDate: "",
+                EndDate: "",
+            }),
         })
-          .then(res => res.json())
-          .then(res => {
-            console.warn(res);
-            if (res.status) {
-                AsyncStorage.setItem('bal', this.currencyFormat(res.data.balance));
-              this.setState({ 
-                loading: false,
-                details: res.data.allTransactions,
-                bal:res.data.balance,
-               
-              })
+            .then(res => res.json())
+            .then(res => {
+                console.warn(res);
+                if (res.status) {
+                    AsyncStorage.setItem('bal', this.currencyFormat(res.data.balance));
+                    this.setState({
+                        loading: false,
+                        details: res.data.allTransactions,
+                        bal: res.data.balance,
 
-    
-            } else {
-              Alert.alert('Process failed', res.message, [{ text: 'Okay' }])
-              this.setState({ loading: false })
-            }
-          }).catch((error) => {
-            console.warn(error);
-            alert(error.message);
-          });
-    
-      }
+                    })
+
+
+                } else {
+                    Alert.alert('Process failed', res.message, [{ text: 'Okay' }])
+                    this.setState({ loading: false })
+                }
+            }).catch((error) => {
+                console.warn(error);
+                alert(error.message);
+            });
+
+    }
     segmentClicked = (index) => {
         this.setState({
             activeIndex: index
@@ -154,33 +154,33 @@ export default class Transaction extends Component {
 
                                 </View>
                                 <View style={{ alignItems: 'flex-start', marginTop: 10, marginBottom: 10, marginRight: 15 }}>
-                                   
-                                </View>
-                            </View>
-                            <View style={{ flexDirection: 'row',marginLeft: 20, marginRight: 20, marginTop: 15, borderBottomColor: '#808080' , borderBottomWidth: 0.7, paddingBottom: 15 }}>
-
-                            <Text style={{ color: "#fff", fontSize: 14, fontWeight: '500' , flex:1}}>ALL TRANSACTION </Text>
-                            <Icon
-                                                    active
-                                                    name="filter"
-                                                    type='antdesign'
-                                                    color='#fff'
-                                                    size={30}
-                                                />
-                            </View>
-                          
- <View style={{ marginTop: 15 }}>
-
-                                    <FlatList
-                                        style={{ paddingBottom: 5 }}
-                                        data={this.state.details}
-                                        renderItem={this.renderItem}
-                                        keyExtractor={item => item.id}
-                                        ItemSeparatorComponent={this.renderSeparator}
-                                        ListHeaderComponent={this.renderHeader}
-                                    />
 
                                 </View>
+                            </View>
+                            <View style={{ flexDirection: 'row', marginLeft: 20, marginRight: 20, marginTop: 15, borderBottomColor: '#808080', borderBottomWidth: 0.7, paddingBottom: 15 }}>
+
+                                <Text style={{ color: "#fff", fontSize: 14, fontWeight: '500', flex: 1 }}>ALL TRANSACTION </Text>
+                                <Icon
+                                    active
+                                    name="filter"
+                                    type='antdesign'
+                                    color='#fff'
+                                    size={30}
+                                />
+                            </View>
+
+                            <View style={{ marginTop: 15 }}>
+
+                                <FlatList
+                                    style={{ paddingBottom: 5 }}
+                                    data={this.state.details}
+                                    renderItem={this.renderItem}
+                                    keyExtractor={item => item.id}
+                                    ItemSeparatorComponent={this.renderSeparator}
+                                    ListHeaderComponent={this.renderHeader}
+                                />
+
+                            </View>
 
                         </View>
 
@@ -188,7 +188,7 @@ export default class Transaction extends Component {
 
 
 
-                  
+
                 </Content>
             </Container>
         );
@@ -196,19 +196,19 @@ export default class Transaction extends Component {
 
     renderItem = ({ item, }) => {
         return (
-            <TouchableOpacity  style={{  marginLeft: 20, marginRight: 20,borderBottomColor: '#808080' , borderBottomWidth: 0.7, paddingTop:20, paddingBottom: 20 }}
+            <View style={{ marginLeft: 20, marginRight: 20, borderBottomColor: '#808080', borderBottomWidth: 0.7, paddingTop: 20, paddingBottom: 20 }}
                 underlayColor="red">
                 <View style={{ flex: 1, flexDirection: 'row', }}>
-        <Text style={{ color: "#fff", fontSize: 14, fontWeight: '500' , flex:1}}>{item.title}</Text>
+                    <Text style={{ color: "#fff", fontSize: 14, fontWeight: '500', flex: 1 }}>{item.title}</Text>
                     <Text style={{ color: "#fff", fontSize: 14, fontWeight: '300' }}> ₦{this.currencyFormat(item.amount)}</Text>
                 </View>
 
-                <View style={{ flex: 1, flexDirection: 'row', marginTop:15 }}>
-                    <Text style={{ color: "#fff", fontSize: 14, fontWeight: '500' , flex:1, opacity:0.8}}>{item.transactionReference} </Text>
-                    <Text style={{ color: "#fff", fontSize: 14, fontWeight: '300', opacity:0.8 }}>{item.date} </Text>
+                <View style={{ flex: 1, flexDirection: 'row', marginTop: 15 }}>
+                    <Text style={{ color: "#fff", fontSize: 14, fontWeight: '500', flex: 1, opacity: 0.8 }}>{item.transactionReference} </Text>
+                    <Text style={{ color: "#fff", fontSize: 14, fontWeight: '300', opacity: 0.8 }}>{item.date} </Text>
                 </View>
-                
-            </TouchableOpacity>
+
+            </View>
 
         )
 

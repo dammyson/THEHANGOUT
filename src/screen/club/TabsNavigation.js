@@ -4,9 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 
 
-import Home from './AllRestaurant';
+import Home from './AllClubs';
 import Search from './Search';
-import Tables from './Tables';
+import Tickets from './../ticket/ListTickets';
 import Payment from './../payment/ManagementPayment';
 import Manage from './../engagement/Manage';
 
@@ -41,7 +41,7 @@ class AppNavigator extends Component {
               </View>
               );
             } 
-            else if (route.name == 'ResSearch') {
+            else if (route.name == 'Search') {
               return (
                 <View>
               <Icon
@@ -54,7 +54,7 @@ class AppNavigator extends Component {
             </View>
             );
           }
-              else if (route.name == 'Tables') {
+              else if (route.name == 'Tickets') {
                 return (
                   <View>
                 <Icon
@@ -63,7 +63,7 @@ class AppNavigator extends Component {
                 type='font-awesome'
                 color={color}
               />
-              <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7,fontSize: 10, color: color, textAlign: 'center',}}>My History</Text>
+              <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7,fontSize: 10, color: color, textAlign: 'center',}}>My Tickets</Text>
               </View>
               );
               }else if (route.name === 'Payment') {
@@ -111,14 +111,13 @@ class AppNavigator extends Component {
         }}
       >
         <Tab.Screen navigation={this.props.navigation} name="Home" component={Home}/>
-        <Tab.Screen navigation={this.props.navigation} name="ResSearch" component={Search}/>
-        <Tab.Screen navigation={this.props.navigation} name="Tables" component={Tables}/>
+        <Tab.Screen navigation={this.props.navigation} name="Search" component={Search}/>
+        <Tab.Screen navigation={this.props.navigation} name="Tickets" component={Tickets}/>
         <Tab.Screen name="Payment" component={Payment} />
         <Tab.Screen navigation={this.props.navigation} name="Manage" component={Manage}/>
 
 
       </Tab.Navigator>
-
 
     );
   }

@@ -15,6 +15,7 @@ import {
 import Moment from 'moment';
 import { getSaveRestaurant, getData } from '../../component/utilities';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import ActivityIndicator from '../../component/views/ActivityIndicator';
 
 
 export default class Dashboard extends Component {
@@ -34,9 +35,9 @@ export default class Dashboard extends Component {
             data: '',
             nodata: false,
             slider1ActiveSlide: 0,
-            selected: null, 
-            user:null,
-            searchText:''
+            selected: null,
+            user: null,
+            searchText: ''
         };
     }
 
@@ -45,18 +46,18 @@ export default class Dashboard extends Component {
 
     componentWillUnmount() {
         this._unsubscribe();
-      }
+    }
 
-  async componentDidMount() {
+    async componentDidMount() {
         this.setState({
             data: JSON.parse(await getData()),
             user: JSON.parse(await getData()).user
-          })
+        })
 
         this.getEventsRequest()
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
-           this.getEventsRequest()
-          });
+            this.getEventsRequest()
+        });
     }
 
 
@@ -115,7 +116,7 @@ export default class Dashboard extends Component {
                         loading: false
                     })
                 } else {
-        
+
                 }
             })
             .catch(error => {
@@ -126,9 +127,9 @@ export default class Dashboard extends Component {
 
     };
 
-    likeUnlikeRequest(id, pos){
-        const { data,} = this.state
-        fetch(URL.url + 'events/like/'+ id, {
+    likeUnlikeRequest(id, pos) {
+        const { data, } = this.state
+        fetch(URL.url + 'events/like/' + id, {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -138,7 +139,7 @@ export default class Dashboard extends Component {
             .then(res => res.json())
             .then(res => {
                 if (res.status) {
-                    if(pos){
+                    if (pos) {
                         Toast.show({
                             text: 'Event removed from favorite !',
                             position: 'bottom',
@@ -146,7 +147,7 @@ export default class Dashboard extends Component {
                             buttonText: 'Dismiss',
                             duration: 2000
                         });
-                    }else{
+                    } else {
                         Toast.show({
                             text: 'Event Added to favorite !',
                             position: 'bottom',
@@ -155,7 +156,7 @@ export default class Dashboard extends Component {
                             duration: 2000
                         });
                     }
-                   
+
                     this.RgetEventsRequest()
                 } else {
 
@@ -169,10 +170,10 @@ export default class Dashboard extends Component {
     };
 
 
-    _renderItem = ({ item, index }, parallaxProps)  =>{
+    _renderItem = ({ item, index }, parallaxProps) => {
         Moment.locale('en');
         return (
-            <TouchableOpacity onPress={() =>   this.props.navigation.navigate('eventD', { id: item.id })} >
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('eventD', { id: item.id })} >
                 <ImageBackground
                     opacity={0.5}
                     style={{ borderRadius: 12 }}
@@ -205,33 +206,33 @@ export default class Dashboard extends Component {
 
                             <View style={[styles.iconContainer, { marginRight: 15 }]}>
 
-                                {item.isLike ? 
-                                 <TouchableOpacity onPress={()=> this.likeUnlikeRequest(item.id, item.isLike) }>
+                                {item.isLike ?
+                                    <TouchableOpacity onPress={() => this.likeUnlikeRequest(item.id, item.isLike)}>
 
-                                 <Icon
-                                     active
-                                     name="heart"
-                                     type='antdesign'
-                                     color='red'
-                                     size={15}
-                                 />
-                             </TouchableOpacity>
-                                
-                                : 
-                                
-                                <TouchableOpacity onPress={()=> this.likeUnlikeRequest(item.id , item.isLike) }>
+                                        <Icon
+                                            active
+                                            name="heart"
+                                            type='antdesign'
+                                            color='red'
+                                            size={15}
+                                        />
+                                    </TouchableOpacity>
 
-                                <Icon
-                                    active
-                                    name="hearto"
-                                    type='antdesign'
-                                    color='red'
-                                    size={15}
-                                />
-                            </TouchableOpacity>
-                                
+                                    :
+
+                                    <TouchableOpacity onPress={() => this.likeUnlikeRequest(item.id, item.isLike)}>
+
+                                        <Icon
+                                            active
+                                            name="hearto"
+                                            type='antdesign'
+                                            color='red'
+                                            size={15}
+                                        />
+                                    </TouchableOpacity>
+
                                 }
-                               
+
                             </View>
 
                         </View>
@@ -243,9 +244,9 @@ export default class Dashboard extends Component {
             </TouchableOpacity>
         );
     }
-goToMore(params){
-    this.props.navigation.navigate('more',{ prams: params})
-}
+    goToMore(params) {
+        this.props.navigation.navigate('more', { prams: params })
+    }
     _renderMenu() {
         return (
             <View style={{ flexDirection: 'row', }}>
@@ -257,7 +258,7 @@ goToMore(params){
                 >
 
 
-                        <TouchableOpacity   onPress={() => this.goToMore("eventListing/Likes/7") }  style={styles.hangoutDetails} >
+                    <TouchableOpacity onPress={() => this.goToMore("eventListing/Likes/7")} style={styles.hangoutDetails} >
 
                         <View style={styles.iconContainer}>
 
@@ -285,7 +286,7 @@ goToMore(params){
                 >
 
 
-<TouchableOpacity    onPress={() => this.goToMore("eventListing/Categories/7") }  style={styles.hangoutDetails} >
+                    <TouchableOpacity onPress={() => this.goToMore("eventListing/Categories/7")} style={styles.hangoutDetails} >
 
                         <View style={styles.iconContainer}>
 
@@ -312,7 +313,7 @@ goToMore(params){
                 >
 
 
-                    <TouchableOpacity  onPress={() => this.goToMore("eventListing/Categories/7") }  style={styles.hangoutDetails} >
+                    <TouchableOpacity onPress={() => this.goToMore("eventListing/Categories/7")} style={styles.hangoutDetails} >
 
                         <View style={styles.iconContainer}>
 
@@ -367,27 +368,17 @@ goToMore(params){
         this.setState({ selected: data })
     }
     render() {
-
-
         if (this.state.loading) {
             return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
-                    <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>Fetching all events</Text>
-                        <BarIndicator count={4} color={color.primary_color} />
-                        <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
-                    </View>
-                </View>
+                <ActivityIndicator message={'Fetch '}  color={color.club_color}  />
             );
         }
-
 
         if (this.state.nodata) {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
                         <Text style={{ fontSize: 15, color: '#fff' }}>No event at the moment </Text>
-
                     </View>
                 </View>
             );
@@ -395,15 +386,13 @@ goToMore(params){
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() =>  this.props.navigation.reset({
-                      index: 0,
-                      routes: [{ name: 'dashboard' }],
-                    })}>
-            <View style={{ transform:[{ rotateY: "180deg"}]}}>
-                <Icon  type='material-icons' name='exit-to-app' size={30} color='#FFF' />
+                <Button onPress={() => this.props.navigation.goBack()} transparent >
+                    <View style={{ transform: [{ rotateY: "180deg" }] }}>
+                        <Icon type='material-icons' name='exit-to-app' size={30} color='#FFF' />
 
                     </View>
-            </Button>
+
+                </Button>
             </Left>
         );
         var right = (
@@ -421,10 +410,11 @@ goToMore(params){
 
         return (
             <Container style={{ backgroundColor: color.secondary_color }}>
-                <Navbar left={left} right={right} title="All Events" bg='#101023' />
+                  <StatusBar backgroundColor='#101023' barStyle="light-content" />
+                <Navbar left={left} right={right} title="Clubs/Lounges" bg='#101023' />
                 <Content>
                     <View style={styles.container}>
-                    <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
+                        <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
                         <View style={styles.header}>
                             <View style={styles.item}>
                                 <Icon active name="enviroment" type='antdesign' color='red'
@@ -433,7 +423,7 @@ goToMore(params){
                                     placeholder="Location"
                                     placeholderTextColor='#fff'
                                     returnKeyType="next"
-                                   
+
                                     keyboardType="default"
                                     autoCapitalize="none"
                                     autoCorrect={false}
@@ -445,7 +435,7 @@ goToMore(params){
 
                             <View style={{ marginLeft: 10, marginRight: 7, flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={styles.titleText}>TRENDING</Text>
-                                <TouchableOpacity    onPress={() => this.goToMore('eventListing/Trending/50')}   style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
+                                <TouchableOpacity onPress={() => this.goToMore('eventListing/Trending/50')} style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
                                     <Text style={{ fontSize: 12, color: 'orange', }}>Full List </Text>
                                     <Icon
                                         active
@@ -459,17 +449,7 @@ goToMore(params){
 
                         {this.renderTrending()}
 
-                        <View style={{ marginLeft: 10, marginRight: 7, flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={styles.titleText}>For You</Text>
-                            <TouchableOpacity    onPress={() => this.goToMore('eventListing/Upcoming/7')}  style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
-                                <Icon
-                                    active
-                                    name="ios-arrow-forward"
-                                    type='ionicon'
-                                    color='orange'
-                                /></TouchableOpacity>
-                        </View>
-                        {this._renderMenu()}
+                       
 
                         <View style={{ marginLeft: 10, marginRight: 7, marginBottom: 15, flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.titleText}>UPCOMING</Text>
@@ -482,12 +462,12 @@ goToMore(params){
 
 
 
-                        <TouchableOpacity  onPress={() => this.goToMore('eventListing/Upcoming/50')}  style={{ margin: 30, alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: '#F7A400' }}>
+                        <TouchableOpacity onPress={() => this.goToMore('eventListing/Upcoming/50')} style={{ margin: 30, alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: '#F7A400' }}>
                             <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: '#F7A400' }}>View all upcomning events</Text>
                         </TouchableOpacity>
                     </View>
                 </Content>
-               
+
             </Container>
         );
     }
@@ -498,10 +478,10 @@ goToMore(params){
                 <View>
                     <View style={styles.upcomingContainer}>
                         <View style={{ alignItems: 'center' }}>
-                            <Text style={{ fontWeight: '300', fontSize: 14, color: 'red' }}>{ Moment(item.startDate).format('MMM')}</Text>
+                            <Text style={{ fontWeight: '300', fontSize: 14, color: 'red' }}>{Moment(item.startDate).format('MMM')}</Text>
                             <View style={{ marginLeft: 10, marginRight: 7, padding: 10, borderRadius: 10, backgroundColor: '#5F5C7F', alignItems: 'center' }}>
-                                <Text style={{ fontWeight: '600', color: '#fff' }}>{ Moment(item.startDate).format('D')}</Text>
-                                <Text style={{ fontWeight: '300', color: '#fff' }}>{ Moment(item.startDate).format('ddd')}</Text>
+                                <Text style={{ fontWeight: '600', color: '#fff' }}>{Moment(item.startDate).format('D')}</Text>
+                                <Text style={{ fontWeight: '300', color: '#fff' }}>{Moment(item.startDate).format('ddd')}</Text>
                             </View>
                             <View style={{ borderColor: '#5F5C7F', borderStyle: 'dotted', borderWidth: 2, borderRadius: 1, marginTop: 10, flex: 1 }}>
 
@@ -509,7 +489,7 @@ goToMore(params){
 
                         </View>
                         <View style={{ flex: 1, }}>
-                            <TouchableOpacity onPress={() =>  this.props.navigation.navigate('eventD',{ id: item.id })}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('eventD', { id: item.id })}>
                                 <ImageBackground
                                     opacity={0.5}
                                     style={{ borderRadius: 12, flex: 1, margin: 10, marginTop: 0 }}
@@ -519,7 +499,7 @@ goToMore(params){
 
 
                                     <View style={styles.details} >
-                                        <Text style={styles.date}>{ Moment(item.startDate).format('llll')}</Text>
+                                        <Text style={styles.date}>{Moment(item.startDate).format('llll')}</Text>
                                         <Text style={styles.tittle}>{item.title}</Text>
                                         <View style={styles.piceContainer}>
                                             <View style={{ flex: 1, flexDirection: 'row', marginTop: 3, marginLeft: 15 }}>
@@ -543,32 +523,32 @@ goToMore(params){
 
                                             <View style={[styles.iconContainer, { marginRight: 15 }]}>
 
-                                            {item.isLike ? 
-                                 <TouchableOpacity onPress={()=> this.likeUnlikeRequest(item.id, item.isLike) }>
+                                                {item.isLike ?
+                                                    <TouchableOpacity onPress={() => this.likeUnlikeRequest(item.id, item.isLike)}>
 
-                                 <Icon
-                                     active
-                                     name="heart"
-                                     type='antdesign'
-                                     color='red'
-                                     size={15}
-                                 />
-                             </TouchableOpacity>
-                                
-                                : 
-                                
-                                <TouchableOpacity onPress={()=> this.likeUnlikeRequest(item.id , item.isLike) }>
+                                                        <Icon
+                                                            active
+                                                            name="heart"
+                                                            type='antdesign'
+                                                            color='red'
+                                                            size={15}
+                                                        />
+                                                    </TouchableOpacity>
 
-                                <Icon
-                                    active
-                                    name="hearto"
-                                    type='antdesign'
-                                    color='red'
-                                    size={15}
-                                />
-                            </TouchableOpacity>
-                                
-                                }
+                                                    :
+
+                                                    <TouchableOpacity onPress={() => this.likeUnlikeRequest(item.id, item.isLike)}>
+
+                                                        <Icon
+                                                            active
+                                                            name="hearto"
+                                                            type='antdesign'
+                                                            color='red'
+                                                            size={15}
+                                                        />
+                                                    </TouchableOpacity>
+
+                                                }
 
                                             </View>
 
@@ -589,7 +569,7 @@ goToMore(params){
                             >
 
 
-                                <TouchableOpacity   onPress={() =>  this.props.navigation.navigate('more',{ prams: "eventCategoryListing/"+ item.category+"/7" })} style={styles.hangoutDetails} >
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('more', { prams: "eventCategoryListing/" + item.category + "/7" })} style={styles.hangoutDetails} >
 
                                     <Text style={{ fontWeight: '600', color: '#fff', flex: 1, marginLeft: 10 }}>{item.more} More Events</Text>
                                     <Icon

@@ -7,7 +7,8 @@
       white: '#FFFFFF',
       red: 'red',
       green: 'green',
-      header: '#5f5c7f'
+      header: '#5f5c7f',
+      club_color:'#800080'
     }
 
 export default colors

@@ -247,7 +247,10 @@ export default class Dashboard extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-            <Button transparent onPress={() =>this.props.navigation.goBack()}>
+            <Button transparent onPress={() =>  this.props.navigation.reset({
+                      index: 0,
+                      routes: [{ name: 'dashboard' }],
+                    })}>
             <View style={{ transform:[{ rotateY: "180deg"}]}}>
                 <Icon  type='material-icons' name='exit-to-app' size={30} color='#FFF' />
 
@@ -279,9 +282,10 @@ export default class Dashboard extends Component {
                                 <Icon active name="enviroment" type='antdesign' color='red'
                                 />
                                 <TextInput
-                                    placeholder="Location"
+                                    placeholder="Search Restaurant"
                                     placeholderTextColor='#fff'
                                     returnKeyType="next"
+                                    onFocus={() =>this.props.navigation.navigate('ResSearch')}
                                     keyboardType="default"
                                     autoCapitalize="none"
                                     autoCorrect={false}
@@ -368,8 +372,6 @@ export default class Dashboard extends Component {
                                         </View>
 
                                     </View>
-
-
                                 </ImageBackground>
 
                             </TouchableOpacity>
