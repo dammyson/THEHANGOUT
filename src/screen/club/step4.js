@@ -3,8 +3,12 @@ import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, TouchableHi
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
-import color from '../../component/color';
+import { placeApi } from '../../component/utilities/Keys';
+import { Actions } from 'react-native-router-flux';
+const deviceHeight = Dimensions.get("window").height;
 import _ from "lodash";
+import color from '../../component/color';
+const { width: screenWidth } = Dimensions.get('window')
 import Navbar from '../../component/Navbar';
 const URL = require("../../component/server");
 import {
@@ -12,6 +16,7 @@ import {
   geocodeLocationByName,
   geocodeAddressByName
 } from '../../component/utilities/locationService';
+
 export default class step4 extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +28,7 @@ export default class step4 extends Component {
       latitude: 6.5244,
       longitude: 3.3792,
       locationPredictions: []
+
     };
     this.onChangeDestinationDebounced = _.debounce(
       this.onChangeDestination,
@@ -31,9 +37,9 @@ export default class step4 extends Component {
   }
 
   nextStep = () => {
-    const { venue, data } = this.state;
+    const { venue, latitude, longitude, data } = this.state;
     // Save state for use in other steps
-    if(venue == ""){
+    if (venue == "") {
       Alert.alert('Validation failed', "All fields are requried", [{ text: 'Okay' }])
       return
     }
@@ -41,11 +47,11 @@ export default class step4 extends Component {
     data_moving['venue'] = venue
     data_moving['latitude'] = latitude
     data_moving['longitude'] = longitude
-    this.props.navigation.navigate('Rest5', {data_moving: data_moving});
+    this.props.navigation.navigate('Club5', { data_moving: data_moving });
   };
 
   goBack() {
-    const {  goBack } = this.props.navigation; 
+    const { goBack } = this.props.navigation;
     goBack(null)
   }
 
@@ -53,6 +59,7 @@ export default class step4 extends Component {
     const { data_moving } = this.props.route.params;
     console.warn(data_moving)
     this.setState({ data: data_moving})
+    console.warn(placeApi())
     var cordinates = getLocation();
     cordinates.then((result) => {
       this.setState({
@@ -64,8 +71,9 @@ export default class step4 extends Component {
       console.log(err);
     });
 
-  }
 
+
+  }
 
 
   countChange(text) {
@@ -129,7 +137,7 @@ export default class step4 extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={()=>this.goBack()}>
+        <Button transparent onPress={() => this.goBack()}>
           <Icon
             active
             name="ios-arrow-back"
@@ -142,17 +150,18 @@ export default class step4 extends Component {
 
 
     return (
-      <Container style={{ backgroundColor:  "#010113"}}>
+      <Container style={{ backgroundColor: "#010113" }}>
         <Navbar left={left} title={this.state.data.title} bg='#101023' />
         <Content>
           <View style={styles.container}>
             <View>
-              <Text style={styles.titleText}>CHOOSE RESTAURANT VENUE</Text>
+              <Text style={styles.titleText}>CHOOSE CLUB VENUE</Text>
             </View>
             <View style={styles.item}>
               <Icon active name="md-locate" type='ionicon' color='red' />
               <TextInput
                 placeholder="Search for a location"
+                defaultValue={this.state.venue}
                 placeholderTextColor='#8d96a6'
                 returnKeyType="next"
                 onSubmitEditing={() => this.nextStep()}
@@ -164,6 +173,7 @@ export default class step4 extends Component {
                   this.setState({ venue });
                   this.onChangeDestinationDebounced(venue);
                 }}
+
               />
 
               <TouchableOpacity style={{ height: 30, width: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'red' }}>
@@ -171,14 +181,11 @@ export default class step4 extends Component {
               </TouchableOpacity>
 
             </View>
-
             <View style={{ backgroundColor: "#101023", }}>
               {this.renderPrediction(this.state.locationPredictions)}
             </View>
-           
-
             <View style={styles.nextContainer}>
-              <TouchableOpacity  onPress={this.nextStep}   style={styles.qrbuttonContainer} block iconLeft>
+              <TouchableOpacity onPress={this.nextStep} style={styles.qrbuttonContainer} block iconLeft>
                 <Icon
                   active
                   name="arrowright"
@@ -264,6 +271,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
+
     paddingBottom: 20
   },
   suggestions: {

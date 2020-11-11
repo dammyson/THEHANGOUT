@@ -28,12 +28,8 @@ export default class Details extends Component {
             id: '1',
             details: {},
             menu_list: []
-
-
         };
     }
-
-
 
     componentWillMount() {
         const { id } = this.props.route.params;
@@ -147,8 +143,6 @@ export default class Details extends Component {
                 <StatusBar barStyle="light-content" hidden={false} backgroundColor="transparent" translucent />
                 <Content>
                     <View style={styles.container}>
-
-
                         <View style={{ flex: 1, }}>
                             <ScrollView style={{ flex: 1, }}>
                                 <View style={{ flex: 1, }}>
@@ -158,7 +152,7 @@ export default class Details extends Component {
                                         source={{ uri: details.banner }}
                                         imageStyle={{ backgroundColor: 'blue', alignItems: 'flex-end', justifyContent: 'flex-end' }}
                                     >
-                                        <View style={{ paddingTop:20, marginLeft:20 }}>
+                                        <View style={{ paddingTop: 20, marginLeft: 20 }}>
                                             <Button transparent onPress={() => this.props.navigation.goBack()}>
                                                 <Icon
                                                     active
@@ -178,21 +172,18 @@ export default class Details extends Component {
                                                     <View style={{ flex: 1, flexDirection: 'row', marginTop: 3, marginLeft: 15 }}>
                                                         <Icon
                                                             active
-                                                            name="location-pin"
-                                                            type='entypo'
+                                                            name="map-marker-distance"
+                                                            type='material-community'
                                                             color='#fff'
                                                             size={15}
                                                         />
-                                                        <Text style={styles.price}>{'40 mins away'}</Text>
+                                                        <Text style={styles.price}>{details.distance} ({details.duration})</Text>
 
                                                     </View>
-
                                                 </View>
 
                                             </View>
                                         </View>
-
-
                                     </ImageBackground>
 
                                     {this.renderSwitch()}

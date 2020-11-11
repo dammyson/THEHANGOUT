@@ -34,7 +34,7 @@ export default class FundWallet extends Component {
       pay: false,
       amount: 0,
       bal: '',
-      done: false
+      done: true
 
 
     };
@@ -306,7 +306,7 @@ export default class FundWallet extends Component {
                   </View>
                 </View>
                 <TouchableOpacity onPress={() => this.displayCard()} style={[styles.enablebutton, { marginTop: 20 }]} block iconLeft>
-                  <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>FUND ₦{this.state.amount}</Text>
+                  <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>FUND ₦{this.amountFeildFomeater(this.state.amount)}</Text>
                 </TouchableOpacity>
               </View>
             }

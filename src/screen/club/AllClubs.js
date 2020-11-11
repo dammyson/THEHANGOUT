@@ -247,96 +247,7 @@ export default class Dashboard extends Component {
     goToMore(params) {
         this.props.navigation.navigate('more', { prams: params })
     }
-    _renderMenu() {
-        return (
-            <View style={{ flexDirection: 'row', }}>
-                <ImageBackground
-                    opacity={0.5}
-                    style={{ alignItems: 'flex-start', borderRadius: 3, margin: 8, flex: 1 }}
-                    source={{ uri: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg' }}
-                    imageStyle={{ borderRadius: 5, backgroundColor: color.secondary_color }}
-                >
-
-
-                    <TouchableOpacity onPress={() => this.goToMore("eventListing/Likes/7")} style={styles.hangoutDetails} >
-
-                        <View style={styles.iconContainer}>
-
-                            <Icon
-                                active
-                                name="heart"
-                                type='antdesign'
-                                color='red'
-                                size={15}
-                            />
-
-                        </View>
-                        <Text style={styles.date}>My Likes</Text>
-
-                    </TouchableOpacity>
-
-
-                </ImageBackground>
-
-                <ImageBackground
-                    opacity={0.5}
-                    style={{ alignItems: 'flex-start', borderRadius: 3, margin: 5, flex: 1 }}
-                    source={{ uri: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg' }}
-                    imageStyle={{ borderRadius: 5, backgroundColor: color.secondary_color }}
-                >
-
-
-                    <TouchableOpacity onPress={() => this.goToMore("eventListing/Categories/7")} style={styles.hangoutDetails} >
-
-                        <View style={styles.iconContainer}>
-
-                            <Icon
-                                active
-                                name="calendar"
-                                type='entypo'
-                                color='red'
-                                size={15}
-                            />
-
-                        </View>
-                        <Text style={styles.date}>My calender</Text>
-
-                    </TouchableOpacity>
-
-
-                </ImageBackground>
-                <ImageBackground
-                    opacity={0.5}
-                    style={{ alignItems: 'flex-start', borderRadius: 3, margin: 5, flex: 1 }}
-                    source={{ uri: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg' }}
-                    imageStyle={{ borderRadius: 5, backgroundColor: color.secondary_color }}
-                >
-
-
-                    <TouchableOpacity onPress={() => this.goToMore("eventListing/Categories/7")} style={styles.hangoutDetails} >
-
-                        <View style={styles.iconContainer}>
-
-                            <Icon
-                                active
-                                name="indent-more"
-                                type='foundation'
-                                color='red'
-                                size={15}
-                            />
-
-                        </View>
-                        <Text style={styles.date}>Categories</Text>
-
-                    </TouchableOpacity>
-
-
-                </ImageBackground>
-
-            </View>
-        );
-    }
-
+  
     renderTrending() {
         const { slider1ActiveSlide } = this.state;
         return (
@@ -370,7 +281,7 @@ export default class Dashboard extends Component {
     render() {
         if (this.state.loading) {
             return (
-                <ActivityIndicator message={'Fetch '}  color={color.club_color}  />
+                <ActivityIndicator message={'Fetching clubs '}  color={color.club_color}  />
             );
         }
 
@@ -448,19 +359,13 @@ export default class Dashboard extends Component {
 
 
                         {this.renderTrending()}
-
-                       
-
-                        <View style={{ marginLeft: 10, marginRight: 7, marginBottom: 15, flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ marginLeft: 10, marginRight: 7, marginBottom: 15,  marginTop: 25, flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.titleText}>UPCOMING</Text>
                         </View>
 
                         <ScrollView style={styles.scrollView}>
                             {this.renderUpcomming()}
                         </ScrollView>
-
-
-
 
                         <TouchableOpacity onPress={() => this.goToMore('eventListing/Upcoming/50')} style={{ margin: 30, alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: '#F7A400' }}>
                             <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: '#F7A400' }}>View all upcomning events</Text>
@@ -477,17 +382,7 @@ export default class Dashboard extends Component {
             items.push(
                 <View>
                     <View style={styles.upcomingContainer}>
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={{ fontWeight: '300', fontSize: 14, color: 'red' }}>{Moment(item.startDate).format('MMM')}</Text>
-                            <View style={{ marginLeft: 10, marginRight: 7, padding: 10, borderRadius: 10, backgroundColor: '#5F5C7F', alignItems: 'center' }}>
-                                <Text style={{ fontWeight: '600', color: '#fff' }}>{Moment(item.startDate).format('D')}</Text>
-                                <Text style={{ fontWeight: '300', color: '#fff' }}>{Moment(item.startDate).format('ddd')}</Text>
-                            </View>
-                            <View style={{ borderColor: '#5F5C7F', borderStyle: 'dotted', borderWidth: 2, borderRadius: 1, marginTop: 10, flex: 1 }}>
-
-                            </View>
-
-                        </View>
+                      
                         <View style={{ flex: 1, }}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('eventD', { id: item.id })}>
                                 <ImageBackground
@@ -560,30 +455,6 @@ export default class Dashboard extends Component {
                                 </ImageBackground>
 
                             </TouchableOpacity>
-
-                            <ImageBackground
-                                opacity={0.5}
-                                style={{ alignItems: 'flex-start', borderRadius: 3, margin: 8, marginBottom: 15, flex: 1 }}
-                                source={{ uri: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg' }}
-                                imageStyle={{ borderRadius: 5, backgroundColor: color.secondary_color }}
-                            >
-
-
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('more', { prams: "eventCategoryListing/" + item.category + "/7" })} style={styles.hangoutDetails} >
-
-                                    <Text style={{ fontWeight: '600', color: '#fff', flex: 1, marginLeft: 10 }}>{item.more} More Events</Text>
-                                    <Icon
-                                        active
-                                        name="keyboard-arrow-right"
-                                        type='material-icon'
-                                        color='#fff'
-                                        size={35}
-                                    />
-
-                                </TouchableOpacity>
-
-
-                            </ImageBackground>
                         </View>
 
                     </View>
@@ -755,7 +626,7 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     upcomingContainer: {
-        margin: 10,
+        margin: 20,
         marginTop: 0,
         flexDirection: 'row',
         alignItems: 'center',

@@ -12,7 +12,7 @@ export default class step1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      titleText: '',
+      titleText: 'Cubana',
       data: '',
       count:140,
 
@@ -26,7 +26,7 @@ export default class step1 extends Component {
       Alert.alert('Validation failed', "All fields are requried", [{ text: 'Okay' }])
       return
     }
-    this.props.navigation.navigate('Step2', {data_moving: {title: this.state.titleText}});
+    this.props.navigation.navigate('Club2', {data_moving: {title: this.state.titleText}});
   };
 
   goBack() {
@@ -63,18 +63,18 @@ export default class step1 extends Component {
 
     return (
       <Container style={{ backgroundColor:  "#010113" }}>
-        <Navbar left={left} title="Create New Event" bg='#101023' />
+        <Navbar left={left} title="Create New Club" bg='#101023' />
         <Content>
           <View style={styles.container}>
             <View >
 
-              <Text style={styles.titleText}>WHAT IS YOUR EVENT NAME</Text>
+              <Text style={styles.titleText}>WHAT IS YOUR CLUB NAME</Text>
             </View>
-            <Text style={styles.titlesubText}>Give your event a unique name</Text>
+            <Text style={styles.titlesubText}>Give your club a unique name</Text>
             <View style={styles.item}>
 
               <TextInput
-                placeholder="Enter Event Name"
+                placeholder="Enter Club Name"
                 placeholderTextColor='#8d96a6'
                 defaultValue={this.state.titleText}
                 returnKeyType="next"

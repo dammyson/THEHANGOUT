@@ -17,6 +17,11 @@ export default class Balance extends Component {
         };
     }
 
+
+    componentWillUnmount() {
+      //  this._unsubscribe();
+    }
+
     async componentDidMount() {
         this.setState({
             data: JSON.parse(await getData()),
@@ -24,6 +29,10 @@ export default class Balance extends Component {
             bal: await getBalance()
         })
         this.getBalanceRequest()
+       /* this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.getBalanceRequest()
+            console.warn('now')
+        });*/
     }
 
   

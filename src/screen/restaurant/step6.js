@@ -37,7 +37,9 @@ export default class step6 extends Component {
             image: null,
             images_list: [],
             images_list_url: [],
-            processing_images: false
+            processing_images: false,
+            latitude: 6.5244,
+            longitude: 3.3792,
 
         };
     }
@@ -68,6 +70,8 @@ export default class step6 extends Component {
             enddate: data_moving.enddate,
             venue: data_moving.venue,
             cat: data_moving.category,
+            latitude: data_moving.latitude,
+            longitude: data_moving.longitude,
 
         })
     }
@@ -173,7 +177,7 @@ export default class step6 extends Component {
 
     processCreateEvent() {
 
-        const {data, name, description, startdate, enddate,  venue, cat,img_url, images_list_url, image , processing_images} = this.state
+        const {data, name, description, startdate, enddate,  venue, cat,img_url, images_list_url, image ,latitude, longitude, processing_images} = this.state
         console.warn( name, description, startdate, enddate,  venue, cat, img_url, images_list_url, image )
        
 
@@ -212,6 +216,8 @@ export default class step6 extends Component {
                 OpeningTime: startdate,
                 ClosingTime: enddate,
                 Banner: img_url,
+                latitude: latitude,
+                longitude: longitude,
                 Category: cat.toString(),
                 Gallery: images_list_url.toString(),
             }),

@@ -241,29 +241,18 @@ export default class MerchantDashboard extends Component {
                             <View style={{ paddingTop: 1, marginTop: 15, paddingBottom: 10, flex: 1, }}>
                                 <View style={{ flexDirection: 'row', marginRight: 20, marginLeft: 20, }}>
                                     <View style={styles.rowchild}>
-
                                         <TouchableOpacity onPress={() => [this.setState({ view_create: false }), this.props.navigation.navigate('createevent')]} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
-
                                             <Icon
                                                 active
                                                 name="calendar-clock"
                                                 type='material-community'
                                                 color='#f9ba3f'
-
                                             />
                                         </TouchableOpacity>
-
                                         <Text style={styles.catName}> Events</Text>
-
-
-
                                     </View>
-
-
                                     <View style={styles.rowchild}>
-
                                         <TouchableOpacity onPress={() => [this.setState({ view_create: false }), this.props.navigation.navigate('createRestaurant')]} style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
-
                                             <Icon
                                                 active
                                                 name="movie"
@@ -274,6 +263,21 @@ export default class MerchantDashboard extends Component {
                                         </TouchableOpacity>
 
                                         <Text style={styles.catName}>Restaurant</Text>
+                                    </View>
+
+
+                                    <View style={styles.rowchild}>
+                                        <TouchableOpacity onPress={() => [this.setState({ view_create: false }), this.props.navigation.navigate('createClub')]} style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
+                                            <Icon
+                                                active
+                                                name="movie"
+                                                type='material-community'
+                                                color='#2d98ff'
+
+                                            />
+                                        </TouchableOpacity>
+
+                                        <Text style={styles.catName}>Clubs</Text>
 
 
                                     </View>

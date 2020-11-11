@@ -140,7 +140,7 @@ generateQrCode(){
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
-                        <Text style={{ fontSize: 12, color: '#fff' }}>Getting details </Text>
+                        <Text style={{ fontSize: 12, color: '#fff' }}>Processing details </Text>
                         <BarIndicator count={4} color={color.primary_color} />
                         <Text style={{ fontSize: 10, flex: 1, color: '#fff', opacity: 0.6 }}>Please wait...</Text>
                     </View>
@@ -311,13 +311,7 @@ generateQrCode(){
                                                     </View>
                                                 </View>
 
-
-
-
                                                 : null
-
-
-
                                             }
 
 

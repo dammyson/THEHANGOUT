@@ -53,12 +53,32 @@ export default class Profile extends Component {
           });
 
     }
+ 
+
+    handleLogout(){
+        this.setState({ visible_log_merchant: false })
+        if(this.state.social){
+            this.signOut()
+        }else{
+            this.logOut()
+        }
+       
+    }
+
+    signOut = async () => {
+        try {
+          await GoogleSignin.revokeAccess();
+          await GoogleSignin.signOut();
+         this.logOut()
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
 
     logOut(){
         try {
-
-           this.setState({ visible_log_merchant: false })
+         
            AsyncStorage.removeItem('login');
            AsyncStorage.removeItem('data');
            AsyncStorage.removeItem('bal');
@@ -325,7 +345,7 @@ export default class Profile extends Component {
 
               <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 17, textAlign: 'center', paddingBottom: 10, marginTop: 25, }}>Leaving so soon ?</Text>
               <View style={{ flexDirection: 'row', justifyContent:'center' }}>
-                <Button onPress={() => this.logOut()} style={styles.modalbuttonContainer} block iconLeft>
+                <Button onPress={() => this.handleLogout()} style={styles.modalbuttonContainer} block iconLeft>
                   <Text style={{ color: '#fdfdfd', fontWeight: '400' }}>Yes </Text>
                 </Button>
                 <Button onPress={() => this.setState({ visible_log_merchant: false })}  style={styles.modalTansButtonContainer} block iconLeft>

@@ -22,14 +22,13 @@ export default class Splash extends Component {
   async componentDidMount() {
     this.checkPermission();
     setTimeout(() => {
-    // this.initPage();
+     //this.initPage();
      this.props.navigation.replace('home');
      
     }, 3000);
   }
 
   initPage = () => {
-
     AsyncStorage.getItem('login').then((value) => {
       if (value == 'true') {
         this.goHome()

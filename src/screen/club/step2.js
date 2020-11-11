@@ -1,46 +1,52 @@
 import React, { Component } from "react";
 import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
-
+import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
+import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
 import { Actions } from 'react-native-router-flux';
+const deviceHeight = Dimensions.get("window").height;
 
 import color from '../../component/color';
+const { width: screenWidth } = Dimensions.get('window')
 import Navbar from '../../component/Navbar';
 
-export default class step1 extends Component {
+export default class step2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      titleText: '',
+      descriptionText: 'a place to be and nice',
       data: '',
-      count:140,
-
+      count: 140,
+      title: '',
     };
   }
 
   nextStep = () => {
-    const { next, saveState } = this.props;
-    // Save state for use in other steps
-    if(this.state.titleText == ""){
+    const { data, descriptionText } = this.state;
+    if (descriptionText == "") {
       Alert.alert('Validation failed', "All fields are requried", [{ text: 'Okay' }])
       return
     }
-    this.props.navigation.navigate('Step2', {data_moving: {title: this.state.titleText}});
+    const data_moving = data;
+    data_moving['description'] = descriptionText
+    this.props.navigation.navigate('Club3', { data_moving: data_moving });
+
   };
 
   goBack() {
-    const {  goBack } = this.props.navigation; 
+    const { goBack } = this.props.navigation;
     goBack(null)
   }
 
   componentDidMount() {
-    
-   
+    const { data_moving } = this.props.route.params;
+    this.setState({ data: data_moving })
+
   }
 
 
-  countChange(text){
+  countChange(text) {
     this.setState({ count: 140 - text.length })
 
   }
@@ -49,11 +55,11 @@ export default class step1 extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={()=>this.goBack()}>
+        <Button transparent onPress={() => this.goBack()}>
           <Icon
             active
-            name="close"
-            type='antdesign'
+            name="ios-arrow-back"
+            type='ionicon'
             color='#FFF'
           />
         </Button>
@@ -62,38 +68,35 @@ export default class step1 extends Component {
 
 
     return (
-      <Container style={{ backgroundColor:  "#010113" }}>
-        <Navbar left={left} title="Create New Event" bg='#101023' />
+      <Container style={{ backgroundColor: "#010113" }}>
+        <Navbar left={left} title={this.state.data.title} bg='#101023' />
         <Content>
           <View style={styles.container}>
             <View >
 
-              <Text style={styles.titleText}>WHAT IS YOUR EVENT NAME</Text>
+              <Text style={styles.titleText}>DESCRIBE YOUR CLUB</Text>
             </View>
-            <Text style={styles.titlesubText}>Give your event a unique name</Text>
+            <Text style={styles.titlesubText}>Enter a brief summary for your club. Make it informative </Text>
             <View style={styles.item}>
 
               <TextInput
-                placeholder="Enter Event Name"
+                placeholder="Enter Club Description"
                 placeholderTextColor='#8d96a6'
-                defaultValue={this.state.titleText}
                 returnKeyType="next"
                 onSubmitEditing={() => this.nextStep()}
+                defaultValue={this.state.descriptionText}
                 keyboardType='default'
                 autoCapitalize="none"
                 autoCorrect={false}
                 style={styles.menu}
-                onChangeText={text => [this.countChange(text), this.setState({ titleText: text})]}
+                onChangeText={text => [this.countChange(text), this.setState({ descriptionText: text })]}
               />
-
-            
-
             </View>
-            <View style={ { marginLeft:20, marginRight:20, justifyContent: 'flex-end',  alignItems: 'flex-end' }}>
-                <View style={ {  height:30, width:30, borderRadius:15, justifyContent:'center', alignItems:'center', borderColor:'#8d96a6', borderWidth:1.9}}>
-                <Text style={{ fontSize: 12, color:'#8d96a6'}}>{this.state.count}</Text>
-                </View>
-              </View>     
+            <View style={{ marginLeft: 20, marginRight: 20, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+              <View style={{ height: 30, width: 30, borderRadius: 15, justifyContent: 'center', alignItems: 'center', borderColor: '#8d96a6', borderWidth: 1.9 }}>
+                <Text style={{ fontSize: 12, color: '#8d96a6' }}>{this.state.count}</Text>
+              </View>
+            </View>
 
             <View style={styles.nextContainer}>
 
@@ -168,7 +171,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 20,
-   
+
   },
   nextContainer: {
     flex: 1,

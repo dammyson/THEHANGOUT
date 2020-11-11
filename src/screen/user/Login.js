@@ -114,16 +114,17 @@ export default class Login extends Component {
   };
 
   processLogin() {
-    const { email, password, token } = this.state
+    const { email, password, } = this.state
     if (email == "" || password == "") {
       Alert.alert('Validation failed', 'field(s) cannot be empty', [{ text: 'Okay' }])
       return;
     }
-    this._signInRequest(email, password, token, false);
+    this._signInRequest(email, password,false);
 
   }
 
-  _signInRequest(email, password, token, social) {
+  _signInRequest(email, password, social) {
+    const { token } = this.state
     console.warn(email, password, token);
     this.setState({ loading: true })
     fetch(URL.url + 'users/authenticate', {
@@ -148,19 +149,12 @@ export default class Login extends Component {
           AsyncStorage.setItem('social', JSON.stringify(social));
           AsyncStorage.setItem('role', res.user.role);
           AsyncStorage.setItem('token', res.token);
-          AsyncStorage.setItem('user', res.user);
-
-          if (social) {
-            this._updateProfileRequest(res)
-          } else {
-            AsyncStorage.setItem('user', JSON.stringify(res.user));
+          AsyncStorage.setItem('user', JSON.stringify(res.user));
             if (res.user.role == 'Customer') {
               this.props.navigation.replace('home');
             } else {
               this.props.navigation.replace('merchant_home');
             }
-
-          }
         } else {
           Alert.alert('Login failed', res.message, [{ text: 'Okay' }])
           this.setState({ loading: false })
@@ -173,46 +167,6 @@ export default class Login extends Component {
 
   }
 
-
-
-  _updateProfileRequest(data) {
-    const { guserInfo } = this.state
-
-    this.setState({ loading: true })
-    fetch(URL.url + 'users/' + data.user.id, {
-      method: 'PUT', headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'Authorization': 'Bearer ' + data.token,
-      }, body: JSON.stringify({
-        Username: guserInfo.user.email,
-        Firstname: guserInfo.user.givenName,
-        Lastname: guserInfo.user.familyName,
-        profilePicture: guserInfo.user.photo
-      }),
-    })
-      .then(res => res.json())
-      .then(res => {
-        console.warn(res);
-        if (res.status) {
-          this.setState({ loading: false })
-          AsyncStorage.setItem('user', JSON.stringify(res.user));
-          if (res.user.role == 'Customer') {
-            this.props.navigation.replace('home');
-          } else {
-            this.props.navigation.replace('merchant_home');
-          }
-        } else {
-          Alert.alert('Login failed', res.message, [{ text: 'Okay' }])
-          this.setState({ loading: false })
-        }
-      }).catch((error) => {
-        this.setState({ loading: false })
-        console.warn(error);
-        alert(error.message);
-      });
-
-  }
 
 
   currencyFormat(n) {

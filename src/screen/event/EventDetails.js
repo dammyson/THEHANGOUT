@@ -13,7 +13,7 @@ import {
   BarIndicator,
 } from 'react-native-indicators';
 import Moment from 'moment';
-
+Moment.locale('en');
 import Navbar from '../../component/Navbar';
 
 
@@ -262,7 +262,7 @@ export default class EventDetails extends Component {
 
                   <View style={{ backgroundColor: '#111123', marginLeft: 20, marginRight: 20 }}>
                     <Text style={styles.title}> {details.title} </Text>
-                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '200', marginTop: 15, opacity: 0.6 }}>Monday 28TH EDC. 10AM </Text>
+                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '200', marginTop: 15, opacity: 0.6 }}>{Moment(details.startDate).format('llll')} </Text>
 
                     <View style={{ alignItems: 'center', backgroundColor: '#111123', flexDirection: 'row', marginTop: 15, opacity: 0.5 }}>
                       <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginRight: 15 }}>
@@ -282,8 +282,21 @@ export default class EventDetails extends Component {
                           type='material-community'
                           color='#FFF'
                         />
-                        <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}> Food </Text>
+                        <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}>Event </Text>
                       </View>
+
+                      <View style={{ flex: 1, flexDirection: 'row', marginTop: 3, marginLeft: 15 }}>
+                        <Icon
+                          active
+                          name="map-marker-distance"
+                          type='material-community'
+                          color='#fff'
+                          size={15}
+                        />
+                        <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}> {details.distance} ({details.duration})</Text>
+
+                      </View>
+
 
                     </View>
 
@@ -296,6 +309,9 @@ export default class EventDetails extends Component {
                         color='#FFF'
                       />
                       <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200' }}> {details.location} </Text>
+                    </View>
+                    <View style={styles.piceContainer}>
+                      
                     </View>
 
 
@@ -343,10 +359,10 @@ export default class EventDetails extends Component {
                 <Text style={{ marginLeft: 20, color: '#fff', fontSize: 15, fontWeight: '600' }}>  {details.type} </Text>
               </View>
 
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('buyPT', { id: details.id, ticket: details.eventTickets, event: details})} style={{ height: 50, flexDirection: 'row', marginTop: 20, marginBottom: 20, margin: 10, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.primary_color }}>
-                <Text style={{ color: '#000', fontSize: 15, fontWeight: '600' }}>{details.type=='Free'? 'GET TICKETS' : 'BUY TICKETS'}</Text>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('buyPT', { id: details.id, ticket: details.eventTickets, event: details })} style={{ height: 50, flexDirection: 'row', marginTop: 20, marginBottom: 20, margin: 10, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.primary_color }}>
+                <Text style={{ color: '#000', fontSize: 15, fontWeight: '600' }}>{details.type == 'Free' ? 'GET TICKETS' : 'BUY TICKETS'}</Text>
               </TouchableOpacity>
-              
+
             </View>
 
 

@@ -59,6 +59,7 @@ import ForgetPassword from '../../screen/user/ForgetPassword';
 import ChangePassword from '../../screen/user/ChangePassword';
 import Clubs from '../../screen/club';
 import UpdateProfile from '../../screen/user/UpdateProfile';
+import CreatClub from '../../screen/club/CreatClub';
 
 //console.disableYellowBox = true;
 
@@ -135,6 +136,7 @@ class AppStack extends Component {
             <Stack.Screen name='forget_password' component={ForgetPassword}   />
             <Stack.Screen name='change_password' component={ChangePassword}   />
             <Stack.Screen name='clubs' component={Clubs}   />
+            <Stack.Screen name='createClub' component={CreatClub}   />
 
              
             </Stack.Navigator>

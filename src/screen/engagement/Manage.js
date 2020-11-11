@@ -13,6 +13,11 @@ import Navbar from '../../component/Navbar';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 import Modal, { ModalContent } from 'react-native-modals';
 import {getUser, getData } from '../../component/utilities';
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes,
+  } from '@react-native-community/google-signin';
 export default class Manage extends Component {
     constructor(props) {
         super(props);
@@ -31,12 +36,46 @@ export default class Manage extends Component {
             user: JSON.parse(await getUser()),
         })
 
+        AsyncStorage.getItem('social').then((value) => {
+            if (value == '') { } else {
+                this.setState({ social: JSON.parse(value) })
+                console.warn(value)
+            }
+        })
+
+        GoogleSignin.configure({
+            //It is mandatory to call this method before attempting to call signIn()
+            scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+            // Repleace with your webClientId generated from Firebase console
+            webClientId: '823628556250-7nebjfacok8lcef9brdfe7j69i6u9uc1.apps.googleusercontent.com',
+          });
+
     }
+
+    handleLogout(){
+        this.setState({ visible_log_merchant: false })
+        if(this.state.social){
+            this.signOut()
+        }else{
+            this.logOut()
+        }
+       
+    }
+
+    signOut = async () => {
+        try {
+          await GoogleSignin.revokeAccess();
+          await GoogleSignin.signOut();
+         this.logOut()
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
 
     logOut(){
         try {
-
-           this.setState({ visible_log_merchant: false })
+         
            AsyncStorage.removeItem('login');
            AsyncStorage.removeItem('data');
            AsyncStorage.removeItem('bal');
@@ -44,8 +83,6 @@ export default class Manage extends Component {
            setTimeout(() => {
             this.props.navigation.replace('intro')
                 }, 2000);
-
-               
           
             return true;
         }

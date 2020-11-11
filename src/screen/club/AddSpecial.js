@@ -18,15 +18,12 @@ import Navbar from '../../component/Navbar';
 
 
 
-export default class SelectAddress extends Component {
+export default class AddSpecial extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
-            name: '',
-            type: '',
-            amount: '',
+            special_app: '',
 
         };
     }
@@ -42,54 +39,10 @@ export default class SelectAddress extends Component {
         })
     }
 
-    setType(data) {
-        var index = data.value
-        if (data.value == null) {
-            return
-        }
-
-        this.setState({ type: index })
-    }
     processAddOn() {
-        const { onSelected,  } = this.props;
-        const { data, address } = this.state
-
-
-        if (address == '') {
-            Alert.alert('Validation failed', "address fields can not be empty", [{ text: 'Okay' }])
-            return
-        }
-
-          this.setState({ loading: true })
-          fetch(URL.url + 'food/address/add', {
-            method: 'POST', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            }, body: JSON.stringify({
-                address: address,
-
-            }),
-        })
-              .then(res => res.json())
-              .then(res => {
-                  console.warn(res);
-                  if (res.status) {
-                    
-                      setTimeout(() => {
-                          this.setState({ loading: false })
-                          onSelected(res.data);
-                      }, 500);
-  
-                  } else {
-                      Alert.alert('Action failed', res.message, [{ text: 'Okay' }])
-                      this.setState({ loading: false })
-                  }
-              }).catch((error) => {
-                  console.warn(error);
-                  alert(error.message);
-              });
-  
+        const { onSelected  } = this.props;
+        const {  special_app } = this.state
+        onSelected(special_app);            
     }
 
 
@@ -112,28 +65,13 @@ export default class SelectAddress extends Component {
             </Left>
         );
 
-        if (this.state.loading) {
-            return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
-                    <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>Adding Address</Text>
-                        <BarIndicator count={4} color={color.primary_color} />
-                        <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
-                    </View>
-                </View>
-            );
-        }
-
+       
         return (
-            <Container style={{ backgroundColor: '#101023' }}>
-                <Navbar left={left} title='Add Add-on' bg='#101023' />
+            <Container style={{ backgroundColor: '#101023', flex:1 ,  position:'absolute'}}>
+                <Navbar left={left} title='Add Special Apperareance' bg='#101023' />
                 <Content>
                     <View style={styles.container}>
-
-
-
                         {this.renderUpcomming()}
-
                     </View>
 
 
@@ -143,11 +81,7 @@ export default class SelectAddress extends Component {
     }
 
     renderUpcomming() {
-        const ticketVisibility = {
-            label: 'Select type',
-            value: null,
-            color: '#000',
-        };
+    
         return (
             <View>
 
@@ -156,11 +90,11 @@ export default class SelectAddress extends Component {
 
                     <View style={{ marginLeft: 30, flex: 1 }}>
                         <View>
-                            <Text style={styles.hintText}>Address </Text>
+                            <Text style={styles.hintText}>Special Apperareance</Text>
                         </View>
                         <View style={styles.item}>
                             <TextInput
-                                placeholder="Enter address"
+                                placeholder="Enter Apperareance"
                                 placeholderTextColor='#6d706e'
                                 returnKeyType="next"
 
@@ -168,7 +102,7 @@ export default class SelectAddress extends Component {
                                 autoCapitalize="none"
                                 autoCorrect={false}
                                 style={styles.menu}
-                                onChangeText={text => this.setState({ address: text })}
+                                onChangeText={text => this.setState({ special_app: text })}
                             />
                         </View>
                     </View>
@@ -180,7 +114,7 @@ export default class SelectAddress extends Component {
                 <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                     <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 10, }}>
                         <TouchableOpacity onPress={() => this.processAddOn()} style={styles.enablebutton} block iconLeft>
-                            <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 10, fontSize: 14, fontWeight: '200', fontFamily: 'NunitoSans', }}>Add Address</Text>
+                            <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 10, fontSize: 14, fontWeight: '200', fontFamily: 'NunitoSans', }}>Add</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -193,7 +127,7 @@ export default class SelectAddress extends Component {
     }
 }
 
-SelectAddress;
+AddSpecial;
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
