@@ -16,7 +16,9 @@ const { width: screenWidth } = Dimensions.get('window')
 import Navbar from '../../component/Navbar';
 const URL = require("../../component/server");
 import Moment from 'moment';
-
+import {
+    getLocation,
+} from '../../component/utilities/locationService';
 import { getSaveRestaurant, getData } from '../../component/utilities';
 
 export default class Dashboard extends Component {
@@ -25,10 +27,11 @@ export default class Dashboard extends Component {
         super(props);
 
         this.onEventPress = this.onEventPress.bind(this)
-        this.likeUnlikeRequest = this.likeUnlikeRequest.bind(this);
 
         this.state = {
             loading: true,
+            latitude: 6.5244,
+            longitude: 3.3792,
             dataone: [
             ],
             datatwo: [
@@ -56,6 +59,17 @@ export default class Dashboard extends Component {
             user: JSON.parse(await getData()).user
         })
 
+        var cordinates = getLocation();
+        cordinates.then((result) => {
+            this.setState({
+                latitude: result.latitude,
+                longitude: result.longitude
+            });
+            console.log(result);
+            this.updateProfileRequest()
+        }, err => {
+            console.log(err);
+        });
 
         this.getEventsRequest()
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
@@ -132,47 +146,29 @@ export default class Dashboard extends Component {
 
     };
 
-    likeUnlikeRequest(id, pos) {
-        const { data, } = this.state
-        fetch(URL.url + 'events/like/' + id, {
-            method: 'GET', headers: {
+
+    updateProfileRequest() {
+        const { latitude, longitude, data } = this.state
+        console.warn(latitude, longitude,);
+        fetch(URL.url + 'users/', {
+            method: 'PUT', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
                 'Authorization': 'Bearer ' + data.token,
-            }
+            }, body: JSON.stringify({
+                latitude: latitude,
+                longitude: longitude,
+            }),
         })
             .then(res => res.json())
             .then(res => {
-                if (res.status) {
-                    if (pos) {
-                        Toast.show({
-                            text: 'Event remove from favorite !',
-                            position: 'bottom',
-                            type: 'success',
-                            buttonText: 'Dismiss',
-                            duration: 2000
-                        });
-                    } else {
-                        Toast.show({
-                            text: 'Event Added to favorite !',
-                            position: 'bottom',
-                            type: 'success',
-                            buttonText: 'Dismiss',
-                            duration: 2000
-                        });
-                    }
-
-                    this.RgetEventsRequest()
-                } else {
-
-                }
-            })
-            .catch(error => {
-                alert(error.message);
+                console.warn(res);
+            }).catch((error) => {
                 console.warn(error);
-
             });
-    };
+    }
+
+
 
     getDetails(data) {
         if (data.type == 'Event') {

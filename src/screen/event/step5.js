@@ -67,7 +67,9 @@ export default class step5 extends Component {
             ticket_list: [],
             cat_list: [],
             show_from_picker: false,
-            show_to_picker: false
+            show_to_picker: false,
+            latitude: 6.5244,
+            longitude: 3.3792,
         };
     }
 
@@ -84,13 +86,15 @@ export default class step5 extends Component {
             user: JSON.parse(await getData()).user
         })
         const { data_moving } = this.props.route.params;
-
+console.warn(data_moving)
         this.setState({
             name: data_moving.title,
             description: data_moving.description,
             startdate: data_moving.startdate,
             enddate: data_moving.enddate,
             venue: data_moving.venue,
+            latitude: data_moving.latitude,
+            longitude: data_moving.longitude,
 
         })
 
@@ -231,7 +235,7 @@ export default class step5 extends Component {
 
     async processCreateEvent() {
 
-        const { data, name, description, startdate, org, org_name, ticket, venue, enddate, type, cat, img_url, image } = this.state
+        const { data, name, description, startdate, org, org_name, ticket, venue, enddate, type, cat, img_url, image,latitude, longitude } = this.state
         var used_ticket = ticket;
 
         if (org_name == "Select Organizer" || type == null || cat == null) {
@@ -264,9 +268,6 @@ export default class step5 extends Component {
             }
         }
 
-
-
-
         this.setState({ loading: true })
         fetch(URL.url + 'events/create', {
             method: 'POST', headers: {
@@ -286,6 +287,8 @@ export default class step5 extends Component {
                 OrganizerId: org,
                 City: venue,
                 venue: venue,
+                latitude: latitude,
+                longitude: longitude
             }),
         })
             .then(res => res.json())

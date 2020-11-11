@@ -15,7 +15,7 @@ export default class step2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      descriptionText: '',
+      descriptionText: 'yes now it new',
       data: '',
       count:140,
       title:'',

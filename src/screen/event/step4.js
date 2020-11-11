@@ -1,15 +1,21 @@
 import React, { Component } from "react";
-import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, FlatList } from "react-native";
+import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, TouchableHighlight } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
-import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
+import { placeApi } from '../../component/utilities/Keys';
 import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
-
+import _ from "lodash";
 import color from '../../component/color';
 const { width: screenWidth } = Dimensions.get('window')
 import Navbar from '../../component/Navbar';
+const URL = require("../../component/server");
+import {
+  getLocation,
+  geocodeLocationByName,
+  geocodeAddressByName
+} from '../../component/utilities/locationService';
 
 export default class step4 extends Component {
   constructor(props) {
@@ -17,24 +23,35 @@ export default class step4 extends Component {
     this.state = {
       venue: '',
       data: '',
+      error: "",
+      destination: "",
+      latitude: 6.5244,
+      longitude: 3.3792,
+      locationPredictions: []
 
     };
+    this.onChangeDestinationDebounced = _.debounce(
+      this.onChangeDestination,
+      1000
+    );
   }
 
   nextStep = () => {
-    const { venue, data } = this.state;
+    const { venue, latitude, longitude, data } = this.state;
     // Save state for use in other steps
-    if(venue == ""){
+    if (venue == "") {
       Alert.alert('Validation failed', "All fields are requried", [{ text: 'Okay' }])
       return
     }
     const data_moving = data;
     data_moving['venue'] = venue
-    this.props.navigation.navigate('Step5', {data_moving: data_moving});
+    data_moving['latitude'] = latitude
+    data_moving['longitude'] = longitude
+    this.props.navigation.navigate('Step5', { data_moving: data_moving });
   };
 
   goBack() {
-    const {  goBack } = this.props.navigation; 
+    const { goBack } = this.props.navigation;
     goBack(null)
   }
 
@@ -42,6 +59,20 @@ export default class step4 extends Component {
     const { data_moving } = this.props.route.params;
     console.warn(data_moving)
     this.setState({ data: data_moving})
+    console.warn(placeApi())
+    var cordinates = getLocation();
+    cordinates.then((result) => {
+      this.setState({
+        latitude: result.latitude,
+        longitude: result.longitude
+      });
+      console.log(result);
+    }, err => {
+      console.log(err);
+    });
+
+
+
   }
 
 
@@ -50,11 +81,63 @@ export default class step4 extends Component {
 
   }
 
+
+  onChangeDestination = async (venue) => {
+    const { longitude, latitude } = this.state;
+    if (venue.lenght < 4) {
+      return
+    }
+    const apiKey = 'AIzaSyBuEYeKLbJ0xnFwHKT-z2Kq174a3f7u4ac'
+    const apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${apiKey}&input=${venue}&location=${latitude},${longitude}&radius=2000`;
+    console.log(apiUrl);
+    try {
+      const result = await fetch(apiUrl);
+      const json = await result.json();
+      console.log(json)
+      this.setState({
+        locationPredictions: json.predictions
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+
+  onAddressSelected = (location) => {
+    this.setState({ locationPredictions: [], venue: location })
+    geocodeLocationByName(location).then((result) => {
+      console.warn(result)
+      this.setState({
+        latitude: result.lat, longitude: result.lng
+      })
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  renderPrediction = (predictions) => {
+    let cat = [];
+    for (var i = 0; i < predictions.length; i++) {
+      let location = predictions[i].structured_formatting.main_text
+      cat.push(
+        <TouchableHighlight
+          onPress={() => this.onAddressSelected(location)}>
+          <View style={{ marginLeft: 10, marginRight: 10 }}>
+            <Text style={styles.suggestions}>
+              {predictions[i].structured_formatting.main_text}
+            </Text>
+          </View>
+        </TouchableHighlight>
+      );
+    }
+    return cat;
+  }
+
   render() {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={()=>this.goBack()}>
+        <Button transparent onPress={() => this.goBack()}>
           <Icon
             active
             name="ios-arrow-back"
@@ -86,7 +169,11 @@ export default class step4 extends Component {
                 autoCapitalize="none"
                 autoCorrect={false}
                 style={styles.menu}
-                onChangeText={text => [this.countChange(text), this.setState({ venue: text})]}
+                onChangeText={venue => {
+                  this.setState({ venue });
+                  this.onChangeDestinationDebounced(venue);
+                }}
+
               />
 
               <TouchableOpacity style={{ height: 30, width: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'red' }}>
@@ -94,10 +181,11 @@ export default class step4 extends Component {
               </TouchableOpacity>
 
             </View>
-           
-
+            <View style={{ backgroundColor: "#101023", }}>
+              {this.renderPrediction(this.state.locationPredictions)}
+            </View>
             <View style={styles.nextContainer}>
-              <TouchableOpacity  onPress={this.nextStep}   style={styles.qrbuttonContainer} block iconLeft>
+              <TouchableOpacity onPress={this.nextStep} style={styles.qrbuttonContainer} block iconLeft>
                 <Icon
                   active
                   name="arrowright"
@@ -125,22 +213,6 @@ export default class step4 extends Component {
   }
 }
 
-const slides = [
-  {
-    key: 'somethun',
-    title: 'Put your money',
-
-  },
-  {
-    key: 'somethun-dos',
-    title: 'Fund your mobile ',
-
-  },
-  {
-    key: 'somethun-dos',
-    title: 'No More Change wahala !',
-  }
-];
 
 const styles = StyleSheet.create({
   container: {
@@ -201,5 +273,16 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
 
     paddingBottom: 20
-  }
+  },
+  suggestions: {
+    backgroundColor: "#101023",
+    padding: 8,
+    fontSize: 14,
+    borderWidth: 0.5,
+    marginLeft: 5,
+    marginRight: 5,
+    marginBottom: 10,
+    color: '#fff',
+    fontFamily: 'NunitoSans-Light'
+  },
 });
