@@ -10,7 +10,7 @@ import {
 
 import color from '../../component/color';
 import Modal, { ModalContent } from 'react-native-modals';
-
+import {getUser, getData } from '../../component/utilities';
 import Navbar from '../../component/Navbar';
 import {
     GoogleSignin,
@@ -31,18 +31,11 @@ export default class Profile extends Component {
     }
 
 
-    componentWillMount() {
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-            }
-        })
-
-        AsyncStorage.getItem('user').then((value) => {
-            if (value == '') { } else {
-                this.setState({ user: JSON.parse(value) })
-            }
-            console.warn(this.state.data.user);
+  async  componentWillMount() {
+    console.warn(JSON.parse(await getUser()))
+        this.setState({
+            data: JSON.parse(await getData()),
+            user: JSON.parse(await getUser()),
         })
 
         AsyncStorage.getItem('social').then((value) => {
@@ -139,6 +132,7 @@ export default class Profile extends Component {
 
 
                         <View style={styles.body}>
+                            {/** 
                             <View>
                                 <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
                                     <Avatar
@@ -151,6 +145,31 @@ export default class Profile extends Component {
                                         containerStyle={{}}
                                     />
                                     <Text style={{ flex: 1, fontSize: 14, alignSelf: "center", marginLeft: 15, textAlign: 'left', fontWeight: '800', color: "#ffffff", }}> Change Password</Text>
+
+                                    <View style={{ alignSelf: "center", }}>
+                                        <Icon
+                                            active
+                                            name="right"
+                                            type='antdesign'
+                                            color='#D3D3D3'
+                                        />
+                                    </View>
+                                </TouchableOpacity>
+                                <View style={styles.lineStyle} />
+                            </View>
+*/}
+                            <View style={{ marginTop: 20 }}>
+                                <TouchableOpacity onPress={()=> this.props.navigation.navigate('update_user')} style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
+                                    <Avatar
+                                        rounded
+                                        size="small"
+                                        icon={{ name: 'user', type: 'entypo', color: '#FFF' }}
+                                        overlayContainerStyle={{ backgroundColor: 'orange' }}
+                                        onPress={() => console.log("Works!")}
+                                        activeOpacity={0.7}
+                                        containerStyle={{}}
+                                    />
+                                    <Text style={{ flex: 1, fontSize: 14, alignSelf: "center", marginLeft: 15, textAlign: 'left', fontWeight: '800', color: "#ffffff", }}>Update Profile</Text>
 
                                     <View style={{ alignSelf: "center", }}>
                                         <Icon

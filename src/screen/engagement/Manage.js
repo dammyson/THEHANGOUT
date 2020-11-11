@@ -12,7 +12,7 @@ import color from '../../component/color';
 import Navbar from '../../component/Navbar';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 import Modal, { ModalContent } from 'react-native-modals';
-
+import {getUser, getData } from '../../component/utilities';
 export default class Manage extends Component {
     constructor(props) {
         super(props);
@@ -25,18 +25,10 @@ export default class Manage extends Component {
     }
 
 
-    componentWillMount() {
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-            }
-        })
-
-        AsyncStorage.getItem('user').then((value) => {
-            if (value == '') { } else {
-                this.setState({ user: JSON.parse(value) })
-            }
-            console.warn(this.state.data.user);
+  async  componentWillMount() {
+        this.setState({
+            data: JSON.parse(await getData()),
+            user: JSON.parse(await getUser()),
         })
 
     }

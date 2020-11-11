@@ -304,7 +304,7 @@ export default class step6 extends Component {
                                     />
                                 </Button>
 
-                                <Text style={{ fontSize: 14, color: '#000', }}>Add Event Poster/Image </Text>
+                                <Text style={{ fontSize: 14, color: '#000', }}>Add Restaurant Poster/Image </Text>
                             </ImageBackground>
                             :
                             <ImageBackground
@@ -321,7 +321,7 @@ export default class step6 extends Component {
                                     />
                                 </Button>
 
-                                <Text style={{ fontSize: 14, color: '#000', }}>Add Event Poster/Image </Text>
+                                <Text style={{ fontSize: 14, color: '#000', }}>Add Restaurant Poster/Image </Text>
                             </ImageBackground>
                         }
 
@@ -338,7 +338,7 @@ export default class step6 extends Component {
                             </View>
                             <View style={{ flex: 1 }}>
                                 <View>
-                                    <Text style={styles.hintText}> Event Name </Text>
+                                    <Text style={styles.hintText}> Restaurant Name </Text>
                                 </View>
                                 <View style={styles.item}>
                                     <TextInput
@@ -394,7 +394,7 @@ export default class step6 extends Component {
                             </View>
                             <View style={{ flex: 1 }}>
                                 <View>
-                                    <Text style={styles.hintText}>Event Starts </Text>
+                                    <Text style={styles.hintText}>Opening Time </Text>
                                 </View>
                                 <View style={styles.itemTwo}>
                                     <Text style={{ color: '#fff', marginBottom: 10, marginTop: 10 }}> {this.state.startdate} </Text>
@@ -407,7 +407,7 @@ export default class step6 extends Component {
 
                             <View style={{ marginLeft: 75, flex: 1 }}>
                                 <View>
-                                    <Text style={styles.hintText}>Event End </Text>
+                                    <Text style={styles.hintText}>Closing Time </Text>
                                 </View>
                                 <View style={styles.itemTwo}>
                                     <Text style={{ color: '#fff', marginBottom: 10, marginTop: 10 }}>  {this.state.enddate} </Text>
@@ -426,7 +426,7 @@ export default class step6 extends Component {
                             </View>
                             <View style={{ flex: 1 }}>
                                 <View>
-                                    <Text style={styles.hintText}>Event Venue </Text>
+                                    <Text style={styles.hintText}>Restaurant Address </Text>
                                 </View>
                                 <View style={styles.item}>
                                     <TextInput

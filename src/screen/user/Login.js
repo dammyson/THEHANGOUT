@@ -25,14 +25,14 @@ export default class Login extends Component {
       email: '',
       password: '',
       GuserInfo: {},
-      token:''
+      token: ''
       // gettingLoginStatus: true,
     };
   }
 
   async componentDidMount() {
-    this.setState({token: await getToken() })
-    console.warn( await getToken())
+    this.setState({ token: await getToken() })
+    console.warn(await getToken())
     //initial configuration
     GoogleSignin.configure({
       //It is mandatory to call this method before attempting to call signIn()
@@ -123,8 +123,8 @@ export default class Login extends Component {
 
   }
 
-  _signInRequest(email, password,token, social) {
-    console.warn(email, password,token);
+  _signInRequest(email, password, token, social) {
+    console.warn(email, password, token);
     this.setState({ loading: true })
     fetch(URL.url + 'users/authenticate', {
       method: 'POST', headers: {
@@ -133,13 +133,13 @@ export default class Login extends Component {
       }, body: JSON.stringify({
         Username: email,
         Password: password,
-        Token:token,
+        Token: token,
         IsSocial: social
       }),
     })
       .then(res => res.json())
       .then(res => {
-
+        console.warn(res)
         if (res.status) {
           this.setState({ loading: false })
           AsyncStorage.setItem('login', 'true');
@@ -257,10 +257,10 @@ export default class Login extends Component {
                   style={styles.logo}
                   source={require('../../assets/logo.png')} />
               </View>
-              <Text style={{ color: '#FFF', margin: 20,  fontFamily:'NunitoSans-ExtraBold', fontSize: 25, }}>HELLO! </Text>
+              <Text style={{ color: '#FFF', margin: 20, fontFamily: 'NunitoSans-ExtraBold', fontSize: 25, }}>HELLO! </Text>
               <View style={styles.bottom}>
                 <View style={{ flexDirection: "row", margin: 20, }}>
-                  <Text style={{ color: "#000", fontFamily:'NunitoSans-Bold', fontSize: 20, flex: 1 }}>LOGIN</Text>
+                  <Text style={{ color: "#000", fontFamily: 'NunitoSans-Bold', fontSize: 20, flex: 1 }}>LOGIN</Text>
                   <View style={styles.circlet} >
                     <Text style={{ color: "#FFFFFF", fontWeight: '900', fontSize: 16, }}>X</Text>
                   </View>
@@ -313,16 +313,16 @@ export default class Login extends Component {
 
                 <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
 
-                 
-                      <TouchableOpacity onPress={() => this.props.navigation.navigate('forget_password')}>
-                      <Text style={{ fontSize: 14, fontFamily:'NunitoSans-Bold',  color: '#3E3E3E', }}>Forgot Password?</Text>
-                      </TouchableOpacity>
-                     
-               
+
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate('forget_password')}>
+                    <Text style={{ fontSize: 14, fontFamily: 'NunitoSans-Bold', color: '#3E3E3E', }}>Forgot Password?</Text>
+                  </TouchableOpacity>
+
+
                 </View>
 
-                
-                   <View style={styles.inputContainer}>
+
+                <View style={styles.inputContainer}>
                   <View style={styles.lineStyle} />
                   <Text style={{ color: 'black', margin: 10, fontSize: 15, fontWeight: '200' }}>or</Text>
                   <View style={styles.lineStyle} />
@@ -339,7 +339,7 @@ export default class Login extends Component {
                   />
 
                 </View>
-               
+
 
               </View>
 
@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#000000',
     borderBottomWidth: 0.2,
     marginTop: 1,
-    fontFamily:'NunitoSans-Regular',
+    fontFamily: 'NunitoSans-Regular',
   },
   actionbutton: {
     marginTop: 2,
@@ -423,7 +423,7 @@ const styles = StyleSheet.create({
     color: '#3E3E3E',
     textAlign: 'left',
     fontWeight: '200',
-    fontFamily:'NunitoSans-Bold',
+    fontFamily: 'NunitoSans-Bold',
   },
   inputContainer: {
     flexDirection: "row",

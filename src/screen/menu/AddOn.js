@@ -183,6 +183,14 @@ export default class AddOn extends Component {
                                         label: 'Toppings',
                                         value: 'Toppings',
                                     },
+                                    {
+                                        label: 'Proteins',
+                                        value: 'Proteins',
+                                    },
+                                    {
+                                        label: 'Soups',
+                                        value: 'Soups',
+                                    },
 
                                 ]}
 

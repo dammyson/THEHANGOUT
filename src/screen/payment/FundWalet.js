@@ -136,6 +136,21 @@ export default class FundWallet extends Component {
     return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
   }
 
+
+  amountFeildFomeater(number) {
+    console.warn(number);
+    if (number == '' || number == ' ') {
+      return 0
+    } else {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+  }
+
+  numberWithCommas(x) {
+    return
+  }
+
+
   displayCard() {
 
     const { amount } = this.state
@@ -190,14 +205,10 @@ export default class FundWallet extends Component {
       return (
         <Container style={{ backgroundColor: '#000' }}>
           <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" translucent={true} />
-
           <Navbar left={left} right={right} title='Success' bg='#111124' />
           <Content>
             <View style={styles.container}>
-
-
               <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-
                 <View style={{ alignItems: 'center', margin: 20, }}>
                   <TouchableOpacity style={{ backgroundColor: '#25AE88', height: 74, width: 74, borderRadius: 37, justifyContent: 'center', alignItems: 'center', }}>
                     <Icon
@@ -212,24 +223,13 @@ export default class FundWallet extends Component {
                   <Text style={{ color: '#fff', fontSize: 22, fontWeight: '200', fontFamily: 'NunitoSans-Bold', }}>Success</Text>
                   <Text style={{ textAlign: 'center', color: '#fff', fontSize: 12, fontWeight: '200', fontFamily: 'NunitoSans', opacity: 0.8 }}>Funding wallet was successful.</Text>
                 </View>
-
-
-
-
                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20, }}>
                   <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={styles.enablebutton} block iconLeft>
                     <Text style={{ color: color.secondary_color, marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Continue</Text>
                   </TouchableOpacity>
                 </View>
-
-
               </View>
-
-
-
             </View>
-
-
           </Content>
         </Container>
       );
@@ -249,7 +249,6 @@ export default class FundWallet extends Component {
 
                   <CreditCardInput
                     autoFocus
-
                     requiresName
                     requiresCVC
                     requiresPostalCode
@@ -259,14 +258,9 @@ export default class FundWallet extends Component {
                     validColor={"white"}
                     invalidColor={"white"}
                     placeholderColor={"darkgray"}
-
                     onFocus={this._onFocus}
                     onChange={this._onChange} />
-
-
                 </View>
-
-
 
                 <TouchableOpacity onPress={() => this.chargeCard()} style={styles.enablebutton} block iconLeft>
                   <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>PAY ₦{this.state.amount}</Text>
@@ -281,7 +275,6 @@ export default class FundWallet extends Component {
               :
 
               <View style={{ marginTop: 20 }}>
-
                 <Balance
                   OnButtonPress={() => console.warn('l')}
                   buttonColor={'#fff'}
@@ -300,34 +293,24 @@ export default class FundWallet extends Component {
                       placeholder="₦5000"
                       placeholderTextColor={'#F7a40060'}
                       returnKeyType="next"
-                      defaultValue={this.state.amount}
+                      value={this.amountFeildFomeater(this.state.amount)}
+                      defaultValue={this.amountFeildFomeater(this.state.amount)}
                       onSubmitEditing={() => this.passwordInput.focus()}
                       keyboardType='numeric'
                       autoCapitalize="none"
                       autoCorrect={false}
                       inlineImageLeft='ios-call'
                       style={{ marginLeftt: 20, flex: 1, fontSize: 16, color: color.primary_color }}
-                      onChangeText={text => this.setState({ amount: text })}
-
+                      onChangeText={text => this.setState({ amount: text.replace(",", "") })}
                     />
-
                   </View>
-
                 </View>
-
                 <TouchableOpacity onPress={() => this.displayCard()} style={[styles.enablebutton, { marginTop: 20 }]} block iconLeft>
                   <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>FUND ₦{this.state.amount}</Text>
                 </TouchableOpacity>
-
               </View>
-
             }
-
-
-
           </View>
-
-
         </Content>
       </Container>
     );

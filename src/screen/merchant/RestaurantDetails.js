@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { TextInput, StyleSheet, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, ImageBackground, ScrollView } from 'react-native';
+import { TextInput, StyleSheet, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, Alert, ScrollView } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
@@ -101,7 +101,55 @@ export default class RestaurantDetails extends Component {
 
     };
 
+    deleteMenu(data) {
+        console.warn(data)
+        Alert.alert(
+            'Delete menu',
+            'Are you sure you want to delete '+ data.menuName+' from your list of menus',
+            [
+              { text: 'Cancel', onPress: () => console.log('Cancel Pressed!') },
+              { text: 'OK', onPress: () => this.processDeleteMenu(data.menuId) },
+            ],
+            { cancelable: false }
+          )
+          return
 
+    }
+
+    processDeleteMenu(i) {
+        console.warn(i)
+        const { data } = this.state
+        this.setState({
+            loading: true,
+        })
+        console.warn(URL.url + 'food/' + i)
+    
+        fetch(URL.url + 'food/' + i, {
+            method: 'DELETE', headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Authorization': 'Bearer ' + data.token,
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.warn(res);
+                this.setState({ loading: false })
+                if (res.status) {
+                    Alert.alert('Process Successfull', "Menu Deleted", [{ text: 'Okay' }])
+                    this.getEventsRequest()
+                } else {
+                    Alert.alert('Process Failed', "Agent not Deleted", [{ text: 'Okay' }])
+                }
+            })
+            .catch(error => {
+                this.setState({ loading: false })
+                alert(error.message);
+                console.warn(error);
+
+            });
+
+    }
     createMenu() {
         const { details } = this.state
         console.warn(details);
@@ -240,8 +288,9 @@ export default class RestaurantDetails extends Component {
 
         let items = [];
         for (let i = 0; i < tickets.length; i++) {
+            let r = i;
             items.push(
-                <TouchableOpacity style={styles.oneRow}>
+                <View style={[styles.oneRow, styles.boxWithShadow]}>
 
                     <View style={{ flex: 1, padding: 10 }}>
                         <Avatar
@@ -252,18 +301,31 @@ export default class RestaurantDetails extends Component {
                             }}
                         />
                     </View>
-                    <View style={{ flex: 3, paddingLeft: 12, justifyContent: 'center', }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 20 }}>
-                            <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 8, color: '#139F2A', }}> active </Text>
-                            <View style={{ height: 8, width: 24, backgroundColor: '#139F2A' }} />
+                    <View style={{ flex: 3, paddingLeft: 5, justifyContent: 'center', flexDirection: 'row', }}>
+                        <View style={{ flex: 1, justifyContent: 'center' }}>
+                            <Text style={styles.title}>{tickets[i].menuName}</Text>
+                            <Text style={{ marginLeft: 2, marginTop: 10, textAlign: 'left', color: '#1E1E1E', fontSize: 14, fontWeight: '100', fontFamily: 'NunitoSans-Bold', }}>₦ {tickets[i].menuAmount}</Text>
                         </View>
-                        <Text style={styles.title}>{tickets[i].menuName}</Text>
-                        <Text style={{ marginLeft: 2, marginTop: 10, textAlign: 'left', color: '#1E1E1E', fontSize: 14, fontWeight: '100', fontFamily: 'NunitoSans-Bold', }}> ₦ {tickets[i].menuAmount} </Text>
-                        <Text style={{ marginLeft: 2, marginTop: 5, textAlign: 'left', color: 'gba(30,30,30,0.7)', fontSize: 14, fontWeight: '100', }}> Sales so far </Text>
+                        <View style={{  }}>
+                            <View style={{ flexDirection: 'row',  flex:1 }}>
+                                <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 8, color: '#139F2A', }}> active </Text>
+                                <View style={{ height: 8, width: 24, backgroundColor: '#139F2A' }} />
+                            </View>
+                            <View style={{ alignItems: 'flex-end', }}>
+                            <TouchableOpacity onPress={() => this.deleteMenu(tickets[r])} style={{ width: 30 }}>
+                                <Icon
+                                    active
+                                    name="delete"
+                                    type='materia-community'
+                                    color='#EA3C1780'
+                                />
+                            </TouchableOpacity>
+                            </View>
+                        </View>
 
                     </View>
 
-                </TouchableOpacity>
+                </View>
             )
 
         };
@@ -333,7 +395,6 @@ const styles = StyleSheet.create({
         marginTop: 20,
         flexDirection: 'row',
         backgroundColor: '#F2F1FF',
-        borderLeftWidth: 4,
         paddingBottom: 2,
         borderRadius: 10,
         marginBottom: 20
@@ -344,5 +405,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontFamily: 'NunitoSans-Bold',
     },
+    boxWithShadow: {
+        shadowColor: 'gray',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 1,
+        elevation: 2
+    }
 
 });

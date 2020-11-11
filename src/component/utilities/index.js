@@ -10,6 +10,10 @@ export const getData = async () => {
 };
 
 
+export const getUser = async () => {
+  return AsyncStorage.getItem('user')
+};
+
 export const getBalance = async () => {
   return AsyncStorage.getItem('bal')
 };

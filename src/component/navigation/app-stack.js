@@ -58,6 +58,7 @@ import PlaceOrder from '../../screen/restaurant/PlaceOrder';
 import ForgetPassword from '../../screen/user/ForgetPassword';
 import ChangePassword from '../../screen/user/ChangePassword';
 import Clubs from '../../screen/club';
+import UpdateProfile from '../../screen/user/UpdateProfile';
 
 //console.disableYellowBox = true;
 
@@ -85,6 +86,7 @@ class AppStack extends Component {
             <Stack.Screen name="reg" component={Register}   />
             <Stack.Screen name='engagement' component={EngagementStart}   />
             <Stack.Screen name='intro' component={Intro}   />
+            <Stack.Screen name='update_user' component={UpdateProfile}   />
             <Stack.Screen name='home' component={Home}   />
             <Stack.Screen name='merchant_home' component={MerchantHome}   />
             <Stack.Screen name='profile' component={Profile}   />

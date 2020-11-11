@@ -111,7 +111,7 @@ export default class PlaceOrder extends Component {
         }
 
         if(pay_type == 0){
-            this.makePaymentRequest('no ref', true)
+            this.processOrder('no ref', true)
         }else{
             this.setState({ show_card: true })
         }
@@ -152,50 +152,6 @@ export default class PlaceOrder extends Component {
 
 
     }
-
-
-
-    makePaymentRequest = (ref, isWallet) => {
-        this.setState({ message: 'placing order... ' })
-        const { user, menu, address_id, restaurant, data, qty, delivery_price, price, add_price } = this.state
-       
-        var amount = (price * qty) + add_price + delivery_price;
-        var order_des = restaurant + ' - ' + menu.name;
-        var formBody = JSON.stringify({
-            Recipient: menu.restaurantOwnerId,
-            Amount: amount,
-            Description: order_des,
-            CashierCode: 'BGBGG',
-            EventCode: 'BGBGG',
-            PaymentRef: 'BGBGG',
-        })
-
-
-        this.setState({ loading: true });
-        fetch(URL.url + 'wallet/transfer', {
-            method: 'POST', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            }, body: formBody,
-        })
-            .then(res => res.json())
-            .then(res => {
-                console.warn(res);
-                if (res.status) {
-                    this.processOrder(ref, isWallet)
-                } else {
-                    Alert.alert('Process failed', res.message, [{ text: 'Okay' }])
-                    this.setState({ loading: false, can_scan: false, status: res.status, respons: 'Transaction was unsuccessfull' })
-                }
-            }).catch((error) => {
-                console.warn(error);
-                alert(error.message);
-            });
-
-    };
-
-
 
 
 
@@ -740,7 +696,7 @@ export default class PlaceOrder extends Component {
 
     onSuccess(res){
         this.setState({ show_card: false })
-        this.makePaymentRequest(res.reference, false)
+        this.processOrder(res.reference, false)
     }
     onFailed(){
         this.setState({ show_card: false })
