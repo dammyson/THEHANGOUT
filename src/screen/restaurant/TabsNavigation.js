@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from "react-native";
+import { View, Text, Dimensions } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -11,11 +11,10 @@ import Payment from './../payment/ManagementPayment';
 import Manage from './../engagement/Manage';
 
 
-import { Card, Icon, SocialIcon} from 'react-native-elements'
+import { Card, Icon, SocialIcon } from 'react-native-elements'
 import color from '../../component/color'
 
 const Tab = createBottomTabNavigator();
-
 
 class AppNavigator extends Component {
 
@@ -29,73 +28,72 @@ class AppNavigator extends Component {
 
             if (route.name === 'Home') {
               return (
-                <View>
-                <Icon
-                active
-                focused={focused}
-                name="home"
-                type='antdesign'
-                color={color}
-              /> 
-              <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7,fontSize: 10, color: color, textAlign: 'center'}}>Home</Text>
-              </View>
+                <View style={{ width: Dimensions.get('window').width / 5 }}>
+                  <Icon
+                    active
+                    focused={focused}
+                    name="home"
+                    type='antdesign'
+                    color={color}
+                  />
+                  <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7, fontSize: 10, color: color, textAlign: 'center' }}>Home</Text>
+                </View>
               );
-            } 
+            }
             else if (route.name == 'ResSearch') {
               return (
-                <View>
-              <Icon
-              active
-              name="search"
-              type='font-awesome'
-              color={color}
-            />
-            <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7,fontSize: 10, color: color, textAlign: 'center',}}>Search</Text>
-            </View>
-            );
-          }
-              else if (route.name == 'Tables') {
-                return (
-                  <View>
-                <Icon
-                active
-                name="ticket"
-                type='font-awesome'
-                color={color}
-              />
-              <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7,fontSize: 10, color: color, textAlign: 'center',}}>My History</Text>
-              </View>
+                <View style={{ width: Dimensions.get('window').width / 5 }}>
+                  <Icon
+                    active
+                    name="search"
+                    type='font-awesome'
+                    color={color}
+                  />
+                  <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7, fontSize: 10, color: color, textAlign: 'center', }}>Search</Text>
+                </View>
               );
-              }else if (route.name === 'Payment') {
+            }
+            else if (route.name == 'Tables') {
+              return (
+                <View style={{ width: Dimensions.get('window').width / 5 }}>
+                  <Icon
+                    active
+                    name="ticket"
+                    type='font-awesome'
+                    color={color}
+                  />
+                  <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7, fontSize: 10, color: color, textAlign: 'center', }}>My History</Text>
+                </View>
+              );
+            } else if (route.name === 'Payment') {
 
-                return (
-                  <View>
-                <Icon
-                active
-                name="credit-card"
-                type='font-awesome'
-                color={color}
-              />
-              <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7,fontSize: 10, color: color, textAlign: 'center',}}>Payment</Text>
-              </View>
+              return (
+                <View style={{ width: Dimensions.get('window').width / 5 }}>
+                  <Icon
+                    active
+                    name="credit-card"
+                    type='font-awesome'
+                    color={color}
+                  />
+                  <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7, fontSize: 10, color: color, textAlign: 'center', }}>Payment</Text>
+                </View>
               );
             } else if (route.name == 'Manage') {
               return (
-                <View>
-              <Icon
-              active
-              name="sliders"
-              type='font-awesome'
-              color={color}
-            />
-            <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7,fontSize: 10, color: color, textAlign: 'center',}}>Manage</Text>
-            </View>
-            );
+                <View style={{ width: Dimensions.get('window').width / 5 }}>
+                  <Icon
+                    active
+                    name="sliders"
+                    type='font-awesome'
+                    color={color}
+                  />
+                  <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7, fontSize: 10, color: color, textAlign: 'center', }}>Manage</Text>
+                </View>
+              );
             }
           },
         })}
         tabBarOptions={{
-      
           activeTintColor: 'black', //'tomato',
           inactiveTintColor: 'gray',
           showLabel: false,
@@ -106,17 +104,15 @@ class AppNavigator extends Component {
           inactiveTintColor: '#ffffff',
           style: {
             backgroundColor: '#101023',
-            padding:5
+            padding: 5
           },
         }}
       >
-        <Tab.Screen navigation={this.props.navigation} name="Home" component={Home}/>
-        <Tab.Screen navigation={this.props.navigation} name="ResSearch" component={Search}/>
-        <Tab.Screen navigation={this.props.navigation} name="Tables" component={Tables}/>
+        <Tab.Screen navigation={this.props.navigation} name="Home" component={Home} />
+        <Tab.Screen navigation={this.props.navigation} name="ResSearch" component={Search} />
+        <Tab.Screen navigation={this.props.navigation} name="Tables" component={Tables} />
         <Tab.Screen name="Payment" component={Payment} />
-        <Tab.Screen navigation={this.props.navigation} name="Manage" component={Manage}/>
-
-
+        <Tab.Screen navigation={this.props.navigation} name="Manage" component={Manage} />
       </Tab.Navigator>
 
 

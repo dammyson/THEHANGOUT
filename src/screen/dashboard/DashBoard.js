@@ -8,11 +8,7 @@ import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel'
 import {
     BarIndicator,
 } from 'react-native-indicators';
-
-import SvgUri from 'react-native-svg-uri';
-
 import color from '../../component/color';
-const { width: screenWidth } = Dimensions.get('window')
 import Navbar from '../../component/Navbar';
 const URL = require("../../component/server");
 import Moment from 'moment';
@@ -175,7 +171,7 @@ export default class Dashboard extends Component {
             this.props.navigation.navigate('eventD', { id: data.id })
         } else if (data.type == 'Restaurant') {
             this.props.navigation.navigate('restaurantD', { id: data.id })
-        }else if (data.type == 'Club') {
+        } else if (data.type == 'Club') {
             this.props.navigation.navigate('clubD', { id: data.id })
         }
     }
@@ -225,16 +221,11 @@ export default class Dashboard extends Component {
                                         </View>
 
                                 }
-
                                 <View style={{ width: 20 }}>
-
                                 </View>
                             </View>
                         </View>
-
                     </View>
-
-
                 </ImageBackground>
             </TouchableOpacity>
         );
@@ -288,7 +279,6 @@ export default class Dashboard extends Component {
 
         return (
             <Container style={{ backgroundColor: color.secondary_color }}>
-
                 <Navbar left={left} right={right} title="Home" bg='#101023' />
                 <Content>
                     <View style={styles.container}>
@@ -310,10 +300,7 @@ export default class Dashboard extends Component {
 
                             </View>
                         </View>
-
-
                         <View style={styles.header}>
-
                             <Carousel
                                 ref={(c) => { this._carousel = c; }}
                                 data={this.state.dataone}
@@ -339,32 +326,22 @@ export default class Dashboard extends Component {
                             <Text style={styles.catTitle}>CATEGORIES</Text>
                             <View style={styles.row}>
                                 <View style={styles.rowchild}>
-
-
                                     <TouchableOpacity onPress={() => this.props.navigation.navigate('events')} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
                                         <Image
                                             style={{ resizeMode: 'contain', height: 30, width: 30 }}
                                             source={require('../../assets/icons/events.png')} />
 
                                     </TouchableOpacity>
-
                                     <Text style={styles.catName}>Events</Text>
-
                                     <TouchableOpacity style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
-
                                         <Image
                                             style={{ resizeMode: 'contain', height: 30, width: 30 }}
                                             source={require('../../assets/icons/movies.png')} />
                                     </TouchableOpacity>
-
                                     <Text style={styles.catName}>Movies</Text>
-
-
                                 </View>
                                 <View style={styles.rowchild}>
-
                                     <TouchableOpacity onPress={() => this.props.navigation.navigate('clubs')} style={[styles.circle, { backgroundColor: '#ebd5ff', }]}>
-
                                         <Image
                                             style={{ resizeMode: 'contain', height: 30, width: 30 }}
                                             source={require('../../assets/icons/club.png')} />
@@ -474,7 +451,6 @@ const styles = StyleSheet.create({
         fontFamily: 'NunitoSans-Bold'
     },
     price: {
-
         marginRight: 13,
         marginLeft: 13,
         fontSize: 10,

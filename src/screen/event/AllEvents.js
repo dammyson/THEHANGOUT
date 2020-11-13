@@ -397,7 +397,7 @@ goToMore(params){
             <Left style={{ flex: 1 }}>
                 <Button transparent onPress={() =>  this.props.navigation.reset({
                       index: 0,
-                      routes: [{ name: 'dashboard' }],
+                      routes: [{ name: 'home' }],
                     })}>
             <View style={{ transform:[{ rotateY: "180deg"}]}}>
                 <Icon  type='material-icons' name='exit-to-app' size={30} color='#FFF' />

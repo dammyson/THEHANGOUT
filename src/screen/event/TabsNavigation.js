@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from "react-native";
+import { View, Text, Dimensions } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -29,7 +29,7 @@ class AppNavigator extends Component {
 
             if (route.name === 'Home') {
               return (
-                <View>
+                <View style={{width:Dimensions.get('window').width/5}}>
                 <Icon
                 active
                 focused={focused}
@@ -43,7 +43,7 @@ class AppNavigator extends Component {
             } 
             else if (route.name == 'Search') {
               return (
-                <View>
+                <View style={{width:Dimensions.get('window').width/5}}>
               <Icon
               active
               name="search"
@@ -56,7 +56,7 @@ class AppNavigator extends Component {
           }
               else if (route.name == 'Tickets') {
                 return (
-                  <View>
+                  <View style={{width:Dimensions.get('window').width/5}}>
                 <Icon
                 active
                 name="ticket"
@@ -69,7 +69,7 @@ class AppNavigator extends Component {
               }else if (route.name === 'Payment') {
 
                 return (
-                  <View>
+                  <View style={{width:Dimensions.get('window').width/5}}>
                 <Icon
                 active
                 name="credit-card"
@@ -81,7 +81,7 @@ class AppNavigator extends Component {
               );
             } else if (route.name == 'Manage') {
               return (
-                <View>
+                <View style={{width:Dimensions.get('window').width/5}}>
               <Icon
               active
               name="sliders"

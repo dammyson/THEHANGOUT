@@ -187,7 +187,6 @@ generateQrCode(){
                                 this.state.activeIndex == 0 ?
                                     <ScrollView style={{ flex: 1, }}>
                                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-
                                             <View style={{ backgroundColor: '#fff', marginTop: 24, justifyContent: 'center', alignItems: 'center', paddingBottom: 30, paddingTop: 30 }}>
                                                 <Icon
                                                     active
@@ -220,9 +219,7 @@ generateQrCode(){
 
                                         </View>
                                     </ScrollView>
-
                                     :
-
                                     <ScrollView style={{ flex: 1, }}>
                                         <View style={{ flex: 1, marginLeft: 20, marginRight: 20, }}>
                                             <Text style={styles.title}> GENERATE QR CODE </Text>
@@ -256,15 +253,8 @@ generateQrCode(){
                                                     <Text style={{ color: color.primary_color, fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Hide More</Text>
                                                 </TouchableOpacity>
                                             }
-
-
-
                                             {this.state.more ?
-
-
                                                 <View>
-
-
                                                     <View style={styles.inputTextView}>
                                                         <TextInput
                                                             placeholder="Enter cashier code"
@@ -317,27 +307,15 @@ generateQrCode(){
 
                                             <View style={{ alignItems: 'center', justifyContent: 'center' ,  marginBottom:100}}>
                                                 <TouchableOpacity  onPress={()=>this.generateQrCode() } style={{ flexDirection: 'row', backgroundColor: color.primary_color, alignItems: 'center', alignContent: 'space-around', paddingLeft: 19, paddingRight: 19, borderRadius: 5, marginTop: 20 }} block iconLeft>
-
                                                     <Text style={{ color: "#010113", marginLeft: 5, marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '500', fontFamily: 'NunitoSans', opacity: 0.77 }}>GENERATA QR</Text>
                                                 </TouchableOpacity>
-
-
                                                 <View style={{  height:100}}></View>
                                             </View>
                                         </View>
-
                                     </ScrollView>
-
                             }
-
-
-
-
                         </View>
-
                     </View>
-
-
 
                     <Modal
                         visible={this.state.qr_generated}
@@ -383,7 +361,7 @@ generateQrCode(){
                                    
 
                                     <View style={{ alignItems: 'flex-end' }}>
-                                        <TouchableOpacity  onPress={()=> this.setState({qr_generated: false})}>
+                                        <TouchableOpacity  style={{height:40, width: 40}} onPress={()=> this.setState({qr_generated: false})}>
                                             <Icon
                                                 active
                                                 name="close"

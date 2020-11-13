@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from "react-native";
+import { View, Text, Dimensions } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -23,10 +23,9 @@ class AppNavigator extends Component {
 
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
-
               if (route.name === 'Home') {
                 return (
-                  <View>
+                  <View style={{width:Dimensions.get('window').width/3}}>
                     <Icon
                       active
                       focused={focused}
@@ -40,7 +39,7 @@ class AppNavigator extends Component {
               } else if (route.name === 'Payment') {
 
                 return (
-                  <View>
+                  <View style={{width:Dimensions.get('window').width/3}}>
                     <Icon
                       active
                       name="creditcard"
@@ -52,7 +51,7 @@ class AppNavigator extends Component {
                 );
               } else if (route.name == 'Manage') {
                 return (
-                  <View>
+                  <View style={{width:Dimensions.get('window').width/3}}>
                     <Icon
                       active
                       name="sliders"
@@ -65,8 +64,8 @@ class AppNavigator extends Component {
               }
             },
           })}
-          tabBarOptions={{
-            activeTintColor: 'black', //'tomato',
+            tabBarOptions={{
+            activeTintColor: 'black',
             inactiveTintColor: 'gray',
             showLabel: false,
             animationEnabled: true,
@@ -75,7 +74,7 @@ class AppNavigator extends Component {
             inactiveTintColor: '#ffffff',
             style: {
               backgroundColor: '#101023',
-              padding:5
+              padding:1,
             },
           }}
         >

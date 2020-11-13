@@ -22,7 +22,7 @@ class AppNavigator extends Component {
 
               if (route.name === 'Home') {
                 return (
-                  <View>
+                  <View style={{width:Dimensions.get('window').width/3}}>
                     <Icon
                       active
                       focused={focused}
@@ -37,7 +37,7 @@ class AppNavigator extends Component {
               } else if (route.name === 'Payment') {
 
                 return (
-                  <View>
+                  <View style={{width:Dimensions.get('window').width/3}}>
                     <Icon
                       active
                       name="creditcard"
@@ -50,7 +50,7 @@ class AppNavigator extends Component {
                 );
               } else if (route.name == 'Manage') {
                 return (
-                  <View>
+                  <View style={{width:Dimensions.get('window').width/3}}>
                     <Icon
                       active
                       name="sliders"

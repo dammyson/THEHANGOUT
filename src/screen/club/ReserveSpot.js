@@ -17,35 +17,30 @@ import { getUser, getData } from '../../component/utilities';
 
 const sports = [
     {
-        label: '2 Spots      ',
+        label: 'Table for 2      ',
         value: '2',
         color: '#000',
     },
     {
-        label: '3  Spots      ',
-        value: '3',
-        color: '#000',
-    },
-    {
-        label: '4  Spots      ',
+        label: 'Table for 4      ',
         value: '4',
         color: '#000',
     },
     {
-        label: '5  Spots      ',
-        value: '5',
-        color: '#000',
-    },
-    {
-        label: '5  Spots      ',
-        value: '5',
-        color: '#000',
-    },
-    {
-        label: '6  Spots      ',
+        label: 'Table for 6     ',
         value: '6',
         color: '#000',
+    }, {
+        label: 'Table for 8      ',
+        value: '8',
+        color: '#000',
     },
+    {
+        label: 'Table for 8 and above  ',
+        value: '10',
+        color: '#000',
+    },
+   
 
 ];
 
@@ -136,7 +131,7 @@ export default class ReserveSpot extends Component {
         Moment.locale('en');
 
         const ticketVisibility = {
-            label: '1 ',
+            label: 'Table for 1       ',
             value: 1,
             color: '#000',
         };
@@ -218,9 +213,8 @@ export default class ReserveSpot extends Component {
                 <Navbar left={left} title="" bg='#101023' />
                 <Content>
                     <View style={styles.container}>
-                        <View >
-
-                            <Text style={styles.titleText}>RESERVE A SPOT</Text>
+                        <View>
+                            <Text style={styles.titleText}>RESERVE A TABLE</Text>
                         </View>
 
                         <View style={styles.main_content}>
@@ -229,7 +223,7 @@ export default class ReserveSpot extends Component {
 
                             <View style={{ flexDirection: 'row', marginTop: 20, marginBottom: 10 }}>
                                 <View style={{ flex: 1 }}>
-                                    <Text style={[styles.date, {}]}>Number of Spots</Text>
+                                    <Text style={[styles.date, {}]}>Number of Tables</Text>
                                 </View>
                                 <View style={{ flex: 1, flexDirection: 'row', borderColor: '#fff', alignItems: 'center', borderWidth: 1, paddingLeft: 10, marginRight: 20 }}>
                                     <RNPickerSelect
