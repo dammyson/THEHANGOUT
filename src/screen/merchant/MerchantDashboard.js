@@ -242,39 +242,29 @@ export default class MerchantDashboard extends Component {
                                 <View style={{ flexDirection: 'row', marginRight: 20, marginLeft: 20, }}>
                                     <View style={styles.rowchild}>
                                         <TouchableOpacity onPress={() => [this.setState({ view_create: false }), this.props.navigation.navigate('createevent')]} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
-                                            <Icon
-                                                active
-                                                name="calendar-clock"
-                                                type='material-community'
-                                                color='#f9ba3f'
-                                            />
+                                        <Image
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
+                                            source={require('../../assets/icons/events.png')} />
                                         </TouchableOpacity>
                                         <Text style={styles.catName}> Events</Text>
                                     </View>
                                     <View style={styles.rowchild}>
                                         <TouchableOpacity onPress={() => [this.setState({ view_create: false }), this.props.navigation.navigate('createRestaurant')]} style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
-                                            <Icon
-                                                active
-                                                name="movie"
-                                                type='material-community'
-                                                color='#2d98ff'
-
-                                            />
+                                          
+                                        <Image
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
+                                            source={require('../../assets/icons/restaurant.png')} />
                                         </TouchableOpacity>
 
-                                        <Text style={styles.catName}>Restaurant</Text>
+                                        <Text style={styles.catName}>Food</Text>
                                     </View>
 
 
                                     <View style={styles.rowchild}>
                                         <TouchableOpacity onPress={() => [this.setState({ view_create: false }), this.props.navigation.navigate('createClub')]} style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
-                                            <Icon
-                                                active
-                                                name="movie"
-                                                type='material-community'
-                                                color='#2d98ff'
-
-                                            />
+                                        <Image
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
+                                            source={require('../../assets/icons/club.png')} />
                                         </TouchableOpacity>
 
                                         <Text style={styles.catName}>Clubs</Text>
@@ -299,6 +289,8 @@ getDetails(data){
         this.props.navigation.navigate('service_details', { id: data.id })
     }else  if(data.type =='RESTURANTS'){
         this.props.navigation.navigate('res_service_details', { id: data.id })
+    }else if(data.type =='CLUBS'){
+        this.props.navigation.navigate('club_service_details', { id: data.id })
     }
 }
     renderItem(tickets) {
@@ -337,8 +329,6 @@ getDetails(data){
                         </View>
                         <Text style={styles.title}> {tickets[i].name}</Text>
                         <Text style={{ marginLeft: 2, marginTop: 10, textAlign: 'left', color: '#fff', fontSize: 14, fontWeight: '100', }}> ₦{this.currencyFormat(tickets[i].amount)} </Text>
-
-
                     </View>
 
                 </TouchableOpacity>

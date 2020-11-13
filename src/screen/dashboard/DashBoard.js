@@ -175,6 +175,8 @@ export default class Dashboard extends Component {
             this.props.navigation.navigate('eventD', { id: data.id })
         } else if (data.type == 'Restaurant') {
             this.props.navigation.navigate('restaurantD', { id: data.id })
+        }else if (data.type == 'Club') {
+            this.props.navigation.navigate('clubD', { id: data.id })
         }
     }
 
@@ -205,14 +207,22 @@ export default class Dashboard extends Component {
                                             source={require('../../assets/icons/events.png')} />
 
                                     </View>
-                                    :
+                                    : item.type == 'Club' ?
 
-                                    <View style={[styles.small_circle, { backgroundColor: '#ffcccd', }]}>
+                                        <View style={[styles.small_circle, { backgroundColor: '#ffcccd', }]}>
 
-                                        <Image
-                                            style={{ resizeMode: 'contain', height: 20, width: 20 }}
-                                            source={require('../../assets/icons/restaurant.png')} />
-                                    </View>
+                                            <Image
+                                                style={{ resizeMode: 'contain', height: 20, width: 20 }}
+                                                source={require('../../assets/icons/club.png')} />
+                                        </View>
+                                        :
+
+                                        <View style={[styles.small_circle, { backgroundColor: '#ffcccd', }]}>
+
+                                            <Image
+                                                style={{ resizeMode: 'contain', height: 20, width: 20 }}
+                                                source={require('../../assets/icons/restaurant.png')} />
+                                        </View>
 
                                 }
 

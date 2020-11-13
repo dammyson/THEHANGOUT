@@ -170,6 +170,8 @@ export default class Services extends Component {
             this.props.navigation.navigate('service_details',{ id: data.id })
         }else  if(data.type =='RESTURANTS'){
             this.props.navigation.navigate('res_service_details', { id: data.id })
+        }else if(data.type =='CLUBS'){
+            this.props.navigation.navigate('club_service_details', { id: data.id })
         }
     }
     renderItem(tickets) {

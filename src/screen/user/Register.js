@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, TextInput, AsyncStorage,ImageBackground, View, Dimensions, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Alert, TextInput, AsyncStorage, ImageBackground, View, Dimensions, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Container, Content, Text, Icon, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col } from 'native-base';
 import {
   BarIndicator,
@@ -9,7 +9,7 @@ import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
-} from  '@react-native-community/google-signin';
+} from '@react-native-community/google-signin';
 import Navbar from '../../component/Navbar';
 import color from '../../component/color';
 import { getToken } from '../../component/utilities';
@@ -29,14 +29,14 @@ export default class Register extends Component {
       role: 'Customer',
       userInfo: null,
       gettingLoginStatus: true,
-      token:''
+      token: ''
     };
   }
 
 
   async componentDidMount() {
-    this.setState({token: await getToken() })
-    console.warn( await getToken())
+    this.setState({ token: await getToken() })
+    console.warn(await getToken())
     //initial configuration
     GoogleSignin.configure({
       //It is mandatory to call this method before attempting to call signIn()
@@ -47,12 +47,12 @@ export default class Register extends Component {
     //Check if user is already signed in
     //this._isSignedIn();
 
-    
+
   }
 
   currencyFormat(n) {
-    return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
- }
+    return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+  }
 
   _isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
@@ -122,9 +122,9 @@ export default class Register extends Component {
 
 
 
-  _signInRequest(user){
+  _signInRequest(user) {
     const { role, token } = this.state
-     console.warn(URL.url);
+    console.warn(URL.url);
     this.setState({ loading: true })
     fetch(URL.url + 'users/register', {
       method: 'POST', headers: {
@@ -135,7 +135,7 @@ export default class Register extends Component {
         Username: user.email,
         Phone: '',
         Password: user.email,
-        Token:token,
+        Token: token,
         Lastname: user.familyName,
         ProfilePicture: user.photo,
         Role: role,
@@ -185,7 +185,7 @@ export default class Register extends Component {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       }, body: JSON.stringify({
-        Firstname:name,
+        Firstname: name,
         Username: email,
         Phone: phone,
         Password: password,
@@ -219,8 +219,8 @@ export default class Register extends Component {
   }
 
   currencyFormat(n) {
-    return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
- }
+    return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+  }
 
 
 
@@ -238,100 +238,99 @@ export default class Register extends Component {
         style={styles.backgroundImage}
         resizeMode="cover"
       >
-         <Container style={{ backgroundColor: 'transparent' }}>
-
+        <Container style={{ backgroundColor: 'transparent' }}>
           <Content>
-        <View style={styles.body}>
-          <View style={styles.top}>
-            <Image
-              style={styles.logo}
-              source={require('../../assets/logo.png')} />
-          </View>
-          <Text style={{ color: '#FFF', margin: 15,fontFamily:'NunitoSans-ExtraBold',  fontSize: 25, }}>HELLO! </Text>
-          <View style={styles.bottom}>
-            <View style={{ flexDirection: "row", margin: 10, }}>
-              <Text style={{ color: "#000", fontFamily:'NunitoSans-Bold', fontSize: 20, flex: 1 }}>LET'S GET STARTED</Text>
-              <TouchableOpacity onPress={()=> this.props.navigation.goBack()}  style={styles.circlet} >
-                <Text style={{ color: "#FFFFFF", fontWeight: '900', fontSize: 16, }}>X</Text>
-              </TouchableOpacity>
+            <View style={styles.body}>
+              <View style={styles.top}>
+                <Image
+                  style={styles.logo}
+                  source={require('../../assets/logo.png')} />
+              </View>
+              <Text style={{ color: '#FFF', margin: 15, fontFamily: 'NunitoSans-ExtraBold', fontSize: 25, }}>HELLO! </Text>
+              <View style={styles.bottom}>
+                <View style={{ flexDirection: "row", margin: 10, }}>
+                  <Text style={{ color: "#000", fontFamily: 'NunitoSans-Bold', fontSize: 20, flex: 1 }}>LET'S GET STARTED</Text>
+                  <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={styles.circlet} >
+                    <Text style={{ color: "#FFFFFF", fontWeight: '900', fontSize: 16, }}>X</Text>
+                  </TouchableOpacity>
 
-            </View>
-            <Text style={styles.actionbutton}>Name</Text>
-            <TextInput
-              placeholder="Enter your Name"
-              placeholderTextColor='#3E3E3E'
-              returnKeyType="next"
-              onSubmitEditing={() => this.emailInput.focus()}
-              keyboardType='email-address'
-              autoCapitalize="none"
-              autoCorrect={false}
-              style={styles.input}
-              inlineImageLeft='ios-call'
-              onChangeText={text => this.setState({ name: text })}
-            />
-            <Text style={styles.actionbutton}>Email</Text>
-            <TextInput
-              placeholder="Enter your email address"
-              placeholderTextColor='#3E3E3E'
-              returnKeyType="next"
-              onSubmitEditing={() => this.phoneInput.focus()}
-              keyboardType='email-address'
-              autoCapitalize="none"
-              autoCorrect={false}
-              style={styles.input}
-              inlineImageLeft='ios-call'
-              onChangeText={text => this.setState({ email: text })}
-              ref={(input)=> this.emailInput = input}
-            />
-             <Text style={styles.actionbutton}>Phone</Text>
-            <TextInput
-              placeholder="Enter your phone number"
-              placeholderTextColor='#3E3E3E'
-              returnKeyType="next"
-              onSubmitEditing={() => this.passwordInput.focus()}
-              keyboardType='email-address'
-              autoCapitalize="none"
-              autoCorrect={false}
-              style={styles.input}
-              inlineImageLeft='ios-call'
-              onChangeText={text => this.setState({ email: text })}
-              ref={(input)=> this.phoneInput = input}
-            />
-            <Text style={styles.actionbutton}>Password</Text>
-            <TextInput
-              placeholder="Enter your password"
-              placeholderTextColor='#3E3E3E'
-              returnKeyType="next"
-              secureTextEntry
-              onSubmitEditing={() => this.processRegistration()}
-              keyboardType='password'
-              autoCapitalize="none"
-              autoCorrect={false}
-              style={styles.input}
-              inlineImageLeft='ios-call'
-              onChangeText={text => this.setState({ password: text })}
-              ref={(input)=> this.passwordInput = input}
-            />
-            {
-              this.state.loading ?
-                <View>
-                  <Button style={styles.buttonContainer} block iconLeft>
-                    <BarIndicator count={4} color={color.primary_color} />
-                  </Button>
                 </View>
-                :
-                <View>
-                  <Button onPress={() => this.processRegistration()} style={styles.buttonContainer} block iconLeft>
-                    <Text style={{ color: '#fdfdfd', fontWeight: '400' }}>SIGN UP </Text>
-                  </Button>
-                </View>
-            }
-          <View style={styles.inputContainer}>
+                <Text style={styles.actionbutton}>Name</Text>
+                <TextInput
+                  placeholder="Enter your Name"
+                  placeholderTextColor='#3E3E3E'
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.emailInput.focus()}
+                  keyboardType='email-address'
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  style={styles.input}
+                  inlineImageLeft='ios-call'
+                  onChangeText={text => this.setState({ name: text })}
+                />
+                <Text style={styles.actionbutton}>Email</Text>
+                <TextInput
+                  placeholder="Enter your email address"
+                  placeholderTextColor='#3E3E3E'
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.phoneInput.focus()}
+                  keyboardType='email-address'
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  style={styles.input}
+                  inlineImageLeft='ios-call'
+                  onChangeText={text => this.setState({ email: text })}
+                  ref={(input) => this.emailInput = input}
+                />
+                <Text style={styles.actionbutton}>Phone</Text>
+                <TextInput
+                  placeholder="Enter your phone number"
+                  placeholderTextColor='#3E3E3E'
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.passwordInput.focus()}
+                  keyboardType='email-address'
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  style={styles.input}
+                  inlineImageLeft='ios-call'
+                  onChangeText={text => this.setState({ phone: text })}
+                  ref={(input) => this.phoneInput = input}
+                />
+                <Text style={styles.actionbutton}>Password</Text>
+                <TextInput
+                  placeholder="Enter your password"
+                  placeholderTextColor='#3E3E3E'
+                  returnKeyType="next"
+                  secureTextEntry
+                  onSubmitEditing={() => this.processRegistration()}
+                  keyboardType='password'
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  style={styles.input}
+                  inlineImageLeft='ios-call'
+                  onChangeText={text => this.setState({ password: text })}
+                  ref={(input) => this.passwordInput = input}
+                />
+                {
+                  this.state.loading ?
+                    <View>
+                      <Button style={styles.buttonContainer} block iconLeft>
+                        <BarIndicator count={4} color={color.primary_color} />
+                      </Button>
+                    </View>
+                    :
+                    <View>
+                      <Button onPress={() => this.processRegistration()} style={styles.buttonContainer} block iconLeft>
+                        <Text style={{ color: '#fdfdfd', fontWeight: '400' }}>SIGN UP </Text>
+                      </Button>
+                    </View>
+                }
+                <View style={styles.inputContainer}>
                   <View style={styles.lineStyle} />
                   <Text style={{ color: 'black', margin: 10, fontSize: 15, fontWeight: '200' }}>or</Text>
                   <View style={styles.lineStyle} />
                 </View>
-         <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+                <View style={{ justifyContent: 'center', alignItems: 'center', }}>
                   <GoogleSigninButton
                     style={{ width: 312, height: 48 }}
                     size={GoogleSigninButton.Size.Wide}
@@ -340,48 +339,48 @@ export default class Register extends Component {
                   />
 
                 </View>
-                <View style={{ justifyContent: 'center', flexDirection:'row', alignItems: 'center', marginTop: 15}}>
+                <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
 
-            {
-              this.state.role == 'Customer' ?
-              <TouchableOpacity onPress={() => this.setState({ role: 'Vendor' })} style={[{
-                height: 16,
-                width: 16,
-                borderWidth: 1,
-                borderColor: '#000',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: 3
-            }]}>
-               
-                </TouchableOpacity>
-                :
-                <TouchableOpacity onPress={() => this.setState({ role: 'Customer' })} style={[{
-                  height: 16,
-                  width: 16,
-                  borderWidth: 1,
-                  borderColor: '#000',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: 3
-              }]}>
-                <View style={{
+                  {
+                    this.state.role == 'Customer' ?
+                      <TouchableOpacity onPress={() => this.setState({ role: 'Vendor' })} style={[{
+                        height: 16,
+                        width: 16,
+                        borderWidth: 1,
+                        borderColor: '#000',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: 3
+                      }]}>
+
+                      </TouchableOpacity>
+                      :
+                      <TouchableOpacity onPress={() => this.setState({ role: 'Customer' })} style={[{
+                        height: 16,
+                        width: 16,
+                        borderWidth: 1,
+                        borderColor: '#000',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: 3
+                      }]}>
+                        <View style={{
                           height: 12,
                           width: 12,
                           backgroundColor: '#000',
-                      }} />
-                </TouchableOpacity>
+                        }} />
+                      </TouchableOpacity>
 
-            }
-
-
-            <Text style={{ fontSize: 12, color: '#3E3E3E',}}>Register as a Merchant</Text>
-          </View>
+                  }
 
 
-         </View>
-        </View>
-        </Content>
+                  <Text style={{ fontSize: 12, color: '#3E3E3E', }}>Register as a Merchant</Text>
+                </View>
+
+
+              </View>
+            </View>
+          </Content>
         </Container>
 
       </ImageBackground>
@@ -409,7 +408,7 @@ const styles = StyleSheet.create({
   },
   body: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+   // height: Dimensions.get('window').height,
   },
   buttonContainer: {
     backgroundColor: '#000000',
@@ -432,6 +431,7 @@ const styles = StyleSheet.create({
   },
   bottom: {
     flex: 4,
+    paddingBottom: 150,
     backgroundColor: color.primary_color
   },
   input: {
@@ -443,7 +443,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#000000',
     borderBottomWidth: 0.2,
     marginTop: 1,
-    fontFamily:'NunitoSans-Regular',
+    fontFamily: 'NunitoSans-Regular',
   },
   actionbutton: {
     marginTop: 2,
@@ -453,7 +453,7 @@ const styles = StyleSheet.create({
     color: '#3E3E3E',
     textAlign: 'left',
     fontWeight: '200',
-    fontFamily:'NunitoSans-Bold',
+    fontFamily: 'NunitoSans-Bold',
   },
   inputContainer: {
     flexDirection: "row",

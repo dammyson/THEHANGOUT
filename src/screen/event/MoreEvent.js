@@ -41,10 +41,12 @@ export default class MoreEvent extends Component {
             prams: '',
             events: [],
             condition: true,
-            activeIndex: 0
+            activeIndex: 0,
+            search: '',
 
 
         };
+        this.arrayholder = [];
     }
 
 
@@ -85,6 +87,7 @@ export default class MoreEvent extends Component {
                         loading: false,
                         events: res.data,
                     })
+                    this.arrayholder = res.data;
                 } else {
                     Alert.alert('Action failed', res.message, [{ text: 'Okay' }])
                     this.setState({ loading: false })
@@ -98,6 +101,18 @@ export default class MoreEvent extends Component {
 
     }
 
+    searchFilterFunction = search => {
+        this.setState({ search });
+        const newData = this.arrayholder.filter(item => {
+            const itemData = `${item.title.toUpperCase()}`;
+            const textData = search.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+        });
+        this.setState({
+            events: newData,
+        });
+
+    };
 
     segmentClicked = (index) => {
         this.setState({
@@ -170,6 +185,7 @@ export default class MoreEvent extends Component {
                                                     autoCapitalize="none"
                                                     autoCorrect={false}
                                                     style={styles.menu}
+                                                    onChangeText={this.searchFilterFunction}
                                                     
                                                 />
 

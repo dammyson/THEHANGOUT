@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { TextInput, StyleSheet, ScrollView, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, ImageBackground } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Toast, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
-import { Avatar, Badge, } from 'react-native-elements';
+import { Avatar, Badge, colors, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
 const URL = require("../../component/server");
@@ -65,7 +65,7 @@ export default class Dashboard extends Component {
         const { data, user } = this.state
 
 
-        fetch(URL.url + 'events', {
+        fetch(URL.url + 'clubs', {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -74,7 +74,7 @@ export default class Dashboard extends Component {
         })
             .then(res => res.json())
             .then(res => {
-                console.warn(res);
+                console.warn(res.data.trending);
                 if (res.status) {
                     this.setState({
                         dataone: res.data.trending,
@@ -99,7 +99,7 @@ export default class Dashboard extends Component {
 
     RgetEventsRequest() {
         const { data } = this.state
-        fetch(URL.url + 'events', {
+        fetch(URL.url + 'clubs', {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -173,17 +173,16 @@ export default class Dashboard extends Component {
     _renderItem = ({ item, index }, parallaxProps) => {
         Moment.locale('en');
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('eventD', { id: item.id })} >
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('clubD', { id: item.id })} >
                 <ImageBackground
                     opacity={0.5}
                     style={{ borderRadius: 12 }}
-                    source={{ uri: item.banner }}
+                    source={{ uri: item.imageUrl}}
                     imageStyle={{ borderRadius: 20, backgroundColor: 'blue' }}
-
                 >
                     <View style={styles.details} >
-                        <Text style={styles.date}>{Moment(item.startDate).format('llll')}</Text>
-                        <Text style={styles.tittle}>{item.title}</Text>
+                        <Text style={styles.date}>{Moment(item.date).calendar()}</Text>
+                        <Text style={styles.tittle}>{item.name}</Text>
                         <View style={styles.piceContainer}>
                             <View style={{ flex: 1, flexDirection: 'row', marginTop: 3, marginLeft: 15 }}>
                                 <Icon
@@ -204,36 +203,7 @@ export default class Dashboard extends Component {
                                 <Text style={styles.price}>{item.category}</Text>
                             </View>
 
-                            <View style={[styles.iconContainer, { marginRight: 15 }]}>
-
-                                {item.isLike ?
-                                    <TouchableOpacity onPress={() => this.likeUnlikeRequest(item.id, item.isLike)}>
-
-                                        <Icon
-                                            active
-                                            name="heart"
-                                            type='antdesign'
-                                            color='red'
-                                            size={15}
-                                        />
-                                    </TouchableOpacity>
-
-                                    :
-
-                                    <TouchableOpacity onPress={() => this.likeUnlikeRequest(item.id, item.isLike)}>
-
-                                        <Icon
-                                            active
-                                            name="hearto"
-                                            type='antdesign'
-                                            color='red'
-                                            size={15}
-                                        />
-                                    </TouchableOpacity>
-
-                                }
-
-                            </View>
+                           
 
                         </View>
 
@@ -245,7 +215,7 @@ export default class Dashboard extends Component {
         );
     }
     goToMore(params) {
-        this.props.navigation.navigate('more', { prams: params })
+        this.props.navigation.navigate('moreC', { prams: params })
     }
   
     renderTrending() {
@@ -289,7 +259,7 @@ export default class Dashboard extends Component {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>No event at the moment </Text>
+                        <Text style={{ fontSize: 15, color: '#fff' }}>No Club at the moment </Text>
                     </View>
                 </View>
             );
@@ -297,13 +267,15 @@ export default class Dashboard extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button onPress={() => this.props.navigation.goBack()} transparent >
-                    <View style={{ transform: [{ rotateY: "180deg" }] }}>
-                        <Icon type='material-icons' name='exit-to-app' size={30} color='#FFF' />
+               <Button transparent onPress={() =>  this.props.navigation.reset({
+                      index: 0,
+                      routes: [{ name: 'dashboard' }],
+                    })}>
+            <View style={{ transform:[{ rotateY: "180deg"}]}}>
+                <Icon  type='material-icons' name='exit-to-app' size={30} color='#FFF' />
 
                     </View>
-
-                </Button>
+            </Button>
             </Left>
         );
         var right = (
@@ -345,14 +317,14 @@ export default class Dashboard extends Component {
                             </View>
 
                             <View style={{ marginLeft: 10, marginRight: 7, flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={styles.titleText}>TRENDING</Text>
+                               {this.state.dataone.length > 0?  <Text style={styles.titleText}>HAPPENING</Text>:<View style={{flex: 1}} />} 
                                 <TouchableOpacity onPress={() => this.goToMore('eventListing/Trending/50')} style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
-                                    <Text style={{ fontSize: 12, color: 'orange', }}>Full List </Text>
+                                    <Text style={{ fontSize: 12, color: color.club_color }}>Full List </Text>
                                     <Icon
                                         active
                                         name="ios-arrow-forward"
                                         type='ionicon'
-                                        color='orange'
+                                        color={color.club_color}
                                     /></TouchableOpacity>
                             </View>
                         </View>
@@ -367,8 +339,8 @@ export default class Dashboard extends Component {
                             {this.renderUpcomming()}
                         </ScrollView>
 
-                        <TouchableOpacity onPress={() => this.goToMore('eventListing/Upcoming/50')} style={{ margin: 30, alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: '#F7A400' }}>
-                            <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: '#F7A400' }}>View all upcomning events</Text>
+                        <TouchableOpacity onPress={() => this.goToMore('eventListing/Upcoming/50')} style={{ margin: 30, alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: color.club_color }}>
+                            <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: color.club_color }}>View all Clubs</Text>
                         </TouchableOpacity>
                     </View>
                 </Content>
@@ -384,18 +356,16 @@ export default class Dashboard extends Component {
                     <View style={styles.upcomingContainer}>
                       
                         <View style={{ flex: 1, }}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('eventD', { id: item.id })}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('clubD', { id: item.id })}>
                                 <ImageBackground
                                     opacity={0.5}
                                     style={{ borderRadius: 12, flex: 1, margin: 10, marginTop: 0 }}
-                                    source={{ uri: item.banner, }}
+                                    source={{ uri: item.imageUrl}}
                                     imageStyle={{ borderRadius: 20, backgroundColor: 'blue' }}
                                 >
-
-
                                     <View style={styles.details} >
-                                        <Text style={styles.date}>{Moment(item.startDate).format('llll')}</Text>
-                                        <Text style={styles.tittle}>{item.title}</Text>
+                                        <Text style={styles.date}>{Moment(item.date).format('llll')}</Text>
+                                        <Text style={styles.tittle}>{item.name}</Text>
                                         <View style={styles.piceContainer}>
                                             <View style={{ flex: 1, flexDirection: 'row', marginTop: 3, marginLeft: 15 }}>
                                                 <Icon
@@ -417,33 +387,6 @@ export default class Dashboard extends Component {
                                             </View>
 
                                             <View style={[styles.iconContainer, { marginRight: 15 }]}>
-
-                                                {item.isLike ?
-                                                    <TouchableOpacity onPress={() => this.likeUnlikeRequest(item.id, item.isLike)}>
-
-                                                        <Icon
-                                                            active
-                                                            name="heart"
-                                                            type='antdesign'
-                                                            color='red'
-                                                            size={15}
-                                                        />
-                                                    </TouchableOpacity>
-
-                                                    :
-
-                                                    <TouchableOpacity onPress={() => this.likeUnlikeRequest(item.id, item.isLike)}>
-
-                                                        <Icon
-                                                            active
-                                                            name="hearto"
-                                                            type='antdesign'
-                                                            color='red'
-                                                            size={15}
-                                                        />
-                                                    </TouchableOpacity>
-
-                                                }
 
                                             </View>
 
@@ -504,7 +447,7 @@ const styles = StyleSheet.create({
         fontFamily: 'NunitoSans-Bold'
     },
     details: {
-        marginTop: 140,
+        marginTop: 120,
         marginBottom: 25,
     },
     hangoutDetails: {

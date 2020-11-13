@@ -215,9 +215,9 @@ export default class Login extends Component {
               <View style={styles.bottom}>
                 <View style={{ flexDirection: "row", margin: 20, }}>
                   <Text style={{ color: "#000", fontFamily: 'NunitoSans-Bold', fontSize: 20, flex: 1 }}>LOGIN</Text>
-                  <View style={styles.circlet} >
+                  <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={styles.circlet} >
                     <Text style={{ color: "#FFFFFF", fontWeight: '900', fontSize: 16, }}>X</Text>
-                  </View>
+                  </TouchableOpacity>
 
                 </View>
                 <Text style={styles.actionbutton}>Email</Text>
@@ -356,6 +356,7 @@ const styles = StyleSheet.create({
   },
   bottom: {
     flex: 4,
+    paddingBottom: 100,
     backgroundColor: color.primary_color
   },
   input: {

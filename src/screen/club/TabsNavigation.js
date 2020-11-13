@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import Home from './AllClubs';
 import Search from './Search';
-import Tickets from './../ticket/ListTickets';
+import Spots from './Spots';
 import Payment from './../payment/ManagementPayment';
 import Manage from './../engagement/Manage';
 
@@ -54,7 +54,7 @@ class AppNavigator extends Component {
             </View>
             );
           }
-              else if (route.name == 'Tickets') {
+              else if (route.name == 'Spots') {
                 return (
                   <View>
                 <Icon
@@ -63,7 +63,7 @@ class AppNavigator extends Component {
                 type='font-awesome'
                 color={color}
               />
-              <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7,fontSize: 10, color: color, textAlign: 'center',}}>My Tickets</Text>
+              <Text style={{ marginTop: 1, marginRight: 7, marginLeft: 7,fontSize: 10, color: color, textAlign: 'center',}}>My Spots</Text>
               </View>
               );
               }else if (route.name === 'Payment') {
@@ -102,7 +102,7 @@ class AppNavigator extends Component {
           animationEnabled: true,
           color: '#FFFFFF',
           tintColor: '#FFFFFF',
-          activeTintColor: color.primary_color,
+          activeTintColor: color.club_color,
           inactiveTintColor: '#ffffff',
           style: {
             backgroundColor: '#101023',
@@ -112,7 +112,7 @@ class AppNavigator extends Component {
       >
         <Tab.Screen navigation={this.props.navigation} name="Home" component={Home}/>
         <Tab.Screen navigation={this.props.navigation} name="Search" component={Search}/>
-        <Tab.Screen navigation={this.props.navigation} name="Tickets" component={Tickets}/>
+        <Tab.Screen navigation={this.props.navigation} name="Spots" component={Spots}/>
         <Tab.Screen name="Payment" component={Payment} />
         <Tab.Screen navigation={this.props.navigation} name="Manage" component={Manage}/>
 

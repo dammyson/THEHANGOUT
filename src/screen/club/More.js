@@ -28,18 +28,19 @@ export default class More extends Component {
             prams: '',
             events: [],
             condition: true,
-            activeIndex: 0
+            activeIndex: 0,
+            search: '',
 
 
         };
-        this.arrayholder=[]
+        this.arrayholder = [];
     }
 
 
 
     componentWillMount() {
-        const { prams  } = this.props.route.params;
-        this.setState({ prams: prams });
+        //const { prams  } = this.props.route.params;
+       // this.setState({ prams: prams });
        
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
@@ -57,9 +58,9 @@ export default class More extends Component {
 
     processGetEventTickets() {
         const { data,prams } = this.state
-        console.warn(URL.url + 'restaurants/'+ prams)
+        console.warn(URL.url + 'clubs/all')
         this.setState({ loading: true })
-        fetch(URL.url + 'restaurants/'+ prams, {
+        fetch(URL.url + 'clubs/all', {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -87,6 +88,15 @@ export default class More extends Component {
 
 
     }
+
+
+    segmentClicked = (index) => {
+        this.setState({
+            activeIndex: index
+        })
+    }
+
+
     searchFilterFunction = search => {
         this.setState({ search });
         const newData = this.arrayholder.filter(item => {
@@ -99,12 +109,6 @@ export default class More extends Component {
         });
 
     };
-
-    segmentClicked = (index) => {
-        this.setState({
-            activeIndex: index
-        })
-    }
     render() {
         const { details, } = this.state
         const typePlaceholder = {
@@ -143,8 +147,8 @@ export default class More extends Component {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
-                        <Text style={{ fontSize: 12, color: '#fff' }}>Getting more restaurants </Text>
-                        <BarIndicator count={4} color={color.primary_color} />
+                        <Text style={{ fontSize: 12, color: '#fff' }}>Getting more clubs </Text>
+                        <BarIndicator count={4} color={color.club_color} />
                         <Text style={{ fontSize: 10, flex: 1, color: '#fff', opacity: 0.6 }}>Please wait...</Text>
                     </View>
                 </View>
@@ -153,18 +157,17 @@ export default class More extends Component {
 
         return (
             <Container style={{ backgroundColor: '#000' }}>
-                <Navbar left={left} right={right} title='Restaurants Listing' bg='#111124' />
+                <Navbar left={left} right={right} title='Club Listing' bg='#111124' />
                 <Content>
                     <View style={styles.container}>
                         <View style={{ flex: 1, }}>
-                          
                                     <ScrollView style={{ flex: 1, }}>
                                         <View style={{ flex: 1, marginTop: 20, marginLeft: 20, marginRight: 20 }}>
                                           
                                             <View style={styles.item}>
 
                                                 <TextInput
-                                                    placeholder="Search Restaurants"
+                                                    placeholder="Search Clubs"
                                                     placeholderTextColor='#8d96a6'
                                                     returnKeyType="next"
                                                     keyboardType='default'
@@ -174,38 +177,16 @@ export default class More extends Component {
                                                     onChangeText={this.searchFilterFunction}
                                                    
                                                 />
-
                                                 <TouchableOpacity style={{ height: 30, width: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: '#DD352E' }}>
                                                     <Icon active name="search" type='feather' color='#fff' />
                                                 </TouchableOpacity>
 
                                             </View>
-
-
-                                        
-
-
                                             {this.renderItem(this.state.events)}
-
-
-
-
-
                                         </View>
-
-
-
-
                                     </ScrollView>
-
-
-
-
                         </View>
-
                     </View>
-
-
                 </Content>
             </Container>
         );
@@ -217,7 +198,7 @@ export default class More extends Component {
         let items = [];
         for (let i = 0; i < tickets.length; i++) {
             items.push(
-                <TouchableOpacity onPress={() =>  this.props.navigation.navigate('restaurantD', { id: tickets[i].id})} style={styles.oneRow}>
+                <TouchableOpacity onPress={() =>  this.props.navigation.navigate('clubD', { id: tickets[i].id})} style={styles.oneRow}>
                     <View style={{ marginRight: 20 , marginLeft:20}}>
                         <Text style={styles.title}> {tickets[i].name}</Text>
                         <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 12, fontWeight: '100', marginRight: 40, opacity: 0.59 }}> {tickets[i].description} </Text>
@@ -242,7 +223,7 @@ export default class More extends Component {
                                     color='#FFF'
                                     size={16}
                                 />
-                                <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}> Opens: {  Moment( new Date('2019/02/28 '+ tickets[i].openingTime) ).format('LT')  } - {  Moment( new Date('2019/02/28 '+ tickets[i].closingTime) ).format('LT')  } </Text>
+                                <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}> {Moment(tickets[i].date).format('llll')} </Text>
                             </View>
 
                         </View>

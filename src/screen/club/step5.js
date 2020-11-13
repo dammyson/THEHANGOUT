@@ -54,7 +54,7 @@ export default class step5 extends Component {
             show_special_app: false,
             name: '',
             description: '',
-            startdate: " 2016 1:42 AM",
+            startdate: "2016 1:42 AM",
             enddate: "2016 1:42 AM",
             venue: 'L Lagos LA ',
             img_url: null,
@@ -232,7 +232,7 @@ console.warn(data_moving)
 
     async processCreateEvent() {
 
-        const { data, name, description, startdate, venue, enddate, type, cat, img_url, image,latitude, longitude } = this.state
+        const { data, name, description, startdate, venue, type, cat, img_url, special_app, image,latitude, longitude } = this.state
        
         if (image == null) {
             Alert.alert('Validation failed', 'Please select and image for the organizer', [{ text: 'Okay' }])
@@ -250,25 +250,21 @@ console.warn(data_moving)
             }
         }
 
-        this.setState({ loading: true })
-        fetch(URL.url + 'events/create', {
+       this.setState({ loading: true })
+        fetch(URL.url + 'clubs/create', {
             method: 'POST', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
                 'Authorization': 'Bearer ' + data.token,
             }, body: JSON.stringify({
-                Title: name,
+                Name: name,
                 Location: venue,
                 Description: description,
                 Category: cat,
-                StartDate: startdate,
-                EndDate: enddate,
+                Date: startdate,
                 Type: type,
-                Banner: img_url,
-                Tickets: used_ticket.toString(),
-                OrganizerId: org,
-                City: venue,
-                venue: venue,
+                ImageUrl: img_url,
+                Starring: special_app,
                 latitude: latitude,
                 longitude: longitude
             }),
@@ -279,7 +275,7 @@ console.warn(data_moving)
                 if (res.status) {
                     this.setState({ loading: false })
                     Toast.show({
-                        text: 'Event added sucessfully !',
+                        text: 'Club added sucessfully !',
                         position: 'bottom',
                         type: 'success',
                         buttonText: 'Dismiss',
@@ -428,7 +424,7 @@ console.warn(data_moving)
                         </View>
                         <View style={{ flex: 1 }}>
                             <View>
-                                <Text style={styles.hintText}> Event Name </Text>
+                                <Text style={styles.hintText}> Club Name </Text>
                             </View>
                             <View style={styles.item}>
                                 <TextInput
@@ -560,7 +556,7 @@ console.warn(data_moving)
                         </View>
                         <View style={{ flex: 1 }}>
                             <View>
-                                <Text style={styles.hintText}>Event Type </Text>
+                                <Text style={styles.hintText}>Club Type </Text>
                             </View>
                             <View style={styles.item}>
                                 <RNPickerSelect
@@ -584,7 +580,7 @@ console.warn(data_moving)
 
                         <View style={{ marginLeft: 75, flex: 1 }}>
                             <View>
-                                <Text style={styles.hintText}>Event Category </Text>
+                                <Text style={styles.hintText}>Club Category </Text>
                             </View>
                             <View style={styles.item}>
                                 <RNPickerSelect

@@ -29,8 +29,8 @@ export default class Search extends Component {
             data: '',
             nodata: false,
             slider1ActiveSlide: 0,
-            selected: null, 
-            user:{profilePicture:'jjjjjjj'},
+            selected: null,
+            user: { profilePicture: 'jjjjjjj' },
         };
     }
 
@@ -50,12 +50,12 @@ export default class Search extends Component {
 
     search() {
         const { data, user, searchText } = this.state
-        
+
 
         this.setState({
             loading: true
         })
-        fetch(URL.url + 'events/search?Location='+ searchText, {
+        fetch(URL.url + 'clubs/search?Location=' + searchText, {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -86,7 +86,7 @@ export default class Search extends Component {
 
     };
 
-   
+
 
 
     onEventPress(data) {
@@ -99,8 +99,8 @@ export default class Search extends Component {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>Fetching all events</Text>
-                        <BarIndicator count={4} color={color.primary_color} />
+                        <Text style={{ fontSize: 15, color: '#fff' }}>searching clubs</Text>
+                        <BarIndicator count={4} color={color.club_color} />
                         <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
                     </View>
                 </View>
@@ -134,7 +134,7 @@ export default class Search extends Component {
                     <Avatar
                         rounded
                         source={{
-                             uri:this.state.user.profilePicture,
+                            uri: this.state.user.profilePicture,
                         }}
                     />
                 </Button>
@@ -155,17 +155,17 @@ export default class Search extends Component {
 
         return (
             <Container style={{ backgroundColor: color.secondary_color }}>
-               
+
                 <Navbar left={left} right={right} title="Search" bg='#101023' />
                 <Content>
                     <View style={styles.container}>
-                    <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
+                        <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
                         <View style={styles.header}>
                             <View style={styles.item}>
                                 <Icon active name="enviroment" type='antdesign' color='red'
                                 />
                                 <TextInput
-                                    placeholder="Location"
+                                    placeholder="Search Clubs"
                                     placeholderTextColor='#fff'
                                     returnKeyType="next"
                                     onSubmitEditing={() => this.search()}
@@ -175,9 +175,9 @@ export default class Search extends Component {
                                     style={styles.menu}
                                     onChangeText={text => this.setState({ searchText: text })}
                                 />
-                                        <TouchableOpacity onPress={() => this.search()} style={{ height: 30, width: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: '#DD352E' }}>
-                                                    <Icon active name="search" type='feather' color='#fff' />
-                                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.search()} style={{ height: 30, width: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: '#DD352E' }}>
+                                    <Icon active name="search" type='feather' color='#fff' />
+                                </TouchableOpacity>
 
                             </View>
 
@@ -187,10 +187,10 @@ export default class Search extends Component {
                         {this.renderItem(this.state.searchResult)}
 
 
-                       
+
                     </View>
                 </Content>
-               
+
             </Container>
         );
     }
@@ -201,13 +201,13 @@ export default class Search extends Component {
         let items = [];
         for (let i = 0; i < tickets.length; i++) {
             items.push(
-                <TouchableOpacity onPress={() =>  this.props.navigation.navigate('eventD', { id: tickets[i].id })} style={styles.oneRow}>
-                    <View style={{ marginRight: 20 , marginLeft:20}}>
-                        <Text style={styles.title}> {tickets[i].title}</Text>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('clubD', { id: tickets[i].id })} style={styles.oneRow}>
+                    <View style={{ marginRight: 20, marginLeft: 20 }}>
+                        <Text style={styles.title}> {tickets[i].name}</Text>
                         <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 12, fontWeight: '100', marginRight: 40, opacity: 0.59 }}> {tickets[i].description} </Text>
-                       
-                        <View style={{  backgroundColor: '#111123', marginTop: 10, opacity: 0.5 }}>
-                            <View style={{  flexDirection: 'row',}}>
+
+                        <View style={{ backgroundColor: '#111123', marginTop: 10, opacity: 0.5 }}>
+                            <View style={{ flexDirection: 'row', }}>
                                 <Icon
                                     active
                                     name="source-commit-start-next-local"
@@ -218,7 +218,7 @@ export default class Search extends Component {
                                 <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}>{tickets[i].location} </Text>
                             </View>
 
-                            <View style={{  flexDirection: 'row' }}>
+                            <View style={{ flexDirection: 'row' }}>
                                 <Icon
                                     active
                                     name="update"
@@ -226,12 +226,12 @@ export default class Search extends Component {
                                     color='#FFF'
                                     size={16}
                                 />
-                                <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}>{Moment(tickets[i].startDate).format('llll')} </Text>
+                                <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}>{Moment(tickets[i].date).format('llll')} </Text>
                             </View>
 
                         </View>
-                        <View style={{backgroundColor: '#111123', flexDirection: 'row', marginTop: 15, opacity: 0.5 }}>
-                            <View style={{flexDirection: 'row', marginRight: 15 }}>
+                        <View style={{ backgroundColor: '#111123', flexDirection: 'row', marginTop: 15, opacity: 0.5 }}>
+                            <View style={{ flexDirection: 'row', marginRight: 15 }}>
                                 <Icon
                                     active
                                     name="timer-sand"
@@ -242,7 +242,7 @@ export default class Search extends Component {
                                 <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}>{tickets[i].category} </Text>
                             </View>
 
-                            <View style={{justifyContent: 'center', flexDirection: 'row' }}>
+                            <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
                                 <Icon
                                     active
                                     name="ticket"
@@ -305,9 +305,9 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontFamily: 'NunitoSans-Bold'
     },
-  
-  
-  
+
+
+
     list: {
         flex: 1,
         marginTop: 20,
@@ -328,12 +328,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600'
     },
-   
+
     image: {
         width: 50,
         height: 50,
         borderRadius: 25
     },
-   
-   
+
+
 });

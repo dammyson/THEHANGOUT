@@ -60,94 +60,98 @@ import ChangePassword from '../../screen/user/ChangePassword';
 import Clubs from '../../screen/club';
 import UpdateProfile from '../../screen/user/UpdateProfile';
 import CreatClub from '../../screen/club/CreatClub';
-
+import ReserveSpot from '../../screen/club/ReserveSpot';
+import Spots from '../../screen/club/Spots';
+import ClubMore from '../../screen/club/More';
+import ClubListinDetails from '../../screen/club/Details';
+import ClubDetails from '../../screen/merchant/ClubDetails';
 //console.disableYellowBox = true;
 
 class AppStack extends Component {
 
-    render() {
-      const Stack = createStackNavigator();
-      return (
-        <Root>
-          <NavigationContainer>
-        
-            <Stack.Navigator
-            screenOptions={{ 
-                gestureEnabled: false,
-                headerTintColor: 'white',
-                headerStyle: { backgroundColor: '#7862ff' }, 
-                headerShown: false,
-               }}
-               initialRouteName="Splash">
-  
-            <Stack.Screen name="Splash" component={Splash}  />
-            <Stack.Screen name="sorting" component={Sorting}   />
-            <Stack.Screen name="category" component={Category}   />
-            <Stack.Screen name="login" component={Login}   />
-            <Stack.Screen name="reg" component={Register}   />
-            <Stack.Screen name='engagement' component={EngagementStart}   />
-            <Stack.Screen name='intro' component={Intro}   />
-            <Stack.Screen name='update_user' component={UpdateProfile}   />
-            <Stack.Screen name='home' component={Home}   />
-            <Stack.Screen name='merchant_home' component={MerchantHome}   />
-            <Stack.Screen name='profile' component={Profile}   />
-            <Stack.Screen name='dashboard' component={Dashboard}   />
-            <Stack.Screen name='glogin' component={Glogin}   />
-            <Stack.Screen name='events' component={Events}   />
-            <Stack.Screen name='createevent' component={CreateEvent}   />
-            <Stack.Screen name='test' component={test}   />
-            <Stack.Screen name='creatorganizer' component={CreatOrganizer}   />
-            <Stack.Screen name='freeT' component={FreeTicket}   />
-            <Stack.Screen name='paidT' component={PaidTicket}   />
-            <Stack.Screen name='eventD' component={EventDetails}   />
-            <Stack.Screen name='buyT' component={BuyTicket}   />
-            <Stack.Screen name='buyPT' component={BuyPaidTicket}   />
-            <Stack.Screen name='listT' component={ListTickets}   />
-            <Stack.Screen name='detailT' component={TicketDetails}   />
-            <Stack.Screen name='manageP' component={ManagementPayment}   />
-            <Stack.Screen name='transaction' component={Transaction}   />
-            <Stack.Screen name='fundW' component={FundWalet}   />
-            <Stack.Screen name='more' component={MoreEvent}   />
-            
-            <Stack.Screen name='pay' component={PayPage}   />
-            <Stack.Screen name='qr' component={QRcode}   />
-            <Stack.Screen name='withdraw' component={WithDraw}   />
+  render() {
+    const Stack = createStackNavigator();
+    return (
+      <Root>
+        <NavigationContainer>
 
-            <Stack.Screen name='createRestaurant' component={Create}   />
+          <Stack.Navigator
+            screenOptions={{
+              gestureEnabled: false,
+              headerTintColor: 'white',
+              headerStyle: { backgroundColor: '#7862ff' },
+              headerShown: false,
+            }}
+            initialRouteName="Splash">
 
-            <Stack.Screen name='restaurants' component={Restaurants}   />
-            <Stack.Screen name='restaurantD' component={Details}   />
-            <Stack.Screen name='reserveT' component={ReserveTable}   />
-            <Stack.Screen name='table' component={Tables}   />
-            <Stack.Screen name='moreR' component={More}   />
+            <Stack.Screen name="Splash" component={Splash} />
+            <Stack.Screen name="sorting" component={Sorting} />
+            <Stack.Screen name="category" component={Category} />
+            <Stack.Screen name="login" component={Login} />
+            <Stack.Screen name="reg" component={Register} />
+            <Stack.Screen name='engagement' component={EngagementStart} />
+            <Stack.Screen name='intro' component={Intro} />
+            <Stack.Screen name='update_user' component={UpdateProfile} />
+            <Stack.Screen name='home' component={Home} />
+            <Stack.Screen name='merchant_home' component={MerchantHome} />
+            <Stack.Screen name='profile' component={Profile} />
+            <Stack.Screen name='dashboard' component={Dashboard} />
+            <Stack.Screen name='glogin' component={Glogin} />
+            <Stack.Screen name='events' component={Events} />
+            <Stack.Screen name='createevent' component={CreateEvent} />
+            <Stack.Screen name='test' component={test} />
+            <Stack.Screen name='creatorganizer' component={CreatOrganizer} />
+            <Stack.Screen name='freeT' component={FreeTicket} />
+            <Stack.Screen name='paidT' component={PaidTicket} />
+            <Stack.Screen name='eventD' component={EventDetails} />
+            <Stack.Screen name='buyT' component={BuyTicket} />
+            <Stack.Screen name='buyPT' component={BuyPaidTicket} />
+            <Stack.Screen name='listT' component={ListTickets} />
+            <Stack.Screen name='detailT' component={TicketDetails} />
+            <Stack.Screen name='manageP' component={ManagementPayment} />
+            <Stack.Screen name='transaction' component={Transaction} />
+            <Stack.Screen name='fundW' component={FundWalet} />
+            <Stack.Screen name='more' component={MoreEvent} />
 
-            <Stack.Screen name='merchant_dashboard' component={MerchantDashboard}   />
-            <Stack.Screen name='service_details' component={ServiceDetails}   />
-            <Stack.Screen name='services' component={Services}   />
-            <Stack.Screen name='test2' component={Teste}   />
-            <Stack.Screen name='agent_create' component={CreateAgent}   />
-            <Stack.Screen name='agent_pay' component={PayAgent}   />
+            <Stack.Screen name='pay' component={PayPage} />
+            <Stack.Screen name='qr' component={QRcode} />
+            <Stack.Screen name='withdraw' component={WithDraw} />
 
+            <Stack.Screen name='createRestaurant' component={Create} />
 
-            <Stack.Screen name='createMenu' component={CreateMenu}   />
-            <Stack.Screen name='res_service_details' component={RestaurantDetails}   />
+            <Stack.Screen name='restaurants' component={Restaurants} />
+            <Stack.Screen name='restaurantD' component={Details} />
+            <Stack.Screen name='reserveT' component={ReserveTable} />
+            <Stack.Screen name='table' component={Tables} />
+            <Stack.Screen name='moreR' component={More} />
 
-            <Stack.Screen name='place_order' component={PlaceOrder}   />
-            <Stack.Screen name='forget_password' component={ForgetPassword}   />
-            <Stack.Screen name='change_password' component={ChangePassword}   />
-            <Stack.Screen name='clubs' component={Clubs}   />
-            <Stack.Screen name='createClub' component={CreatClub}   />
+            <Stack.Screen name='merchant_dashboard' component={MerchantDashboard} />
+            <Stack.Screen name='service_details' component={ServiceDetails} />
+            <Stack.Screen name='services' component={Services} />
+            <Stack.Screen name='test2' component={Teste} />
+            <Stack.Screen name='agent_create' component={CreateAgent} />
+            <Stack.Screen name='agent_pay' component={PayAgent} />
+            <Stack.Screen name='createMenu' component={CreateMenu} />
+            <Stack.Screen name='res_service_details' component={RestaurantDetails} />
+            <Stack.Screen name='place_order' component={PlaceOrder} />
+            <Stack.Screen name='forget_password' component={ForgetPassword} />
+            <Stack.Screen name='change_password' component={ChangePassword} />
+            <Stack.Screen name='clubs' component={Clubs} />
+            <Stack.Screen name='createClub' component={CreatClub} />
+            <Stack.Screen name='clubD' component={ClubListinDetails} />
+            <Stack.Screen name='reserveS' component={ReserveSpot} />
+            <Stack.Screen name='spotsC' component={Spots} />
+            <Stack.Screen name='moreC' component={ClubMore} />
+            <Stack.Screen name='club_service_details' component={ClubDetails} />
+          </Stack.Navigator>
 
-             
-            </Stack.Navigator>
-          
-          </NavigationContainer>
-          </Root>
-        );
-    }
-  
+        </NavigationContainer>
+      </Root>
+    );
   }
-  export default AppStack;
+
+}
+export default AppStack;
 /*
   const prevGetStateForActionHomeStack = Stack.router.getStateForAction;
   Stack.router.getStateForAction = (action, state) => {

@@ -270,7 +270,7 @@ export default class UpdateProfile extends Component {
                                 </View>
                                 <View style={styles.item}>
                                     <TextInput
-                                        placeholder="Enter Resturant name"
+                                        placeholder="Email"
                                         placeholderTextColor='#fff'
                                         returnKeyType="next"
                                         keyboardType='default'
@@ -308,7 +308,7 @@ export default class UpdateProfile extends Component {
                                         autoCapitalize="none"
                                         autoCorrect={false}
                                         style={styles.menu}
-                                        value={this.state.phone}
+                                        defaultValue={this.state.phone}
                                         onChangeText={text => this.setState({ phone: text })}
                                     />
                                 </View>
@@ -338,7 +338,7 @@ export default class UpdateProfile extends Component {
                                         autoCapitalize="none"
                                         autoCorrect={false}
                                         style={styles.menu}
-                                        value={this.state.firstName}
+                                        defaultValue={this.state.firstName}
                                         onChangeText={text => this.setState({ first_name: text })}
                                     />
                                 </View>
@@ -367,7 +367,7 @@ export default class UpdateProfile extends Component {
                                         autoCapitalize="none"
                                         autoCorrect={false}
                                         style={styles.menu}
-                                        value={this.state.lastname}
+                                        defaultValue={this.state.lastname}
                                         onChangeText={text => this.setState({ last_name: text })}
                                     />
                                 </View>

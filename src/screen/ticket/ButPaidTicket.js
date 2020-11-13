@@ -374,7 +374,7 @@ export default class BuyPaidTicket extends Component {
 
                                         <Balance
 
-                                            OnButtonPress={() => this.props.navigation.navigate('fundW')}
+                                            OnButtonPress={() => this.props.navigation.replace('fundW')}
                                             backgroundColor={'#111124'}
                                             buttonColor={color.primary_color}
                                             textColor={'#010113'}

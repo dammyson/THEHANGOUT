@@ -444,7 +444,7 @@ goToMore(params){
                             </View>
 
                             <View style={{ marginLeft: 10, marginRight: 7, flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={styles.titleText}>TRENDING</Text>
+                                {this.state.dataone.length > 0?  <Text style={styles.titleText}>TRENDING</Text>:<View style={{flex: 1}} />} 
                                 <TouchableOpacity    onPress={() => this.goToMore('eventListing/Trending/50')}   style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
                                     <Text style={{ fontSize: 12, color: 'orange', }}>Full List </Text>
                                     <Icon
