@@ -56,6 +56,7 @@ export default class BuyPaidTicket extends Component {
             ticket_buy: [],
             ticketsPrice: 0,
             pay_type: 0,
+            refresh_balance: true,
 
 
         }
@@ -81,6 +82,20 @@ export default class BuyPaidTicket extends Component {
         if (ticket) {
             this.setState({ tickets: ticket });
         }
+        this._unsubscribe();
+    }
+
+    componentDidMount() {
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.refresh()
+        });
+    }
+
+    refresh() {
+        this.setState({ refresh_balance: false })
+        setTimeout(() => {
+            this.setState({ refresh_balance: true })
+        }, 500);
     }
 
     segmentClicked = (index) => {
@@ -203,9 +218,9 @@ export default class BuyPaidTicket extends Component {
         }
 
         console.warn(ticketsPrice)
-        if(pay_type == 0){
+        if (pay_type == 0) {
             this.processGetEventTickets('no ref', true)
-        }else{
+        } else {
             this.setState({ show_card: true })
         }
     }
@@ -218,7 +233,8 @@ export default class BuyPaidTicket extends Component {
         console.warn(JSON.stringify({
             ticketsList: form_data,
             isWallet: isWallet,
-            PaymentRef: ref}))
+            PaymentRef: ref
+        }))
 
         this.setState({ loading: true })
         fetch(URL.url + 'tickets/subscribe', {
@@ -303,7 +319,21 @@ export default class BuyPaidTicket extends Component {
 
 
     }
+    renderBalance() {
+        return (
+           
+            <Balance
 
+            OnButtonPress={() => this.props.navigation.replace('fundW')}
+            backgroundColor={'#111124'}
+            buttonColor={color.primary_color}
+            textColor={'#010113'}
+            buttonText={'Fund Wallet'}
+            balTextColor={'#fff'}
+            commentTextColor={'#fff'}
+        />
+        )
+    }
     Body() {
         const { state, goBack } = this.props.navigation;
         var left = (
@@ -357,7 +387,7 @@ export default class BuyPaidTicket extends Component {
                                             />
                                             <Text style={{ color: '#000', fontSize: 10, fontWeight: '200', fontFamily: 'NunitoSans', }}>Pay with wallet</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => this.state.event.type == 'Free' ? null: this.segmentClicked(1)} style={[this.state.pay_type == 1 ? styles.activeType : styles.inActiveType]} >
+                                        <TouchableOpacity onPress={() => this.state.event.type == 'Free' ? null : this.segmentClicked(1)} style={[this.state.pay_type == 1 ? styles.activeType : styles.inActiveType]} >
                                             <Icon
                                                 active
                                                 name="bank"
@@ -371,24 +401,13 @@ export default class BuyPaidTicket extends Component {
 
                                     <View style={{ backgroundColor: '#fff', marginTop: 20, marginBottom: 20, marginLeft: 20, marginRight: 20, }}>
 
-
-                                        <Balance
-
-                                            OnButtonPress={() => this.props.navigation.replace('fundW')}
-                                            backgroundColor={'#111124'}
-                                            buttonColor={color.primary_color}
-                                            textColor={'#010113'}
-                                            buttonText={'Fund Wallet'}
-                                            balTextColor={'#fff'}
-                                            commentTextColor={'#fff'}
-                                        />
-
+                                    {this.state.refresh_balance ? this.renderBalance() : null}
+                        
                                         <View style={styles.inputView}>
                                             <Text style={{ color: '#000', fontSize: 12, fontWeight: '200', margin: 10, fontFamily: 'NunitoSans', }}>You will not be charged for this transaction</Text>
                                         </View>
 
                                         {this.renderUpcomming()}
-
                                         <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                                             <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 10, }}>
                                                 <TouchableOpacity onPress={() => this.incrememntTicketCount()} style={styles.enablebutton} block iconLeft>
@@ -411,7 +430,6 @@ export default class BuyPaidTicket extends Component {
                                 </View>
 
                             </View>
-
                         </View>
 
 
@@ -473,7 +491,7 @@ export default class BuyPaidTicket extends Component {
 
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', marginTop: 4, marginBottom: 24, }}>
+                    <View style={{ flexDirection: 'row', marginTop: 4, marginBottom: 14, }}>
                         <View style={styles.inputTextView}>
                             <TextInput
                                 placeholder="phone"
@@ -511,7 +529,7 @@ export default class BuyPaidTicket extends Component {
 
 
 
-                    <Text style={{ color: '#1E1E1E', marginTop: 15, fontSize: 12, fontFamily: 'NunitoSans-Bold', flex: 1, opacity: 0.6 }}>Ticket Type </Text>
+                    <Text style={{ color: '#1E1E1E', marginTop: 1, fontSize: 12, fontFamily: 'NunitoSans-Bold', flex: 1, opacity: 0.6 }}>Ticket Type </Text>
                     <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-start', marginBottom: 15, marginTop: 10 }}>
 
                         {this.renderTicket(i)}
@@ -591,21 +609,21 @@ export default class BuyPaidTicket extends Component {
 
         );
     }
-onSuccess(res){
-    this.setState({ show_card: false })
-    this.processGetEventTickets(res.reference, false)
-}
-onFailed(){
-    this.setState({ show_card: false })
-    Alert.alert('Process failed', 'Check your card and try again or use another payment method', [{ text: 'Okay' }])
-}
+    onSuccess(res) {
+        this.setState({ show_card: false })
+        this.processGetEventTickets(res.reference, false)
+    }
+    onFailed() {
+        this.setState({ show_card: false })
+        Alert.alert('Process failed', 'Check your card and try again or use another payment method', [{ text: 'Okay' }])
+    }
     renderCardPay() {
-        const { ticketsPrice} = this.state
+        const { ticketsPrice } = this.state
         const amount = ticketsPrice * 100
         return (
             <CardPay
                 onClose={(v) => this.setState({ show_card: false })}
-                onSuccess={(res)=> this.onSuccess(res)}
+                onSuccess={(res) => this.onSuccess(res)}
                 onFailed={() => this.onFailed()}
                 amount={amount}
             />

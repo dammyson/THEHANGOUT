@@ -25,8 +25,7 @@ export default class MerchantDashboard extends Component {
 
         this.state = {
             loading: true,
-            dataone: [
-            ],
+            dataone: [],
             datatwo: [],
             data: '',
             nodata: false,
@@ -229,7 +228,7 @@ export default class MerchantDashboard extends Component {
 
                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 1, paddingBottom: 10 }}>
                                 <Text style={{ fontFamily: 'NunitoSans-Black', color: '#fff', fontSize: 15, textAlign: 'left', paddingBottom: 10, marginTop: 1, flex: 1 }}> Choose Service Type </Text>
-                                <TouchableOpacity onPress={() => this.setState({ view_create: false })} style={{ marginLeft: 10, backgroundColor: '#000' }}>
+                                <TouchableOpacity onPress={() => this.setState({ view_create: false })} style={{ marginLeft: 10, height:30, width:20, backgroundColor: '#000' }}>
                                     <Icon
                                         name="close"
                                         size={20}

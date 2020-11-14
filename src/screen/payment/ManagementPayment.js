@@ -11,7 +11,7 @@ import Modal, { SlideAnimation, ModalContent } from 'react-native-modals';
 import {
     BarIndicator,
 } from 'react-native-indicators';
-	
+
 import { Base64 } from 'js-base64';
 
 import Navbar from '../../component/Navbar';
@@ -42,18 +42,19 @@ export default class ManagementPayment extends Component {
             name: '',
             id: '',
             details: {},
-            user:{profilePicture:'jjjjjjj'},
+            user: { profilePicture: 'jjjjjjj' },
             condition: true,
             activeIndex: 0,
             more: false,
             qr_generated: false,
-            cost:0,
-            event_code:'',
-            cashier:'',
-            description:'',
-            qrCodeData:'',
-            ref_number:'',
-            bal:'',
+            cost: 0,
+            event_code: '',
+            cashier: '',
+            description: '',
+            qrCodeData: '',
+            ref_number: '',
+            bal: '',
+            refresh_balance: true,
 
 
         };
@@ -62,62 +63,88 @@ export default class ManagementPayment extends Component {
 
 
     componentDidMount() {
-       
+
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })
                 this.setState({ user: JSON.parse(value).user })
             }
-           console.warn(JSON.parse(value).user )
+            console.warn(JSON.parse(value).user)
         })
 
         AsyncStorage.getItem('bal').then((value) => {
             if (value == '') { } else {
-                this.setState({ bal:  value})
+                this.setState({ bal: value })
             }
         })
 
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.refresh()
+        });
+    }
 
+    refresh() {
+        this.setState({ refresh_balance: false })
+        setTimeout(() => {
+            this.setState({ refresh_balance: true })
+        }, 500);
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
+    }
+    generateQrCode() {
+        const { cost, event_code, cashier, description, user } = this.state
+        var ran = Math.floor(100000000 + Math.random() * 900000000)
+        const total_cost = cost + (cost * 0.05)
+        this.setState({ ref_number: ran })
+        const details = user.id + '|' + total_cost + '|' + description + '|' + cashier + '|' + event_code + '|' + ran;
+        var temp = Base64.encode(details);
+        this.setState({ qrCodeData: temp })
+
+        this.setState({ qr_generated: true })
+        console.warn();
     }
 
 
-generateQrCode(){
-    const { cost, event_code, cashier, description, user } = this.state
-    var ran = Math.floor(100000000 + Math.random() * 900000000)
-    const total_cost = cost + (cost  * 0.05)
-   this.setState({ ref_number: ran})
-    const details = user.id+'|'+total_cost+'|'+description +'|'+cashier+'|'+event_code+'|'+ran;
-    var temp = Base64.encode(details);
-    this.setState({ qrCodeData: temp })
-   
-    this.setState({ qr_generated: true })
-    console.warn();
-}
-
- 
     segmentClicked = (index) => {
         this.setState({
             activeIndex: index
         })
     }
     currencyFormat(n) {
-        return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+        return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+
+    }
 
 
-     }
+    renderBalance() {
+        return (
+            <Balance
+                OnButtonPress={() => this.props.navigation.navigate('fundW')}
+                buttonColor={color.primary_color}
+                textColor={'#000'}
+                buttonText={'Fund Wallet'}
+                textColor={'#000'}
+                balTextColor={'#000'}
+                commentTextColor={'#000'}
+                backgroundColor={'#fff'} Z
+            />
+        )
+    }
     render() {
         const { user, } = this.state
-      
+
 
 
         var left = (
             <Left style={{ flex: 1 }}>
                 <Button transparent onPress={() => this.props.navigation.goBack()}>
-                <Avatar
+                    <Avatar
                         rounded
                         source={{
-                            uri:this.state.user.profilePicture
-                           ,
+                            uri: this.state.user.profilePicture
+                            ,
                         }}
                     />
                 </Button>
@@ -154,17 +181,7 @@ generateQrCode(){
                 <Content>
                     <View style={styles.container}>
                         <View style={{ flex: 1, }}>
-                            <Balance 
-                                OnButtonPress={()=> this.props.navigation.navigate('fundW')} 
-                                buttonColor={color.primary_color} 
-                                textColor={'#000'}
-                                buttonText={'Fund Wallet'}
-                                textColor={'#000'}
-                                balTextColor={'#000'}
-                                commentTextColor={'#000'}
-                                backgroundColor={'#fff'}Z
-                                />
-
+                            {this.state.refresh_balance ? this.renderBalance() : null}
                             <View style={{ flexDirection: 'row', marginTop: 15, marginLeft: 20, marginRight: 20 }}>
 
                                 <TouchableOpacity style={[styles.activeType, this.state.activeIndex == 0 ? { borderBottomColor: color.primary_color, } : {}]}
@@ -214,7 +231,7 @@ generateQrCode(){
                                                     color='#000'
                                                     size={20}
                                                 />
-                                                <Text onPress={()=> this.props.navigation.navigate('qr')} style={{ color: "#010113", marginLeft: 5, marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '500', fontFamily: 'NunitoSans', opacity: 0.77 }}>SCAN QRCODE</Text>
+                                                <Text onPress={() => this.props.navigation.navigate('qr')} style={{ color: "#010113", marginLeft: 5, marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '500', fontFamily: 'NunitoSans', opacity: 0.77 }}>SCAN QRCODE</Text>
                                             </TouchableOpacity>
 
                                         </View>
@@ -239,7 +256,7 @@ generateQrCode(){
                                                     autoCapitalize="none"
                                                     autoCorrect={false}
                                                     inlineImageLeft='ios-call'
-                                                    style={{color:'#fff', flex: 1, fontSize: 12 }}
+                                                    style={{ color: '#fff', flex: 1, fontSize: 12 }}
                                                     onChangeText={text => this.setState({ cost: parseInt(text) })}
                                                 />
                                             </View>
@@ -260,12 +277,12 @@ generateQrCode(){
                                                             placeholder="Enter cashier code"
                                                             placeholderTextColor={'#bbb'}
                                                             returnKeyType="next"
-                                                           
+
                                                             keyboardType='email-address'
                                                             autoCapitalize="none"
                                                             autoCorrect={false}
                                                             inlineImageLeft='ios-call'
-                                                            style={{ color:'#fff',flex: 1, fontSize: 12 }}
+                                                            style={{ color: '#fff', flex: 1, fontSize: 12 }}
                                                             onChangeText={text => this.setState({ cashier: text })}
                                                         />
                                                     </View>
@@ -280,7 +297,7 @@ generateQrCode(){
                                                             autoCapitalize="none"
                                                             autoCorrect={false}
                                                             inlineImageLeft='ios-call'
-                                                            style={{ color:'#fff',flex: 1, fontSize: 12 }}
+                                                            style={{ color: '#fff', flex: 1, fontSize: 12 }}
                                                             onChangeText={text => this.setState({ event_code: text })}
                                                         />
                                                     </View>
@@ -290,12 +307,12 @@ generateQrCode(){
                                                             placeholder="Enter Description"
                                                             placeholderTextColor={'#bbb'}
                                                             returnKeyType="next"
-                                                            onSubmitEditing={() => this.generateQrCode() }
+                                                            onSubmitEditing={() => this.generateQrCode()}
                                                             keyboardType='email-address'
                                                             autoCapitalize="none"
                                                             autoCorrect={false}
                                                             inlineImageLeft='ios-call'
-                                                            style={{ color:'#fff',flex: 1, fontSize: 12 }}
+                                                            style={{ color: '#fff', flex: 1, fontSize: 12 }}
                                                             onChangeText={text => this.setState({ description: text })}
                                                         />
                                                     </View>
@@ -305,11 +322,11 @@ generateQrCode(){
                                             }
 
 
-                                            <View style={{ alignItems: 'center', justifyContent: 'center' ,  marginBottom:100}}>
-                                                <TouchableOpacity  onPress={()=>this.generateQrCode() } style={{ flexDirection: 'row', backgroundColor: color.primary_color, alignItems: 'center', alignContent: 'space-around', paddingLeft: 19, paddingRight: 19, borderRadius: 5, marginTop: 20 }} block iconLeft>
+                                            <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 100 }}>
+                                                <TouchableOpacity onPress={() => this.generateQrCode()} style={{ flexDirection: 'row', backgroundColor: color.primary_color, alignItems: 'center', alignContent: 'space-around', paddingLeft: 19, paddingRight: 19, borderRadius: 5, marginTop: 20 }} block iconLeft>
                                                     <Text style={{ color: "#010113", marginLeft: 5, marginTop: 15, marginBottom: 15, fontSize: 16, fontWeight: '500', fontFamily: 'NunitoSans', opacity: 0.77 }}>GENERATA QR</Text>
                                                 </TouchableOpacity>
-                                                <View style={{  height:100}}></View>
+                                                <View style={{ height: 100 }}></View>
                                             </View>
                                         </View>
                                     </ScrollView>
@@ -326,7 +343,7 @@ generateQrCode(){
                         <ModalContent style={styles.modal}>
                             <View style={{ flex: 1 }}>
 
-                                <View style={{ flexDirection: 'row', backgroundColor: "#FFF",  marginTop: 1, marginLeft: 10, marginRight: 10, }}>
+                                <View style={{ flexDirection: 'row', backgroundColor: "#FFF", marginTop: 1, marginLeft: 10, marginRight: 10, }}>
                                     <View style={{}}>
                                         <View style={styles.Qrcontainer}>
                                             <QRCode
@@ -336,32 +353,32 @@ generateQrCode(){
                                                 backgroundColor='#fff'
                                             />
                                         </View>
-                                      
+
                                     </View>
                                     <View style={{ flex: 1, marginLeft: 20 }}>
 
 
                                         <View style={{ flexDirection: 'row', }}>
-                                            <Text style={{ marginLeft: 2, color: '#1e1e1e', fontSize: 12, fontWeight: '400', opacity: 0.6 , flex:1}}> Amount </Text>
-                                            <Text style={{ marginLeft: 2, color: '#000', fontSize: 12, fontWeight: '600' , flex:1}}>₦{ this.currencyFormat(this.state.cost)} </Text>
+                                            <Text style={{ marginLeft: 2, color: '#1e1e1e', fontSize: 12, fontWeight: '400', opacity: 0.6, flex: 1 }}> Amount </Text>
+                                            <Text style={{ marginLeft: 2, color: '#000', fontSize: 12, fontWeight: '600', flex: 1 }}>₦{this.currencyFormat(this.state.cost)} </Text>
                                         </View>
 
-                                        <View style={{ flexDirection: 'row', marginTop:20 }}>
-                                            <Text style={{ marginLeft: 2, color: '#1e1e1e', fontSize: 12, fontWeight: '400', opacity: 0.6 , flex:1}}> VAT (5%) </Text>
-                                            <Text style={{ marginLeft: 2, color: '#000', fontSize: 12, fontWeight: '600' , flex:1}}>₦{this.currencyFormat(this.state.cost * 0.05)}  </Text>
+                                        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                                            <Text style={{ marginLeft: 2, color: '#1e1e1e', fontSize: 12, fontWeight: '400', opacity: 0.6, flex: 1 }}> VAT (5%) </Text>
+                                            <Text style={{ marginLeft: 2, color: '#000', fontSize: 12, fontWeight: '600', flex: 1 }}>₦{this.currencyFormat(this.state.cost * 0.05)}  </Text>
                                         </View>
 
                                         <View style={styles.lineStyle} />
-                                        <View style={{ flexDirection: 'row', marginTop:20 }}>
-                                            <Text style={{ marginLeft: 2, color: '#1e1e1e', fontSize: 12, fontWeight: '400', opacity: 0.6 , flex:1}}> Invoice Total </Text>
-                                            <Text style={{ marginLeft: 2, color: '#000', fontSize: 12, fontWeight: '600' , flex:1}}>₦{ this.currencyFormat(this.state.cost + (this.state.cost * 0.05))} </Text>
+                                        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                                            <Text style={{ marginLeft: 2, color: '#1e1e1e', fontSize: 12, fontWeight: '400', opacity: 0.6, flex: 1 }}> Invoice Total </Text>
+                                            <Text style={{ marginLeft: 2, color: '#000', fontSize: 12, fontWeight: '600', flex: 1 }}>₦{this.currencyFormat(this.state.cost + (this.state.cost * 0.05))} </Text>
                                         </View>
                                     </View>
 
-                                   
+
 
                                     <View style={{ alignItems: 'flex-end' }}>
-                                        <TouchableOpacity  style={{height:40, width: 40}} onPress={()=> this.setState({qr_generated: false})}>
+                                        <TouchableOpacity style={{ height: 40, width: 40 }} onPress={() => this.setState({ qr_generated: false })}>
                                             <Icon
                                                 active
                                                 name="close"
@@ -378,12 +395,12 @@ generateQrCode(){
                                 </View>
 
 
-                                <View  style={{ flexDirection:'row', marginBottom: 20, marginLeft:10}}>
-                                <Text style={{ marginTop: 7, color: '#000', fontSize: 16, fontWeight: '900' }}> #{this.state.ref_number}</Text>
-                                <View style={{ flex: 1, alignItems:'flex-end' }}>
-                                <Text style={{ marginLeft: 2, color: '#1e1e1e', fontSize: 12, fontWeight: '400', opacity: 0.6 ,}}>27/10/9 11:45 AM </Text>
-                                          
-                                </View>
+                                <View style={{ flexDirection: 'row', marginBottom: 20, marginLeft: 10 }}>
+                                    <Text style={{ marginTop: 7, color: '#000', fontSize: 16, fontWeight: '900' }}> #{this.state.ref_number}</Text>
+                                    <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                                        <Text style={{ marginLeft: 2, color: '#1e1e1e', fontSize: 12, fontWeight: '400', opacity: 0.6, }}>27/10/9 11:45 AM </Text>
+
+                                    </View>
                                 </View>
                             </View>
                         </ModalContent>
@@ -398,7 +415,7 @@ generateQrCode(){
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
-       
+
     },
     activeType: {
         flex: 1,

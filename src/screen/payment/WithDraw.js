@@ -36,16 +36,24 @@ export default class WithDraw extends Component {
       done: false,
       bank_name: 'Select Bank',
       view_bank: false,
-      bank_code: ''
+      bank_code: '',
+      refresh_balance: true,
 
 
     };
   }
 
+  refresh() {
+    this.setState({ refresh_balance: false })
+    setTimeout(() => {
+      this.setState({ refresh_balance: true })
+    }, 500);
+  }
 
 
   componentWillMount() {
     this.setState({ id: this.props.id });
+
     AsyncStorage.getItem('data').then((value) => {
       if (value == '') { } else {
         this.setState({ data: JSON.parse(value) })
@@ -55,16 +63,6 @@ export default class WithDraw extends Component {
       this.getBanksRequest();
 
     })
-
-
-
-    AsyncStorage.getItem('bal').then((value) => {
-      if (value == '') { } else {
-        this.setState({ bal: value })
-      }
-    })
-
-
   }
 
   getBanksRequest() {
@@ -84,6 +82,7 @@ export default class WithDraw extends Component {
             banks: res.data,
             loading: false
           })
+          this.refresh()
         }
       })
       .catch(error => {
@@ -138,6 +137,35 @@ export default class WithDraw extends Component {
     return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
   }
 
+
+
+  amountFeildFomeater(number) {
+    if (number == '' || number == ' ') {
+      return 0
+    } else {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+  }
+
+  numberWithCommas(x) {
+    return
+  }
+
+
+  renderBalance() {
+    return (
+      <Balance
+        OnButtonPress={() => console.warn('l')}
+        buttonColor={'#fff'}
+        textColor={'#000'}
+        buttonText={''}
+        textColor={'#000'}
+        balTextColor={'#000'}
+        commentTextColor={'#000'}
+        backgroundColor={'#fff'}
+      />
+    )
+  }
 
   render() {
 
@@ -238,17 +266,8 @@ export default class WithDraw extends Component {
 
 
             <View style={{ marginTop: 20 }}>
+            {this.state.refresh_balance ? this.renderBalance() : null}
 
-              <Balance
-                OnButtonPress={() => console.warn('l')}
-                buttonColor={'#fff'}
-                textColor={'#000'}
-                buttonText={''}
-                textColor={'#000'}
-                balTextColor={'#000'}
-                commentTextColor={'#000'}
-                backgroundColor={'#fff'}
-              />
               <View style={{ justifyContent: 'center' }}>
 
                 <View style={styles.oneRow}>
@@ -305,12 +324,14 @@ export default class WithDraw extends Component {
                     returnKeyType="next"
                     defaultValue={this.state.amount}
                     onSubmitEditing={() => this.processWithdrwaWallet()}
+                    value={this.amountFeildFomeater(this.state.amount)}
+                    defaultValue={this.amountFeildFomeater(this.state.amount)}
                     keyboardType='numeric'
                     autoCapitalize="none"
                     autoCorrect={false}
                     inlineImageLeft='ios-call'
                     style={{ marginLeftt: 20, flex: 1, fontSize: 16, color: color.primary_color }}
-                    onChangeText={text => this.setState({ amount: text })}
+                    onChangeText={text => this.setState({ amount: text.replace(",", "") })}
                     ref={(input) => this.passwordInput = input}
 
                   />
@@ -320,7 +341,7 @@ export default class WithDraw extends Component {
               </View>
 
               <TouchableOpacity onPress={() => this.processWithdrwaWallet()} style={[styles.enablebutton, { marginTop: 20 }]} block iconLeft>
-                <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Withdraw ₦{this.state.amount}</Text>
+                <Text style={{ color: color.secondary_color, marginTop: 10, marginBottom: 15, fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans', }}>Withdraw ₦{this.amountFeildFomeater(this.state.amount)}</Text>
               </TouchableOpacity>
 
             </View>
