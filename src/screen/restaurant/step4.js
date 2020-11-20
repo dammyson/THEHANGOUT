@@ -31,7 +31,7 @@ export default class step4 extends Component {
   }
 
   nextStep = () => {
-    const { venue, data } = this.state;
+    const { venue, latitude, longitude, data } = this.state;
     // Save state for use in other steps
     if(venue == ""){
       Alert.alert('Validation failed', "All fields are requried", [{ text: 'Okay' }])
