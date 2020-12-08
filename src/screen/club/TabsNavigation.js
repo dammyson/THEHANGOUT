@@ -100,6 +100,7 @@ class AppNavigator extends Component {
           inactiveTintColor: 'gray',
           showLabel: false,
           animationEnabled: true,
+          keyboardHidesTabBar:true,
           color: '#FFFFFF',
           tintColor: '#FFFFFF',
           activeTintColor: color.club_color,

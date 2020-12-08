@@ -13,7 +13,7 @@ import color from '../../component/color';
 const slides = [
     {
         key: 'somethun',
-        title: 'ONE-STOP SHOP FOR ALL \n EVENT TICKETS',
+        title: 'ONE-STOP SHOP FOR ALL SOCIAL HANGOUT, FUN AND RELAXATION',
         text: 'Buy event tickets without hassle directly from vendors you trust',
         backgroundColor: '#59b2ab',
     },
