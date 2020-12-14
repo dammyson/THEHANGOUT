@@ -19,7 +19,7 @@ export default class Navbar extends Component {
     return(
       <Header
         style={{backgroundColor: this.props.bg}}
-        androidStatusBarColor= "transparent"
+        androidStatusBarColor= "#101023"
         noShadow={true}
         >
         {this.props.left ? this.props.left : <Left style={{flex: 1}} />}
@@ -44,3 +44,4 @@ const styles={
     fontFamily: 'NunitoSans-Bold'
   }
 };
+

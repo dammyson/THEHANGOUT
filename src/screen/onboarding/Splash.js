@@ -22,7 +22,7 @@ export default class Splash extends Component {
   async componentDidMount() {
     this.checkPermission();
     setTimeout(() => {
-     //this.initPage();
+    //this.initPage();
     this.props.navigation.replace('home');
      
     }, 3000);
@@ -97,7 +97,7 @@ export default class Splash extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
+         <StatusBar barStyle="light-content" hidden={false} backgroundColor="#fff" />
         <Image
           style={styles.logo}
           source={require('../../assets/logo.png')} />

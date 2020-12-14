@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { Alert, Dimensions, TouchableOpacity, ImageBackground, StyleSheet, AsyncStorage, StatusBar, ScrollView, } from "react-native";
+import { Alert, Dimensions, TouchableOpacity, ImageBackground, StyleSheet, AsyncStorage, Image, ScrollView, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Toast, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker'
-const deviceHeight = Dimensions.get("window").height;
+import StarRating from 'react-native-star-rating';
 const URL = require("../../component/server");
-
+import Modal, { SlideAnimation, ModalContent } from 'react-native-modals';
 import color from '../../component/color';
 const { width: screenWidth } = Dimensions.get('window')
 import RNPickerSelect from 'react-native-picker-select';
@@ -26,7 +26,11 @@ export default class EventDetails extends Component {
       data: '',
       name: '',
       id: '',
-      details: {}
+      details: {},
+      show_rating: false,
+      starCount: 0,
+      view_create: false
+
 
 
     };
@@ -300,6 +304,38 @@ export default class EventDetails extends Component {
 
                     </View>
 
+                    <ScrollView horizontal style={{ marginVertical: 20 }}>
+
+                      <ImageBackground
+                        opacity={0.8}
+                        style={{ height: Dimensions.get('window').height / 6, width: Dimensions.get('window').width / 2, marginHorizontal: 10, borderRadius: 10 }}
+                        source={{ uri: details.banner }}
+                        imageStyle={{ backgroundColor: 'blue', alignItems: 'flex-start', justifyContent: 'flex-start', borderRadius: 10 }}
+                      >
+                      </ImageBackground>
+
+                      <ImageBackground
+                        opacity={0.8}
+                        style={{ height: Dimensions.get('window').height / 6, width: Dimensions.get('window').width / 2, marginHorizontal: 10, borderRadius: 10 }}
+                        source={{ uri: details.banner }}
+                        imageStyle={{ backgroundColor: 'blue', alignItems: 'flex-start', justifyContent: 'flex-start', borderRadius: 10 }}
+                      >
+                      </ImageBackground>
+
+                      <ImageBackground
+                        opacity={0.8}
+                        style={{ height: Dimensions.get('window').height / 6, width: Dimensions.get('window').width / 2, marginHorizontal: 10, borderRadius: 10 }}
+                        source={{ uri: details.banner }}
+                        imageStyle={{ backgroundColor: 'blue', alignItems: 'flex-start', justifyContent: 'flex-start', borderRadius: 10 }}
+                      >
+                      </ImageBackground>
+
+                    </ScrollView>
+
+
+
+
+
 
                     <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 15, opacity: 0.8, marginLeft: 10 }}>
                       <Icon
@@ -311,7 +347,7 @@ export default class EventDetails extends Component {
                       <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200' }}> {details.location} </Text>
                     </View>
                     <View style={styles.piceContainer}>
-                      
+
                     </View>
 
 
@@ -327,16 +363,42 @@ export default class EventDetails extends Component {
                     <View style={styles.map}>
                     </View>
                     <Text style={styles.headings}> ORGANIZER </Text>
-                    <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginTop: 15, opacity: 0.8, marginLeft: 5 }}>
-                      <View style={{ marginRight: 15 }}>
+                    <View style={{ flexDirection: 'row', marginTop: 15, marginBottom: 30, opacity: 0.8, marginLeft: 5 }}>
+                      <View style={{ marginRight: 15, }}>
                         <Avatar
                           rounded
-                          size="large"
+                          size="medium"
                           source={{ uri: details.organizer.bannerUrl }}
                         /></View>
                       <View style={{ flex: 1, }}>
+                        <View style={{ width: 100, marginLeft: 10, flexDirection: 'row', justifyContent: 'center', justifyContent: 'center' }}>
+                          <StarRating
+                            disabled={false}
+                            maxStars={5}
+                            rating={4}
+                            iconSet={'FontAwesome'}
+                            starSize={15}
+                            starStyle={{ borderColor: 'red' }}
+                            fullStarColor={color.primary_color}
+                            emptyStarColor={color.primary_color}
+                          />
+                          <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '500' }}> 4.0 </Text>
+                        </View>
                         <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '500' }}>  {details.organizer.name} </Text>
                         <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, }}> {details.organizer.description} </Text>
+                        <View style={{ marginLeft: 10, flexDirection: 'row', justifyContent: 'center', justifyContent: 'center' }}>
+                          <View style={{ flex: 1, justifyContent: 'center', justifyContent: 'center' }}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('organizer_details', { id: details.organizer.id })} >
+                              <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200',  marginTop: 15, }}>More Details</Text>
+                            </TouchableOpacity>
+                          </View>
+                          <View style={{ flex: 1, justifyContent: 'center', justifyContent: 'center' }}>
+                            <TouchableOpacity onPress={() => this.setState({ show_rating: true })} >
+                              <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200',  marginTop: 15, }}>Rate Us</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+
                       </View>
                     </View>
 
@@ -370,6 +432,68 @@ export default class EventDetails extends Component {
 
 
         </Content>
+
+        <Modal
+          visible={this.state.show_rating}
+          modalAnimation={new SlideAnimation({
+            slideFrom: 'right',
+          })}
+          rounded={false}
+        >
+          <ModalContent style={styles.modal}>
+            <View style={{ flex: 1 }}>
+
+              <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 1, paddingBottom: 10 }}>
+                <Text style={{ fontFamily: 'NunitoSans-Black', color: '#fff', fontSize: 15, textAlign: 'left', paddingBottom: 10, marginTop: 1, flex: 1 }}> Rate Us </Text>
+                <TouchableOpacity onPress={() => this.setState({ show_rating: false })} style={{ marginLeft: 10, height: 30, width: 20, backgroundColor: '#000' }}>
+                  <Icon
+                    name="close"
+                    size={20}
+                    type='antdesign'
+                    color="red"
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={{ paddingTop: 1, marginTop: 15, paddingBottom: 10, flex: 1, }}>
+                <View style={{ marginRight: 20, marginLeft: 20, }}>
+                  <View style={styles.rowchild}>
+                    <View style={ {width:200,marginTop: 20, marginLeft: 10, justifyContent: 'center' }}>
+                      <StarRating
+                        disabled={false}
+                        maxStars={5}
+                        rating={this.state.starCount}
+                        selectedStar={(rating) => this.setState({ starCount: rating })}
+                        iconSet={'FontAwesome'}
+                        starSize={20}
+                        starStyle={{ borderColor: 'red' }}
+                        fullStarColor={color.primary_color}
+                        emptyStarColor={color.primary_color}
+                      />
+                    </View>
+                  </View>
+                  <View style={{ marginLeft: 10, flexDirection: 'row', marginTop:20 }}>
+                    <View style={{justifyContent: 'center', justifyContent: 'center' }}>
+                      <TouchableOpacity  onPress={() => this.setState({ show_rating: false })} >
+                        <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200',  marginTop: 15, }}>Cancel</Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={{ flex: 1, }}/>
+                    <View style={{ justifyContent: 'center', justifyContent: 'center' }}>
+                      <TouchableOpacity onPress={() => this.setState({ show_rating: false })} >
+                        <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200',  marginTop: 15, }}>Ok</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+
+
+
+
+                </View>
+
+              </View>
+            </View>
+          </ModalContent>
+        </Modal>
       </Container>
     );
   }
@@ -417,5 +541,13 @@ const styles = StyleSheet.create({
     height: 90,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  modal: {
+    width: Dimensions.get('window').width,
+    height: 220,
+    justifyContent: 'flex-end',
+    margin: 0,
+    backgroundColor: "#010113"
+
   },
 });

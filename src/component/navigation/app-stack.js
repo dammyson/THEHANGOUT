@@ -65,6 +65,7 @@ import Spots from '../../screen/club/Spots';
 import ClubMore from '../../screen/club/More';
 import ClubListinDetails from '../../screen/club/Details';
 import ClubDetails from '../../screen/merchant/ClubDetails';
+import OrgDetails from '../../screen/organizer/Details';
 //console.disableYellowBox = true;
 
 class AppStack extends Component {
@@ -82,7 +83,7 @@ class AppStack extends Component {
               headerStyle: { backgroundColor: '#7862ff' },
               headerShown: false,
             }}
-            initialRouteName="Splash">
+            initialRouteName="events">
 
             <Stack.Screen name="Splash" component={Splash} />
             <Stack.Screen name="sorting" component={Sorting} />
@@ -101,6 +102,7 @@ class AppStack extends Component {
             <Stack.Screen name='createevent' component={CreateEvent} />
             <Stack.Screen name='test' component={test} />
             <Stack.Screen name='creatorganizer' component={CreatOrganizer} />
+            <Stack.Screen name='organizer_details' component={OrgDetails} />
             <Stack.Screen name='freeT' component={FreeTicket} />
             <Stack.Screen name='paidT' component={PaidTicket} />
             <Stack.Screen name='eventD' component={EventDetails} />
