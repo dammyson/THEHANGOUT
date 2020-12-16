@@ -26,7 +26,7 @@ export default class ServiceDetails extends Component {
         this.state = {
             loading: true,
             data: '',
-            agent_list:[],
+            agent_list: [],
             nodata: false,
             slider1ActiveSlide: 0,
             selected: null,
@@ -49,14 +49,14 @@ export default class ServiceDetails extends Component {
 
 
     async componentDidMount() {
-        const { id  } = this.props.route.params;
+        const { id } = this.props.route.params;
         this.setState({ id: id });
         this.setState({
             data: JSON.parse(await getData()),
             user: JSON.parse(await getData()).user,
             bal: await getBalance()
         })
-        
+
 
 
         this.getEventsRequest()
@@ -67,15 +67,15 @@ export default class ServiceDetails extends Component {
 
 
     currencyFormat(n) {
-        return  n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-     }
+        return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+    }
 
     getEventsRequest() {
         const { data, user, id } = this.state
         console.warn(user)
 
 
-        fetch(URL.url + 'merchant/dashboard/'+id+'/Event', {
+        fetch(URL.url + 'merchant/dashboard/' + id + '/Event', {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -89,7 +89,7 @@ export default class ServiceDetails extends Component {
                     this.setState({
                         details: res.data,
                         loading: false,
-                        agent_list:  res.data.agentList,
+                        agent_list: res.data.agentList,
                     })
                 } else {
                     this.setState({
@@ -111,14 +111,14 @@ export default class ServiceDetails extends Component {
         console.warn(data)
         Alert.alert(
             'Delete Agent',
-            'Are you sure you want to delete '+ data.agentName+' from your list of agents',
+            'Are you sure you want to delete ' + data.agentName + ' from your list of agents',
             [
-              { text: 'Cancel', onPress: () => console.log('Cancel Pressed!') },
-              { text: 'OK', onPress: () => this.processDeleteAgent(data.agentId) },
+                { text: 'Cancel', onPress: () => console.log('Cancel Pressed!') },
+                { text: 'OK', onPress: () => this.processDeleteAgent(data.agentId) },
             ],
             { cancelable: false }
-          )
-          return
+        )
+        return
 
     }
 
@@ -129,7 +129,7 @@ export default class ServiceDetails extends Component {
             loading: true,
         })
 
-        fetch(URL.url + 'agent/'+i, {
+        fetch(URL.url + 'agent/' + i, {
             method: 'DELETE', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -139,7 +139,7 @@ export default class ServiceDetails extends Component {
             .then(res => res.json())
             .then(res => {
                 console.warn(res);
-                this.setState({loading: false })
+                this.setState({ loading: false })
                 if (res.status) {
                     Alert.alert('Process Successfull', "Agent Deleted", [{ text: 'Okay' }])
                     this.getEventsRequest()
@@ -151,16 +151,16 @@ export default class ServiceDetails extends Component {
                 this.setState({ loading: false })
                 alert(error.message);
                 console.warn(error);
-               
+
             });
 
- 
-     }
+
+    }
 
     goBack() {
-        const {  goBack } = this.props.navigation; 
+        const { goBack } = this.props.navigation;
         goBack(null)
-      }
+    }
 
 
     render() {
@@ -179,10 +179,10 @@ export default class ServiceDetails extends Component {
         }
 
 
-         const { details } = this.state
+        const { details } = this.state
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={()=>this.goBack()}>
+                <Button transparent onPress={() => this.goBack()}>
                     <Icon
                         active
                         name="ios-arrow-back"
@@ -213,19 +213,25 @@ export default class ServiceDetails extends Component {
                     <View style={styles.container}>
                         <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
                         <View >
-                        <Balance 
-                                OnButtonPress={()=> this.props.navigation.navigate('withdraw')} 
-                                buttonColor={'#139F2A'} 
+                            <Balance
+                                OnButtonPress={() => this.props.navigation.navigate('withdraw')}
+                                buttonColor={'#139F2A'}
                                 textColor={'#fff'}
                                 buttonText={'Withdraw Funds'}
                                 textColor={'#fff'}
                                 balTextColor={'#000'}
                                 commentTextColor={'#000'}
                                 backgroundColor={'#fff'}
-                                />
+                            />
                             <View style={{ backgroundColor: '#FFF', marginTop: 10, marginLeft: 20, marginRight: 20, opacity: 0.77, height: 0.6 }}></View>
                             <View style={{ marginLeft: 25, marginRight: 7, marginTop: 10, alignItems: 'flex-start' }}>
-                                <Text style={styles.titleText}>DASHBOARD</Text>
+                                <View style={{flexDirection:'row'}}>
+                                    <Text style={[styles.titleText,{flex:1}]}>DASHBOARD</Text>
+                                    <TouchableOpacity  onPress={() => this.props.navigation.navigate('scan_tickets')}>
+                                    <Text style={[styles.titleText,{color: 'red', marginRight:10, fontSize:15}]}>Scan Tickets</Text>
+                                    </TouchableOpacity>
+                                   
+                                </View>
                                 <View style={{}}>
                                     <Text style={{ marginLeft: 2, color: '#F7A400', fontSize: 10, fontWeight: '500' }}> {details.organizerName}</Text>
                                     <Text style={{ marginLeft: 2, color: '#fff', fontSize: 12, fontWeight: '200', opacity: 0.6, }}> See your summary </Text>
@@ -239,7 +245,7 @@ export default class ServiceDetails extends Component {
                                     <Text style={{ color: '#fff', fontSize: 24, fontWeight: '200', fontFamily: 'NunitoSans-Bold', marginTop: 10 }}>₦{this.currencyFormat(details.dashboard.grossSale)}</Text>
 
                                     <Text style={{ marginLeft: 2, color: '#fff', fontSize: 10, fontWeight: '200', opacity: 0.67, marginTop: 35 }}>Your Money </Text>
-                                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', marginTop: 10 }}>₦{ this.currencyFormat(details.dashboard.amount)}</Text>
+                                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', marginTop: 10 }}>₦{this.currencyFormat(details.dashboard.amount)}</Text>
                                 </View>
                                 <View style={{ flex: 1, borderLeftWidth: 1, paddingLeft: 10, borderLeftColor: '#808080' }}>
 
@@ -251,16 +257,16 @@ export default class ServiceDetails extends Component {
                                 </View>
                             </View>
                             <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 15, justifyContent: 'center' }}>
-                                <TouchableOpacity  style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'red' }}>
+                                <TouchableOpacity style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'red' }}>
                                     <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: 'red' }}>Stop Ticket Sale</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        {this.state.agent_list.length ?  
-                        <View style={{ marginLeft: 25, marginRight: 7, marginTop: 10, alignItems: 'flex-start' }}>
-                            <Text style={styles.titleText}>AGENTS</Text>
-                        </View>
-                        :null}
+                        {this.state.agent_list.length ?
+                            <View style={{ marginLeft: 25, marginRight: 7, marginTop: 10, alignItems: 'flex-start' }}>
+                                <Text style={styles.titleText}>AGENTS</Text>
+                            </View>
+                            : null}
                         <View style={styles.agent_content}>
 
                             <ScrollView  >
@@ -272,10 +278,10 @@ export default class ServiceDetails extends Component {
 
                     </View>
                 </Content>
-                <View style={styles.fab} onPress={() => this.props.navigation.navigate('createRestaurant') }>
+                <View style={styles.fab} onPress={() => this.props.navigation.navigate('createRestaurant')}>
 
-                    <View style={{ flexDirection: 'row', flex:1 }}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('agent_create')}  style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
+                    <View style={{ flexDirection: 'row', flex: 1 }}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('agent_create')} style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <Icon
                                 active
                                 name="pluscircleo"
@@ -283,10 +289,10 @@ export default class ServiceDetails extends Component {
                                 color='#DD352E'
                                 size={25}
                             />
-                              <Text style={{ fontSize: 12, margin: 10, fontWeight: '300', color: '#1E1E1E' }}>New Agent</Text>
+                            <Text style={{ fontSize: 12, margin: 10, fontWeight: '300', color: '#1E1E1E' }}>New Agent</Text>
                         </TouchableOpacity>
-                        <View style={{width:0.6, marginTop:3, marginBottom:3, backgroundColor:'rgba(128,128,128,0.4)'}} ></View>
-                        <TouchableOpacity onPress={() =>  this.props.navigation.navigate('agent_pay')}  style={{ flex:1 ,flexDirection: 'row', justifyContent:'center', alignItems:'center' }}>
+                        <View style={{ width: 0.6, marginTop: 3, marginBottom: 3, backgroundColor: 'rgba(128,128,128,0.4)' }} ></View>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('agent_pay')} style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <Icon
                                 active
                                 name="ios-wallet"
@@ -294,7 +300,7 @@ export default class ServiceDetails extends Component {
                                 color='#139F2A'
                                 size={25}
                             />
-                              <Text style={{ fontSize: 12, margin: 10, fontWeight: '300', color: '#1E1E1E' }}>Pay Agents</Text>
+                            <Text style={{ fontSize: 12, margin: 10, fontWeight: '300', color: '#1E1E1E' }}>Pay Agents</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -308,7 +314,7 @@ export default class ServiceDetails extends Component {
         let items = [];
         for (let i = 0; i < tickets.length; i++) {
             let r = i;
-           
+
             items.push(
                 <TouchableOpacity style={styles.oneRow}>
 
@@ -325,23 +331,23 @@ export default class ServiceDetails extends Component {
                         <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 20 }}>
                             <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 8, color: '#139F2A', }}> active </Text>
                             <View style={{ height: 8, width: 24, backgroundColor: '#139F2A' }} />
-                           
+
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 20 }}>
-                            <View style={{flex:1}}>
-                        <Text style={styles.title}>{tickets[i].agentName}</Text>
-                        <Text style={{ marginLeft: 2, marginTop: 10, textAlign: 'left', color: '#1E1E1E', fontSize: 14, fontWeight: '100', }}> {tickets[i].agentAmount} </Text>
-                        <Text style={{ marginLeft: 2, marginTop: 5, textAlign: 'left', color: 'gba(30,30,30,0.7)', fontSize: 14, fontWeight: '100', }}> Sales so far </Text>
-</View>
-                        <TouchableOpacity  onPress={()=> this.deleteAgent(tickets[r])} style={{ width:30 }}>
-                    <Icon
-                        active
-                        name="delete"
-                        type='materia-community'
-                        color='#EA3C1780'
-                    />
-                    </TouchableOpacity>
-                    </View>
+                            <View style={{ flex: 1 }}>
+                                <Text style={styles.title}>{tickets[i].agentName}</Text>
+                                <Text style={{ marginLeft: 2, marginTop: 10, textAlign: 'left', color: '#1E1E1E', fontSize: 14, fontWeight: '100', }}> {tickets[i].agentAmount} </Text>
+                                <Text style={{ marginLeft: 2, marginTop: 5, textAlign: 'left', color: 'gba(30,30,30,0.7)', fontSize: 14, fontWeight: '100', }}> Sales so far </Text>
+                            </View>
+                            <TouchableOpacity onPress={() => this.deleteAgent(tickets[r])} style={{ width: 30 }}>
+                                <Icon
+                                    active
+                                    name="delete"
+                                    type='materia-community'
+                                    color='#EA3C1780'
+                                />
+                            </TouchableOpacity>
+                        </View>
 
                     </View>
 
@@ -408,7 +414,7 @@ const styles = StyleSheet.create({
         bottom: 20,
         right: 50,
         backgroundColor: '#fff',
-        elevation:5
+        elevation: 5
     },
     oneRow: {
         marginTop: 20,

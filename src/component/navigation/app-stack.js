@@ -66,6 +66,8 @@ import ClubMore from '../../screen/club/More';
 import ClubListinDetails from '../../screen/club/Details';
 import ClubDetails from '../../screen/merchant/ClubDetails';
 import OrgDetails from '../../screen/organizer/Details';
+import ScanTicket from '../../screen/ticket/ScanTicket';
+import ScanQRcodeTicket from '../../screen/ticket/ScanQRcodeTicket';
 //console.disableYellowBox = true;
 
 class AppStack extends Component {
@@ -83,7 +85,7 @@ class AppStack extends Component {
               headerStyle: { backgroundColor: '#7862ff' },
               headerShown: false,
             }}
-            initialRouteName="events">
+            initialRouteName="Splash">
 
             <Stack.Screen name="Splash" component={Splash} />
             <Stack.Screen name="sorting" component={Sorting} />
@@ -145,6 +147,8 @@ class AppStack extends Component {
             <Stack.Screen name='spotsC' component={Spots} />
             <Stack.Screen name='moreC' component={ClubMore} />
             <Stack.Screen name='club_service_details' component={ClubDetails} />
+            <Stack.Screen name='scan_tickets' component={ScanTicket} />
+            <Stack.Screen name='scan_tickets_qr' component={ScanQRcodeTicket} />
           </Stack.Navigator>
 
         </NavigationContainer>
@@ -154,19 +158,3 @@ class AppStack extends Component {
 
 }
 export default AppStack;
-/*
-  const prevGetStateForActionHomeStack = Stack.router.getStateForAction;
-  Stack.router.getStateForAction = (action, state) => {
-  if (state && action.type === 'ReplaceCurrentScreen') {
-    const routes = state.routes.slice(0, state.routes.length - 1);
-    routes.push(action);
-    return {
-      ...state,
-      routes,
-      index: routes.length - 1,
-    };
-  }
-  return prevGetStateForActionHomeStack(action, state);
-}
-
-*/

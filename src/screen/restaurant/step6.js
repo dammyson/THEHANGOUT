@@ -453,7 +453,6 @@ export default class step6 extends Component {
                         <ScrollView horizontal style={{ marginRight: 20, marginLeft: 20, marginBottom: 60 }}>
                             {this.renderResuts(this.state.images_list)}
 
-
                             <TouchableOpacity onPress={() => this.pickSingle(false)} style={{ height: 100, width: 100, borderColor: '#fff', borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
 
                                 <Icon

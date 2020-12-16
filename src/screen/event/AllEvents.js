@@ -16,6 +16,7 @@ import Moment from 'moment';
 import { getSaveRestaurant, getData } from '../../component/utilities';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Calendar from '../../component/views/Calendar'
+Moment.locale('en');
 
 export default class Dashboard extends Component {
 
@@ -607,9 +608,15 @@ export default class Dashboard extends Component {
     renderCalendar() {
         return (
             <Calendar
-                onClose={() => this.setState({ show_calender: false })} 
-                onComplete={(data) => this.setState({ show_calender: false })} />
+                onClose={() => this.setState({ show_calender: false })}
+                onComplete={(data) => this.onComplete(data)} />
         )
+    }
+    onComplete(data) {
+        this.setState({ show_calender: false })
+        console.warn(data)
+        var parameter ="eventListing?startDate="+data.start+"&count=20&endDate="+data.end
+        this.goToMore(parameter)
     }
 }
 const styles = StyleSheet.create({

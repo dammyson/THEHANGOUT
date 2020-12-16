@@ -63,7 +63,7 @@ export default class TicketDetails extends Component {
         })
             .then(res => res.json())
             .then(res => {
-                console.warn(res);
+                console.warn(res.data.purchasedTickets);
                 if (res.status) {
                     this.setState({
                         loading: false,
@@ -252,7 +252,6 @@ export default class TicketDetails extends Component {
                         <Text style={{ marginLeft: 2, color: '#000', fontSize: 10, fontWeight: '400' }}> {tickets[i].datePurchased}   </Text>
                         <Text style={{ marginLeft: 2, color: '#A60C05', fontSize: 10, marginTop: 12, fontWeight: '400', }}> You may be asked to show your Tickets at the venue for a QR code scan </Text>
                     </View>
-
                     <View style={{ flex: 1 }}>
                         <View style={styles.Qrcontainer}>
                             <QRCode
@@ -262,7 +261,6 @@ export default class TicketDetails extends Component {
                                 backgroundColor='#fff'
                             />
                         </View>
-                        <Text style={{ marginTop: 7, color: '#000', fontSize: 16, fontWeight: '900' }}> #{tickets[i].qrData}  </Text>
                     </View>
 
                 </View>

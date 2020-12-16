@@ -50,6 +50,8 @@ export default class step5 extends Component {
             show_ticket_type: false,
             details: '',
             data: '',
+            images_list: [],
+            images_list_url: [],
             org: 'Select Organizer',
             org_name: 'Select Organizer',
             view_organizer: false,
@@ -86,7 +88,7 @@ export default class step5 extends Component {
             user: JSON.parse(await getData()).user
         })
         const { data_moving } = this.props.route.params;
-console.warn(data_moving)
+        console.warn(data_moving)
         this.setState({
             name: data_moving.title,
             description: data_moving.description,
@@ -149,23 +151,32 @@ console.warn(data_moving)
     }
 
 
-    pickSingle(cropit, circular = false, mediaType) {
+
+    pickSingle(banner) {
         ImagePicker.openPicker({
             width: 500,
             height: 300,
-            cropping: cropit,
-            cropperCircleOverlay: circular,
+            cropping: true,
+            cropperCircleOverlay: false,
             sortOrder: 'none',
             compressImageMaxWidth: 1000,
             compressImageMaxHeight: 1000,
             compressImageQuality: 1,
             includeExif: true,
         }).then(image => {
-            console.log('received image', image);
-            this.setState({
-                image: { uri: image.path, width: image.width, height: image.height, mime: image.mime },
-            });
-            this.uploadPhoto();
+            if (banner) {
+                this.setState({
+                    image: { uri: image.path, width: image.width, height: image.height, mime: image.mime },
+                });
+                this.uploadPhoto({ uri: image.path, width: image.width, height: image.height, mime: image.mime }, banner, URL.url + 'events/upload-banner');
+            } else {
+                var instant_array = []
+                instant_array = this.state.images_list
+                instant_array.push(image)
+                this.setState({ images_list: instant_array })
+                this.uploadPhoto({ uri: image.path, width: image.width, height: image.height, mime: image.mime }, banner, URL.url + 'events/upload-banner');
+            }
+
         }).catch(e => {
             console.log(e);
             Alert.alert(e.message ? e.message : e);
@@ -173,11 +184,10 @@ console.warn(data_moving)
     }
 
 
-    uploadPhoto = () => {
-
-
-        const { image, data, name } = this.state
-
+    uploadPhoto = (image, banner, url) => {
+        console.warn(url)
+        const { data, name } = this.state
+        this.setState({ processing_images: true })
         if (image == null || name == "") {
             Alert.alert('Validation failed', 'Select atleast a picture and enter name', [{ text: 'Okay' }])
             return
@@ -208,15 +218,21 @@ console.warn(data_moving)
             body: datab,
         }
 
-        return fetch(URL.url + 'events/upload-banner', postData)
+        return fetch(url, postData)
             .then((response) => response.json())
             .then((responseJson) => {
-
+                this.setState({ processing_images: false })
                 console.warn('responseJson', responseJson.data);
-                this.setState({
-                    img_url: URL.img + responseJson.data.replace("Resources", "assets"),
-                });
-
+                if (banner) {
+                    this.setState({
+                        img_url: URL.img + responseJson.data.replace("Resources", "assets"),
+                    });
+                } else {
+                    var instant_url = []
+                    instant_url = this.state.images_list_url
+                    instant_url.push(responseJson.data.id)
+                    this.setState({ images_list_url: instant_url })
+                }
                 Toast.show({
                     text: 'Picture uploaded sucessfully !',
                     position: 'bottom',
@@ -235,7 +251,7 @@ console.warn(data_moving)
 
     async processCreateEvent() {
 
-        const { data, name, description, startdate, org, org_name, ticket, venue, enddate, type, cat, img_url, image,latitude, longitude } = this.state
+        const { data, name, description, startdate, org, org_name, ticket, venue, enddate, type, cat, img_url, image, latitude, longitude , images_list_url} = this.state
         var used_ticket = ticket;
 
         if (org_name == "Select Organizer" || type == null || cat == null) {
@@ -288,7 +304,8 @@ console.warn(data_moving)
                 City: venue,
                 venue: venue,
                 latitude: latitude,
-                longitude: longitude
+                longitude: longitude,
+                Gallery: images_list_url.toString(),
             }),
         })
             .then(res => res.json())
@@ -587,6 +604,20 @@ console.warn(data_moving)
                         </View>
                     </View>
 
+                    <ScrollView horizontal style={{ marginRight: 20, marginLeft: 20, marginBottom: 60 }}>
+                        {this.renderGallery(this.state.images_list)}
+                        <TouchableOpacity onPress={() => this.pickSingle(false)} style={{ height: 100, width: 100, borderColor: '#fff', borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
+                            <Icon
+                                active
+                                name="plus-circle"
+                                type='material-community'
+                                color='#FFF'
+                                size={30}
+                            />
+                            <Text style={styles.hintText}>choose </Text>
+                        </TouchableOpacity>
+                    </ScrollView>
+
 
 
                     <View style={[styles.oneRow, { marginTop: 40 }]}>
@@ -818,6 +849,26 @@ console.warn(data_moving)
                     <Text style={{ color: color.white, fontSize: 12, fontWeight: '200', marginLeft: 5 }}>{data[i].title} - ₦{data[i].cost} </Text>
 
                 </View>
+
+            );
+        }
+        return cat;
+    }
+
+
+    renderGallery(data) {
+
+        let cat = [];
+        for (var i = 0; i < data.length; i++) {
+            cat.push(
+
+                <ImageBackground
+                    source={{ uri: data[i].path }}
+                    style={{ height: 100, width: 150, marginLeft: 10, marginRight: 10 }}>
+
+                </ImageBackground>
+
+
 
             );
         }

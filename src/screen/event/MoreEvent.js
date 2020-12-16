@@ -65,9 +65,6 @@ export default class MoreEvent extends Component {
 
     }
 
-
-
-
     processGetEventTickets() {
         const { data,prams } = this.state
         console.warn(URL.url + 'events/'+ prams )

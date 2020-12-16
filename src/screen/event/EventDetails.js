@@ -49,12 +49,7 @@ export default class EventDetails extends Component {
       }
       this.processGetEvent();
     })
-
-
   }
-
-
-
 
   processGetEvent() {
     const { data, id, } = this.state
@@ -69,8 +64,7 @@ export default class EventDetails extends Component {
     })
       .then(res => res.json())
       .then(res => {
-
-        console.warn(res);
+        console.warn(res.data);
         if (res.status) {
           this.setState({
             details: res.data,
@@ -84,15 +78,11 @@ export default class EventDetails extends Component {
         console.warn(error);
         alert(error.message);
       });
-
-
   }
 
 
   RgetEventsRequest() {
     const { data, id, } = this.state
-
-    this.setState({ loading: true })
     fetch(URL.url + 'events/' + id, {
       method: 'GET', headers: {
         'Content-Type': 'application/json',
@@ -165,6 +155,45 @@ export default class EventDetails extends Component {
       });
   };
 
+
+  rateEvent() {
+    const { data, details, starCount } = this.state
+    console.warn(details.organizerId)
+    this.setState({ show_rating: false })
+    this.setState({ loading: true })
+    fetch(URL.url + 'reviews', {
+      method: 'POST', headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + data.token,
+      }, body: JSON.stringify({
+        EntityId: details.organizerId,
+        Module: 'Events',
+        Rating: starCount,
+      }),
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.warn(res);
+        if (res.status) {
+          this.RgetEventsRequest();
+          this.setState({
+            loading: false,
+          })
+        } else {
+          Alert.alert('Action failed', res.message, [{ text: 'Okay' }])
+          this.setState({ loading: false })
+        }
+      }).catch((error) => {
+        this.setState({ loading: false })
+        console.warn(error);
+        alert(error.message);
+      });
+
+
+
+
+  };
 
 
   render() {
@@ -289,6 +318,11 @@ export default class EventDetails extends Component {
                         <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}>Event </Text>
                       </View>
 
+                    </View>
+
+                    <View style={{ alignItems: 'center', backgroundColor: '#111123', flexDirection: 'row', marginTop: 15, opacity: 0.5 }}>
+
+
                       <View style={{ flex: 1, flexDirection: 'row', marginTop: 3, marginLeft: 15 }}>
                         <Icon
                           active
@@ -300,42 +334,13 @@ export default class EventDetails extends Component {
                         <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}> {details.distance} ({details.duration})</Text>
 
                       </View>
-
-
                     </View>
 
                     <ScrollView horizontal style={{ marginVertical: 20 }}>
 
-                      <ImageBackground
-                        opacity={0.8}
-                        style={{ height: Dimensions.get('window').height / 6, width: Dimensions.get('window').width / 2, marginHorizontal: 10, borderRadius: 10 }}
-                        source={{ uri: details.banner }}
-                        imageStyle={{ backgroundColor: 'blue', alignItems: 'flex-start', justifyContent: 'flex-start', borderRadius: 10 }}
-                      >
-                      </ImageBackground>
-
-                      <ImageBackground
-                        opacity={0.8}
-                        style={{ height: Dimensions.get('window').height / 6, width: Dimensions.get('window').width / 2, marginHorizontal: 10, borderRadius: 10 }}
-                        source={{ uri: details.banner }}
-                        imageStyle={{ backgroundColor: 'blue', alignItems: 'flex-start', justifyContent: 'flex-start', borderRadius: 10 }}
-                      >
-                      </ImageBackground>
-
-                      <ImageBackground
-                        opacity={0.8}
-                        style={{ height: Dimensions.get('window').height / 6, width: Dimensions.get('window').width / 2, marginHorizontal: 10, borderRadius: 10 }}
-                        source={{ uri: details.banner }}
-                        imageStyle={{ backgroundColor: 'blue', alignItems: 'flex-start', justifyContent: 'flex-start', borderRadius: 10 }}
-                      >
-                      </ImageBackground>
+                      {this.renderGallery(details.galleryList)}
 
                     </ScrollView>
-
-
-
-
-
 
                     <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 15, opacity: 0.8, marginLeft: 10 }}>
                       <Icon
@@ -375,26 +380,26 @@ export default class EventDetails extends Component {
                           <StarRating
                             disabled={false}
                             maxStars={5}
-                            rating={4}
+                            rating={details.rating}
                             iconSet={'FontAwesome'}
                             starSize={15}
                             starStyle={{ borderColor: 'red' }}
                             fullStarColor={color.primary_color}
                             emptyStarColor={color.primary_color}
                           />
-                          <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '500' }}> 4.0 </Text>
+                          <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '500' }}> {details.rating} </Text>
                         </View>
                         <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '500' }}>  {details.organizer.name} </Text>
                         <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, }}> {details.organizer.description} </Text>
                         <View style={{ marginLeft: 10, flexDirection: 'row', justifyContent: 'center', justifyContent: 'center' }}>
                           <View style={{ flex: 1, justifyContent: 'center', justifyContent: 'center' }}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('organizer_details', { id: details.organizer.id })} >
-                              <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200',  marginTop: 15, }}>More Details</Text>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('organizer_details', { id: details.id })} >
+                              <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200', marginTop: 15, }}>More Details</Text>
                             </TouchableOpacity>
                           </View>
                           <View style={{ flex: 1, justifyContent: 'center', justifyContent: 'center' }}>
                             <TouchableOpacity onPress={() => this.setState({ show_rating: true })} >
-                              <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200',  marginTop: 15, }}>Rate Us</Text>
+                              <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200', marginTop: 15, }}>Rate Us</Text>
                             </TouchableOpacity>
                           </View>
                         </View>
@@ -457,7 +462,7 @@ export default class EventDetails extends Component {
               <View style={{ paddingTop: 1, marginTop: 15, paddingBottom: 10, flex: 1, }}>
                 <View style={{ marginRight: 20, marginLeft: 20, }}>
                   <View style={styles.rowchild}>
-                    <View style={ {width:200,marginTop: 20, marginLeft: 10, justifyContent: 'center' }}>
+                    <View style={{ width: 200, marginTop: 20, marginLeft: 10, justifyContent: 'center' }}>
                       <StarRating
                         disabled={false}
                         maxStars={5}
@@ -471,16 +476,16 @@ export default class EventDetails extends Component {
                       />
                     </View>
                   </View>
-                  <View style={{ marginLeft: 10, flexDirection: 'row', marginTop:20 }}>
-                    <View style={{justifyContent: 'center', justifyContent: 'center' }}>
-                      <TouchableOpacity  onPress={() => this.setState({ show_rating: false })} >
-                        <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200',  marginTop: 15, }}>Cancel</Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View style={{ flex: 1, }}/>
+                  <View style={{ marginLeft: 10, flexDirection: 'row', marginTop: 20 }}>
                     <View style={{ justifyContent: 'center', justifyContent: 'center' }}>
                       <TouchableOpacity onPress={() => this.setState({ show_rating: false })} >
-                        <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200',  marginTop: 15, }}>Ok</Text>
+                        <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200', marginTop: 15, }}>Cancel</Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={{ flex: 1, }} />
+                    <View style={{ justifyContent: 'center', justifyContent: 'center' }}>
+                      <TouchableOpacity onPress={() => [setTimeout(() => { this.rateEvent() }, 500), this.setState({ show_rating: false }),]} >
+                        <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200', marginTop: 15, }}>Ok</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -496,6 +501,27 @@ export default class EventDetails extends Component {
         </Modal>
       </Container>
     );
+  }
+
+  renderGallery(data) {
+
+    let cat = [];
+    for (var i = 0; i < data.length; i++) {
+      cat.push(
+
+        <ImageBackground
+          opacity={0.8}
+          style={{ height: Dimensions.get('window').height / 6, width: Dimensions.get('window').width / 2, marginHorizontal: 10, borderRadius: 10 }}
+          source={{ uri: data[i] }}
+          imageStyle={{ backgroundColor: 'blue', alignItems: 'flex-start', justifyContent: 'flex-start', borderRadius: 10 }}
+        >
+        </ImageBackground>
+
+
+
+      );
+    }
+    return cat;
   }
 }
 

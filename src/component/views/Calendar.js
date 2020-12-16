@@ -81,8 +81,8 @@ export default class Calendar extends Component {
             return
         }
         var data = {
-            start: selectedStartDate,
-            end: selectedEndDate
+            start: Moment(selectedStartDate).format('YYYY-MM-DD') ,
+            end: Moment(selectedEndDate).format('YYYY-MM-DD')
         }
         onComplete(data)
     }
@@ -112,8 +112,6 @@ export default class Calendar extends Component {
         );
         const minDate = new Date(); // Today
         const maxDate = new Date(2030, 6, 3);
-
-
 
         return (
             <>

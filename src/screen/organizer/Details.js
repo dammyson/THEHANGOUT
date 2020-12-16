@@ -25,7 +25,7 @@ export default class OrgDetails extends Component {
       loading: true,
       data: '',
       name: '',
-      id: '45',
+      id: '',
       details: {}
 
 
@@ -35,9 +35,8 @@ export default class OrgDetails extends Component {
 
 
   componentWillMount() {
-   const { id } = this.props.route.params;
-console.warn(id)
-   // this.setState({ id: id });
+    const { id } = this.props.route.params;
+    this.setState({ id: id });
     AsyncStorage.getItem('data').then((value) => {
       if (value == '') { } else {
         this.setState({ data: JSON.parse(value) })
@@ -54,9 +53,7 @@ console.warn(id)
 
   processGetEvent() {
     const { data, id, } = this.state
-    console.warn(id);
-
-    fetch(URL.url + 'events/' + id, {
+    fetch(URL.url + 'events/' + 53, {
       method: 'GET', headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -65,8 +62,8 @@ console.warn(id)
     })
       .then(res => res.json())
       .then(res => {
-
-        console.warn(res);
+        console.warn(res.data.pastEvents);
+       // console.warn(res.data.organizer.pastEvents);
         if (res.status) {
           this.setState({
             details: res.data,
@@ -215,8 +212,6 @@ console.warn(id)
         <Navbar left={left} right={right} title={details.title} bg='#111123' />
         <Content>
           <View style={styles.container}>
-
-
             <View style={{ flex: 1, }}>
               <ScrollView style={{ flex: 1, }}>
                 <View style={{ flex: 1, }}>
@@ -229,29 +224,32 @@ console.warn(id)
                           source={{ uri: details.organizer.bannerUrl }}
                         /></View>
                       <View style={{ flex: 1, }}>
-                        <View style={{ width: 100, marginLeft: 10, flexDirection: 'row', justifyContent: 'center', justifyContent: 'center' }}>
+                        <View style={{ width: 100, flexDirection: 'row', justifyContent: 'center', justifyContent: 'center' }}>
                           <StarRating
                             disabled={false}
                             maxStars={5}
-                            rating={4}
+                            rating={details.rating}
                             iconSet={'FontAwesome'}
                             starSize={15}
                             starStyle={{ borderColor: 'red' }}
                             fullStarColor={color.primary_color}
                             emptyStarColor={color.primary_color}
                           />
-                          <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '500' }}> 4.0 </Text>
+                          <Text style={{ marginLeft: 2, color: '#fff', fontSize: 15, fontWeight: '500' }}> {details.rating} </Text>
                         </View>
-                        <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '500' }}>  {details.organizer.name} </Text>
-                        <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, }}> {details.organizer.description} </Text>
-                        <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200', opacity: 0.6, marginTop: 15, }}>More Details</Text>
+                        <Text style={{ marginLeft: 2, color: '#fff', fontSize: 15, fontFamily: 'NunitoSans-Bold', }}>{details.organizer.name} </Text>
+                        <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', }}>{details.organizer.description} </Text>
                       </View>
                     </View>
 
                   </View>
 
                 </View>
+                <ScrollView horizontal style={{ marginVertical: 20 }}>
 
+                  {this.renderGallery(details.pastEvents)}
+
+                </ScrollView>
 
               </ScrollView>
             </View>
@@ -261,6 +259,59 @@ console.warn(id)
         </Content>
       </Container>
     );
+  }
+
+
+
+  renderGallery(data) {
+
+    let cat = [];
+    for (var i = 0; i < data.length; i++) {
+      let id =  data[i].id 
+      cat.push(
+
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('eventD', { id: id })} >
+          <ImageBackground
+            opacity={0.5}
+            style={{ borderRadius: 12, width: Dimensions.get('window').width - 50, marginHorizontal:10 }}
+            source={{ uri: data[i].banner }}
+            imageStyle={{ borderRadius: 20, backgroundColor: 'blue' }}
+
+          >
+            <View style={styles.details} >
+              <Text style={styles.date}>{Moment(data[i].startDate).format('llll')}</Text>
+              <Text style={styles.tittle}>{data[i].title}</Text>
+              <View style={styles.piceContainer}>
+                <View style={{ flex: 1, flexDirection: 'row', marginTop: 3, marginLeft: 15 }}>
+                  <Icon
+                    active
+                    name="ticket"
+                    type='entypo'
+                    color='#fff'
+                    size={15}
+                  />
+                  <Text style={styles.price}>{data[i].type}</Text>
+                  <Icon
+                    active
+                    name="music"
+                    type='foundation'
+                    color='#fff'
+                    size={15}
+                  />
+                  <Text style={styles.price}>{data[i].category}</Text>
+                </View>
+              </View>
+
+            </View>
+
+
+          </ImageBackground>
+        </TouchableOpacity>
+
+
+      );
+    }
+    return cat;
   }
 }
 
@@ -307,4 +358,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  details: {
+    marginTop: 120,
+    marginBottom: 25,
+},
+  date: {
+    marginRight: 13,
+    marginLeft: 13,
+    fontSize: 12,
+    color: '#ffffff',
+    textAlign: 'left',
+    fontFamily: 'NunitoSans-Bold'
+},
+tittle: {
+    marginRight: 13,
+    marginLeft: 13,
+    fontSize: 16,
+    color: '#ffffff',
+    textAlign: 'left',
+    fontWeight: '600',
+    fontFamily: 'NunitoSans-Bold'
+},
+price: {
+    marginRight: 5,
+    marginLeft: 5,
+    fontSize: 10,
+    color: '#ffffff',
+    textAlign: 'left',
+    fontFamily: 'NunitoSans-Bold'
+},
 });
