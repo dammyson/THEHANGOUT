@@ -471,7 +471,7 @@ export default class Dashboard extends Component {
 
 
                             <TouchableOpacity onPress={() => this.goToMore('eventListing/Upcoming/50')} style={{ margin: 30, alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: '#F7A400' }}>
-                                <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: '#F7A400' }}>View all upcomning events</Text>
+                                <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: '#F7A400' }}>View all upcoming events</Text>
                             </TouchableOpacity>
                         </View>
                     </Content>

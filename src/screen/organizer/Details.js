@@ -270,7 +270,6 @@ export default class OrgDetails extends Component {
       let id =  data[i].id 
       cat.push(
 
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('eventD', { id: id })} >
           <ImageBackground
             opacity={0.5}
             style={{ borderRadius: 12, width: Dimensions.get('window').width - 50, marginHorizontal:10 }}
@@ -306,7 +305,6 @@ export default class OrgDetails extends Component {
 
 
           </ImageBackground>
-        </TouchableOpacity>
 
 
       );

@@ -295,7 +295,7 @@ export default class EventDetails extends Component {
 
                   <View style={{ backgroundColor: '#111123', marginLeft: 20, marginRight: 20 }}>
                     <Text style={styles.title}> {details.title} </Text>
-                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '200', marginTop: 15, opacity: 0.6 }}>{Moment(details.startDate).format('llll')} </Text>
+                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '200', marginTop: 15, opacity: 0.6 }}>{Moment(details.startDate).format('llll')} - {Moment(details.endDate).format('llll')} </Text>
 
                     <View style={{ alignItems: 'center', backgroundColor: '#111123', flexDirection: 'row', marginTop: 15, opacity: 0.5 }}>
                       <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginRight: 15 }}>
@@ -361,8 +361,7 @@ export default class EventDetails extends Component {
 
                     <Text style={styles.headings}> EVENT DETAILS </Text>
                     <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, marginTop: 15, }}>  {details.description}</Text>
-                    <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200', opacity: 0.6, marginTop: 15, }}> Read more</Text>
-
+                   
                     <Text style={styles.headings}> LOCATION </Text>
                     <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, marginTop: 15, }}>  {details.location}  </Text>
                     <View style={styles.map}>
