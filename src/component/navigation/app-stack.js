@@ -128,7 +128,6 @@ class AppStack extends Component {
             <Stack.Screen name='reserveT' component={ReserveTable} />
             <Stack.Screen name='table' component={Tables} />
             <Stack.Screen name='moreR' component={More} />
-
             <Stack.Screen name='merchant_dashboard' component={MerchantDashboard} />
             <Stack.Screen name='service_details' component={ServiceDetails} />
             <Stack.Screen name='services' component={Services} />
@@ -150,7 +149,6 @@ class AppStack extends Component {
             <Stack.Screen name='scan_tickets' component={ScanTicket} />
             <Stack.Screen name='scan_tickets_qr' component={ScanQRcodeTicket} />
           </Stack.Navigator>
-
         </NavigationContainer>
       </Root>
     );

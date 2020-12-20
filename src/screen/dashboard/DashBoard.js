@@ -326,7 +326,7 @@ export default class Dashboard extends Component {
                             <Text style={styles.catTitle}>CATEGORIES</Text>
                             <View style={styles.row}>
                                 <View style={styles.rowchild}>
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('events')} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
+                                    <TouchableOpacity onPress={() => this.goTopage('events')} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
                                         <Image
                                             style={{ resizeMode: 'contain', height: 30, width: 30 }}
                                             source={require('../../assets/icons/events.png')} />
@@ -341,7 +341,7 @@ export default class Dashboard extends Component {
                                     <Text style={styles.catName}>Movies</Text>
                                 </View>
                                 <View style={styles.rowchild}>
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('clubs')} style={[styles.circle, { backgroundColor: '#ebd5ff', }]}>
+                                    <TouchableOpacity onPress={() => this.goTopage('clubs')} style={[styles.circle, { backgroundColor: '#ebd5ff', }]}>
                                         <Image
                                             style={{ resizeMode: 'contain', height: 30, width: 30 }}
                                             source={require('../../assets/icons/club.png')} />
@@ -349,7 +349,7 @@ export default class Dashboard extends Component {
 
                                     <Text style={styles.catName}>Clubs & lounge</Text>
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('restaurants')} style={[styles.circle, { backgroundColor: '#ffcccd', }]}>
+                                    <TouchableOpacity onPress={() => this.goTopage('restaurants')} style={[styles.circle, { backgroundColor: '#ffcccd', }]}>
 
                                         <Image
                                             style={{ resizeMode: 'contain', height: 30, width: 30 }}
@@ -386,6 +386,17 @@ export default class Dashboard extends Component {
                 </Content>
             </Container>
         );
+    }
+
+
+    goTopage(data){
+        this.setState({ view_create: false })
+        if(data == 'events'){
+            this.props.navigation.navigate(data)
+        }else{
+            alert('This feature is not available at the moment')
+        }
+       
     }
 }
 

@@ -240,7 +240,7 @@ export default class MerchantDashboard extends Component {
                             <View style={{ paddingTop: 1, marginTop: 15, paddingBottom: 10, flex: 1, }}>
                                 <View style={{ flexDirection: 'row', marginRight: 20, marginLeft: 20, }}>
                                     <View style={styles.rowchild}>
-                                        <TouchableOpacity onPress={() => [this.setState({ view_create: false }), this.props.navigation.navigate('createevent')]} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
+                                        <TouchableOpacity onPress={() => [this.setState({ view_create: false }), this.goTopage('createevent')]} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
                                         <Image
                                             style={{ resizeMode: 'contain', height: 30, width: 30 }}
                                             source={require('../../assets/icons/events.png')} />
@@ -248,7 +248,7 @@ export default class MerchantDashboard extends Component {
                                         <Text style={styles.catName}> Events</Text>
                                     </View>
                                     <View style={styles.rowchild}>
-                                        <TouchableOpacity onPress={() => [this.setState({ view_create: false }), this.props.navigation.navigate('createRestaurant')]} style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
+                                        <TouchableOpacity onPress={() => [this.setState({ view_create: false }), this.goTopage('createRestaurant')]} style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
                                           
                                         <Image
                                             style={{ resizeMode: 'contain', height: 30, width: 30 }}
@@ -260,7 +260,7 @@ export default class MerchantDashboard extends Component {
 
 
                                     <View style={styles.rowchild}>
-                                        <TouchableOpacity onPress={() => [this.setState({ view_create: false }), this.props.navigation.navigate('createClub')]} style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
+                                        <TouchableOpacity onPress={() => [this.setState({ view_create: false }), this.goTopage('createClub')]} style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
                                         <Image
                                             style={{ resizeMode: 'contain', height: 30, width: 30 }}
                                             source={require('../../assets/icons/club.png')} />
@@ -282,6 +282,16 @@ export default class MerchantDashboard extends Component {
 
             </Container>
         );
+    }
+
+    goTopage(data){
+        this.setState({ view_create: false })
+        if(data == 'createevent'){
+            this.props.navigation.navigate(data)
+        }else{
+            alert('This feature is not available at the moment')
+        }
+       
     }
 getDetails(data){
     if(data.type =='EVENTS'){
