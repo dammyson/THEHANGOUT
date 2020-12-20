@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { TextInput, StyleSheet, TouchableOpacity, StatusBar, AsyncStorage, Dimensions, Image, ScrollView } from 'react-native';
-import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
+import { Container, Content, View, Text, Button, Left, Right, Toast, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
 import { Avatar, Badge, } from 'react-native-elements';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
@@ -289,7 +289,14 @@ export default class MerchantDashboard extends Component {
         if(data == 'createevent'){
             this.props.navigation.navigate(data)
         }else{
-            alert('This feature is not available at the moment')
+            Toast.show({
+                text: 'This feature is not available at the moment !',
+                position: 'top',
+                type: 'success',
+                buttonText: 'Dismiss',
+                duration: 3000
+            });
+          
         }
        
     }
