@@ -130,7 +130,7 @@ export default class ScanTicket extends Component {
 
         if (this.state.loading) {
             return (
-              <ActivityIndicator message={'creating organizers'} color={color.primary_color} /> 
+              <ActivityIndicator message={'Verify tickets'} color={color.primary_color} /> 
             );
         }
 
@@ -222,7 +222,7 @@ export default class ScanTicket extends Component {
                         <View style={{ flex: 1 }}>
         <Text style={{ fontFamily: 'NunitoSans-Bold', marginLeft: 10, color: '#1e1e1e', fontSize: 18, fontWeight: '400', }}>{details.eventTitle}</Text>
                         </View>
-                        <TouchableOpacity style={{ height: 20, width: 20 }} onPress={() => this.setState({ qr_generated: false })}>
+                        <TouchableOpacity style={{ height: 40, width: 40 }} onPress={() => this.setState({ show_generated: false })}>
                             <Icon
                                 active
                                 name="close"
@@ -235,7 +235,7 @@ export default class ScanTicket extends Component {
                     <View style={{ backgroundColor: "#FFF", marginTop: 1, marginLeft: 10, marginRight: 10, marginBottom: 15 }}>
                         <View style={{ backgroundColor: "#FFF", marginTop: 1,marginRight: 10, }}>
                         <Text style={{ fontFamily: 'NunitoSans-SemiBold', marginLeft: 2, color: '#1e1e1e', fontSize: 15, fontWeight: '400', }}>{details.name} | {Moment(details.startDate).format('Do MMM')} -  {Moment(details.endDate).format('Do MMM YYYY')} </Text>
-                        <Text style={{ fontFamily: 'NunitoSans-SemiBold', marginLeft: 2, color: '#1e1e1e', fontSize: 15, fontWeight: '400', }}> Single Tiket </Text>
+                        <Text style={{ fontFamily: 'NunitoSans-SemiBold', marginLeft: 2, color: '#1e1e1e', fontSize: 15, fontWeight: '400', }}> Single Ticket </Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', backgroundColor: "#FFF", marginTop: 1, marginLeft: 10, marginRight: 10, }}>

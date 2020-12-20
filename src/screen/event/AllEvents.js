@@ -278,7 +278,7 @@ export default class Dashboard extends Component {
                     source={{ uri: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg' }}
                     imageStyle={{ borderRadius: 5, backgroundColor: color.secondary_color }}
                 >
-                    <TouchableOpacity onPress={() => this.goToMore("eventListing/Categories/7")} style={styles.hangoutDetails} >
+                    <TouchableOpacity onPress={() => this.setState({ show_calender: true })}  style={styles.hangoutDetails} >
                         <View style={styles.iconContainer}>
                             <Icon
                                 active

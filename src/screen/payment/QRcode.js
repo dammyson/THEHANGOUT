@@ -114,7 +114,7 @@ console.warn(data.token)
       }, body: JSON.stringify({
         Recipient: res[0],
         Amount: res[1],
-        Description: res[2],
+        Description: 'InAppPurchases',
         CashierCode: res[3],
         EventCode: res[4],
         PaymentRef: res[5],

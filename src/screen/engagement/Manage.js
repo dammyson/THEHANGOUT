@@ -81,7 +81,10 @@ export default class Manage extends Component {
            AsyncStorage.removeItem('bal');
            AsyncStorage.removeItem('user');
            setTimeout(() => {
-            this.props.navigation.replace('intro')
+            this.props.navigation.reset({
+                index: 0,
+                routes: [{ name: 'intro' }],
+              }); 
                 }, 2000);
           
             return true;
@@ -272,14 +275,6 @@ export default class Manage extends Component {
             <View>
 
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingTop: 1, paddingBottom: 10 }}>
-                <TouchableOpacity onPress={() => this.setState({ visible_log_merchant: false })} style={{ marginLeft: 10, backgroundColor: '#000' }}>
-                  <Icon
-                    name="close"
-                    size={20}
-                    type='antdesign'
-                    color="#fff"
-                  />
-                </TouchableOpacity>
 
               </View>
               <View style={styles.delavartar}>
