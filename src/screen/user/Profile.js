@@ -77,8 +77,8 @@ export default class Profile extends Component {
 
 
     logOut(){
+        this.setState({ visible_log_merchant: false })
         try {
-         
            AsyncStorage.removeItem('login');
            AsyncStorage.removeItem('data');
            AsyncStorage.removeItem('bal');
