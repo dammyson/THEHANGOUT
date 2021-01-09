@@ -391,7 +391,8 @@ export default class Dashboard extends Component {
 
     goTopage(data){
         this.setState({ view_create: false })
-        if(data == 'events'){
+        this.props.navigation.navigate(data)
+       /* if(data == 'events'){
             this.props.navigation.navigate(data)
         }else{
             Toast.show({
@@ -401,7 +402,7 @@ export default class Dashboard extends Component {
                 buttonText: 'Dismiss',
                 duration: 3000
             });
-        }
+        }*/
        
     }
 }

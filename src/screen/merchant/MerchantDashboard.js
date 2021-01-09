@@ -285,8 +285,10 @@ export default class MerchantDashboard extends Component {
     }
 
     goTopage(data){
+
         this.setState({ view_create: false })
-        if(data == 'createevent'){
+        this.props.navigation.navigate(data)
+      /*  if(data == 'createevent'){
             this.props.navigation.navigate(data)
         }else{
             Toast.show({
@@ -297,7 +299,7 @@ export default class MerchantDashboard extends Component {
                 duration: 3000
             });
           
-        }
+        }*/
        
     }
 getDetails(data){

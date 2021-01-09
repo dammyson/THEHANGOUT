@@ -482,6 +482,7 @@ const styles = StyleSheet.create({
     },
     inputTextView: {
         marginTop: 20,
+        height: 50,
         marginBottom: 5,
         justifyContent: "flex-start",
         borderColor: '#BBB',
