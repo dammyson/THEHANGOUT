@@ -35,7 +35,7 @@ export default class Dashboard extends Component {
             selected: null,
             user: null,
             searchText: '',
-            cat:[]
+            cat: []
         };
     }
 
@@ -114,7 +114,7 @@ export default class Dashboard extends Component {
                 console.warn(res);
                 if (res.status) {
                     this.setState({
-                        special_offers:res.data,
+                        special_offers: res.data,
                         loading: false
                     })
                 } else {
@@ -141,7 +141,7 @@ export default class Dashboard extends Component {
     _renderItem = ({ item, index }, parallaxProps) => {
         Moment.locale('en');
         return (
-            <TouchableOpacity onPress={() =>  this.props.navigation.navigate('place_order', {restaurant: item.restaurant, res_id: item.restaurantId, menu_id: item.menuId,  })}  >
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('place_order', { restaurant: item.restaurant, res_id: item.restaurantId, menu_id: item.menuId, })}  >
                 <ImageBackground
                     opacity={0.5}
                     style={{ borderRadius: 12 }}
@@ -151,13 +151,13 @@ export default class Dashboard extends Component {
                 >
 
 
-                    <View style={{ marginTop: 120, paddingTop:5,  backgroundColor:'#fff',borderBottomRightRadius: 5, borderBottomLeftRadius:5}} >
-                        <Text style={{ marginRight: 13,marginTop: 7, marginLeft: 13,fontSize: 13,color: '#000', textAlign: 'left',fontFamily: 'NunitoSans-SemiBold'}}>{item.menuName}</Text>
-                        <Text style={ { marginRight: 5, marginLeft: 13,fontSize: 13, color: '#000', textAlign: 'left', fontFamily: 'NunitoSans-Bold'}}>₦{this.currencyFormat(item.amount)}</Text>
+                    <View style={{ marginTop: 120, paddingTop: 5, backgroundColor: '#fff', borderBottomRightRadius: 5, borderBottomLeftRadius: 5 }} >
+                        <Text style={{ marginRight: 13, marginTop: 7, marginLeft: 13, fontSize: 13, color: '#000', textAlign: 'left', fontFamily: 'NunitoSans-SemiBold' }}>{item.menuName}</Text>
+                        <Text style={{ marginRight: 5, marginLeft: 13, fontSize: 13, color: '#000', textAlign: 'left', fontFamily: 'NunitoSans-Bold' }}>₦{this.currencyFormat(item.amount)}</Text>
 
                         <View style={styles.piceContainer}>
-                            <View style={{ flex: 1, flexDirection: 'row', marginTop: 3, marginLeft: 1, marginBottom:15 }}>
-                            <Text style={{ marginRight: 5,marginLeft: 13,fontSize: 10,color: '#000',textAlign: 'left', fontFamily: 'NunitoSans-light'}}>{item.restaurant}</Text>
+                            <View style={{ flex: 1, flexDirection: 'row', marginTop: 3, marginLeft: 1, marginBottom: 15 }}>
+                                <Text style={{ marginRight: 5, marginLeft: 13, fontSize: 10, color: '#000', textAlign: 'left', fontFamily: 'NunitoSans-light' }}>{item.restaurant}</Text>
                                 <Icon
                                     active
                                     name="location-pin"
@@ -165,7 +165,7 @@ export default class Dashboard extends Component {
                                     color='#000'
                                     size={15}
                                 />
-                                <Text style={{ marginRight: 5,marginLeft: 13,fontSize: 10,color: '#000',textAlign: 'left', fontFamily: 'NunitoSans-light'}}>{Moment(item.startDate).format('llll')}</Text>
+                                <Text style={{ marginRight: 5, marginLeft: 13, fontSize: 10, color: '#000', textAlign: 'left', fontFamily: 'NunitoSans-light' }}>{Moment(item.startDate).format('llll')}</Text>
 
                             </View>
 
@@ -183,7 +183,7 @@ export default class Dashboard extends Component {
         const { cat } = this.state;
         return (
             <ScrollView horizontal style={{ marginRight: 20, marginLeft: 20, }}>
-               {this.renderCatItem(cat)}
+                {this.renderCatItem(cat)}
             </ScrollView>
         );
     }
@@ -247,16 +247,16 @@ export default class Dashboard extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-            <Button transparent onPress={() =>  this.props.navigation.reset({
-                      index: 0,
-                      routes: [{ name: 'home' }],
-                    })}>
-            <View style={{ transform:[{ rotateY: "180deg"}]}}>
-                <Icon  type='material-icons' name='exit-to-app' size={30} color='#FFF' />
+                <Button transparent onPress={() => this.props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'home' }],
+                })}>
+                    <View style={{ transform: [{ rotateY: "180deg" }] }}>
+                        <Icon type='material-icons' name='exit-to-app' size={30} color='#FFF' />
 
                     </View>
-            </Button>
-          </Left>
+                </Button>
+            </Left>
         );
         var right = (
             <Right>
@@ -277,6 +277,8 @@ export default class Dashboard extends Component {
                 <Content>
                     <View style={styles.container}>
                         <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
+                        <View style={{ height: 15 }} />
+                        {/*
                         <View style={styles.header}>
                             <View style={styles.item}>
                                 <Icon active name="enviroment" type='antdesign' color='red'
@@ -307,7 +309,7 @@ export default class Dashboard extends Component {
                                     /></TouchableOpacity>
                             </View>
                         </View>
-
+*/ }
 
                         {this.renderPopular()}
 
@@ -327,13 +329,13 @@ export default class Dashboard extends Component {
 
 
 
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('moreR',{ prams: 'all' })} style={{ margin: 30, alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: 'red' }}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('moreR', { prams: 'all' })} style={{ margin: 30, alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: 'red' }}>
                             <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: 'red' }}>View all restaurants</Text>
                         </TouchableOpacity>
                     </View>
                 </Content>
-               
-                   
+
+
 
             </Container>
         );
@@ -345,7 +347,7 @@ export default class Dashboard extends Component {
                 <View>
                     <View style={styles.upcomingContainer}>
                         <View style={{ flex: 1, }}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('restaurantD',{ id: item.id }) }   >
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('restaurantD', { id: item.id })}   >
                                 <ImageBackground
                                     opacity={0.5}
                                     style={{ borderRadius: 12, flex: 1, margin: 10, marginTop: 0 }}
@@ -385,30 +387,30 @@ export default class Dashboard extends Component {
         return items;
     }
 
-    renderCatItem(data){
+    renderCatItem(data) {
 
         let cat = [];
         for (var i = 0; i < data.length; i++) {
-            const link = "category/"+ data[i].id+'/'+10
+            const link = "category/" + data[i].id + '/' + 10
             cat.push(
 
                 <View style={styles.rowchild}>
 
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('moreR',{ prams: link })}  style={[styles.circle]}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('moreR', { prams: link })} style={[styles.circle]}>
 
-                    <Icon
-                        active
-                        name={data[i].iconName}
-                        type={data[i].iconType}
-                        color='red'
+                        <Icon
+                            active
+                            name={data[i].iconName}
+                            type={data[i].iconType}
+                            color='red'
 
-                    />
-                </TouchableOpacity>
+                        />
+                    </TouchableOpacity>
 
-            <Text style={styles.catName}>{data[i].name}</Text>
+                    <Text style={styles.catName}>{data[i].name}</Text>
 
 
-            </View>
+                </View>
 
 
 
@@ -420,36 +422,36 @@ export default class Dashboard extends Component {
 }
 
 const data = [
-{
-    name:'African',
-    icon: 'location',
-    type: 'entypo',
-},
-{
-    name:'African',
-    icon: 'location',
-    type: 'entypo',
-},
-{
-    name:'African',
-    icon: 'location',
-    type: 'entypo',
-},
-{
-    name:'African',
-    icon: 'location',
-    type: 'entypo',
-},
-{
-    name:'African',
-    icon: 'location',
-    type: 'entypo',
-},
-{
-    name:'African',
-    icon: 'location',
-    type: 'entypo',
-},
+    {
+        name: 'African',
+        icon: 'location',
+        type: 'entypo',
+    },
+    {
+        name: 'African',
+        icon: 'location',
+        type: 'entypo',
+    },
+    {
+        name: 'African',
+        icon: 'location',
+        type: 'entypo',
+    },
+    {
+        name: 'African',
+        icon: 'location',
+        type: 'entypo',
+    },
+    {
+        name: 'African',
+        icon: 'location',
+        type: 'entypo',
+    },
+    {
+        name: 'African',
+        icon: 'location',
+        type: 'entypo',
+    },
 
 
 ];
@@ -563,7 +565,7 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         fontFamily: 'NunitoSans-Bold'
     },
-  
+
     upcomingContainer: {
         margin: 10,
         marginTop: 0,
@@ -585,8 +587,8 @@ const styles = StyleSheet.create({
     rowchild: {
         flex: 1,
         margin: 10,
-        marginLeft:10,
-        marginRight:10,
+        marginLeft: 10,
+        marginRight: 10,
         alignItems: 'center',
     },
     circle: {

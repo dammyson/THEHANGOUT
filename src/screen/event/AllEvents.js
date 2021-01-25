@@ -411,7 +411,11 @@ export default class Dashboard extends Component {
                     <Content>
                         <View style={styles.container}>
                             <StatusBar barStyle="light-content" hidden={false} backgroundColor="#fff" />
+                            <View style={{ height: 15 }} />
+
+                          
                             <View style={styles.header}>
+                                  {/** 
                                 <View style={styles.item}>
                                     <Icon active name="enviroment" type='antdesign' color='red'
                                     />
@@ -428,6 +432,7 @@ export default class Dashboard extends Component {
                                     />
 
                                 </View>
+                                */}
                                 {this.state.dataone.length > 0 ?
                                     <View style={{ marginLeft: 10, marginRight: 7, flexDirection: 'row', alignItems: 'center' }}>
                                         <Text style={styles.titleText}>TRENDING</Text>

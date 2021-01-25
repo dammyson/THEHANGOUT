@@ -75,16 +75,25 @@ export default class Calendar extends Component {
 
     handleButtonClick() {
         const { onComplete } = this.props;
+        var enddata= null;
         const { selectedStartDate, selectedEndDate } = this.state
-        if (selectedStartDate == null || selectedStartDate == null) {
+        if (selectedStartDate == null) {
             Alert.alert('Error', "Kindly select a start data and end date", [{ text: 'Okay' }])
             return
         }
+
+        if ( selectedEndDate == null) {
+            enddata = selectedStartDate
+        }else{
+            enddata = selectedEndDate
+        }
         var data = {
             start: Moment(selectedStartDate).format('YYYY-MM-DD') ,
-            end: Moment(selectedEndDate).format('YYYY-MM-DD')
+            end: Moment(enddata).format('YYYY-MM-DD')
         }
-        onComplete(data)
+
+      
+       onComplete(data)
     }
 
     render() {

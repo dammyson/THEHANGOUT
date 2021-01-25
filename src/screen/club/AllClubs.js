@@ -300,6 +300,8 @@ export default class Dashboard extends Component {
                     <View style={styles.container}>
                         <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
                         <View style={styles.header}>
+
+                            {/** 
                             <View style={styles.item}>
                                 <Icon active name="enviroment" type='antdesign' color='red'
                                 />
@@ -316,6 +318,7 @@ export default class Dashboard extends Component {
                                 />
 
                             </View>
+                            */}
 
                             <View style={{ marginLeft: 10, marginRight: 7, flexDirection: 'row', alignItems: 'center' }}>
                                 {this.state.dataone.length > 0 ? <Text style={styles.titleText}>HAPPENING</Text> : <View style={{ flex: 1 }} />}

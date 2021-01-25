@@ -283,6 +283,8 @@ export default class Dashboard extends Component {
                 <Content>
                     <View style={styles.container}>
                         <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
+
+                        {/** 
                         <View style={styles.header}>
                             <View style={styles.item}>
                                 <Icon active name="enviroment" type='antdesign' color='red'
@@ -300,6 +302,8 @@ export default class Dashboard extends Component {
 
                             </View>
                         </View>
+                        */}
+                        <View style={{height: 15}} />
                         <View style={styles.header}>
                             <Carousel
                                 ref={(c) => { this._carousel = c; }}
