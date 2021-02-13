@@ -80,7 +80,7 @@ class AppStack extends Component {
 
           <Stack.Navigator
             screenOptions={{
-              gestureEnabled: false,
+              gestureEnabled: true,
               headerTintColor: 'white',
               headerStyle: { backgroundColor: '#7862ff' },
               headerShown: false,

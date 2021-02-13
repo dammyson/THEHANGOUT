@@ -284,6 +284,7 @@ const styles = StyleSheet.create({
         borderColor: '#DD352E',
         borderBottomWidth: 2,
         alignItems: 'center',
+        height:50,
     },
     menu: {
         flex: 1,

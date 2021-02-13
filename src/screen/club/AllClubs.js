@@ -250,22 +250,6 @@ export default class Dashboard extends Component {
         this.setState({ selected: data })
     }
     render() {
-        if (this.state.loading) {
-            return (
-                <ActivityIndicator message={'Fetching clubs '} color={color.club_color} />
-            );
-        }
-
-        if (this.state.nodata) {
-            return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
-                    <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>No Club at the moment </Text>
-                    </View>
-                </View>
-            );
-        }
-
         var left = (
             <Left style={{ flex: 1 }}>
                 <Button transparent onPress={() => this.props.navigation.reset({
@@ -292,6 +276,28 @@ export default class Dashboard extends Component {
             </Right>
         );
 
+        if (this.state.loading) {
+            return (
+                <ActivityIndicator message={'Fetching clubs '} color={color.club_color} />
+            );
+        }
+
+        if (this.state.nodata) {
+            return (
+                <Container style={{ backgroundColor: color.secondary_color }}>
+                    <StatusBar backgroundColor='#101023' barStyle="light-content" />
+                    <Navbar left={left} right={right} title="Clubs" bg='#101023' />
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
+
+                        <View style={styles.welcome}>
+                            <Text style={{ fontSize: 15, color: '#fff' }}>No Club at the moment </Text>
+                        </View>
+                    </View>
+                </Container>
+            );
+        }
+
+       
         return (
             <Container style={{ backgroundColor: color.secondary_color }}>
                 <StatusBar backgroundColor='#101023' barStyle="light-content" />

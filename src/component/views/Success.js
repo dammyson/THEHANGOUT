@@ -149,26 +149,3 @@ const styles = StyleSheet.create({
     },
 });
 
-const pickerSelectStyles = StyleSheet.create({
-    inputIOS: {
-        fontSize: 12,
-        paddingVertical: 12,
-        paddingHorizontal: 10,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 4,
-        color: 'black',
-        paddingRight: 30,
-        fontFamily: 'NunitoSans-Bold', // to ensure the text is never behind the icon
-    },
-    inputAndroid: {
-        fontSize: 12,
-        paddingHorizontal: 10,
-        paddingVertical: 2,
-        borderRadius: 8,
-        color: '#fff',
-        paddingRight: 30,
-        fontFamily: 'NunitoSans-Bold', // to ensure the text is never behind the icon
-    },
-
-});

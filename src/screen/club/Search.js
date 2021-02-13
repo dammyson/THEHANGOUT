@@ -294,7 +294,8 @@ const styles = StyleSheet.create({
         borderColor: 'red',
         borderBottomWidth: 2,
         alignItems: 'center',
-        paddingRight: 15
+        paddingRight: 15,
+        height:50,
     },
     menu: {
         flex: 1,

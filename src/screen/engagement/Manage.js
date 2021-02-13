@@ -85,7 +85,7 @@ export default class Manage extends Component {
                 index: 0,
                 routes: [{ name: 'intro' }],
               }); 
-                }, 2000);
+                }, 1000);
           
             return true;
         }

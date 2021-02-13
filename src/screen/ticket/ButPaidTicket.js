@@ -466,7 +466,7 @@ export default class BuyPaidTicket extends Component {
                                 autoCapitalize="none"
                                 autoCorrect={false}
                                 inlineImageLeft='ios-call'
-                                style={{ flex: 1, fontSize: 12 }}
+                                style={{ flex: 1, fontSize: 12, marginLeft: 10 }}
                                 onChangeText={text => this.onChangeText(text, i, 'fname', 1)}
                             />
 
@@ -484,7 +484,7 @@ export default class BuyPaidTicket extends Component {
                                 autoCapitalize="none"
                                 autoCorrect={false}
                                 inlineImageLeft='ios-call'
-                                style={{ flex: 1, fontSize: 12 }}
+                                style={{ flex: 1, fontSize: 12, marginLeft: 10 }}
                                 onChangeText={text => this.onChangeText(text, i, 'lname', 2)}
 
                             />
@@ -502,7 +502,7 @@ export default class BuyPaidTicket extends Component {
                                 autoCapitalize="none"
                                 autoCorrect={false}
                                 inlineImageLeft='ios-call'
-                                style={{ flex: 1, fontSize: 12 }}
+                                style={{ flex: 1, fontSize: 12, marginLeft: 10 }}
                                 onChangeText={text => this.onChangeText(text, i, 'phone', 3)}
                             />
 
@@ -515,12 +515,11 @@ export default class BuyPaidTicket extends Component {
                                 placeholder="Email"
                                 placeholderTextColor={'#bbb'}
                                 returnKeyType="next"
-
                                 keyboardType='email-address'
                                 autoCapitalize="none"
                                 autoCorrect={false}
                                 inlineImageLeft='ios-call'
-                                style={{ flex: 1, fontSize: 12 }}
+                                style={{ flex: 1, fontSize: 12, marginLeft: 10 }}
                                 onChangeText={text => this.onChangeText(text, i, 'email', 4)}
                             />
 
@@ -740,30 +739,6 @@ const styles = StyleSheet.create({
         margin: 20,
         backgroundColor: '#808080',
 
-    },
-
-});
-
-const pickerSelectStyles = StyleSheet.create({
-    inputIOS: {
-        fontSize: 12,
-        paddingVertical: 12,
-        paddingHorizontal: 10,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 4,
-        color: 'black',
-        paddingRight: 30,
-        fontFamily: 'NunitoSans-Bold', // to ensure the text is never behind the icon
-    },
-    inputAndroid: {
-        fontSize: 12,
-        paddingHorizontal: 10,
-        paddingVertical: 2,
-        borderRadius: 8,
-        color: '#fff',
-        paddingRight: 30,
-        fontFamily: 'NunitoSans-Bold', // to ensure the text is never behind the icon
     },
 
 });
