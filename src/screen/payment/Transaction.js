@@ -170,7 +170,6 @@ export default class Transaction extends Component {
                             </View>
 
                             <View style={{ marginTop: 15 }}>
-
                                 <FlatList
                                     style={{ paddingBottom: 5 }}
                                     data={this.state.details}
