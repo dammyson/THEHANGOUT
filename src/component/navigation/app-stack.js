@@ -68,7 +68,7 @@ import ClubDetails from '../../screen/merchant/ClubDetails';
 import OrgDetails from '../../screen/organizer/Details';
 import ScanTicket from '../../screen/ticket/ScanTicket';
 import ScanQRcodeTicket from '../../screen/ticket/ScanQRcodeTicket';
-//console.disableYellowBox = true;
+console.disableYellowBox = true;
 
 class AppStack extends Component {
 
@@ -80,12 +80,12 @@ class AppStack extends Component {
 
           <Stack.Navigator
             screenOptions={{
-              gestureEnabled: false,
+              gestureEnabled: true,
               headerTintColor: 'white',
               headerStyle: { backgroundColor: '#7862ff' },
               headerShown: false,
             }}
-            initialRouteName="events">
+            initialRouteName="Splash">
 
             <Stack.Screen name="Splash" component={Splash} />
             <Stack.Screen name="sorting" component={Sorting} />

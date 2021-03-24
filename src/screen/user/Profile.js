@@ -10,13 +10,13 @@ import {
 
 import color from '../../component/color';
 import Modal, { ModalContent } from 'react-native-modals';
-import {getUser, getData } from '../../component/utilities';
+import { getUser, getData } from '../../component/utilities';
 import Navbar from '../../component/Navbar';
 import {
     GoogleSignin,
     GoogleSigninButton,
     statusCodes,
-  } from '@react-native-community/google-signin';
+} from '@react-native-community/google-signin';
 
 export default class Profile extends Component {
     constructor(props) {
@@ -25,14 +25,14 @@ export default class Profile extends Component {
             data: '',
             user: '',
             visible_log_merchant: false,
-            social:''
+            social: ''
 
         };
     }
 
 
-  async  componentWillMount() {
-    console.warn(JSON.parse(await getUser()))
+    async componentWillMount() {
+        console.warn(JSON.parse(await getUser()))
         this.setState({
             data: JSON.parse(await getData()),
             user: JSON.parse(await getUser()),
@@ -50,52 +50,52 @@ export default class Profile extends Component {
             scopes: ['https://www.googleapis.com/auth/drive.readonly'],
             // Repleace with your webClientId generated from Firebase console
             webClientId: '823628556250-7nebjfacok8lcef9brdfe7j69i6u9uc1.apps.googleusercontent.com',
-          });
+        });
 
     }
- 
 
-    handleLogout(){
+
+    handleLogout() {
         this.setState({ visible_log_merchant: false })
-        if(this.state.social){
+        if (this.state.social) {
             this.signOut()
-        }else{
+        } else {
             this.logOut()
         }
-       
+
     }
 
     signOut = async () => {
         try {
-          await GoogleSignin.revokeAccess();
-          await GoogleSignin.signOut();
-         this.logOut()
+            await GoogleSignin.revokeAccess();
+            await GoogleSignin.signOut();
+            this.logOut()
         } catch (error) {
-          console.error(error);
+            console.error(error);
         }
-      };
+    };
 
 
-    logOut(){
+    logOut() {
         this.setState({ visible_log_merchant: false })
         try {
-           AsyncStorage.removeItem('login');
-           AsyncStorage.removeItem('data');
-           AsyncStorage.removeItem('bal');
-           AsyncStorage.removeItem('user');
-           setTimeout(() => {
-            this.props.navigation.reset({
-                index: 0,
-                routes: [{ name: 'intro' }],
-              }); 
-                }, 2000);
-          
+            AsyncStorage.removeItem('login');
+            AsyncStorage.removeItem('data');
+            AsyncStorage.removeItem('bal');
+            AsyncStorage.removeItem('user');
+            setTimeout(() => {
+                this.props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'intro' }],
+                });
+            }, 1000);
+
             return true;
         }
-        catch(exception) {
+        catch (exception) {
             return false;
         }
-   
+
     }
 
     render() {
@@ -106,7 +106,7 @@ export default class Profile extends Component {
                     <Avatar
                         rounded
                         source={{
-                            uri:user.profilePicture,
+                            uri: user.profilePicture,
                         }}
                     />
                 </Button>
@@ -182,7 +182,7 @@ export default class Profile extends Component {
                             </View>
 */}
                             <View style={{ marginTop: 20 }}>
-                                <TouchableOpacity onPress={()=> this.props.navigation.navigate('update_user')} style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('update_user')} style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
                                     <Avatar
                                         rounded
                                         size="small"
@@ -235,7 +235,7 @@ export default class Profile extends Component {
 
 
                             <View>
-                                <TouchableOpacity  onPress={() => this.props.navigation.navigate('transaction')} style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, marginTop:20 }}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('transaction')} style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, marginTop: 20 }}>
                                     <Avatar
                                         rounded
                                         size="small"
@@ -263,7 +263,7 @@ export default class Profile extends Component {
 
 
                             <View style={{ marginTop: 20 }}>
-                                <TouchableOpacity onPress={() => this.setState({ visible_log_merchant: true })}  style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
+                                <TouchableOpacity onPress={() => this.setState({ visible_log_merchant: true })} style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 20, marginLeft: 20, }}>
                                     <Avatar
                                         rounded
                                         size="small"
@@ -318,39 +318,39 @@ export default class Profile extends Component {
                     </View>
 
                     <Modal
-          visible={this.state.visible_log_merchant}
-        >
-          <ModalContent style={styles.modal}>
-            <View>
+                        visible={this.state.visible_log_merchant}
+                    >
+                        <ModalContent style={styles.modal}>
+                            <View>
 
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingTop: 1, paddingBottom: 10 }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingTop: 1, paddingBottom: 10 }}>
 
-              </View>
-              <View style={styles.delavartar}>
-                <Avatar
-                  size="large"
-                  icon={{ name: 'log-out', type: 'feather', color: '#FFF' }}
-                  overlayContainerStyle={{ backgroundColor: '#0974ed' }}
-                    onPress={() => console.log("Works!")}
-                    activeOpacity={0.7}
-                    containerStyle={{}}
-                />
-              </View>
+                                </View>
+                                <View style={styles.delavartar}>
+                                    <Avatar
+                                        size="large"
+                                        icon={{ name: 'log-out', type: 'feather', color: '#FFF' }}
+                                        overlayContainerStyle={{ backgroundColor: '#0974ed' }}
+                                        onPress={() => console.log("Works!")}
+                                        activeOpacity={0.7}
+                                        containerStyle={{}}
+                                    />
+                                </View>
 
 
-              <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 17, textAlign: 'center', paddingBottom: 10, marginTop: 25, }}>Leaving so soon ?</Text>
-              <View style={{ flexDirection: 'row', justifyContent:'center' }}>
-                <Button onPress={() => this.handleLogout()} style={styles.modalbuttonContainer} block iconLeft>
-                  <Text style={{ color: '#fdfdfd', fontWeight: '400' }}>Yes </Text>
-                </Button>
-                <Button onPress={() => this.setState({ visible_log_merchant: false })}  style={styles.modalTansButtonContainer} block iconLeft>
-                  <Text style={{ color: color.button_blue, fontWeight: '400' }}>No </Text>
-                </Button>
-              </View>
+                                <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 17, textAlign: 'center', paddingBottom: 10, marginTop: 25, }}>Leaving so soon ?</Text>
+                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                    <Button onPress={() => this.handleLogout()} style={styles.modalbuttonContainer} block iconLeft>
+                                        <Text style={{ color: '#fdfdfd', fontWeight: '400' }}>Yes </Text>
+                                    </Button>
+                                    <Button onPress={() => this.setState({ visible_log_merchant: false })} style={styles.modalTansButtonContainer} block iconLeft>
+                                        <Text style={{ color: color.button_blue, fontWeight: '400' }}>No </Text>
+                                    </Button>
+                                </View>
 
-            </View>
-          </ModalContent>
-        </Modal>
+                            </View>
+                        </ModalContent>
+                    </Modal>
                 </Content>
             </Container>
         );
@@ -397,35 +397,35 @@ const styles = StyleSheet.create({
     },
     modal: {
         width: Dimensions.get('window').width - 60,
-      
-      },
-      modalbuttonContainer: {
+
+    },
+    modalbuttonContainer: {
         backgroundColor: color.slide_color_dark,
         marginLeft: 10,
         marginRight: 10,
         borderRadius: 15,
         marginTop: 15,
         marginBottom: 30,
-        flex:1
-      },
-      modalTansButtonContainer: {
-       borderColor: color.button_blue,
-       borderWidth:1,
+        flex: 1
+    },
+    modalTansButtonContainer: {
+        borderColor: color.button_blue,
+        borderWidth: 1,
         marginLeft: 10,
         marginRight: 10,
         borderRadius: 15,
         marginTop: 15,
         marginBottom: 30,
-        backgroundColor:'transparent',
-        flex:1
-      },
-      
-      borderStyleHighLighted: {
+        backgroundColor: 'transparent',
+        flex: 1
+    },
+
+    borderStyleHighLighted: {
         borderColor: "red",
-      },
-      delavartar: {
+    },
+    delavartar: {
         justifyContent: 'center',
         alignItems: 'center',
         margin: 10,
-      },
+    },
 });

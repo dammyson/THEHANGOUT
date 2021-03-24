@@ -9,39 +9,52 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
 import { Header, Body, Title, Left, Right, Icon } from 'native-base';
-
+import { View, Text, TouchableOpacity } from 'react-native';
 // Our custom files and classes import
 
 import colors from '../component/color';
 
 export default class Navbar extends Component {
   render() {
+    const { title, left, right, bg } = this.props
     return(
-      <Header
-        style={{backgroundColor: this.props.bg}}
-        androidStatusBarColor= "#101023"
-        noShadow={true}
-        >
-        {this.props.left ? this.props.left : <Left style={{flex: 1}} />}
-        <Body style={styles.body}>
-          <Title style={styles.title}>{this.props.title}</Title>
-        </Body>
-        {this.props.right ? this.props.right : <Right style={{flex: 1}} />}
-      </Header>
+      <View style={{ backgroundColor: bg }}>
+        <View style={styles.header}>
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginRight: 15,
+            marginLeft: 15,
+          }}>
+            {left}
+            <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start', flex:1 }}>
+              <Text style={styles.title}>{title}</Text>
+            </View>
+
+            {right}
+          </View>
+        </View>
+      </View>
     );
   }
 }
 
-const styles={
-  body: {
-    flex:1,
-    justifyContent: 'center',
-    alignItems: 'center'
+const styles = {
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 80,
   },
   title: {
-    fontSize: 15,
-    color: colors.white,
+    marginTop: 2,
+    marginBottom: 2,
+    marginRight: 13,
+    marginLeft: 20,
+    fontSize: 18,
+    color: '#FFF',
+    textAlign: 'center',
+    fontWeight: '400',
     fontFamily: 'NunitoSans-Bold'
-  }
+  },
 };
 

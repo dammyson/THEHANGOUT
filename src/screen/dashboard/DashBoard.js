@@ -285,6 +285,8 @@ export default class Dashboard extends Component {
                 <Content>
                     <View style={styles.container}>
                         <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
+
+                        {/** 
                         <View style={styles.header}>
                             <View style={styles.item}>
                                 <Icon active name="enviroment" type='antdesign' color='red'
@@ -302,6 +304,8 @@ export default class Dashboard extends Component {
 
                             </View>
                         </View>
+                        */}
+                        <View style={{height: 15}} />
                         <View style={styles.header}>
                             <Carousel
                                 ref={(c) => { this._carousel = c; }}
@@ -393,7 +397,8 @@ export default class Dashboard extends Component {
 
     goTopage(data){
         this.setState({ view_create: false })
-        if(data == 'events'){
+        this.props.navigation.navigate(data)
+       /* if(data == 'events'){
             this.props.navigation.navigate(data)
         }else{
             Toast.show({
@@ -403,7 +408,7 @@ export default class Dashboard extends Component {
                 buttonText: 'Dismiss',
                 duration: 3000
             });
-        }
+        }*/
        
     }
 }

@@ -130,8 +130,6 @@ export default class SelectAddress extends Component {
                 <Content>
                     <View style={styles.container}>
 
-
-
                         {this.renderUpcomming()}
 
                     </View>
@@ -175,8 +173,6 @@ export default class SelectAddress extends Component {
                 </View>
 
             
-
-
                 <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                     <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 10, }}>
                         <TouchableOpacity onPress={() => this.processAddOn()} style={styles.enablebutton} block iconLeft>
@@ -220,6 +216,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.6,
         alignItems: 'center',
         marginRight: 30,
+        height: 50
 
     },
     menu: {
@@ -266,24 +263,3 @@ const styles = StyleSheet.create({
     }
 });
 
-const pickerSelectStyles = StyleSheet.create({
-    inputIOS: {
-        fontSize: 16,
-        paddingVertical: 12,
-        paddingHorizontal: 10,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 4,
-        color: 'black',
-        paddingRight: 30, // to ensure the text is never behind the icon
-    },
-    inputAndroid: {
-        fontSize: 16,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        borderRadius: 8,
-        color: '#fff',
-        paddingRight: 30, // to ensure the text is never behind the icon
-    },
-
-});

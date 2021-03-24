@@ -414,7 +414,7 @@ export default class EventDetails extends Component {
               </ScrollView>
             </View>
 
-            <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#111123', flexDirection: 'row', height: 50, }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#000', flexDirection: 'row', height: 50, }}>
               <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, flexDirection: 'row' }}>
                 <Icon
                   active

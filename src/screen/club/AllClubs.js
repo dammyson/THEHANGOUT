@@ -64,7 +64,7 @@ export default class Dashboard extends Component {
     getEventsRequest() {
         const { data, user } = this.state
 
-
+        console.warn(URL.url + 'clubs');
         fetch(URL.url + 'clubs', {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ export default class Dashboard extends Component {
         })
             .then(res => res.json())
             .then(res => {
-                console.warn(res.data.trending);
+                console.warn(res.status);
                 if (res.status) {
                     this.setState({
                         dataone: res.data.trending,
@@ -82,8 +82,9 @@ export default class Dashboard extends Component {
                         loading: false
                     })
                 } else {
+                    console.warn(res.status);
                     this.setState({
-                        nodate: true,
+                        nodata: true,
                         loading: false
                     })
                 }
@@ -177,7 +178,7 @@ export default class Dashboard extends Component {
                 <ImageBackground
                     opacity={0.5}
                     style={{ borderRadius: 12 }}
-                    source={{ uri: item.imageUrl}}
+                    source={{ uri: item.imageUrl }}
                     imageStyle={{ borderRadius: 20, backgroundColor: 'blue' }}
                 >
                     <View style={styles.details} >
@@ -203,7 +204,7 @@ export default class Dashboard extends Component {
                                 <Text style={styles.price}>{item.category}</Text>
                             </View>
 
-                           
+
 
                         </View>
 
@@ -217,7 +218,7 @@ export default class Dashboard extends Component {
     goToMore(params) {
         this.props.navigation.navigate('moreC', { prams: params })
     }
-  
+
     renderTrending() {
         const { slider1ActiveSlide } = this.state;
         return (
@@ -249,33 +250,17 @@ export default class Dashboard extends Component {
         this.setState({ selected: data })
     }
     render() {
-        if (this.state.loading) {
-            return (
-                <ActivityIndicator message={'Fetching clubs '}  color={color.club_color}  />
-            );
-        }
-
-        if (this.state.nodata) {
-            return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
-                    <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>No Club at the moment </Text>
-                    </View>
-                </View>
-            );
-        }
-
         var left = (
             <Left style={{ flex: 1 }}>
-               <Button transparent onPress={() =>  this.props.navigation.reset({
-                      index: 0,
-                      routes: [{ name: 'home' }],
-                    })}>
-            <View style={{ transform:[{ rotateY: "180deg"}]}}>
-                <Icon  type='material-icons' name='exit-to-app' size={30} color='#FFF' />
+                <Button transparent onPress={() => this.props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'home' }],
+                })}>
+                    <View style={{ transform: [{ rotateY: "180deg" }] }}>
+                        <Icon type='material-icons' name='exit-to-app' size={30} color='#FFF' />
 
                     </View>
-            </Button>
+                </Button>
             </Left>
         );
         var right = (
@@ -291,14 +276,38 @@ export default class Dashboard extends Component {
             </Right>
         );
 
+        if (this.state.loading) {
+            return (
+                <ActivityIndicator message={'Fetching clubs '} color={color.club_color} />
+            );
+        }
+
+        if (this.state.nodata) {
+            return (
+                <Container style={{ backgroundColor: color.secondary_color }}>
+                    <StatusBar backgroundColor='#101023' barStyle="light-content" />
+                    <Navbar left={left} right={right} title="Clubs" bg='#101023' />
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
+
+                        <View style={styles.welcome}>
+                            <Text style={{ fontSize: 15, color: '#fff' }}>No Club at the moment </Text>
+                        </View>
+                    </View>
+                </Container>
+            );
+        }
+
+       
         return (
             <Container style={{ backgroundColor: color.secondary_color }}>
-                  <StatusBar backgroundColor='#101023' barStyle="light-content" />
+                <StatusBar backgroundColor='#101023' barStyle="light-content" />
                 <Navbar left={left} right={right} title="Clubs/Lounges" bg='#101023' />
                 <Content>
                     <View style={styles.container}>
                         <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
                         <View style={styles.header}>
+
+                            {/** 
                             <View style={styles.item}>
                                 <Icon active name="enviroment" type='antdesign' color='red'
                                 />
@@ -315,9 +324,10 @@ export default class Dashboard extends Component {
                                 />
 
                             </View>
+                            */}
 
                             <View style={{ marginLeft: 10, marginRight: 7, flexDirection: 'row', alignItems: 'center' }}>
-                               {this.state.dataone.length > 0?  <Text style={styles.titleText}>HAPPENING</Text>:<View style={{flex: 1}} />} 
+                                {this.state.dataone.length > 0 ? <Text style={styles.titleText}>HAPPENING</Text> : <View style={{ flex: 1 }} />}
                                 <TouchableOpacity onPress={() => this.goToMore('eventListing/Trending/50')} style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
                                     <Text style={{ fontSize: 12, color: color.club_color }}>Full List </Text>
                                     <Icon
@@ -331,7 +341,7 @@ export default class Dashboard extends Component {
 
 
                         {this.renderTrending()}
-                        <View style={{ marginLeft: 10, marginRight: 7, marginBottom: 15,  marginTop: 25, flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ marginLeft: 10, marginRight: 7, marginBottom: 15, marginTop: 25, flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.titleText}>UPCOMING</Text>
                         </View>
 
@@ -354,13 +364,13 @@ export default class Dashboard extends Component {
             items.push(
                 <View>
                     <View style={styles.upcomingContainer}>
-                      
+
                         <View style={{ flex: 1, }}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('clubD', { id: item.id })}>
                                 <ImageBackground
                                     opacity={0.5}
                                     style={{ borderRadius: 12, flex: 1, margin: 10, marginTop: 0 }}
-                                    source={{ uri: item.imageUrl}}
+                                    source={{ uri: item.imageUrl }}
                                     imageStyle={{ borderRadius: 20, backgroundColor: 'blue' }}
                                 >
                                     <View style={styles.details} >
