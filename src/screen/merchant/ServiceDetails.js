@@ -50,6 +50,7 @@ export default class ServiceDetails extends Component {
 
     async componentDidMount() {
         const { id } = this.props.route.params;
+        
         this.setState({ id: id });
         this.setState({
             data: JSON.parse(await getData()),
@@ -157,6 +158,46 @@ export default class ServiceDetails extends Component {
 
     }
 
+    onStopTickerSales(){
+        const { details, data } = this.state
+        this.setState({
+            loading: true,
+        })
+
+        fetch(URL.url + 'events/stop?eventId='+details.id+'&isStop=false', {
+            method: 'GET', headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Authorization': 'Bearer ' + data.token,
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.warn(res);
+                this.setState({ loading: false })
+                if (res.status) {
+                    Alert.alert(
+                        'Process Successfull',
+                        'Event was stoped, click ok to go back',
+                        [
+                            { text: 'Cancel', onPress: () => console.warn('no action')},
+                            { text: 'OK', onPress: () => this.goBack() },
+                        ],
+                        { cancelable: false }
+                    )
+                } else {
+                    Alert.alert('Process Failed', "Event was not stoped", [{ text: 'Okay' }])
+                }
+            })
+            .catch(error => {
+                this.setState({ loading: false })
+                alert(error.message);
+                console.warn(error);
+
+            });
+
+    }
+
     goBack() {
         const { goBack } = this.props.navigation;
         goBack(null)
@@ -257,8 +298,8 @@ export default class ServiceDetails extends Component {
                                 </View>
                             </View>
                             <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 15, justifyContent: 'center' }}>
-                                <TouchableOpacity style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'red' }}>
-                                    <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: 'red' }}>Stop Ticket Sale</Text>
+                                <TouchableOpacity onPress={()=> this.onStopTickerSales()} style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'red' }}>
+                                    <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: 'red' }}>Stop Event</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

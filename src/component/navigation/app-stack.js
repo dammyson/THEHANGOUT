@@ -68,7 +68,7 @@ import ClubDetails from '../../screen/merchant/ClubDetails';
 import OrgDetails from '../../screen/organizer/Details';
 import ScanTicket from '../../screen/ticket/ScanTicket';
 import ScanQRcodeTicket from '../../screen/ticket/ScanQRcodeTicket';
-console.disableYellowBox = true;
+//console.disableYellowBox = true;
 
 class AppStack extends Component {
 
