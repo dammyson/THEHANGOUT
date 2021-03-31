@@ -143,7 +143,6 @@ export default class Dashboard extends Component {
         return (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('place_order', { restaurant: item.restaurant, res_id: item.restaurantId, menu_id: item.menuId, })}  >
                 <ImageBackground
-                    opacity={0.5}
                     style={{ borderRadius: 12 }}
                     source={{ uri: item.bannerUrl }}
                     imageStyle={{ borderRadius: 5, backgroundColor: 'blue' }}

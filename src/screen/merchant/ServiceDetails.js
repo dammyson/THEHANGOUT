@@ -34,6 +34,8 @@ export default class ServiceDetails extends Component {
             details: {},
             bal: 0,
             id: '',
+            action:'',
+            indicator_message:'Fetching all your goodies'
         };
     }
 
@@ -158,13 +160,14 @@ export default class ServiceDetails extends Component {
 
     }
 
-    onStopTickerSales(){
-        const { details, data } = this.state
+    onStopTickerSales(action){
+        const { details, data,  } = this.state
         this.setState({
             loading: true,
+            indicator_message:'Processing'
         })
 
-        fetch(URL.url + 'events/stop?eventId='+details.id+'&isStop=false', {
+        fetch(URL.url + 'events/'+action+'?eventId='+details.id+'&isStop=false', {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -177,7 +180,7 @@ export default class ServiceDetails extends Component {
                 this.setState({ loading: false })
                 if (res.status) {
                     Alert.alert(
-                        'Process Successfull',
+                        'Process Successful',
                         'Event was stoped, click ok to go back',
                         [
                             { text: 'Cancel', onPress: () => console.warn('no action')},
@@ -211,7 +214,7 @@ export default class ServiceDetails extends Component {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>Fetching all your goodies</Text>
+                        <Text style={{ fontSize: 15, color: '#fff' }}>{this.state.indicator_message}</Text>
                         <BarIndicator count={4} color={color.primary_color} />
                         <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
                     </View>
@@ -297,11 +300,18 @@ export default class ServiceDetails extends Component {
                                     <Text style={{ color: '#fff', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', marginTop: 10 }}>{details.dashboard.ticketsLeft}</Text>
                                 </View>
                             </View>
+
                             <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 15, justifyContent: 'center' }}>
-                                <TouchableOpacity onPress={()=> this.onStopTickerSales()} style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'red' }}>
+                                { details.isActive ?
+                                <TouchableOpacity onPress={()=> this.onStopTickerSales('stop')} style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'red' }}>
                                     <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: 'red' }}>Stop Event</Text>
                                 </TouchableOpacity>
+:
+                                <TouchableOpacity onPress={()=> this.onStopTickerSales('start')} style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'green' }}>
+                                    <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: 'green' }}>Start Event</Text>
+                                </TouchableOpacity>}
                             </View>
+
                         </View>
                         {this.state.agent_list.length ?
                             <View style={{ marginLeft: 25, marginRight: 7, marginTop: 10, alignItems: 'flex-start' }}>
