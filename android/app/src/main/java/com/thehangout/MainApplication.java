@@ -1,4 +1,4 @@
-package com.hangout;
+package com.thehangout;
 
 import android.app.Application;
 import android.content.Context;

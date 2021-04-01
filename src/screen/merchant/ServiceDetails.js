@@ -167,7 +167,7 @@ export default class ServiceDetails extends Component {
             indicator_message:'Processing'
         })
 
-        fetch(URL.url + 'events/'+action+'?eventId='+details.id+'&isStop=false', {
+        fetch(URL.url + 'events/stop?eventId='+details.id+'&isStop='+action, {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -179,15 +179,29 @@ export default class ServiceDetails extends Component {
                 console.warn(res);
                 this.setState({ loading: false })
                 if (res.status) {
+                    if(action == 'true'){
+                        Alert.alert(
+                            'Process Successful',
+                            'Event was stoped, click ok to go back',
+                            [
+                                { text: 'Cancel', onPress: () => console.warn('no action')},
+                                { text: 'OK', onPress: () => this.goBack() },
+                            ],
+                            { cancelable: false }
+                        )
+                    }
+                    else {
                     Alert.alert(
                         'Process Successful',
-                        'Event was stoped, click ok to go back',
+                        'Event is now active, click ok to go back',
                         [
                             { text: 'Cancel', onPress: () => console.warn('no action')},
                             { text: 'OK', onPress: () => this.goBack() },
                         ],
                         { cancelable: false }
                     )
+                }
+
                 } else {
                     Alert.alert('Process Failed', "Event was not stoped", [{ text: 'Okay' }])
                 }
@@ -303,11 +317,11 @@ export default class ServiceDetails extends Component {
 
                             <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 15, justifyContent: 'center' }}>
                                 { details.isActive ?
-                                <TouchableOpacity onPress={()=> this.onStopTickerSales('stop')} style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'red' }}>
+                                <TouchableOpacity onPress={()=> this.onStopTickerSales('true')} style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'red' }}>
                                     <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: 'red' }}>Stop Event</Text>
                                 </TouchableOpacity>
 :
-                                <TouchableOpacity onPress={()=> this.onStopTickerSales('start')} style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'green' }}>
+                                <TouchableOpacity onPress={()=> this.onStopTickerSales('false')} style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'green' }}>
                                     <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: 'green' }}>Start Event</Text>
                                 </TouchableOpacity>}
                             </View>

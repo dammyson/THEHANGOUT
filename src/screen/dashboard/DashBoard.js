@@ -181,7 +181,6 @@ export default class Dashboard extends Component {
         return (
             <TouchableOpacity onPress={() => this.getDetails(item)} >
                 <ImageBackground
-                    opacity={0.5}
                     style={{ borderRadius: 12 }}
                     source={{ uri: item.bannerUrl }}
                     imageStyle={{ borderRadius: 20, backgroundColor: 'blue' }}
