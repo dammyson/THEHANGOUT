@@ -68,6 +68,8 @@ import ClubDetails from '../../screen/merchant/ClubDetails';
 import OrgDetails from '../../screen/organizer/Details';
 import ScanTicket from '../../screen/ticket/ScanTicket';
 import ScanQRcodeTicket from '../../screen/ticket/ScanQRcodeTicket';
+
+import Strange from '../../screen/user/Strange';
 //console.disableYellowBox = true;
 
 class AppStack extends Component {
@@ -102,7 +104,7 @@ class AppStack extends Component {
             <Stack.Screen name='glogin' component={Glogin} />
             <Stack.Screen name='events' component={Events} />
             <Stack.Screen name='createevent' component={CreateEvent} />
-            <Stack.Screen name='test' component={test} />
+            <Stack.Screen name='test' component={Strange} />
             <Stack.Screen name='creatorganizer' component={CreatOrganizer} />
             <Stack.Screen name='organizer_details' component={OrgDetails} />
             <Stack.Screen name='freeT' component={FreeTicket} />

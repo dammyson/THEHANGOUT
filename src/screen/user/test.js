@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, ScrollView, Alert,
   Image, TouchableOpacity, NativeModules, Dimensions
 } from 'react-native';
-
+import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication';
 
 import RNPickerSelect from 'react-native-picker-select';
 var ImagePicker = NativeModules.ImageCropPicker;
@@ -226,7 +226,17 @@ export default class test extends Component {
           <Text style={styles.text}>Select Single With Cropping</Text>
         </TouchableOpacity>
 
-
+        <View>
+      <AppleButton
+        buttonStyle={AppleButton.Style.WHITE}
+        buttonType={AppleButton.Type.SIGN_IN}
+        style={{
+          width: 160, // You must specify a width
+          height: 45, // You must specify a height
+        }}
+        onPress={() => onAppleButtonPress()}
+      />
+    </View>
 
       </View>);
   }
