@@ -48,30 +48,16 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>The Hangout would like to access your Music</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>The Hangout would like to access your Bluetooth</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>The Hangout would like to access your Bluetooth</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>The Hangout would like to access your calender</string>
+	
+
 	<key>NSCameraUsageDescription</key>
-	<string>App requires access to your camera to allow you take a photo of your ID to process your request</string>
-	<key>NSContactsUsageDescription</key>
-	<string>The Hangout would you like to access your contact</string>
+	<string>App requires access to your camera to allow you take a photo to upload your profile photo and other pictures</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>The Hangout would like to access your Location</string>
+	<string>The Hangout would like to access your Location to show you location proximity to event locations</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>The Hangout would like to access your Location</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Your message to user when the microsphone is accessed for the first time</string>
-	<key>NSMotionUsageDescription</key>
-	<string>The Hangout would like to access your MotionDectector</string>
+	<string>he Hangout would like to access your Location to show you location proximity to event locations</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Your message to user when the photo library is accessed for the first time</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>The Hangout would like to access your SpeechRecognition</string>
+	<string>The Hangout requires access to the photo library to upload your profile photo. and other pictures</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

@@ -232,7 +232,7 @@ export default class Login extends Component {
       }
 
       console.warn(`Apple Authentication Completed, ${this.user}, ${email}`);
-      this._signInRequest(email, email, true);
+      this._signInRequest(this.user, this.user, true);
     } catch (error) {
       if (error.code === appleAuth.Error.CANCELED) {
         console.warn('User canceled Apple Sign in.');
@@ -247,6 +247,7 @@ export default class Login extends Component {
       this.setState({ credentialStateForUser: 'N/A' });
     } else {
       const credentialState = await appleAuth.getCredentialStateForUser(this.user);
+      console.warn(credentialState)
       if (credentialState === appleAuth.State.AUTHORIZED) {
         this.setState({ credentialStateForUser: 'AUTHORIZED' });
       } else {
