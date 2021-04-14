@@ -48,8 +48,6 @@
 			</dict>
 		</dict>
 	</dict>
-	
-
 	<key>NSCameraUsageDescription</key>
 	<string>App requires access to your camera to allow you take a photo to upload your profile photo and other pictures</string>
 	<key>NSLocationAlwaysUsageDescription</key>
