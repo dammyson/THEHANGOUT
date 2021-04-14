@@ -16,6 +16,8 @@ import { Base64 } from 'js-base64';
 
 import Navbar from '../../component/Navbar';
 import Balance from "../../component/views/Balance";
+import ActivityIndicator from "../../component/views/ActivityIndicator";
+import IsGuest from "../../component/views/IsGuest";
 
 const type = [
     {
@@ -37,6 +39,7 @@ export default class ManagementPayment extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            is_guest: true,
             loading: false,
             data: '',
             name: '',
@@ -61,8 +64,7 @@ export default class ManagementPayment extends Component {
     }
 
 
-
-    componentDidMount() {
+    async componentDidMount() {
 
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
@@ -163,15 +165,20 @@ export default class ManagementPayment extends Component {
                 </Button>
             </Right>
         );
+
+        if (this.state.is_guest) {
+            return (
+                <IsGuest onPress={()=>  this.props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'intro' }],
+                })} />
+            );
+        }
         if (this.state.loading) {
             return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
-                    <View style={styles.welcome}>
-                        <Text style={{ fontSize: 12, color: '#fff' }}>Processing details </Text>
-                        <BarIndicator count={4} color={color.primary_color} />
-                        <Text style={{ fontSize: 10, flex: 1, color: '#fff', opacity: 0.6 }}>Please wait...</Text>
-                    </View>
-                </View>
+
+
+                <ActivityIndicator message={'Processing details '} color={color.primary_color} />
             );
         }
 

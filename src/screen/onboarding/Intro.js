@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Image, StyleSheet, View, Dimensions, TouchableOpacity, ImageBackground } from 'react-native';
+import { Image, StyleSheet, View, Dimensions, TouchableOpacity,StatusBar, ImageBackground } from 'react-native';
 import { Container, Content, Text, Icon, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col } from 'native-base';
 import { Icon as Fil } from 'react-native-elements'
 import {
@@ -72,6 +72,7 @@ export default class Intro extends Component {
                 resizeMode="cover"
             >
                 <Container style={{ backgroundColor: 'transparent' }}>
+                <StatusBar barStyle="light-content" translucent hidden={false} backgroundColor="transparent" />
                     <Content>
                         <View style={styles.body}>
                             <View style={styles.top}>
@@ -110,11 +111,16 @@ export default class Intro extends Component {
                                     <Text style={{ color: color.primary_color, fontWeight: '600', fontSize: 20 }}>Or   </Text>
                                 </View>
 
-                                <TouchableOpacity onPress={() =>  this.props.navigation.navigate('login')}
+                                {/* <TouchableOpacity onPress={() =>  this.props.navigation.navigate('login')}
                                     style={styles.loginButtonContainer}
                                 >
                                     <Text style={{ color: color.primary_color, fontWeight: '300', fontFamily: 'NunitoSans-Bold', fontSize: 17 }}>LOGIN  </Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
+
+
+                                <Button onPress={() => this.props.navigation.navigate('home')} style={[styles.whiteButtonContainer]} block iconLeft>
+                                    <Text style={{ color:color.primary_color, fontWeight: '600', borderRadius: 3, }}>CONTINUE AS GUEST</Text>
+                                </Button>
                             </View>
 
                         </View>
@@ -150,11 +156,13 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     whiteButtonContainer: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#000',
         marginLeft: 20,
         marginRight: 20,
-        marginTop: 20,
-        borderRadius: 1,
+        marginTop: 5,
+        borderRadius: 5,
+        borderColor:color.primary_color,
+        borderWidth:1,
     },
     top: {
         flex: 1,

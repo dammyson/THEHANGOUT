@@ -327,16 +327,21 @@ export default class Register extends Component {
                 }
                 <View style={styles.inputContainer}>
                   <View style={styles.lineStyle} />
-                  <Text style={{ color: 'black', margin: 10, fontSize: 15, fontWeight: '200' }}>or</Text>
+                  <Text style={{ color: 'black', margin: 5, fontSize: 15, fontWeight: '200' }}>or</Text>
                   <View style={styles.lineStyle} />
                 </View>
                 <View style={{ justifyContent: 'center', alignItems: 'center', }}>
-                  <GoogleSigninButton
+                  {/* <GoogleSigninButton
                     style={{ width: 312, height: 48 }}
                     size={GoogleSigninButton.Size.Wide}
                     color={GoogleSigninButton.Color.Light}
                     onPress={this._signIn}
-                  />
+                  /> */}
+
+
+<Button onPress={() => this.props.navigation.navigate('login')} style={[styles.whiteButtonContainer]} block iconLeft>
+                                    <Text style={{ color:"#000", fontWeight: '600', borderRadius: 3, }}>Login</Text>
+                                </Button>
 
                 </View>
                 <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
@@ -421,7 +426,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     marginLeft: 20,
     marginRight: 20,
-    marginTop: 10,
+    marginTop: 5,
     borderRadius: 1,
   },
   top: {

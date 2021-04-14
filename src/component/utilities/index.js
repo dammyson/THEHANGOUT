@@ -24,3 +24,9 @@ export const getToken = async () => {
 
 
 
+export const getIsLogin = async () => {
+  return AsyncStorage.getItem('is_guest')
+};
+
+
+
