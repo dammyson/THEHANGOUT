@@ -33,7 +33,7 @@ export default class UpdateProfile extends Component {
             userName: '',
             phone: '',
             firstName: '',
-            lastname: '',
+            lastName: '',
             profilePicture: null,
 
         };
@@ -54,8 +54,8 @@ export default class UpdateProfile extends Component {
             userName: JSON.parse(await getUser()).userName,
             phone: JSON.parse(await getUser()).phone,
             firstName: JSON.parse(await getUser()).firstName,
-            lastname: JSON.parse(await getUser()).lastname,
-            profilePicture: JSON.parse(await getData()).user.profilePicture,
+            lastName: JSON.parse(await getUser()).lastname,
+            profilePicture: JSON.parse(await getUser()).profilePicture,
         })
     }
 
@@ -127,6 +127,7 @@ export default class UpdateProfile extends Component {
                 this.setState({
                     profilePicture: URL.img + responseJson.data.replace("Resources", "assets"),
                 });
+               this._updateProfilePictureRequest()
 
                 Toast.show({
                     text: 'Picture uploaded sucessfully !',
@@ -143,13 +144,42 @@ export default class UpdateProfile extends Component {
             });
 
     }
+    _updateProfilePictureRequest() {
+        const {  profilePicture, data } = this.state
+          
+        this.setState({ loading: true })
+        fetch(URL.url + 'users/', {
+            method: 'PUT', headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Authorization': 'Bearer ' + data.token,
+            }, body: JSON.stringify({
+                profilePicture: profilePicture
+            }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.warn(res);
+                if (res.status) {
+                    this.setState({ loading: false })
+                    AsyncStorage.setItem('user', JSON.stringify(res.user));
+                    Alert.alert('Success', 'Profile updated', [{ text: 'Okay' }])
+                } else {
+                    Alert.alert('Login failed', res.message, [{ text: 'Okay' }])
+                    this.setState({ loading: false })
+                }
+            }).catch((error) => {
+                this.setState({ loading: false })
+                console.warn(error);
+                alert(error.message);
+            });
 
-
+    }
 
     _updateProfileRequest() {
-        const { phone, lastname, firstName, profilePicture, data } = this.state
+        const { phone, lastName, firstName, profilePicture, data } = this.state
 
-        if ( phone =='' || lastname == "" || firstName == "" || profilePicture == "") {
+        if ( phone =='' || lastName == "" || firstName == "" || profilePicture == "") {
             Alert.alert('Validation failed', 'field(s) cannot be empty', [{ text: 'Okay' }])
             return
           }
@@ -164,8 +194,7 @@ export default class UpdateProfile extends Component {
             }, body: JSON.stringify({
                 phone:phone,
                 Firstname: firstName,
-                Lastname: lastname,
-                profilePicture: profilePicture
+                lastName: lastName,
             }),
         })
             .then(res => res.json())
@@ -339,7 +368,7 @@ export default class UpdateProfile extends Component {
                                         autoCorrect={false}
                                         style={styles.menu}
                                         defaultValue={this.state.firstName}
-                                        onChangeText={text => this.setState({ first_name: text })}
+                                        onChangeText={text => this.setState({ firstName: text })}
                                     />
                                 </View>
                             </View>
@@ -367,7 +396,7 @@ export default class UpdateProfile extends Component {
                                         autoCapitalize="none"
                                         autoCorrect={false}
                                         style={styles.menu}
-                                        defaultValue={this.state.lastname}
+                                        defaultValue={this.state.lastName}
                                         onChangeText={text => this.setState({ last_name: text })}
                                     />
                                 </View>

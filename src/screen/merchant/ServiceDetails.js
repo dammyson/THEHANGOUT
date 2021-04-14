@@ -34,6 +34,8 @@ export default class ServiceDetails extends Component {
             details: {},
             bal: 0,
             id: '',
+            action:'',
+            indicator_message:'Fetching all your goodies'
         };
     }
 
@@ -50,6 +52,7 @@ export default class ServiceDetails extends Component {
 
     async componentDidMount() {
         const { id } = this.props.route.params;
+        
         this.setState({ id: id });
         this.setState({
             data: JSON.parse(await getData()),
@@ -157,6 +160,61 @@ export default class ServiceDetails extends Component {
 
     }
 
+    onStopTickerSales(action){
+        const { details, data,  } = this.state
+        this.setState({
+            loading: true,
+            indicator_message:'Processing'
+        })
+
+        fetch(URL.url + 'events/stop?eventId='+details.id+'&isStop='+action, {
+            method: 'GET', headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Authorization': 'Bearer ' + data.token,
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.warn(res);
+                this.setState({ loading: false })
+                if (res.status) {
+                    if(action == 'true'){
+                        Alert.alert(
+                            'Process Successful',
+                            'Event was stoped, click ok to go back',
+                            [
+                                { text: 'Cancel', onPress: () => console.warn('no action')},
+                                { text: 'OK', onPress: () => this.goBack() },
+                            ],
+                            { cancelable: false }
+                        )
+                    }
+                    else {
+                    Alert.alert(
+                        'Process Successful',
+                        'Event is now active, click ok to go back',
+                        [
+                            { text: 'Cancel', onPress: () => console.warn('no action')},
+                            { text: 'OK', onPress: () => this.goBack() },
+                        ],
+                        { cancelable: false }
+                    )
+                }
+
+                } else {
+                    Alert.alert('Process Failed', "Event was not stoped", [{ text: 'Okay' }])
+                }
+            })
+            .catch(error => {
+                this.setState({ loading: false })
+                alert(error.message);
+                console.warn(error);
+
+            });
+
+    }
+
     goBack() {
         const { goBack } = this.props.navigation;
         goBack(null)
@@ -170,7 +228,7 @@ export default class ServiceDetails extends Component {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
-                        <Text style={{ fontSize: 15, color: '#fff' }}>Fetching all your goodies</Text>
+                        <Text style={{ fontSize: 15, color: '#fff' }}>{this.state.indicator_message}</Text>
                         <BarIndicator count={4} color={color.primary_color} />
                         <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
                     </View>
@@ -256,11 +314,18 @@ export default class ServiceDetails extends Component {
                                     <Text style={{ color: '#fff', fontSize: 16, fontWeight: '200', fontFamily: 'NunitoSans-Bold', marginTop: 10 }}>{details.dashboard.ticketsLeft}</Text>
                                 </View>
                             </View>
+
                             <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 15, justifyContent: 'center' }}>
-                                <TouchableOpacity style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'red' }}>
-                                    <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: 'red' }}>Stop Ticket Sale</Text>
+                                { details.isActive ?
+                                <TouchableOpacity onPress={()=> this.onStopTickerSales('true')} style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'red' }}>
+                                    <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: 'red' }}>Stop Event</Text>
                                 </TouchableOpacity>
+:
+                                <TouchableOpacity onPress={()=> this.onStopTickerSales('false')} style={{ margin: 30, alignItems: 'center', borderRadius: 7, borderWidth: 1, borderColor: 'green' }}>
+                                    <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: 'green' }}>Start Event</Text>
+                                </TouchableOpacity>}
                             </View>
+
                         </View>
                         {this.state.agent_list.length ?
                             <View style={{ marginLeft: 25, marginRight: 7, marginTop: 10, alignItems: 'flex-start' }}>

@@ -176,7 +176,7 @@ export default class Dashboard extends Component {
         return (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('eventD', { id: item.id })} >
                 <ImageBackground
-                    opacity={0.5}
+                    opacity={1}
                     style={{ borderRadius: 12 }}
                     source={{ uri: item.banner }}
                     imageStyle={{ borderRadius: 20, backgroundColor: 'blue' }}
@@ -252,7 +252,6 @@ export default class Dashboard extends Component {
         return (
             <View style={{ flexDirection: 'row', }}>
                 <ImageBackground
-                    opacity={0.5}
                     style={{ alignItems: 'flex-start', borderRadius: 3, margin: 8, flex: 1 }}
                     source={{ uri: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg' }}
                     imageStyle={{ borderRadius: 5, backgroundColor: color.secondary_color }}
@@ -273,7 +272,6 @@ export default class Dashboard extends Component {
                 </ImageBackground>
 
                 <ImageBackground
-                    opacity={0.5}
                     style={{ alignItems: 'flex-start', borderRadius: 3, margin: 5, flex: 1 }}
                     source={{ uri: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg' }}
                     imageStyle={{ borderRadius: 5, backgroundColor: color.secondary_color }}
@@ -292,7 +290,6 @@ export default class Dashboard extends Component {
                     </TouchableOpacity>
                 </ImageBackground>
                 <ImageBackground
-                    opacity={0.5}
                     style={{ alignItems: 'flex-start', borderRadius: 3, margin: 5, flex: 1 }}
                     source={{ uri: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg' }}
                     imageStyle={{ borderRadius: 5, backgroundColor: color.secondary_color }}

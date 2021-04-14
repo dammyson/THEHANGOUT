@@ -183,7 +183,6 @@ export default class Dashboard extends Component {
         return (
             <TouchableOpacity onPress={() => this.getDetails(item)} >
                 <ImageBackground
-                    opacity={0.5}
                     style={{ borderRadius: 12 }}
                     source={{ uri: item.bannerUrl }}
                     imageStyle={{ borderRadius: 20, backgroundColor: 'blue' }}
@@ -339,7 +338,7 @@ export default class Dashboard extends Component {
 
                                     </TouchableOpacity>
                                     <Text style={styles.catName}>Events</Text>
-                                    <TouchableOpacity style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
+                                    <TouchableOpacity onPress={() => this.goTopage('movies')}  style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
                                         <Image
                                             style={{ resizeMode: 'contain', height: 30, width: 30 }}
                                             source={require('../../assets/icons/movies.png')} />
@@ -367,7 +366,7 @@ export default class Dashboard extends Component {
 
                                 <View style={styles.rowchild}>
 
-                                    <TouchableOpacity style={[styles.circle, { backgroundColor: '#d3ffdb', }]}>
+                                    <TouchableOpacity onPress={() => this.goTopage('play')}  style={[styles.circle, { backgroundColor: '#d3ffdb', }]}>
 
                                         <Image
                                             style={{ resizeMode: 'contain', height: 30, width: 30 }}
@@ -377,7 +376,7 @@ export default class Dashboard extends Component {
 
                                     <Text style={styles.catName}>Parks & plays</Text>
 
-                                    <TouchableOpacity style={[styles.circle, { backgroundColor: '#ffcccd', }]}>
+                                    <TouchableOpacity onPress={() => this.goTopage('corner')}  style={[styles.circle, { backgroundColor: '#ffcccd', }]}>
                                         <Image
                                             style={{ resizeMode: 'contain', height: 30, width: 30 }}
                                             source={require('../../assets/icons/club.png')} />
@@ -396,11 +395,11 @@ export default class Dashboard extends Component {
 
 
     goTopage(data){
-        this.setState({ view_create: false })
-        this.props.navigation.navigate(data)
-       /* if(data == 'events'){
+       
+       if(data == 'events'){
             this.props.navigation.navigate(data)
-        }else{
+        }  
+         else if(data == 'movies'){
             Toast.show({
                 text: 'This feature is not available at the moment !',
                 position: 'top',
@@ -408,7 +407,31 @@ export default class Dashboard extends Component {
                 buttonText: 'Dismiss',
                 duration: 3000
             });
-        }*/
+        } 
+        else if(data == 'clubs'){
+            this.props.navigation.navigate(data)
+        }
+        else if(data == 'restaurants'){
+            this.props.navigation.navigate(data)
+        }
+        else if(data == 'play'){
+            Toast.show({
+                text: 'This feature is not available at the moment !',
+                position: 'top',
+                type: 'success',
+                buttonText: 'Dismiss',
+                duration: 3000
+            });
+        } 
+         else{
+            Toast.show({
+                text: 'This feature is not available at the moment !',
+                position: 'top',
+                type: 'success',
+                buttonText: 'Dismiss',
+                duration: 3000
+            });
+        }
        
     }
 }

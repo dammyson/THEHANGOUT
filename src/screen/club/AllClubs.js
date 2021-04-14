@@ -176,7 +176,6 @@ export default class Dashboard extends Component {
         return (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('clubD', { id: item.id })} >
                 <ImageBackground
-                    opacity={0.5}
                     style={{ borderRadius: 12 }}
                     source={{ uri: item.imageUrl }}
                     imageStyle={{ borderRadius: 20, backgroundColor: 'blue' }}
@@ -368,7 +367,6 @@ export default class Dashboard extends Component {
                         <View style={{ flex: 1, }}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('clubD', { id: item.id })}>
                                 <ImageBackground
-                                    opacity={0.5}
                                     style={{ borderRadius: 12, flex: 1, margin: 10, marginTop: 0 }}
                                     source={{ uri: item.imageUrl }}
                                     imageStyle={{ borderRadius: 20, backgroundColor: 'blue' }}

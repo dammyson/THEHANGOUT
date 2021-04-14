@@ -104,6 +104,7 @@ export default class ListTickets extends Component {
         })
     }
     render() {
+        const { state, goBack } = this.props.navigation;
         const { details, } = this.state
         const typePlaceholder = {
             label: 'Select Qty',
@@ -114,12 +115,12 @@ export default class ListTickets extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent >
-                <Avatar
-                        rounded
-                        source={{
-                            uri:this.state.user.profilePicture,
-                        }}
+                <Button transparent onPress={() => goBack(null)}>
+                    <Icon
+                        active
+                        name="ios-arrow-back"
+                        type='ionicon'
+                        color='#FFF'
                     />
                 </Button>
             </Left>

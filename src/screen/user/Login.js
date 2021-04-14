@@ -1,6 +1,6 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
-import { Alert, TextInput, ImageBackground, View, Dimensions, ActivityIndicator, TouchableOpacity, Image, StyleSheet, AsyncStorage } from 'react-native';
+import { Alert, TextInput, ImageBackground, View, Dimensions, ActivityIndicator, TouchableOpacity, Image, StyleSheet, AsyncStorage, Platform } from 'react-native';
 import { Container, Content, Text, Icon, Button, Left, } from 'native-base';
 import {
   BarIndicator,
@@ -15,7 +15,7 @@ const URL = require("../../component/server");
 import Navbar from '../../component/Navbar';
 import color from '../../component/color';
 import { getToken } from '../../component/utilities';
-
+import { appleAuth, AppleButton } from '@invertase/react-native-apple-authentication';
 export default class Login extends Component {
   constructor(props) {
     super(props);
@@ -40,9 +40,21 @@ export default class Login extends Component {
       // Repleace with your webClientId generated from Firebase console
       webClientId: '823628556250-7nebjfacok8lcef9brdfe7j69i6u9uc1.apps.googleusercontent.com',
     });
-    //Check if user is already signed in
-    // this._isSignedIn();
 
+
+
+    if (Platform.OS === 'ios') {
+      this.authCredentialListener = appleAuth.onCredentialRevoked(async () => {
+        console.warn('Credential Revoked');
+        this.fetchAndUpdateCredentialState().catch(error =>
+          this.setState({ credentialStateForUser: `Error: ${error.code}` }),
+        );
+      });
+
+      this.fetchAndUpdateCredentialState()
+        .then(res => this.setState({ credentialStateForUser: res }))
+        .catch(error => this.setState({ credentialStateForUser: `Error: ${error.code}` }))
+    }
 
   }
 
@@ -119,7 +131,7 @@ export default class Login extends Component {
       Alert.alert('Validation failed', 'field(s) cannot be empty', [{ text: 'Okay' }])
       return;
     }
-    this._signInRequest(email, password,false);
+    this._signInRequest(email, password, false);
 
   }
 
@@ -150,11 +162,11 @@ export default class Login extends Component {
           AsyncStorage.setItem('role', res.user.role);
           AsyncStorage.setItem('token', res.token);
           AsyncStorage.setItem('user', JSON.stringify(res.user));
-            if (res.user.role == 'Customer') {
-              this.props.navigation.replace('home');
-            } else {
-              this.props.navigation.replace('merchant_home');
-            }
+          if (res.user.role == 'Customer') {
+            this.props.navigation.replace('home');
+          } else {
+            this.props.navigation.replace('merchant_home');
+          }
         } else {
           Alert.alert('Login failed', res.message, [{ text: 'Okay' }])
           this.setState({ loading: false })
@@ -173,6 +185,76 @@ export default class Login extends Component {
     return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
   }
 
+
+
+  componentWillUnmount() {
+    if (Platform.OS === 'ios') {
+      this.authCredentialListener();
+    }
+  }
+
+  signInApple = async () => {
+    console.warn('Beginning Apple Authentication');
+
+    // start a login request
+    try {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [
+          appleAuth.Scope.EMAIL,
+          appleAuth.Scope.FULL_NAME,
+        ],
+      });
+
+      console.warn('appleAuthRequestResponse', appleAuthRequestResponse);
+
+      const {
+        user: newUser,
+        email,
+        nonce,
+        identityToken,
+        realUserStatus /* etc */,
+      } = appleAuthRequestResponse;
+
+      this.user = newUser;
+      
+
+      this.fetchAndUpdateCredentialState()
+        .then(res => this.setState({ credentialStateForUser: res }))
+        .catch(error =>
+          this.setState({ credentialStateForUser: `Error: ${error.code}` }),
+        );
+
+
+
+      if (realUserStatus === appleAuth.UserStatus.LIKELY_REAL) {
+        console.warn("I'm a real person!");
+      }
+
+      console.warn(`Apple Authentication Completed, ${this.user}, ${email}`);
+      this._signInRequest(this.user, this.user, true);
+    } catch (error) {
+      if (error.code === appleAuth.Error.CANCELED) {
+        console.warn('User canceled Apple Sign in.');
+      } else {
+        console.error(error);
+      }
+    }
+  };
+
+  fetchAndUpdateCredentialState = async () => {
+    if (this.user === null) {
+      this.setState({ credentialStateForUser: 'N/A' });
+    } else {
+      const credentialState = await appleAuth.getCredentialStateForUser(this.user);
+      console.warn(credentialState)
+      if (credentialState === appleAuth.State.AUTHORIZED) {
+        this.setState({ credentialStateForUser: 'AUTHORIZED' });
+      } else {
+        this.setState({ credentialStateForUser: credentialState });
+      }
+    }
+  }
 
 
   render() {
@@ -276,9 +358,9 @@ export default class Login extends Component {
                 </View>
 
 
-                <View style={styles.inputContainer}>
+                <View style={{ flexDirection: "row", marginTop: 1, justifyContent: 'center', marginLeft: 20, marginRight: 20, }}>
                   <View style={styles.lineStyle} />
-                  <Text style={{ color: 'black', margin: 10, fontSize: 15, fontWeight: '200' }}>or</Text>
+                  <Text style={{ color: 'black', margin: 10, fontSize: 15, fontWeight: '200', }}>or</Text>
                   <View style={styles.lineStyle} />
                 </View>
 
@@ -291,6 +373,14 @@ export default class Login extends Component {
                     color={GoogleSigninButton.Color.Light}
                     onPress={this._signIn}
                   />
+                  {Platform.OS === 'ios' ?
+                    <AppleButton
+                      style={styles.appleButton}
+                      cornerRadius={5}
+                      buttonStyle={AppleButton.Style.BLACK}
+                      buttonType={AppleButton.Type.SIGN_IN}
+                      onPress={() => this.signInApple()}
+                    /> : null}
 
                 </View>
 
@@ -417,7 +507,12 @@ const styles = StyleSheet.create({
     height: 120,
     justifyContent: 'center',
     resizeMode: 'contain'
-  }
+  },
+  appleButton: {
+    width: Dimensions.get('window').width - 50,
+    height: 40,
+    margin: 10,
+  },
 });
 
 

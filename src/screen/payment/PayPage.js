@@ -5,7 +5,7 @@ import { Avatar, Icon, } from 'react-native-elements';
 const deviceHeight = Dimensions.get("window").height;
 const URL = require("../../component/server");
 import RNPaystack from 'react-native-paystack';
-RNPaystack.init({ publicKey: 'pk_test_c78f193a7340923195cea7b1e4108f585346e254' });
+RNPaystack.init({ publicKey: 'pk_live_543930df9e4890c1920c26ea771887d7fb338bf9' });
 
 
 import color from '../../component/color';

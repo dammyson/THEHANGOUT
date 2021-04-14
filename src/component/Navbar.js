@@ -9,7 +9,7 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
 import { Header, Body, Title, Left, Right, Icon } from 'native-base';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity  } from 'react-native';
 // Our custom files and classes import
 
 import colors from '../component/color';
@@ -26,12 +26,15 @@ export default class Navbar extends Component {
             marginRight: 15,
             marginLeft: 15,
           }}>
+            <View style={{ marginTop: 15, justifyContent: 'center', alignItems: 'center', }}>
             {left}
-            <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start', flex:1 }}>
-              <Text style={styles.title}>{title}</Text>
+              </View>
+            <View style={{ justifyContent: 'flex-start', alignItems: 'center',  flex:1, paddingRight:5 }}>
+              <Text  numberOfLines={1} style={styles.title}>{title} </Text>
             </View>
-
+            <View style={{ marginTop: 15, justifyContent: 'center', alignItems: 'center',}}>
             {right}
+              </View>
           </View>
         </View>
       </View>
@@ -43,14 +46,14 @@ const styles = {
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 80,
+    height: 70,
   },
   title: {
     marginTop: 2,
     marginBottom: 2,
-    marginRight: 13,
+    marginRight: 20,
     marginLeft: 20,
-    fontSize: 18,
+    fontSize: 14,
     color: '#FFF',
     textAlign: 'center',
     fontWeight: '400',
