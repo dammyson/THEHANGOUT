@@ -18,6 +18,7 @@ import Navbar from '../../component/Navbar';
 import Balance from "../../component/views/Balance";
 import ActivityIndicator from "../../component/views/ActivityIndicator";
 import IsGuest from "../../component/views/IsGuest";
+import { getIsGuest } from "../../component/utilities";
 
 const type = [
     {
@@ -58,14 +59,13 @@ export default class ManagementPayment extends Component {
             ref_number: '',
             bal: '',
             refresh_balance: true,
-
-
         };
     }
 
 
     async componentDidMount() {
-
+    
+        this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })

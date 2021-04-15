@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Image, StyleSheet, View, Dimensions, TouchableOpacity,StatusBar, ImageBackground } from 'react-native';
+import { Image, StyleSheet, View, Dimensions, AsyncStorage, TouchableOpacity,StatusBar, ImageBackground } from 'react-native';
 import { Container, Content, Text, Icon, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col } from 'native-base';
 import { Icon as Fil } from 'react-native-elements'
 import {
@@ -118,7 +118,7 @@ export default class Intro extends Component {
                                 </TouchableOpacity> */}
 
 
-                                <Button onPress={() => this.props.navigation.navigate('home')} style={[styles.whiteButtonContainer]} block iconLeft>
+                                <Button onPress={() => this.continueAsGuest()} style={[styles.whiteButtonContainer]} block iconLeft>
                                     <Text style={{ color:color.primary_color, fontWeight: '600', borderRadius: 3, }}>CONTINUE AS GUEST</Text>
                                 </Button>
                             </View>
@@ -129,6 +129,11 @@ export default class Intro extends Component {
                 </Container>
             </ImageBackground>
         );
+    }
+
+    continueAsGuest(){
+        AsyncStorage.setItem('is_guest', "YES");
+        this.props.navigation.navigate('home')
     }
 }
 
