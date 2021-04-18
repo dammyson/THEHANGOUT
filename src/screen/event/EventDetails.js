@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Dimensions, TouchableOpacity, ImageBackground, StyleSheet, AsyncStorage, Image, ScrollView, } from "react-native";
+import { Alert, Dimensions, TouchableOpacity, ImageBackground, StyleSheet, AsyncStorage, StatusBar, ScrollView, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Toast, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker'
@@ -15,6 +15,7 @@ import {
 import Moment from 'moment';
 Moment.locale('en');
 import Navbar from '../../component/Navbar';
+import { getIsGuest, getData, getHeaders } from '../../component/utilities';
 
 
 export default class EventDetails extends Component {
@@ -22,6 +23,7 @@ export default class EventDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      is_guest: true,
       loading: true,
       data: '',
       name: '',
@@ -38,29 +40,27 @@ export default class EventDetails extends Component {
 
 
 
-  componentWillMount() {
+  async componentDidMount() {
     const { id } = this.props.route.params;
-
+    this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
     this.setState({ id: id });
+    if(await getIsGuest() =="NO"){
     AsyncStorage.getItem('data').then((value) => {
       if (value == '') { } else {
         this.setState({ data: JSON.parse(value) })
         this.setState({ user: JSON.parse(value).user })
       }
-      this.processGetEvent();
-    })
+     
+    })}
+    this.processGetEvent();
   }
 
   processGetEvent() {
-    const { data, id, } = this.state
-    console.warn(id);
+    const { data, id,is_guest } = this.state
+    console.warn(id, getHeaders(is_guest, data.token));
 
     fetch(URL.url + 'events/' + id, {
-      method: 'GET', headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'Authorization': 'Bearer ' + data.token,
-      },
+      method: 'GET', headers: getHeaders(is_guest, data.token),
     })
       .then(res => res.json())
       .then(res => {
@@ -82,13 +82,9 @@ export default class EventDetails extends Component {
 
 
   RgetEventsRequest() {
-    const { data, id, } = this.state
+    const { data, id,is_guest } = this.state
     fetch(URL.url + 'events/' + id, {
-      method: 'GET', headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'Authorization': 'Bearer ' + data.token,
-      },
+      method: 'GET', headers: getHeaders(is_guest, data.token)
     })
       .then(res => res.json())
       .then(res => {
@@ -114,13 +110,20 @@ export default class EventDetails extends Component {
   };
 
   likeUnlikeRequest(id, pos) {
-    const { data, } = this.state
+    const { data,is_guest } = this.state
+
+    if(is_guest){
+      Toast.show({
+          text: 'You can not take like and event you are not log in',
+          position: 'bottom',
+          type: 'success',
+          buttonText: 'Dismiss',
+          duration: 2000
+      });
+      return
+  }
     fetch(URL.url + 'events/like/' + id, {
-      method: 'GET', headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'Authorization': 'Bearer ' + data.token,
-      }
+      method: 'GET', headers:  getHeaders(is_guest, data.token)
     })
       .then(res => res.json())
       .then(res => {
@@ -245,8 +248,10 @@ export default class EventDetails extends Component {
 
     return (
       <Container style={{ backgroundColor: '#101023' }}>
+         <StatusBar barStyle="light-content" hidden={false} backgroundColor="#101023" />
         <Navbar left={left} right={right} title={details.title} bg='#111123' />
         <Content>
+          
           <View style={styles.container}>
 
 
@@ -392,12 +397,12 @@ export default class EventDetails extends Component {
                         <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, }}> {details.organizer.description} </Text>
                         <View style={{ marginLeft: 10, flexDirection: 'row', justifyContent: 'center', justifyContent: 'center' }}>
                           <View style={{ flex: 1, justifyContent: 'center', justifyContent: 'center' }}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('organizer_details', { id: details.id })} >
+                            <TouchableOpacity onPress={() => this.state.is_guest? null:  this.props.navigation.navigate('organizer_details', { id: details.id })} >
                               <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200', marginTop: 15, }}>More Details</Text>
                             </TouchableOpacity>
                           </View>
                           <View style={{ flex: 1, justifyContent: 'center', justifyContent: 'center' }}>
-                            <TouchableOpacity onPress={() => this.setState({ show_rating: true })} >
+                            <TouchableOpacity onPress={() =>this.state.is_guest? null: this.setState({ show_rating: true })} >
                               <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200', marginTop: 15, }}>Rate Us</Text>
                             </TouchableOpacity>
                           </View>
@@ -414,8 +419,8 @@ export default class EventDetails extends Component {
               </ScrollView>
             </View>
 
-            <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#000', flexDirection: 'row', height: 50, }}>
-              <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, flexDirection: 'row' }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center',  flexDirection: 'row',  }}>
+              <View style={{ alignItems: 'center', marginLeft:10, justifyContent: 'center', flex: 1,borderRadius: 5, backgroundColor: '#000', height: 50, flexDirection: 'row' }}>
                 <Icon
                   active
                   name="ticket"
@@ -424,10 +429,20 @@ export default class EventDetails extends Component {
                 />
                 <Text style={{ marginLeft: 20, color: '#fff', fontSize: 15, fontWeight: '600' }}>  {details.type} </Text>
               </View>
-
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('buyPT', { id: details.id, ticket: details.eventTickets, event: details })} style={{ height: 50, flexDirection: 'row', marginTop: 20, marginBottom: 20, margin: 10, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.primary_color }}>
-                <Text style={{ color: '#000', fontSize: 15, fontWeight: '600' }}>{details.type == 'Free' ? 'GET TICKETS' : 'BUY TICKETS'}</Text>
-              </TouchableOpacity>
+                {this.state.is_guest? 
+                 <TouchableOpacity onPress={()=>  this.props.navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'intro' }],
+              })} style={{ height: 50, flexDirection: 'row', marginTop: 20, marginBottom: 20, margin: 10, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.primary_color }}>
+                 <Text style={{ color: '#000', fontSize: 15, fontWeight: '600' }}>{"Get Account"}</Text>
+               </TouchableOpacity>
+                
+                : 
+                 <TouchableOpacity onPress={() => this.props.navigation.navigate('buyPT', { id: details.id, ticket: details.eventTickets, event: details })} style={{ height: 50, flexDirection: 'row', marginTop: 10, marginBottom: 20, margin: 10, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.primary_color }}>
+                 <Text style={{ color: '#000', fontSize: 15, fontWeight: '600' }}>{details.type == 'Free' ? 'GET TICKETS' : 'BUY TICKETS'}</Text>
+               </TouchableOpacity>
+                }
+             
 
             </View>
 

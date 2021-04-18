@@ -4,7 +4,7 @@ import { Container, Content, View, Text, Button, Left, Right, Body, Title, List,
 import { Avatar, Icon, } from 'react-native-elements';
 const deviceHeight = Dimensions.get("window").height;
 const URL = require("../../component/server");
-
+import { getIsGuest, getData, getHeaders } from '../../component/utilities';
 import color from '../../component/color';
 const { width: screenWidth } = Dimensions.get('window')
 import RNPickerSelect from 'react-native-picker-select';
@@ -12,7 +12,7 @@ import {
     BarIndicator,
 } from 'react-native-indicators';
 import Moment from 'moment';
-
+import IsGuest from "../../component/views/IsGuest";
 import Navbar from '../../component/Navbar';
 
 const type = [
@@ -35,6 +35,7 @@ export default class Tables extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            is_guest: true,
             loading: true,
             data: '',
             order:[],
@@ -53,32 +54,28 @@ export default class Tables extends Component {
 
 
 
-    componentWillMount() {
+   async componentDidMount() {
+        this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
         this.setState({ id: this.props.id });
+        if(await getIsGuest() =="NO"){
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })
                 this.setState({ user: JSON.parse(value).user })
             }
             this.processGetEventTickets();
-        })
-
-
+        })}
     }
 
 
 
 
     processGetEventTickets() {
-        const { data, } = this.state
+        const { data,is_guest } = this.state
 
         this.setState({ loading: true })
         fetch(URL.url + 'restaurants/myTables', {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            },
+            method: 'GET', headers:  getHeaders(is_guest, data.token)
         })
             .then(res => res.json())
             .then(res => {
@@ -121,6 +118,14 @@ export default class Tables extends Component {
             color: '#000',
         };
 
+        if (this.state.is_guest) {
+            return (
+                <IsGuest onPress={()=>  this.props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'intro' }],
+                })} />
+            );
+        }
 
         var left = (
             <Left style={{ flex: 1 }}>

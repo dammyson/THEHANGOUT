@@ -8,6 +8,9 @@ const URL = require("../../component/server");
 import color from '../../component/color';
 const { width: screenWidth } = Dimensions.get('window')
 import RNPickerSelect from 'react-native-picker-select';
+import {getUser, getData, getIsGuest, getHeaders  } from '../../component/utilities';
+import IsGuest from "../../component/views/IsGuest";
+
 import {
     BarIndicator,
 } from 'react-native-indicators';
@@ -35,6 +38,7 @@ export default class ListTickets extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            is_guest: true,
             loading: true,
             data: '',
             name: '',
@@ -51,15 +55,16 @@ export default class ListTickets extends Component {
 
 
 
-    componentWillMount() {
-        this.setState({ id: this.props.id });
+   async componentDidMount() {
+        this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
+        if(await getIsGuest() =="NO"){
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })
                 this.setState({ user: JSON.parse(value).user })
             }
             this.processGetEventTickets();
-        })
+        })}
 
 
     }
@@ -105,13 +110,14 @@ export default class ListTickets extends Component {
     }
     render() {
         const { state, goBack } = this.props.navigation;
-        const { details, } = this.state
-        const typePlaceholder = {
-            label: 'Select Qty',
-            value: null,
-            color: '#000',
-        };
-
+        if (this.state.is_guest) {
+            return (
+                <IsGuest onPress={()=>  this.props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'intro' }],
+                })} />
+            );
+        }
 
         var left = (
             <Left style={{ flex: 1 }}>

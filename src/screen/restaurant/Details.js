@@ -14,13 +14,14 @@ import {
 import Moment from 'moment';
 
 import Navbar from '../../component/Navbar';
-
+import { getIsGuest, getData, getHeaders } from '../../component/utilities';
 
 export default class Details extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            is_guest: true,
             loading: true,
             activeHead: 0,
             data: '',
@@ -31,18 +32,20 @@ export default class Details extends Component {
         };
     }
 
-    componentWillMount() {
+   async componentDidMount() {
+    this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
         const { id } = this.props.route.params;
         this.setState({ id: id });
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-                this.setState({ user: JSON.parse(value).user })
-            }
-            this.processGetEvent();
-        })
+        if (await getIsGuest() == "NO") {
+            AsyncStorage.getItem('data').then((value) => {
+                if (value == '') { } else {
+                    this.setState({ data: JSON.parse(value) })
+                    this.setState({ user: JSON.parse(value).user })
+                }
 
-
+            })
+        }
+        this.processGetEvent();
     }
 
     currencyFormat(n) {
@@ -52,15 +55,11 @@ export default class Details extends Component {
 
 
     processGetEvent() {
-        const { data, id, } = this.state
+        const { data, id, is_guest } = this.state
 
         this.setState({ loading: true })
         fetch(URL.url + 'restaurants/' + id, {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            },
+            method: 'GET', headers: getHeaders(is_guest, data.token),
         })
             .then(res => res.json())
             .then(res => {

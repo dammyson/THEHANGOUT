@@ -52,10 +52,6 @@ export default class Dashboard extends Component {
 
 
     async componentDidMount() {
-        this.setState({
-            data: JSON.parse(await getData()),
-            user: JSON.parse(await getData()).user
-        })
 
         var cordinates = getLocation();
         cordinates.then((result) => {
@@ -152,7 +148,6 @@ export default class Dashboard extends Component {
             method: 'PUT', headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
             }, body: JSON.stringify({
                 latitude: latitude,
                 longitude: longitude,
@@ -255,13 +250,7 @@ export default class Dashboard extends Component {
         var left = (
             <Left style={{ flex: 1 }}>
                 <Button transparent onPress={() => this.props.navigation.navigate('Manage')}>
-                    <Avatar
-                        rounded
-                        source={{
-                            uri: this.state.user.profilePicture
-
-                        }}
-                    />
+                   
                 </Button>
             </Left>
         );

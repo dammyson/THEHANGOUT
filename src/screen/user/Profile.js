@@ -10,13 +10,14 @@ import {
 
 import color from '../../component/color';
 import Modal, { ModalContent } from 'react-native-modals';
-import { getUser, getData } from '../../component/utilities';
+import {getUser, getData, getIsGuest, getHeaders  } from '../../component/utilities';
 import Navbar from '../../component/Navbar';
 import {
     GoogleSignin,
     GoogleSigninButton,
     statusCodes,
 } from '@react-native-community/google-signin';
+import IsGuest from "../../component/views/IsGuest";
 
 export default class Profile extends Component {
     constructor(props) {
@@ -24,6 +25,7 @@ export default class Profile extends Component {
         this.state = {
             data: '',
             user: '',
+            is_guest: true,
             visible_log_merchant: false,
             social: ''
 
@@ -32,7 +34,7 @@ export default class Profile extends Component {
 
 
     async componentWillMount() {
-        console.warn(JSON.parse(await getUser()))
+        this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
         this.setState({
             data: JSON.parse(await getData()),
             user: JSON.parse(await getUser()),
@@ -100,6 +102,14 @@ export default class Profile extends Component {
 
     render() {
         const { user } = this.state
+        if (this.state.is_guest) {
+            return (
+                <IsGuest onPress={()=>  this.props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'intro' }],
+                })} />
+            );
+        }
         var left = (
             <Left style={{ flex: 1 }}>
                 <Button transparent >

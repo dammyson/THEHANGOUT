@@ -12,17 +12,21 @@ import color from '../../component/color';
 import Navbar from '../../component/Navbar';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 import Modal, { ModalContent } from 'react-native-modals';
-import {getUser, getData } from '../../component/utilities';
+import {getUser, getData, getIsGuest, getHeaders  } from '../../component/utilities';
 import {
     GoogleSignin,
     GoogleSigninButton,
     statusCodes,
   } from '@react-native-community/google-signin';
+  import IsGuest from "../../component/views/IsGuest";
+
+
 export default class Manage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             data: '',
+            is_guest: true,
             user: {profilePicture:'ll'},
             visible_log_merchant: false
 
@@ -30,7 +34,8 @@ export default class Manage extends Component {
     }
 
 
-  async  componentWillMount() {
+  async  componentDidlMount() {
+    this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
         this.setState({
             data: JSON.parse(await getData()),
             user: JSON.parse(await getUser()),
@@ -124,6 +129,15 @@ export default class Manage extends Component {
                 </Button>
             </Right>
         );
+
+        if (this.state.is_guest) {
+            return (
+                <IsGuest onPress={()=>  this.props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'intro' }],
+                })} />
+            );
+        }
 
         return (
             <Container style={{ backgroundColor: color.secondary_color }}>

@@ -13,7 +13,7 @@ import {
     BarIndicator,
 } from 'react-native-indicators';
 import Moment from 'moment';
-import { getSaveRestaurant, getData } from '../../component/utilities';
+import { getIsGuest, getData, getHeaders } from '../../component/utilities';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Calendar from '../../component/views/Calendar'
 Moment.locale('en');
@@ -27,6 +27,7 @@ export default class Dashboard extends Component {
         this.likeUnlikeRequest = this.likeUnlikeRequest.bind(this);
 
         this.state = {
+            is_guest: true,
             loading: true,
             dataone: [
             ],
@@ -50,10 +51,14 @@ export default class Dashboard extends Component {
     }
 
     async componentDidMount() {
-        this.setState({
-            data: JSON.parse(await getData()),
-            user: JSON.parse(await getData()).user
-        })
+        this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
+        if(await getIsGuest() =="NO"){
+            this.setState({
+                data: JSON.parse(await getData()),
+                user: JSON.parse(await getData()).user
+            })
+        }
+       
 
         this.getEventsRequest()
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
@@ -63,15 +68,10 @@ export default class Dashboard extends Component {
 
 
     getEventsRequest() {
-        const { data, user } = this.state
-
+        const { data, user, is_guest } = this.state
 
         fetch(URL.url + 'events', {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            }
+            method: 'GET', headers: getHeaders(is_guest, data.token)
         })
             .then(res => res.json())
             .then(res => {
@@ -99,13 +99,11 @@ export default class Dashboard extends Component {
     };
 
     RgetEventsRequest() {
-        const { data } = this.state
+        const { data, is_guest } = this.state
+
+       
         fetch(URL.url + 'events', {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            }
+            method: 'GET', headers: getHeaders(is_guest, data.token)
         })
             .then(res => res.json())
             .then(res => {
@@ -129,13 +127,21 @@ export default class Dashboard extends Component {
     };
 
     likeUnlikeRequest(id, pos) {
-        const { data, } = this.state
+        const { data,is_guest } = this.state
+
+        if(is_guest){
+            Toast.show({
+                text: 'You can not take like and event you are not log in',
+                position: 'bottom',
+                type: 'success',
+                buttonText: 'Dismiss',
+                duration: 2000
+            });
+            return
+        }
+
         fetch(URL.url + 'events/like/' + id, {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            }
+            method: 'GET', headers: getHeaders(is_guest, data.token)
         })
             .then(res => res.json())
             .then(res => {
@@ -407,7 +413,7 @@ export default class Dashboard extends Component {
                     <Navbar left={left} right={right} title="All Events" bg='#101023' />
                     <Content>
                         <View style={styles.container}>
-                            <StatusBar barStyle="light-content" hidden={false} backgroundColor="#fff" />
+                            <StatusBar barStyle="light-content" hidden={false} backgroundColor="#101023" />
                             <View style={{ height: 15 }} />
 
                           

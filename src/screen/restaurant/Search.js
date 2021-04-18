@@ -13,6 +13,7 @@ import Navbar from '../../component/Navbar';
 import {
     BarIndicator,
 } from 'react-native-indicators';
+import { getIsGuest, getData, getHeaders } from '../../component/utilities';
 
 import Moment from 'moment';
 
@@ -22,6 +23,7 @@ export default class Search extends Component {
         super(props);
 
         this.state = {
+            is_guest: true,
             loading: false,
             searchResult: [
             ],
@@ -37,30 +39,26 @@ export default class Search extends Component {
 
 
 
-    componentDidMount() {
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-                this.setState({ user: JSON.parse(value).user })
-            }
-
-        })
+   async componentDidMount() {
+        this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
+        if(await getIsGuest() =="NO"){
+            this.setState({
+                data: JSON.parse(await getData()),
+                user: JSON.parse(await getData()).user
+            })
+        }
     }
 
 
     search() {
-        const { data, user, searchText } = this.state
+        const { data, is_guest, searchText } = this.state
         
 
         this.setState({
             loading: true
         })
         fetch(URL.url + 'restaurants/search?Location='+ searchText, {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            }
+            method: 'GET', headers: getHeaders(is_guest, data.token)
         })
             .then(res => res.json())
             .then(res => {

@@ -13,7 +13,7 @@ import {
     BarIndicator,
 } from 'react-native-indicators';
 import Moment from 'moment';
-import { getSaveRestaurant, getData } from '../../component/utilities';
+import { getIsGuest, getData, getHeaders } from '../../component/utilities';
 export default class Dashboard extends Component {
 
     constructor(props) {
@@ -22,6 +22,7 @@ export default class Dashboard extends Component {
         this.onEventPress = this.onEventPress.bind(this)
 
         this.state = {
+            is_guest: true,
             loading: true,
             dataone: [
             ],
@@ -47,11 +48,14 @@ export default class Dashboard extends Component {
 
 
     async componentDidMount() {
-        this.setState({
-            data: JSON.parse(await getData()),
-            user: JSON.parse(await getData()).user
-        })
-
+        this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
+        if(await getIsGuest() =="NO"){
+            this.setState({
+                data: JSON.parse(await getData()),
+                user: JSON.parse(await getData()).user
+            })
+        }
+       
 
         this.getEventsRequest()
         this.getSpecialOffer()
@@ -62,16 +66,12 @@ export default class Dashboard extends Component {
 
 
     getEventsRequest() {
-        const { data, user } = this.state
+        const { data, is_guest } = this.state
 
 
 
         fetch(URL.url + 'restaurants', {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            }
+            method: 'GET', headers: getHeaders(is_guest, data.token)
         })
             .then(res => res.json())
             .then(res => {
@@ -100,14 +100,10 @@ export default class Dashboard extends Component {
     };
 
     getSpecialOffer() {
-        const { data, user } = this.state
+        const { data, is_guest } = this.state
 
         fetch(URL.url + 'food/special-offers', {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            }
+            method: 'GET', headers: getHeaders(is_guest, data.token)
         })
             .then(res => res.json())
             .then(res => {
