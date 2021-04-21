@@ -5,7 +5,7 @@ import { Avatar, Icon, } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 const deviceHeight = Dimensions.get("window").height;
 const URL = require("../../component/server");
-
+import { getIsGuest, getData, getHeaders } from '../../component/utilities';
 import color from '../../component/color';
 
 import {
@@ -22,6 +22,7 @@ export default class More extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            is_guest: true,
             loading: true,
             data: '',
             name: '',
@@ -38,10 +39,10 @@ export default class More extends Component {
 
 
 
-    componentWillMount() {
+   async componentWillMount() {
         //const { prams  } = this.props.route.params;
        // this.setState({ prams: prams });
-       
+       if(await getIsGuest() =="NO"){
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })
@@ -49,23 +50,32 @@ export default class More extends Component {
             }
             this.processGetEventTickets();
         })
+    }
 
 
     }
 
+    async componentDidMount() {
+        this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
+    }
 
 
+    showToast(){
+        Toast.show({
+            text: 'This feature is only available to registered user',
+            position: 'top',
+            type: 'warning',
+            buttonText: 'Dismiss',
+            duration: 2000
+        });
+    }
 
     processGetEventTickets() {
-        const { data,prams } = this.state
+        const { data,prams , is_guest} = this.state
         console.warn(URL.url + 'clubs/all')
         this.setState({ loading: true })
         fetch(URL.url + 'clubs/all', {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            },
+            method: 'GET', headers: getHeaders(is_guest, data.token)
         })
             .then(res => res.json())
             .then(res => {
@@ -154,6 +164,8 @@ export default class More extends Component {
                 </View>
             );
         }
+
+        
 
         return (
             <Container style={{ backgroundColor: '#000' }}>

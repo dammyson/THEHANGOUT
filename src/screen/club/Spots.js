@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, FlatList, ScrollView, } from "react-native";
+import { Alert, Dimensions, TouchableOpacity, TextInput, StyleSheet, StatusBar, FlatList, ScrollView, } from "react-native";
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, } from 'native-base';
 import { Avatar, Icon, } from 'react-native-elements';
 const deviceHeight = Dimensions.get("window").height;
@@ -12,8 +12,9 @@ import {
     BarIndicator,
 } from 'react-native-indicators';
 import Moment from 'moment';
-import { getUser, getData } from '../../component/utilities';
+import { getIsGuest, getData, getHeaders } from '../../component/utilities';
 import Navbar from '../../component/Navbar';
+import IsGuest from "../../component/views/IsGuest";
 
 const type = [
     {
@@ -36,8 +37,9 @@ export default class Spots extends Component {
         super(props);
         this.state = {
             loading: true,
+            is_guest: true,
             data: '',
-            order:[],
+            order: [],
             name: '',
             id: '',
             ticket_list: {},
@@ -53,14 +55,18 @@ export default class Spots extends Component {
 
 
 
-  async componentWillMount() {
+    async componentWillMount() {
         this.setState({ id: this.props.id });
-        this.setState({
-            data: JSON.parse(await getData()),
-            user: JSON.parse(await getUser()),
-        })
+        this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
+        if (await getIsGuest() == "NO") {
+            this.setState({
+                data: JSON.parse(await getData()),
+                user: JSON.parse(await getUser()),
+            })
             this.processGetEventTickets();
-      
+        }
+       
+
 
 
     }
@@ -69,15 +75,11 @@ export default class Spots extends Component {
 
 
     processGetEventTickets() {
-        const { data, } = this.state
+        const { data,is_guest } = this.state
 
         this.setState({ loading: true })
         fetch(URL.url + 'clubs/myTables', {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            },
+            method: 'GET', headers: getHeaders(is_guest, data.token),
         })
             .then(res => res.json())
             .then(res => {
@@ -106,7 +108,7 @@ export default class Spots extends Component {
         })
     }
 
-    menuClicked= (index) => {
+    menuClicked = (index) => {
         this.setState({
             menuIndex: index
         })
@@ -120,16 +122,19 @@ export default class Spots extends Component {
             color: '#000',
         };
 
+        if (this.state.is_guest) {
+            return (
+                <IsGuest onPress={()=>  this.props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'intro' }],
+                })} />
+            );
+        }
 
         var left = (
             <Left style={{ flex: 1 }}>
                 <Button transparent >
-                    <Avatar
-                        rounded
-                        source={{
-                            uri: this.state.user.profilePicture,
-                        }}
-                    />
+
                 </Button>
             </Left>
         );
@@ -160,24 +165,27 @@ export default class Spots extends Component {
 
         if (!this.state.status) {
             return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
-                    <View style={styles.welcome}>
-                        <Text style={{ fontSize: 12, color: '#fff' }}>Oops </Text>
-                        <Text style={{ fontSize: 10, flex: 1, color: '#fff', opacity: 0.6 }}>No Data at the moment</Text>
-                    </View>
-                </View>
-            );
-        }
+                <Container style={{ backgroundColor: color.secondary_color }}>
+                    <StatusBar backgroundColor='#101023' barStyle="light-content" />
+                    <Navbar left={left} right={right} title="Clubs" bg='#101023' />
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
 
-        return (
-            <View style={{ backgroundColor: '#000',  height: Dimensions.get('window').height, }}>
-                <Navbar left={left} right={right} title='My Spots' bg='#111124' />
-                    <View style={styles.container}>
-                      
-                        <View style={{ flex: 1, }}>
-                        {this.renderTable()}
+                        <View style={styles.welcome}>
+                            <Text style={{ fontSize: 15, color: '#fff' }}>No Club at the moment </Text>
                         </View>
                     </View>
+                </Container>
+            );
+        }
+        return (
+            <View style={{ backgroundColor: '#000', height: Dimensions.get('window').height, }}>
+                <Navbar left={left} right={right} title='My Spots' bg='#111124' />
+                <View style={styles.container}>
+
+                    <View style={{ flex: 1, }}>
+                        {this.renderTable()}
+                    </View>
+                </View>
             </View>
         );
     }
@@ -185,12 +193,12 @@ export default class Spots extends Component {
     renderOrder() {
         return (
             <View style={{ flex: 1, }}>
-                   <View style={{ marginTop: 15, marginLeft: 20, marginRight: 20 }}>
-                 {this.renderOrderItem(this.state.order)}
-                 </View>
-                  </View>
-           )
-            }
+                <View style={{ marginTop: 15, marginLeft: 20, marginRight: 20 }}>
+                    {this.renderOrderItem(this.state.order)}
+                </View>
+            </View>
+        )
+    }
 
     renderTable() {
         return (
@@ -315,23 +323,23 @@ export default class Spots extends Component {
         for (let i = 0; i < tickets.length; i++) {
             items.push(
                 <View style={styles.oneRow}>
-                     <View>
+                    <View>
                         <View style={styles.dot} />
                     </View>
                     <View style={{ marginRight: 20 }}>
                         <Text style={styles.title}> {tickets[i].name}</Text>
                         <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 10, fontWeight: '100', marginRight: 40, opacity: 0.69 }}> {tickets[i].description} </Text>
                         <View style={{ flexDirection: 'row', marginRight: 15 }}>
-                                <Icon
-                                    active
-                                    name="source-commit-next-local"
-                                    type='material-community'
-                                    color='#FFF'
-                                    size={16}
-                                />
-                                <Text style={{ marginLeft: 2,  opacity: 0.59, color: '#fff', fontSize: 13, fontWeight: '100' }}>{tickets[i].address}  </Text>
-                            </View>
-                        <View style={{ alignItems: 'center',  backgroundColor: '#111123', flexDirection: 'row', marginTop: 15, opacity: 0.5 }}>
+                            <Icon
+                                active
+                                name="source-commit-next-local"
+                                type='material-community'
+                                color='#FFF'
+                                size={16}
+                            />
+                            <Text style={{ marginLeft: 2, opacity: 0.59, color: '#fff', fontSize: 13, fontWeight: '100' }}>{tickets[i].address}  </Text>
+                        </View>
+                        <View style={{ alignItems: 'center', backgroundColor: '#111123', flexDirection: 'row', marginTop: 15, opacity: 0.5 }}>
                             <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginRight: 15 }}>
                                 <Icon
                                     active
@@ -356,10 +364,10 @@ export default class Spots extends Component {
 
                         </View>
                     </View>
-                    
+
                 </View>
             )
-        
+
         }
 
         return items;
@@ -435,22 +443,22 @@ const styles = StyleSheet.create({
         fontFamily: 'NunitoSans',
         marginBottom: 10
     },
-    activeMenu:{
+    activeMenu: {
         flex: 1,
         borderBottomColor: '#5F5C7F',
         borderBottomWidth: 0.8,
         alignItems: 'center',
-        justifyContent:'center',
-        backgroundColor:color.primary_color,
-        height:40
+        justifyContent: 'center',
+        backgroundColor: color.primary_color,
+        height: 40
     },
-    inActiveMenu:{
+    inActiveMenu: {
         flex: 1,
-        borderColor:color.primary_color,
+        borderColor: color.primary_color,
         borderWidth: 0.8,
         alignItems: 'center',
-       justifyContent:'center',
-       height:40
+        justifyContent: 'center',
+        height: 40
     },
     activeMenuText: {
         color: '#000',

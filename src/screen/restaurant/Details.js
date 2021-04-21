@@ -52,7 +52,15 @@ export default class Details extends Component {
         return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
     }
 
-
+    showToast(){
+        Toast.show({
+            text: 'This feature is only available to registered user',
+            position: 'top',
+            type: 'warning',
+            buttonText: 'Dismiss',
+            duration: 2000
+        });
+    }
 
     processGetEvent() {
         const { data, id, is_guest } = this.state
@@ -198,7 +206,7 @@ export default class Details extends Component {
 
                             <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#111123', flexDirection: 'row' }}>
 
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('reserveT', { resturant: details, type: 'replace' })} style={{ height: 45, flexDirection: 'row', paddingRight: 30, paddingLeft: 30, marginTop: 20, marginBottom: 20, margin: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: 'red' }}>
+                                <TouchableOpacity onPress={() => this.state.is_guest? this.showToast() :this.props.navigation.navigate('reserveT', { resturant: details, type: 'replace' })} style={{ height: 45, flexDirection: 'row', paddingRight: 30, paddingLeft: 30, marginTop: 20, marginBottom: 20, margin: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: 'red' }}>
                                     <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>RESERVE NOW</Text>
                                 </TouchableOpacity>
                             </View>

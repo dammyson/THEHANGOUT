@@ -5,7 +5,7 @@ import { Avatar, Icon, } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker'
 const deviceHeight = Dimensions.get("window").height;
 const URL = require("../../component/server");
-
+import { getIsGuest, getData, getHeaders } from '../../component/utilities';
 import color from '../../component/color';
 const { width: screenWidth } = Dimensions.get('window')
 import RNPickerSelect from 'react-native-picker-select';
@@ -34,34 +34,43 @@ export default class EventDetails extends Component {
 
 
 
-  componentWillMount() {
+ async componentWillMount() {
     const { id } = this.props.route.params;
 
     this.setState({ id: id });
-    AsyncStorage.getItem('data').then((value) => {
-      if (value == '') { } else {
-        this.setState({ data: JSON.parse(value) })
-        this.setState({ user: JSON.parse(value).user })
-      }
-      this.processGetEvent();
-    })
-
-
+    if (await getIsGuest() == "NO") {
+      AsyncStorage.getItem('data').then((value) => {
+        if (value == '') { } else {
+          this.setState({ data: JSON.parse(value) })
+          this.setState({ user: JSON.parse(value).user })
+        }
+        this.processGetEvent();
+      })
+    }
   }
 
 
+  async componentDidMount() {
+    this.setState({ is_guest: await getIsGuest() == "YES" ? true : false })
+  }
 
+
+  showToast(){
+    Toast.show({
+        text: 'This feature is only available to registered user',
+        position: 'top',
+        type: 'warning',
+        buttonText: 'Dismiss',
+        duration: 2000
+    });
+}
 
   processGetEvent() {
-    const { data, id, } = this.state
+    const { data, id, is_guest } = this.state
     console.warn(id);
 
     fetch(URL.url + 'clubs/' + id, {
-      method: 'GET', headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'Authorization': 'Bearer ' + data.token,
-      },
+      method: 'GET', headers: getHeaders(is_guest, data.token)
     })
       .then(res => res.json())
       .then(res => {
@@ -86,15 +95,11 @@ export default class EventDetails extends Component {
 
 
   RgetEventsRequest() {
-    const { data, id, } = this.state
+    const { data, id,is_guest } = this.state
 
     this.setState({ loading: true })
     fetch(URL.url + 'clubs/' + id, {
-      method: 'GET', headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'Authorization': 'Bearer ' + data.token,
-      },
+      method: 'GET', headers: getHeaders(is_guest, data.token)
     })
       .then(res => res.json())
       .then(res => {
@@ -120,13 +125,14 @@ export default class EventDetails extends Component {
   };
 
   likeUnlikeRequest(id, pos) {
-    const { data, } = this.state
+    const { data,is_guest } = this.state
+
+    if(is_guest){
+      this.showToast()
+       return
+   }
     fetch(URL.url + 'events/like/' + id, {
-      method: 'GET', headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'Authorization': 'Bearer ' + data.token,
-      }
+      method: 'GET', headers: getHeaders(is_guest, data.token)
     })
       .then(res => res.json())
       .then(res => {
@@ -319,7 +325,7 @@ export default class EventDetails extends Component {
                 <Text style={{ marginLeft: 20, color: '#fff', fontSize: 15, fontWeight: '600' }}>  {details.type} </Text>
               </View>
 
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('reserveS', { club: details })} style={{ height: 50, flexDirection: 'row', marginTop: 20, marginBottom: 20, margin: 10, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.club_color }}>
+              <TouchableOpacity onPress={() =>this.state.is_guest? this.showToast() :  this.props.navigation.navigate('reserveS', { club: details })} style={{ height: 50, flexDirection: 'row', marginTop: 20, marginBottom: 20, margin: 10, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.club_color }}>
                 <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>{'RESERVE A SPOT'}</Text>
               </TouchableOpacity>
 

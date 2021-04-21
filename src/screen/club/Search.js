@@ -13,7 +13,7 @@ import Navbar from '../../component/Navbar';
 import {
     BarIndicator,
 } from 'react-native-indicators';
-
+import { getIsGuest, getData, getHeaders } from '../../component/utilities';
 import Moment from 'moment';
 
 export default class Search extends Component {
@@ -22,6 +22,7 @@ export default class Search extends Component {
         super(props);
 
         this.state = {
+            is_guest:true,
             loading: false,
             searchResult: [
             ],
@@ -37,14 +38,17 @@ export default class Search extends Component {
 
 
 
-    componentDidMount() {
+   async componentDidMount() {
+    this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
+        if(await getIsGuest() =="NO"){
         AsyncStorage.getItem('data').then((value) => {
             if (value == '') { } else {
                 this.setState({ data: JSON.parse(value) })
                 this.setState({ user: JSON.parse(value).user })
             }
-
         })
+        }
+
     }
 
 
@@ -56,11 +60,7 @@ export default class Search extends Component {
             loading: true
         })
         fetch(URL.url + 'clubs/search?Location=' + searchText, {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            }
+            method: 'GET', headers: getHeaders(is_guest, data.token)
         })
             .then(res => res.json())
             .then(res => {

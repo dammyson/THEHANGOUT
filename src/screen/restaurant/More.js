@@ -22,6 +22,7 @@ export default class More extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            is_guest:true,
             loading: true,
             data: '',
             name: '',
@@ -40,18 +41,23 @@ export default class More extends Component {
     componentWillMount() {
         const { prams  } = this.props.route.params;
         this.setState({ prams: prams });
-       
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-                this.setState({ user: JSON.parse(value).user })
-            }
-            this.processGetEventTickets();
-        })
 
 
     }
 
+
+    async componentDidMount() {
+        this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
+        if(await getIsGuest() =="NO"){
+            this.setState({
+                data: JSON.parse(await getData()),
+                user: JSON.parse(await getData()).user
+            })
+        }
+       
+
+        this.processGetEventTickets();
+    }
 
 
 
