@@ -38,7 +38,15 @@ export default class EventDetails extends Component {
     };
   }
 
-
+  showToast(){
+    Toast.show({
+        text: 'This feature is only available to registered user',
+        position: 'top',
+        type: 'warning',
+        buttonText: 'Dismiss',
+        duration: 2000
+    });
+}
 
   async componentDidMount() {
     const { id } = this.props.route.params;
@@ -113,13 +121,7 @@ export default class EventDetails extends Component {
     const { data,is_guest } = this.state
 
     if(is_guest){
-      Toast.show({
-          text: 'You can not take like and event you are not log in',
-          position: 'bottom',
-          type: 'success',
-          buttonText: 'Dismiss',
-          duration: 2000
-      });
+     this.showToast()
       return
   }
     fetch(URL.url + 'events/like/' + id, {
@@ -397,12 +399,12 @@ export default class EventDetails extends Component {
                         <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, }}> {details.organizer.description} </Text>
                         <View style={{ marginLeft: 10, flexDirection: 'row', justifyContent: 'center', justifyContent: 'center' }}>
                           <View style={{ flex: 1, justifyContent: 'center', justifyContent: 'center' }}>
-                            <TouchableOpacity onPress={() => this.state.is_guest? null:  this.props.navigation.navigate('organizer_details', { id: details.id })} >
+                            <TouchableOpacity onPress={() =>  this.state.is_guest? this.showToast() : this.props.navigation.navigate('organizer_details', { id: details.id })} >
                               <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200', marginTop: 15, }}>More Details</Text>
                             </TouchableOpacity>
                           </View>
                           <View style={{ flex: 1, justifyContent: 'center', justifyContent: 'center' }}>
-                            <TouchableOpacity onPress={() =>this.state.is_guest? null: this.setState({ show_rating: true })} >
+                            <TouchableOpacity onPress={() => this.state.is_guest? this.showToast() : this.setState({ show_rating: true })} >
                               <Text style={{ marginLeft: 2, color: color.primary_color, fontSize: 13, fontWeight: '200', marginTop: 15, }}>Rate Us</Text>
                             </TouchableOpacity>
                           </View>

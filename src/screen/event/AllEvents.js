@@ -126,14 +126,24 @@ export default class Dashboard extends Component {
 
     };
 
+    showToast(){
+        Toast.show({
+            text: 'This feature is only available to registered user',
+            position: 'top',
+            type: 'warning',
+            buttonText: 'Dismiss',
+            duration: 2000
+        });
+    }
+
     likeUnlikeRequest(id, pos) {
         const { data,is_guest } = this.state
 
         if(is_guest){
             Toast.show({
                 text: 'You can not take like and event you are not log in',
-                position: 'bottom',
-                type: 'success',
+                position: 'top',
+                type: 'warning',
                 buttonText: 'Dismiss',
                 duration: 2000
             });
@@ -149,7 +159,7 @@ export default class Dashboard extends Component {
                     if (pos) {
                         Toast.show({
                             text: 'Event removed from favorite !',
-                            position: 'bottom',
+                            position: 'top',
                             type: 'success',
                             buttonText: 'Dismiss',
                             duration: 2000
@@ -157,7 +167,7 @@ export default class Dashboard extends Component {
                     } else {
                         Toast.show({
                             text: 'Event Added to favorite !',
-                            position: 'bottom',
+                            position: 'top',
                             type: 'success',
                             buttonText: 'Dismiss',
                             duration: 2000
@@ -262,7 +272,7 @@ export default class Dashboard extends Component {
                     source={{ uri: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg' }}
                     imageStyle={{ borderRadius: 5, backgroundColor: color.secondary_color }}
                 >
-                    <TouchableOpacity onPress={() => this.goToMore("eventListing/Likes/7")} style={styles.hangoutDetails} >
+                    <TouchableOpacity onPress={() => this.state.is_guest? this.showToast() : this.goToMore("eventListing/Likes/7")} style={styles.hangoutDetails} >
                         <View style={styles.iconContainer}>
                             <Icon
                                 active
@@ -282,7 +292,7 @@ export default class Dashboard extends Component {
                     source={{ uri: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg' }}
                     imageStyle={{ borderRadius: 5, backgroundColor: color.secondary_color }}
                 >
-                    <TouchableOpacity onPress={() => this.setState({ show_calender: true })}  style={styles.hangoutDetails} >
+                    <TouchableOpacity onPress={() => this.state.is_guest? this.showToast() : this.setState({ show_calender: true })}  style={styles.hangoutDetails} >
                         <View style={styles.iconContainer}>
                             <Icon
                                 active
@@ -300,7 +310,7 @@ export default class Dashboard extends Component {
                     source={{ uri: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg' }}
                     imageStyle={{ borderRadius: 5, backgroundColor: color.secondary_color }}
                 >
-                    <TouchableOpacity onPress={() => this.goToMore("eventListing/Categories/7")} style={styles.hangoutDetails} >
+                    <TouchableOpacity onPress={() => this.state.is_guest? this.showToast() : this.goToMore("eventListing/Categories/7")} style={styles.hangoutDetails} >
 
                         <View style={styles.iconContainer}>
 
@@ -456,7 +466,7 @@ export default class Dashboard extends Component {
 
                             <View style={{ marginLeft: 10, marginRight: 7, flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={styles.titleText}>For You</Text>
-                                <TouchableOpacity onPress={() => this.setState({ show_calender: true })} style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
+                                <TouchableOpacity onPress={() =>this.state.is_guest? this.showToast() : this.setState({ show_calender: true })} style={{ marginLeft: 10, marginRight: 20, flexDirection: 'row', alignItems: 'center' }}>
                                     <Text style={{ fontSize: 12, color: 'orange', }}>Calendar </Text>
                                     <Icon
                                         active
@@ -478,7 +488,7 @@ export default class Dashboard extends Component {
 
 
 
-                            <TouchableOpacity onPress={() => this.goToMore('eventListing/Upcoming/50')} style={{ margin: 30, alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: '#F7A400' }}>
+                            <TouchableOpacity onPress={() =>this.state.is_guest? this.showToast() : this.goToMore('eventListing/Upcoming/50')} style={{ margin: 30, alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: '#F7A400' }}>
                                 <Text style={{ fontSize: 15, margin: 10, fontWeight: '300', color: '#F7A400' }}>View all upcoming events</Text>
                             </TouchableOpacity>
                         </View>

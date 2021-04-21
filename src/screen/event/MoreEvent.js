@@ -12,7 +12,7 @@ import {
     BarIndicator,
 } from 'react-native-indicators';
 import Moment from 'moment';
-
+import { getIsGuest, getData, getHeaders } from '../../component/utilities';
 import Navbar from '../../component/Navbar';
 
 const type = [
@@ -35,6 +35,7 @@ export default class MoreEvent extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            is_guest:true,
             loading: true,
             data: '',
             name: '',
@@ -54,27 +55,28 @@ export default class MoreEvent extends Component {
     componentWillMount() {
         const { prams  } = this.props.route.params;
         this.setState({ prams: prams });
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-                this.setState({ user: JSON.parse(value).user })
-            }
-            this.processGetEventTickets();
-        })
+    }
 
 
+    async componentDidMount() {
+        this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
+        if(await getIsGuest() =="NO"){
+            this.setState({
+                data: JSON.parse(await getData()),
+                user: JSON.parse(await getData()).user
+            })
+        }
+       
+
+        this.processGetEventTickets();
     }
 
     processGetEventTickets() {
-        const { data,prams } = this.state
-        console.warn(URL.url + 'events/'+ prams )
+        const { data,prams, is_guest } = this.state
+
         this.setState({ loading: true })
         fetch(URL.url + 'events/'+ prams, {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            },
+            method: 'GET', headers: getHeaders(is_guest, data.token)
         })
             .then(res => res.json())
             .then(res => {
@@ -231,7 +233,7 @@ export default class MoreEvent extends Component {
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('eventD', {id: tickets[i].id}) } style={styles.oneRow}>
                     <View style={{ marginRight: 20 , marginLeft:20}}>
                         <Text style={styles.title}> {tickets[i].title}</Text>
-                        <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 12, fontWeight: '100', marginRight: 40, opacity: 0.59 }}> {tickets[i].description} </Text>
+                        <Text numberOfLines={2} style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 12, fontWeight: '100', marginRight: 40, opacity: 0.59 }}> {tickets[i].description} </Text>
                        
                         <View style={{  backgroundColor: '#111123', marginTop: 10, opacity: 0.5 }}>
                             <View style={{  flexDirection: 'row',}}>
