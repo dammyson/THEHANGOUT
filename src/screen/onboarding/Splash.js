@@ -97,7 +97,7 @@ export default class Splash extends Component {
   render() {
     return (
       <View style={styles.container}>
-         <StatusBar barStyle="light-content" hidden={false} backgroundColor="#fff" />
+         <StatusBar translucent barStyle="light-content" hidden={false} backgroundColor="transparent" />
         <Image
           style={styles.logo}
           source={require('../../assets/logo.png')} />

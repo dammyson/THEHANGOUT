@@ -236,6 +236,7 @@ export default class Dashboard extends Component {
         if (this.state.loading) {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
+                      <StatusBar barStyle="light-content" hidden={false} backgroundColor="#101023" />
                     <View style={styles.welcome}>
                         <Text style={{ fontSize: 15, color: '#fff' }}>Fetching all your goodies</Text>
                         <BarIndicator count={4} color={color.primary_color} />

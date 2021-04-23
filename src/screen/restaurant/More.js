@@ -14,6 +14,7 @@ import {
 import Moment from 'moment';
 
 import Navbar from '../../component/Navbar';
+import { getIsGuest, getHeaders } from "../../component/utilities";
 
 
 
@@ -62,15 +63,12 @@ export default class More extends Component {
 
 
     processGetEventTickets() {
-        const { data,prams } = this.state
+        const { data,prams, is_guest } = this.state
+
         console.warn(URL.url + 'restaurants/'+ prams)
         this.setState({ loading: true })
         fetch(URL.url + 'restaurants/'+ prams, {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Authorization': 'Bearer ' + data.token,
-            },
+            method: 'GET', headers: getHeaders(is_guest, data.token)
         })
             .then(res => res.json())
             .then(res => {

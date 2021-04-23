@@ -271,7 +271,7 @@ export default class Dashboard extends Component {
                 <Navbar left={left} right={right} title="All Restaurants" bg='#101023' />
                 <Content>
                     <View style={styles.container}>
-                        <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
+                        <StatusBar barStyle="light-content" hidden={false} backgroundColor="#101023" />
                         <View style={{ height: 15 }} />
                         {/*
                         <View style={styles.header}>
