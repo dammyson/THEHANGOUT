@@ -194,7 +194,6 @@ export default class PlaceOrder extends Component {
         })
             .then(res => res.json())
             .then(res => {
-                console.warn("kaikkk", res);
                 if (res.status) {
                     this.setState({ loading: false, done: true })
                 } else {
