@@ -23,8 +23,7 @@ export default class Splash extends Component {
     AsyncStorage.setItem('is_guest', "NO");
     this.checkPermission();
     setTimeout(() => {
-   // this.initPage();
-    this.props.navigation.replace('home');
+    this.initPage();
     }, 3000);
   }
 

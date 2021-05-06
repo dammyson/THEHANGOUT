@@ -44,9 +44,11 @@ export default class EventDetails extends Component {
           this.setState({ data: JSON.parse(value) })
           this.setState({ user: JSON.parse(value).user })
         }
-        this.processGetEvent();
+       
       })
     }
+
+    this.processGetEvent();
   }
 
 
@@ -67,7 +69,7 @@ export default class EventDetails extends Component {
 
   processGetEvent() {
     const { data, id, is_guest } = this.state
-    console.warn(id);
+    console.warn("jdjdjdjdjdj"+id);
 
     fetch(URL.url + 'clubs/' + id, {
       method: 'GET', headers: getHeaders(is_guest, data.token)
@@ -224,7 +226,7 @@ export default class EventDetails extends Component {
               <ScrollView style={{ flex: 1, }}>
                 <View style={{ flex: 1, }}>
                   <ImageBackground
-                    opacity={0.5}
+                    opacity={0.8}
                     style={{ height: Dimensions.get('window').height / 3 }}
                     source={{ uri: details.imageUrl }}
                     imageStyle={{ backgroundColor: 'blue', alignItems: 'flex-end', justifyContent: 'flex-end' }}
