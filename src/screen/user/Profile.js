@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, AsyncStorage, Image, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, ListItem, Thumbnail, Grid, Col, Separator } from 'native-base';
 import { Avatar, Badge, } from 'react-native-elements';
-import { Card, Icon, SocialIcon } from 'react-native-elements'
+import { Card, Icon, SocialIcon } from 'react-native-elements' 
 import {
     BarIndicator,
 } from 'react-native-indicators';
@@ -137,10 +137,10 @@ export default class Profile extends Component {
 
         return (
             <Container style={{ backgroundColor: color.secondary_color }}>
-                <Navbar left={left} right={right} title="Profile" bg='#5f5c7f' />
+                 <StatusBar translucent barStyle="light-content" hidden={false} backgroundColor="#101023" />
+                <Navbar left={left} right={right} title="Profile" bg='#101023' />
                 <Content>
                     <View style={styles.container}>
-                        <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
                         <View style={styles.header}>
 
                             <View>

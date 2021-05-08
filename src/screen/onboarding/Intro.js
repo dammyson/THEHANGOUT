@@ -102,7 +102,7 @@ export default class Intro extends Component {
 
                             <View style={styles.bottom}>
 
-                                <Button onPress={() => this.props.navigation.navigate('reg')} style={styles.buttonContainer} block iconLeft>
+                                <Button onPress={() => this.continueAsUser()} style={styles.buttonContainer} block iconLeft>
                                     <Text style={{ color: '#000000', fontWeight: '600', borderRadius: 3, }}>GET STARTED</Text>
                                 </Button>
                                 <View
@@ -134,6 +134,11 @@ export default class Intro extends Component {
     continueAsGuest(){
         AsyncStorage.setItem('is_guest', "YES");
         this.props.navigation.navigate('home')
+    }
+
+    continueAsUser(){
+        AsyncStorage.setItem('is_guest', "NO");
+        this.props.navigation.navigate('reg')
     }
 }
 

@@ -397,10 +397,12 @@ export default class Dashboard extends Component {
                     index: 0,
                     routes: [{ name: 'home' }],
                 })}>
-                    <View style={{ transform: [{ rotateY: "180deg" }] }}>
-                        <Icon type='material-icons' name='exit-to-app' size={30} color='#FFF' />
-
-                    </View>
+                   <Icon
+            active
+            name="ios-arrow-back"
+            type='ionicon'
+            color='#FFF'
+          />
                 </Button>
             </Left>
         );

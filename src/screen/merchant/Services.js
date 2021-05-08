@@ -266,8 +266,10 @@ const styles = StyleSheet.create({
     title: {
         marginTop: 1,
         color: '#fff',
-        fontSize: 18,
-        fontWeight: '600'
+        marginTop: 1,
+        color: '#fff',
+        fontSize: 16,
+        fontFamily: 'NunitoSans-Bold'
     },
     fab: {
         height: 60,

@@ -117,7 +117,7 @@ export default class Login extends Component {
   _signOut = async () => {
     //Remove user session from the device.
     try {
-      await GoogleSignin.revokeAccess();
+      await GoogleSignin.revokeAccess(); 
       await GoogleSignin.signOut();
       this.setState({ userInfo: null }); // Remove the user from your app's state as well
     } catch (error) {

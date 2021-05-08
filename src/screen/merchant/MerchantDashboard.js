@@ -65,7 +65,7 @@ export default class MerchantDashboard extends Component {
 
     getEventsRequest() {
         const { data, user } = this.state
-        console.warn(user)
+        console.warn(data.token)
 
 
         fetch(URL.url + 'merchant/dashboard', {
@@ -111,6 +111,7 @@ export default class MerchantDashboard extends Component {
         if (this.state.loading) {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
+                     <StatusBar translucent barStyle="light-content" hidden={false} backgroundColor="#000000" />
                     <View style={styles.welcome}>
                         <Text style={{ fontSize: 15, color: '#fff' }}>Fetching all your goodies</Text>
                         <BarIndicator count={4} color={color.primary_color} />
@@ -149,12 +150,12 @@ export default class MerchantDashboard extends Component {
 
         return (
             <Container style={{ backgroundColor: color.secondary_color }}>
-
+  <StatusBar translucent barStyle="light-content" hidden={false} backgroundColor="#101023" />
                 <Navbar left={left} right={right} title="Home" bg='#101023' />
                 <Content>
                     {!this.state.nodata ?
                         <View style={styles.container}>
-                            <StatusBar barStyle="dark-content" hidden={false} backgroundColor="transparent" />
+                          
                             <View >
 
                                 <Balance 
@@ -403,8 +404,8 @@ const styles = StyleSheet.create({
     title: {
         marginTop: 1,
         color: '#fff',
-        fontSize: 18,
-        fontWeight: '600'
+        fontSize: 16,
+        fontFamily: 'NunitoSans-Bold'
     },
     fab: {
         height: 60,
