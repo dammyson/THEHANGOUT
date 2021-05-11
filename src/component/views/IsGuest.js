@@ -1,6 +1,6 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
-import { FlatList, Dimensions, View, Text, Image, StyleSheet, TouchableOpacity, Animated, Easing, ImageBackground } from 'react-native';
+import { FlatList, Dimensions, View, Text, Image, StyleSheet, StatusBar, Animated, Easing, ImageBackground } from 'react-native';
 import { Icon } from 'react-native-elements'
 import * as Animatable from 'react-native-animatable';
 import colors from '../color';
@@ -39,6 +39,7 @@ export default class IsGuest extends Component {
         const { onPress, onBack } = this.props;
         return (
             <>
+              <StatusBar barStyle="light-content" translucent hidden={false} backgroundColor="transparent" />
                 <View
                     style={{
                         position: "absolute",
