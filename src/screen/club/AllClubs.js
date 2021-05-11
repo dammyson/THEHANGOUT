@@ -50,8 +50,8 @@ export default class Dashboard extends Component {
     }
 
     async componentDidMount() {
-        this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
-        if(await getIsGuest() =="NO"){
+        this.setState({ is_guest: await getIsGuest() == "YES" ? true : false })
+        if (await getIsGuest() == "NO") {
             this.setState({
                 data: JSON.parse(await getData()),
                 user: JSON.parse(await getData()).user
@@ -125,7 +125,7 @@ export default class Dashboard extends Component {
     };
 
 
-    showToast(){
+    showToast() {
         Toast.show({
             text: 'This feature is only available to registered user',
             position: 'top',
@@ -135,9 +135,9 @@ export default class Dashboard extends Component {
         });
     }
     likeUnlikeRequest(id, pos) {
-        const { data,is_guest } = this.state
-        if(is_guest){
-           this.showToast()
+        const { data, is_guest } = this.state
+        if (is_guest) {
+            this.showToast()
             return
         }
 
@@ -258,17 +258,18 @@ export default class Dashboard extends Component {
     render() {
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => this.props.navigation.reset({
+                <TouchableOpacity  style={{ height: 40, width:40, justifyContent:'center' }} transparent onPress={() => this.props.navigation.reset({
                     index: 0,
                     routes: [{ name: 'home' }],
                 })}>
                     <Icon
-            active
-            name="ios-arrow-back"
-            type='ionicon'
-            color='#FFF'
-          />
-                </Button>
+                        active
+                        name="ios-arrow-back"
+                        type='ionicon'
+                        size={25}
+                        color='#FFF'
+                    />
+                </TouchableOpacity>
             </Left>
         );
         var right = (
@@ -305,7 +306,7 @@ export default class Dashboard extends Component {
             );
         }
 
-       
+
         return (
             <Container style={{ backgroundColor: color.secondary_color }}>
                 <StatusBar backgroundColor='#101023' barStyle="light-content" />

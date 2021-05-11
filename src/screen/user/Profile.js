@@ -34,6 +34,7 @@ export default class Profile extends Component {
 
 
     async componentWillMount() {
+        console.warn( await getIsGuest())
         this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
         this.setState({
             data: JSON.parse(await getData()),

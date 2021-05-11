@@ -34,8 +34,9 @@ export default class Manage extends Component {
     }
 
 
-  async  componentDidlMount() {
-    this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
+  async componentDidMount() {
+    console.warn( await getIsGuest())
+     this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
         this.setState({
             data: JSON.parse(await getData()),
             user: JSON.parse(await getUser()),

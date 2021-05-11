@@ -338,7 +338,7 @@ export default class Dashboard extends Component {
                                     </View>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity onPress={() => this.goTopage('clubs')}  style={[styles.cat_box, { borderWidth: 1, borderColor: '#BE41FF' }]}>
+                                <TouchableOpacity onPress={() => this.goTopage('clubs')}  style={[styles.cat_box, { borderWidth: 1, borderColor: '#BE41FF40' }]}>
                                     <View style={{ flexDirection: 'row', marginTop: 5, }}>
                                         <View style={{ flex: 1 }}>
                                             <Text style={{ color: '#BE41FF', fontFamily: 'NunitoSans-Bold' }}>Clubs & lounge </Text>

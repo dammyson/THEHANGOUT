@@ -393,7 +393,7 @@ export default class Dashboard extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => this.props.navigation.reset({
+                <Button  style={{ height: 40, width:40, justifyContent:'center' }} transparent onPress={() => this.props.navigation.reset({
                     index: 0,
                     routes: [{ name: 'home' }],
                 })}>
