@@ -7,7 +7,8 @@ import {
   BarIndicator,
 } from 'react-native-indicators';
 
-import firebase from 'react-native-firebase'
+import messaging from '@react-native-firebase/messaging';
+//import firebase from 'react-native-firebase'
 
 export default class Splash extends Component {
 
@@ -20,7 +21,13 @@ export default class Splash extends Component {
   }
 
   async componentDidMount() {
-    this.checkPermission();
+
+this.requestUserPermission()
+
+
+
+
+   // this.checkPermission();
     setTimeout(() => {
      // this.props.navigation.replace('home');
     this.initPage();
@@ -39,6 +46,18 @@ export default class Splash extends Component {
 
     })
 
+  }
+
+
+  async requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+    }
   }
 
   goHome() {
