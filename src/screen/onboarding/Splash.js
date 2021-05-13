@@ -21,16 +21,10 @@ export default class Splash extends Component {
   }
 
   async componentDidMount() {
-
-this.requestUserPermission()
-
-
-
-
-   // this.checkPermission();
+    this.checkPermission()
     setTimeout(() => {
-     // this.props.navigation.replace('home');
-    this.initPage();
+      // this.props.navigation.replace('home');
+      this.initPage();
     }, 3000);
   }
 
@@ -54,9 +48,22 @@ this.requestUserPermission()
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-  
     if (enabled) {
+      this.getToken()
       console.log('Authorization status:', authStatus);
+    }
+
+  }
+
+
+  async checkPermission() {
+    const enabled = await messaging().hasPermission();
+    if (enabled) {
+      console.warn('enabled');
+      this.getToken();
+    } else {
+      console.warn('not enabled');
+      this.requestUserPermission();
     }
   }
 
@@ -72,50 +79,28 @@ this.requestUserPermission()
     })
   }
 
-    //1
-    async checkPermission() {
-      const enabled = await firebase.messaging().hasPermission();
-      if (enabled) {
-        //  console.warn('enabled');
-        this.getToken();
-      } else {
-        // console.warn('not enabled');
-        this.requestPermission();
-      }
-      // firebase.messaging().subscribeToTopic("global");
-    }
-    async getToken() {
-      let fcmToken = await AsyncStorage.getItem('fcmToken');
+
+  async getToken() {
+    let fcmToken = await AsyncStorage.getItem('fcmToken');
+    console.warn(fcmToken);
+    if (!fcmToken) {
+      fcmToken = await messaging().getToken();
       console.warn(fcmToken);
+      if (fcmToken) {
+        await AsyncStorage.setItem('fcmToken', fcmToken);
+        this.setState({ token: fcmToken })
+      }
+    } else {
       this.setState({ token: fcmToken })
-      if (!fcmToken) {
-        fcmToken = await firebase.messaging().getToken();
-        console.warn(fcmToken);
-        if (fcmToken) {
-          // user has a device token
-          await AsyncStorage.setItem('fcmToken', fcmToken);
-          this.setState({ token: fcmToken })
-        }
-      }
     }
-  
-    //2
-    async requestPermission() {
-      try {
-        await firebase.messaging().requestPermission();
-        // User has authorised
-        this.getToken();
-      } catch (error) {
-        // User has rejected permissions
-        console.warn('permission rejected');
-      }
-    }
-  
+  }
+
+
 
   render() {
     return (
       <View style={styles.container}>
-         <StatusBar translucent barStyle="light-content" hidden={false} backgroundColor="transparent" />
+        <StatusBar translucent barStyle="light-content" hidden={false} backgroundColor="transparent" />
         <Image
           style={styles.logo}
           source={require('../../assets/logo.png')} />
