@@ -242,14 +242,16 @@ export default class Dashboard extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => this.props.navigation.reset({
+                <Button  style={{ height: 40, width:40, justifyContent:'center' }} transparent onPress={() => this.props.navigation.reset({
                     index: 0,
                     routes: [{ name: 'home' }],
                 })}>
-                    <View style={{ transform: [{ rotateY: "180deg" }] }}>
-                        <Icon type='material-icons' name='exit-to-app' size={30} color='#FFF' />
-
-                    </View>
+                  <Icon
+            active
+            name="ios-arrow-back"
+            type='ionicon'
+            color='#FFF'
+          />
                 </Button>
             </Left>
         );

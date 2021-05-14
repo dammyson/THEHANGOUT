@@ -39,28 +39,30 @@ export default class More extends Component {
 
 
 
-   async componentWillMount() {
+    async componentWillMount() {
         //const { prams  } = this.props.route.params;
-       // this.setState({ prams: prams });
-       if(await getIsGuest() =="NO"){
-        AsyncStorage.getItem('data').then((value) => {
-            if (value == '') { } else {
-                this.setState({ data: JSON.parse(value) })
-                this.setState({ user: JSON.parse(value).user })
-            }
-            this.processGetEventTickets();
-        })
-    }
+        // this.setState({ prams: prams });
+        if (await getIsGuest() == "NO") {
+            AsyncStorage.getItem('data').then((value) => {
+                if (value == '') { } else {
+                    this.setState({ data: JSON.parse(value) })
+                    this.setState({ user: JSON.parse(value).user })
+                }
 
+            })
+
+
+        }
+        this.processGetEventTickets();
 
     }
 
     async componentDidMount() {
-        this.setState({ is_guest: await getIsGuest() =="YES" ? true : false})
+        this.setState({ is_guest: await getIsGuest() == "YES" ? true : false })
     }
 
 
-    showToast(){
+    showToast() {
         Toast.show({
             text: 'This feature is only available to registered user',
             position: 'top',
@@ -71,7 +73,7 @@ export default class More extends Component {
     }
 
     processGetEventTickets() {
-        const { data,prams , is_guest} = this.state
+        const { data, prams, is_guest } = this.state
         console.warn(URL.url + 'clubs/all')
         this.setState({ loading: true })
         fetch(URL.url + 'clubs/all', {
@@ -130,7 +132,7 @@ export default class More extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => this.props.navigation.goBack()}>
+                <Button   style={{ height: 40, width:40, justifyContent:'center' }} transparent onPress={() => this.props.navigation.goBack()}>
                     <Icon
                         active
                         name="ios-arrow-back"
@@ -165,7 +167,7 @@ export default class More extends Component {
             );
         }
 
-        
+
 
         return (
             <Container style={{ backgroundColor: '#000' }}>
@@ -173,30 +175,30 @@ export default class More extends Component {
                 <Content>
                     <View style={styles.container}>
                         <View style={{ flex: 1, }}>
-                                    <ScrollView style={{ flex: 1, }}>
-                                        <View style={{ flex: 1, marginTop: 20, marginLeft: 20, marginRight: 20 }}>
-                                          
-                                            <View style={styles.item}>
+                            <ScrollView style={{ flex: 1, }}>
+                                <View style={{ flex: 1, marginTop: 20, marginLeft: 20, marginRight: 20 }}>
 
-                                                <TextInput
-                                                    placeholder="Search Clubs"
-                                                    placeholderTextColor='#8d96a6'
-                                                    returnKeyType="next"
-                                                    keyboardType='default'
-                                                    autoCapitalize="none"
-                                                    autoCorrect={false}
-                                                    style={styles.menu}
-                                                    onChangeText={this.searchFilterFunction}
-                                                   
-                                                />
-                                                <TouchableOpacity style={{ height: 30, width: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: '#DD352E' }}>
-                                                    <Icon active name="search" type='feather' color='#fff' />
-                                                </TouchableOpacity>
+                                    <View style={styles.item}>
 
-                                            </View>
-                                            {this.renderItem(this.state.events)}
-                                        </View>
-                                    </ScrollView>
+                                        <TextInput
+                                            placeholder="Search Clubs"
+                                            placeholderTextColor='#8d96a6'
+                                            returnKeyType="next"
+                                            keyboardType='default'
+                                            autoCapitalize="none"
+                                            autoCorrect={false}
+                                            style={styles.menu}
+                                            onChangeText={this.searchFilterFunction}
+
+                                        />
+                                        <TouchableOpacity style={{ height: 30, width: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: '#DD352E' }}>
+                                            <Icon active name="search" type='feather' color='#fff' />
+                                        </TouchableOpacity>
+
+                                    </View>
+                                    {this.renderItem(this.state.events)}
+                                </View>
+                            </ScrollView>
                         </View>
                     </View>
                 </Content>
@@ -210,13 +212,13 @@ export default class More extends Component {
         let items = [];
         for (let i = 0; i < tickets.length; i++) {
             items.push(
-                <TouchableOpacity onPress={() =>  this.props.navigation.navigate('clubD', { id: tickets[i].id})} style={styles.oneRow}>
-                    <View style={{ marginRight: 20 , marginLeft:20}}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('clubD', { id: tickets[i].id })} style={styles.oneRow}>
+                    <View style={{ marginRight: 20, marginLeft: 20 }}>
                         <Text style={styles.title}> {tickets[i].name}</Text>
-                        <Text style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 12, fontWeight: '100', marginRight: 40, opacity: 0.59 }}> {tickets[i].description} </Text>
-                       
-                        <View style={{  backgroundColor: '#111123', marginTop: 10, opacity: 0.5 }}>
-                            <View style={{  flexDirection: 'row',}}>
+                        <Text numberOfLines={3} style={{ marginLeft: 2, textAlign: 'left', color: '#fff', fontSize: 12, fontWeight: '100', marginRight: 40, opacity: 0.59 }}> {tickets[i].description} </Text>
+
+                        <View style={{ backgroundColor: '#111123', marginTop: 10, opacity: 0.5 }}>
+                            <View style={{ flexDirection: 'row', }}>
                                 <Icon
                                     active
                                     name="source-commit-start-next-local"
@@ -227,7 +229,7 @@ export default class More extends Component {
                                 <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}>{tickets[i].location} </Text>
                             </View>
 
-                            <View style={{  flexDirection: 'row' }}>
+                            <View style={{ flexDirection: 'row' }}>
                                 <Icon
                                     active
                                     name="update"
@@ -239,7 +241,7 @@ export default class More extends Component {
                             </View>
 
                         </View>
-                      
+
                     </View>
 
                 </TouchableOpacity>

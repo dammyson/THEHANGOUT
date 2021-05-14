@@ -48,7 +48,7 @@ export default class Dashboard extends Component {
     }
 
 
-
+    
 
 
     async componentDidMount() {
@@ -75,7 +75,9 @@ export default class Dashboard extends Component {
     getEventsRequest() {
         const { data, user } = this.state
         console.warn(user)
-    
+        // 
+
+
         fetch(URL.url + 'customer/dashboard', {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
@@ -234,7 +236,7 @@ export default class Dashboard extends Component {
         if (this.state.loading) {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
-                    <StatusBar barStyle="light-content" hidden={false} backgroundColor="#101023" />
+                      <StatusBar barStyle="light-content" hidden={false} backgroundColor="#101023" />
                     <View style={styles.welcome}>
                         <Text style={{ fontSize: 15, color: '#fff' }}>Fetching all your goodies</Text>
                         <BarIndicator count={4} color={color.primary_color} />
@@ -249,7 +251,7 @@ export default class Dashboard extends Component {
         var left = (
             <Left style={{ flex: 1 }}>
                 <Button transparent onPress={() => this.props.navigation.navigate('Manage')}>
-
+                   
                 </Button>
             </Left>
         );
@@ -292,7 +294,7 @@ export default class Dashboard extends Component {
                             </View>
                         </View>
                         */}
-                        <View style={{ height: 15 }} />
+                        <View style={{height: 15}} />
                         <View style={styles.header}>
                             <Carousel
                                 ref={(c) => { this._carousel = c; }}
@@ -316,128 +318,65 @@ export default class Dashboard extends Component {
                         </View>
 
                         <View style={styles.cat}>
-                        <Text style={styles.catTitle}>Categories </Text>
-                        </View>
-
-                        <View style={{}}>
-
-                            <View style={{ flexDirection: 'row', marginHorizontal: 10, marginVertical: 10 }}>
-
-                                <TouchableOpacity  onPress={() => this.goTopage('events')}  style={[styles.cat_box, { borderWidth: 1, borderColor: '#FFDB4340' }]}>
-                                    <View style={{ flexDirection: 'row', marginTop: 5, }}>
-                                        <View style={{ flex: 1 }}>
-                                            <Text style={{ color: '#FFDB43', fontFamily: 'NunitoSans-Bold' }}>Events</Text>
-                                        </View>
-
+                            <Text style={styles.catTitle}>CATEGORIES</Text>
+                            <View style={styles.row}>
+                                <View style={styles.rowchild}>
+                                    <TouchableOpacity onPress={() => this.goTopage('events')} style={[styles.circle, { backgroundColor: '#fff7e7', }]}>
                                         <Image
-                                            style={{ resizeMode: 'contain', height: 20, width: 20 }}
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
                                             source={require('../../assets/icons/events.png')} />
-                                    </View>
-                                    <View style={{ marginTop: 5, height: 35 }}>
-                                        <Text numberOfLines={2} style={{ color: '#fff7e7', fontFamily: 'NunitoSans-Regular', fontSize: 12 }}>See Upcoming events and book tickets  </Text>
-                                    </View>
-                                </TouchableOpacity>
 
-                                <TouchableOpacity onPress={() => this.goTopage('clubs')}  style={[styles.cat_box, { borderWidth: 1, borderColor: '#BE41FF40' }]}>
-                                    <View style={{ flexDirection: 'row', marginTop: 5, }}>
-                                        <View style={{ flex: 1 }}>
-                                            <Text style={{ color: '#BE41FF', fontFamily: 'NunitoSans-Bold' }}>Clubs & lounge </Text>
-                                        </View>
-
+                                    </TouchableOpacity>
+                                    <Text style={styles.catName}>Events</Text>
+                                    <TouchableOpacity onPress={() => this.goTopage('movies')}  style={[styles.circle, { backgroundColor: '#cee7ff', }]}>
                                         <Image
-                                            style={{ resizeMode: 'contain', height: 20, width: 20 }}
-                                            source={require('../../assets/icons/club.png')} />
-                                    </View>
-                                    <View style={{ marginTop: 5, height: 35 }}>
-                                        <Text numberOfLines={2} style={{ color: '#fff7e7', fontFamily: 'NunitoSans-Regular', fontSize: 12 }}>EReserved your spot at the best clubs </Text>
-                                    </View>
-                                </TouchableOpacity>
-
-
-
-                            </View>
-
-
-                            <View style={{ flexDirection: 'row', marginHorizontal: 10, marginVertical: 10 }}>
-
-                                <TouchableOpacity  onPress={() => this.goTopage('play')}  style={[styles.cat_box, { borderWidth: 1, borderColor: '#FF993440' }]}>
-                                    <View style={{ flexDirection: 'row', marginTop: 5, }}>
-                                        <View style={{ flex: 1 }}>
-                                            <Text style={{ color: '#FF9934', fontFamily: 'NunitoSans-Bold' }}>Parks & plays </Text>
-                                        </View>
-
-                                        <Image
-                                            style={{ resizeMode: 'contain', height: 20, width: 20 }}
-                                            source={require('../../assets/icons/parks.png')} />
-                                    </View>
-                                    <View style={{ marginTop: 5, height: 35 }}>
-                                        <Text numberOfLines={2} style={{ color: '#fff7e7', fontFamily: 'NunitoSans-Regular', fontSize: 12 }}>Get the best seats to dramas. Buy tickets now  </Text>
-                                    </View>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity onPress={() => this.goTopage('movies')} style={[styles.cat_box, { borderWidth: 1, borderColor: '#45A1FF40' }]}>
-                                    <View style={{ flexDirection: 'row', marginTop: 5, }}>
-                                        <View style={{ flex: 1 }}>
-                                            <Text style={{ color: '#45A1FF', fontFamily: 'NunitoSans-Bold' }}>Movies  </Text>
-                                        </View>
-
-                                        <Image
-                                            style={{ resizeMode: 'contain', height: 20, width: 20 }}
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
                                             source={require('../../assets/icons/movies.png')} />
-                                    </View>
-                                    <View style={{ marginTop: 5, height: 35 }}>
-                                        <Text numberOfLines={2} style={{ color: '#fff7e7', fontFamily: 'NunitoSans-Regular', fontSize: 12 }}>Book movie tickets for the movies you love. </Text>
-                                    </View>
-                                </TouchableOpacity>
+                                    </TouchableOpacity>
+                                    <Text style={styles.catName}>Movies</Text>
+                                </View>
+                                <View style={styles.rowchild}>
+                                    <TouchableOpacity onPress={() => this.goTopage('clubs')} style={[styles.circle, { backgroundColor: '#ebd5ff', }]}>
+                                        <Image
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
+                                            source={require('../../assets/icons/club.png')} />
+                                    </TouchableOpacity>
 
+                                    <Text style={styles.catName}>Clubs & lounge</Text>
 
-
-                            </View>
-
-
-                            <View style={{ flexDirection: 'row', marginHorizontal: 10, marginVertical: 10 }}>
-
-                                <TouchableOpacity onPress={() => this.goTopage('restaurants')}  style={[styles.cat_box, { borderWidth: 1, borderColor: '#FF3C3440' }]}>
-                                    <View style={{ flexDirection: 'row', marginTop: 5, }}>
-                                        <View style={{ flex: 1 }}>
-                                            <Text style={{ color: '#FF3C34', fontFamily: 'NunitoSans-Bold' }}>Food</Text>
-                                        </View>
+                                    <TouchableOpacity onPress={() => this.goTopage('restaurants')} style={[styles.circle, { backgroundColor: '#ffcccd', }]}>
 
                                         <Image
-                                            style={{ resizeMode: 'contain', height: 20, width: 20 }}
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
                                             source={require('../../assets/icons/restaurant.png')} />
-                                    </View>
-                                    <View style={{ marginTop: 5, height: 35 }}>
-                                        <Text numberOfLines={2} style={{ color: '#fff7e7', fontFamily: 'NunitoSans-Regular', fontSize: 12 }}>Reserve tables at a restaurant or buy a meal</Text>
-                                    </View>
-                                </TouchableOpacity>
+                                    </TouchableOpacity>
 
-                                <TouchableOpacity onPress={() => this.goTopage('corner')} style={[styles.cat_box, { borderWidth: 1, borderColor: '#58FFAC40' }]}>
-                                    <View style={{ flexDirection: 'row', marginTop: 5, }}>
-                                        <View style={{ flex: 1 }}>
-                                            <Text style={{ color: '#58FFAC', fontFamily: 'NunitoSans-Bold' }}>My Packages  </Text>
-                                        </View>
+                                    <Text style={styles.catName}>Food</Text>
+                                </View>
+
+                                <View style={styles.rowchild}>
+
+                                    <TouchableOpacity onPress={() => this.goTopage('play')}  style={[styles.circle, { backgroundColor: '#d3ffdb', }]}>
 
                                         <Image
-                                            style={{ resizeMode: 'contain', height: 20, width: 20 }}
-                                            source={require('../../assets/icons/package.png')} />
-                                    </View>
-                                    <View style={{ marginTop: 5, height: 35 }}>
-                                        <Text numberOfLines={2} style={{ color: '#fff7e7', fontFamily: 'NunitoSans-Regular', fontSize: 12 }}>See recommended hangout spots through your history.</Text>
-                                    </View>
-                                </TouchableOpacity>
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
+                                            source={require('../../assets/icons/parks.png')} />
 
+                                    </TouchableOpacity>
 
+                                    <Text style={styles.catName}>Parks & plays</Text>
 
+                                    <TouchableOpacity onPress={() => this.goTopage('corner')}  style={[styles.circle, { backgroundColor: '#ffcccd', }]}>
+                                        <Image
+                                            style={{ resizeMode: 'contain', height: 30, width: 30 }}
+                                            source={require('../../assets/icons/club.png')} />
+                                    </TouchableOpacity>
+
+                                    <Text style={styles.catName}>My corners</Text>
+
+                                </View>
                             </View>
-
-
-
-
-
                         </View>
-
-
                     </View>
                 </Content>
             </Container>
@@ -445,12 +384,36 @@ export default class Dashboard extends Component {
     }
 
 
-    goTopage(data) {
-
-        if (data == 'events') {
+    goTopage(data){
+       
+       if(data == 'events'){
+            this.props.navigation.navigate(data)
+        }  
+         else if(data == 'movies'){
+            Toast.show({
+                text: 'This feature is not available at the moment !',
+                position: 'top',
+                type: 'success',
+                buttonText: 'Dismiss',
+                duration: 3000
+            });
+        } 
+        else if(data == 'clubs'){
             this.props.navigation.navigate(data)
         }
-        else if (data == 'movies') {
+        else if(data == 'restaurants'){
+            this.props.navigation.navigate(data)
+        }
+        else if(data == 'play'){
+            Toast.show({
+                text: 'This feature is not available at the moment !',
+                position: 'top',
+                type: 'success',
+                buttonText: 'Dismiss',
+                duration: 3000
+            });
+        } 
+         else{
             Toast.show({
                 text: 'This feature is not available at the moment !',
                 position: 'top',
@@ -459,31 +422,7 @@ export default class Dashboard extends Component {
                 duration: 3000
             });
         }
-        else if (data == 'clubs') {
-            this.props.navigation.navigate(data)
-        }
-        else if (data == 'restaurants') {
-            this.props.navigation.navigate(data)
-        }
-        else if (data == 'play') {
-            Toast.show({
-                text: 'This feature is not available at the moment !',
-                position: 'top',
-                type: 'success',
-                buttonText: 'Dismiss',
-                duration: 3000
-            });
-        }
-        else {
-            Toast.show({
-                text: 'This feature is not available at the moment !',
-                position: 'top',
-                type: 'success',
-                buttonText: 'Dismiss',
-                duration: 3000
-            });
-        }
-
+       
     }
 }
 
@@ -637,13 +576,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginLeft: 10
     },
-    //new
-    cat_box: {
-        padding: 10,
-        flex: 1,
-        marginHorizontal: 5,
-        backgroundColor: '#101023',
-        borderRadius: 5
-    },
-
 });

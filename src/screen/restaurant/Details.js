@@ -110,7 +110,7 @@ export default class Details extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => goBack()}>
+                <Button  style={{ height: 40, width:40, justifyContent:'center' }} transparent onPress={() => goBack()}>
                     <Icon
                         active
                         name="ios-arrow-back"

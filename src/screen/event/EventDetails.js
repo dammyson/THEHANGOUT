@@ -213,7 +213,7 @@ export default class EventDetails extends Component {
 
     var left = (
       <Left style={{ flex: 1 }}>
-        <Button transparent onPress={() => goBack(null)}>
+        <Button   style={{ height: 40, width:40, justifyContent:'center' }} transparent onPress={() => goBack(null)}>
           <Icon
             active
             name="ios-arrow-back"

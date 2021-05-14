@@ -138,7 +138,7 @@ export default class ReserveSpot extends Component {
 
         var left = (
             <Left style={{ flex: 1 }}>
-                <Button transparent onPress={() => this.props.navigation.goBack()}>
+                <Button  style={{ height: 40, width:40, justifyContent:'center' }} transparent onPress={() => this.props.navigation.goBack()}>
                     <Icon
                         active
                         name="left"

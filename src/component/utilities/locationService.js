@@ -14,7 +14,7 @@ export const getLocation = () => {
 export const geocodeLocationByName = (locationName) => {
   return new Promise((resolve, reject) => {
     Geocoder.from(locationName)
-      .then((json) => {
+      .then((json) => { 
         const addressComponent = json.results[0].geometry.location;
         resolve(addressComponent);
       })
