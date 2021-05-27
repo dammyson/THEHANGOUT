@@ -7,7 +7,8 @@ import {
   BarIndicator,
 } from 'react-native-indicators';
 
-import firebase from 'react-native-firebase'
+import messaging from '@react-native-firebase/messaging';
+//import firebase from 'react-native-firebase'
 
 export default class Splash extends Component {
 
@@ -20,10 +21,10 @@ export default class Splash extends Component {
   }
 
   async componentDidMount() {
-    this.checkPermission();
+    this.checkPermission()
     setTimeout(() => {
-   this.initPage();
-    //this.props.navigation.replace('home');
+      // this.props.navigation.replace('home');
+      this.initPage();
     }, 3000);
   }
 
@@ -41,6 +42,31 @@ export default class Splash extends Component {
 
   }
 
+
+  async requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    if (enabled) {
+      this.getToken()
+      console.log('Authorization status:', authStatus);
+    }
+
+  }
+
+
+  async checkPermission() {
+    const enabled = await messaging().hasPermission();
+    if (enabled) {
+      console.warn('enabled');
+      this.getToken();
+    } else {
+      console.warn('not enabled');
+      this.requestUserPermission();
+    }
+  }
+
   goHome() {
     AsyncStorage.getItem('role').then((value) => {
       if (value == '') { } else {
@@ -53,50 +79,28 @@ export default class Splash extends Component {
     })
   }
 
-    //1
-    async checkPermission() {
-      const enabled = await firebase.messaging().hasPermission();
-      if (enabled) {
-        //  console.warn('enabled');
-        this.getToken();
-      } else {
-        // console.warn('not enabled');
-        this.requestPermission();
-      }
-      // firebase.messaging().subscribeToTopic("global");
-    }
-    async getToken() {
-      let fcmToken = await AsyncStorage.getItem('fcmToken');
+
+  async getToken() {
+    let fcmToken = await AsyncStorage.getItem('fcmToken');
+    console.warn(fcmToken);
+    if (!fcmToken) {
+      fcmToken = await messaging().getToken();
       console.warn(fcmToken);
+      if (fcmToken) {
+        await AsyncStorage.setItem('fcmToken', fcmToken);
+        this.setState({ token: fcmToken })
+      }
+    } else {
       this.setState({ token: fcmToken })
-      if (!fcmToken) {
-        fcmToken = await firebase.messaging().getToken();
-        console.warn(fcmToken);
-        if (fcmToken) {
-          // user has a device token
-          await AsyncStorage.setItem('fcmToken', fcmToken);
-          this.setState({ token: fcmToken })
-        }
-      }
     }
-  
-    //2
-    async requestPermission() {
-      try {
-        await firebase.messaging().requestPermission();
-        // User has authorised
-        this.getToken();
-      } catch (error) {
-        // User has rejected permissions
-        console.warn('permission rejected');
-      }
-    }
-  
+  }
+
+
 
   render() {
     return (
       <View style={styles.container}>
-         <StatusBar translucent barStyle="light-content" hidden={false} backgroundColor="transparent" />
+        <StatusBar translucent barStyle="light-content" hidden={false} backgroundColor="transparent" />
         <Image
           style={styles.logo}
           source={require('../../assets/logo.png')} />

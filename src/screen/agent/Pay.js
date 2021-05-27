@@ -351,7 +351,7 @@ export default class Pay extends Component {
                                     </View>
 
                                     <ScrollView horizontal style={{ marginRight: 20, marginLeft: 20, marginBottom: 20, marginTop: 15 }}>
-                                        <TouchableOpacity onPress={() => this.props.navigation.naviagete('agent_create')} style={{ height: 80, width: 80, borderRadius: 5, backgroundColor: '#5F5C7F', borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('agent_create')} style={{ height: 80, width: 80, borderRadius: 5, backgroundColor: '#5F5C7F', borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
 
                                             <Icon
                                                 active

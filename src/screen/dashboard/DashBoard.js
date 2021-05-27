@@ -460,10 +460,24 @@ export default class Dashboard extends Component {
             });
         }
         else if (data == 'clubs') {
-            this.props.navigation.navigate(data)
+            //this.props.navigation.navigate(data)
+            Toast.show({
+                text: 'This feature is not available at the moment !',
+                position: 'top',
+                type: 'success',
+                buttonText: 'Dismiss',
+                duration: 3000
+            });
         }
         else if (data == 'restaurants') {
-            this.props.navigation.navigate(data)
+           // this.props.navigation.navigate(data)
+           Toast.show({
+            text: 'This feature is not available at the moment !',
+            position: 'top',
+            type: 'success',
+            buttonText: 'Dismiss',
+            duration: 3000
+        });
         }
         else if (data == 'play') {
             Toast.show({

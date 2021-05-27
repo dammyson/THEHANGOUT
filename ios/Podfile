@@ -1,12 +1,8 @@
-platform :ios, '9.0'
+platform :ios, '10.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 target 'Hangout' do
   # Pods for Hangout
-  pod 'FirebaseCore'
-  pod 'Firebase/Messaging'
-  pod 'Firebase/Analytics'
-  pod 'Firebase/Crashlytics'
   pod 'GoogleSignIn', '~> 5.0.2'
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
@@ -47,7 +43,7 @@ target 'Hangout' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
-  pod 'react-native-paystack', :path => '../node_modules/react-native-paystack'
+
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 

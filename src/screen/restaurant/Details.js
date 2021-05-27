@@ -272,7 +272,7 @@ export default class Details extends Component {
     renderItem = ({ item, }) => {
         const { details, } = this.state
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('place_order', { restaurant: details.name, res_id: details.id, menu_id: item.id, })} style={{ borderBottomColor: "#ffffff60", borderBottomWidth: 0.7, flexDirection: 'row', marginLeft: 25, paddingBottom: 15, marginRight: 20, marginTop: 10 }} >
+            <TouchableOpacity onPress={() =>  this.state.is_guest? this.showToast() : this.props.navigation.navigate('place_order', { restaurant: details.name, res_id: details.id, menu_id: item.id, })} style={{ borderBottomColor: "#ffffff60", borderBottomWidth: 0.7, flexDirection: 'row', marginLeft: 25, paddingBottom: 15, marginRight: 20, marginTop: 10 }} >
                 <View style={styles.resultTextDescription}>
                     <Text style={{ fontFamily: 'NunitoSans-Bold', color: '#fff', fontWeight: '700', fontSize: 12, marginBottom: 10 }}>{item.name}</Text>
                     <Text style={{ fontFamily: 'NunitoSans-Regular', color: '#fff', fontWeight: '200', fontSize: 12, marginBottom: 10 }}>{item.description}</Text>
