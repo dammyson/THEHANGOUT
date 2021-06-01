@@ -138,7 +138,13 @@ export default class UpdateProfile extends Component {
                 });
             })
             .catch((error) => {
-                Alert.alert('Login failed', "Something went wrong pls try again", [{ text: 'Okay' }])
+                Toast.show({
+                    text: 'Something went wrong pls try again!',
+                    position: 'bottom',
+                    type: 'error',
+                    buttonText: 'Dismiss',
+                    duration: 2500
+                });
                 console.warn('error', error);
 
             });
@@ -163,9 +169,21 @@ export default class UpdateProfile extends Component {
                 if (res.status) {
                     this.setState({ loading: false })
                     AsyncStorage.setItem('user', JSON.stringify(res.user));
-                    Alert.alert('Success', 'Profile updated', [{ text: 'Okay' }])
+                    Toast.show({
+                        text: 'Profile updated',
+                        position: 'bottom',
+                        type: 'success',
+                        buttonText: 'Dismiss',
+                        duration: 2500
+                    });
                 } else {
-                    Alert.alert('Login failed', res.message, [{ text: 'Okay' }])
+                    Toast.show({
+                        text: 'Something went wrong pls try again!',
+                        position: 'bottom',
+                        type: 'error',
+                        buttonText: 'Dismiss',
+                        duration: 2500
+                    });
                     this.setState({ loading: false })
                 }
             }).catch((error) => {
