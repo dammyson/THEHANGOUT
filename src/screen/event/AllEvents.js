@@ -59,7 +59,6 @@ export default class Dashboard extends Component {
             })
         }
        
-
         this.getEventsRequest()
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
             this.getEventsRequest()
@@ -522,7 +521,7 @@ export default class Dashboard extends Component {
                         <View style={{ flex: 1, }}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('eventD', { id: item.id })}>
                                 <ImageBackground
-                                    opacity={0.5}
+                                    opacity={1}
                                     style={{ borderRadius: 12, flex: 1, margin: 10, marginTop: 0 }}
                                     source={{ uri: item.banner, }}
                                     imageStyle={{ borderRadius: 20, backgroundColor: 'blue' }}
@@ -598,7 +597,6 @@ export default class Dashboard extends Component {
                                 source={{ uri: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg' }}
                                 imageStyle={{ borderRadius: 5, backgroundColor: color.secondary_color }}
                             >
-
 
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate('more', { prams: "eventCategoryListing/" + item.category + "/7" })} style={styles.hangoutDetails} >
 

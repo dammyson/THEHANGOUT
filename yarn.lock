@@ -6687,10 +6687,10 @@ react-native-gesture-handler@^1.6.1:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-react-native-image-crop-picker@^0.31.1:
-  version "0.31.1"
-  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.31.1.tgz#b56248a9e31d62f1c6e7c2f85d296869c32af4cd"
-  integrity sha512-I5z7DcTKYYASevIalkqKdiw9Fe4CVCKPVMMkLGDVGUYgZZWlbOS9G1+oNWtWwoB5S9e931GkDrZ/HL5UhADG/Q==
+react-native-image-crop-picker@^0.36.2:
+  version "0.36.2"
+  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.36.2.tgz#fcb35c1a12d805bedbb6d94a87078e86a6c9b49f"
+  integrity sha512-cTauoEHHzx14ZHA7Pt65e7RVnbn1WRYQz2ufTZp9/05EtNDrdsXwNhgtXdWVFbOhYB8qgUFQjy2NelkBOHIH3g==
 
 react-native-indicators@^0.17.0:
   version "0.17.0"
@@ -6727,6 +6727,13 @@ react-native-modals@^0.19.9:
     babel-plugin-flow-react-proptypes "^9.1.1"
     prop-types "^15.6.0"
     react-native-root-siblings "^3.2.2"
+
+react-native-open-maps@^0.3.6:
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/react-native-open-maps/-/react-native-open-maps-0.3.6.tgz#0b8a8f48ddd5c5da4fb97bbf8f0283ef92dda966"
+  integrity sha512-pP2Mj7h7/Addf46lRNc+hZGA9QW6DjEj0xyeCyPRk9dU49EDDDOL+9QUmSX8SITA2rtfl3wMuOuSgt5YlemeAg==
+  dependencies:
+    query-string "^6.1.0"
 
 react-native-paystack@^3.4.0:
   version "3.4.0"

@@ -23,8 +23,8 @@ export default class Splash extends Component {
   async componentDidMount() {
     this.checkPermission()
     setTimeout(() => {
-      // this.props.navigation.replace('home');
-      this.initPage();
+      // this.props.navigation.replace('merchant_home');
+     this.initPage();
     }, 3000);
   }
 

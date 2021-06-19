@@ -1,6 +1,6 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
-import { Alert, TextInput, ImageBackground, View, Dimensions, ActivityIndicator, TouchableOpacity, Image, StyleSheet, AsyncStorage, Platform } from 'react-native';
+import { Alert, TextInput, ImageBackground, View, Dimensions, ActivityIndicator, TouchableOpacity, Image, StyleSheet, StatusBar, AsyncStorage, Platform } from 'react-native';
 import { Container, Content, Text, Icon, Button, Left, } from 'native-base';
 import {
   BarIndicator,
@@ -287,6 +287,7 @@ export default class Login extends Component {
         resizeMode="cover"
       >
         <Container style={{ backgroundColor: 'transparent' }}>
+        <StatusBar barStyle="light-content" translucent hidden={false} backgroundColor="transparent" />
           <Navbar left={left} title="" />
           <Content>
             <View style={styles.body}>

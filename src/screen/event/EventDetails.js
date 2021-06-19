@@ -7,8 +7,6 @@ import StarRating from 'react-native-star-rating';
 const URL = require("../../component/server");
 import Modal, { SlideAnimation, ModalContent } from 'react-native-modals';
 import color from '../../component/color';
-const { width: screenWidth } = Dimensions.get('window')
-import RNPickerSelect from 'react-native-picker-select';
 import {
   BarIndicator,
 } from 'react-native-indicators';
@@ -16,6 +14,9 @@ import Moment from 'moment';
 Moment.locale('en');
 import Navbar from '../../component/Navbar';
 import { getIsGuest, getData, getHeaders } from '../../component/utilities';
+
+import openMap from 'react-native-open-maps';
+
 
 
 export default class EventDetails extends Component {
@@ -46,6 +47,10 @@ export default class EventDetails extends Component {
         buttonText: 'Dismiss',
         duration: 2000
     });
+}
+
+_goToYosemite() {
+ 
 }
 
   async componentDidMount() {
@@ -194,10 +199,6 @@ export default class EventDetails extends Component {
         console.warn(error);
         alert(error.message);
       });
-
-
-
-
   };
 
 
@@ -343,7 +344,7 @@ export default class EventDetails extends Component {
                       </View>
                     </View>
 
-                    <ScrollView horizontal style={{ marginVertical: 20 }}>
+                    <ScrollView horizontal style={{ marginVertical: 5 }}>
 
                       {this.renderGallery(details.galleryList)}
 
@@ -371,8 +372,6 @@ export default class EventDetails extends Component {
                    
                     <Text style={styles.headings}> LOCATION </Text>
                     <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, marginTop: 15, }}>  {details.location}  </Text>
-                    <View style={styles.map}>
-                    </View>
                     <Text style={styles.headings}> ORGANIZER </Text>
                     <View style={{ flexDirection: 'row', marginTop: 15, marginBottom: 30, opacity: 0.8, marginLeft: 5 }}>
                       <View style={{ marginRight: 15, }}>

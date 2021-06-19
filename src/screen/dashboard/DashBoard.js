@@ -338,21 +338,22 @@ export default class Dashboard extends Component {
                                     </View>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity onPress={() => this.goTopage('clubs')}  style={[styles.cat_box, { borderWidth: 1, borderColor: '#BE41FF40' }]}>
+                                <TouchableOpacity onPress={() => this.goTopage('corner')} style={[styles.cat_box, { borderWidth: 1, borderColor: '#58FFAC40' }]}>
                                     <View style={{ flexDirection: 'row', marginTop: 5, }}>
                                         <View style={{ flex: 1 }}>
-                                            <Text style={{ color: '#BE41FF', fontFamily: 'NunitoSans-Bold' }}>Clubs & lounge </Text>
+                                            <Text style={{ color: '#58FFAC', fontFamily: 'NunitoSans-Bold' }}>Photos </Text>
                                         </View>
 
                                         <Image
                                             style={{ resizeMode: 'contain', height: 20, width: 20 }}
-                                            source={require('../../assets/icons/club.png')} />
+                                            source={require('../../assets/icons/package.png')} />
                                     </View>
                                     <View style={{ marginTop: 5, height: 35 }}>
-                                        <Text numberOfLines={2} style={{ color: '#fff7e7', fontFamily: 'NunitoSans-Regular', fontSize: 12 }}>EReserved your spot at the best clubs </Text>
+                                        <Text numberOfLines={2} style={{ color: '#fff7e7', fontFamily: 'NunitoSans-Regular', fontSize: 12 }}>See recommended hangout spots through your history.</Text>
                                     </View>
                                 </TouchableOpacity>
 
+                              
 
 
                             </View>
@@ -412,21 +413,24 @@ export default class Dashboard extends Component {
                                     </View>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity onPress={() => this.goTopage('corner')} style={[styles.cat_box, { borderWidth: 1, borderColor: '#58FFAC40' }]}>
+                              
+
+
+
+                                <TouchableOpacity onPress={() => this.goTopage('clubs')}  style={[styles.cat_box, { borderWidth: 1, borderColor: '#BE41FF40' }]}>
                                     <View style={{ flexDirection: 'row', marginTop: 5, }}>
                                         <View style={{ flex: 1 }}>
-                                            <Text style={{ color: '#58FFAC', fontFamily: 'NunitoSans-Bold' }}>My Packages  </Text>
+                                            <Text style={{ color: '#BE41FF', fontFamily: 'NunitoSans-Bold' }}>Clubs & lounge </Text>
                                         </View>
 
                                         <Image
                                             style={{ resizeMode: 'contain', height: 20, width: 20 }}
-                                            source={require('../../assets/icons/package.png')} />
+                                            source={require('../../assets/icons/club.png')} />
                                     </View>
                                     <View style={{ marginTop: 5, height: 35 }}>
-                                        <Text numberOfLines={2} style={{ color: '#fff7e7', fontFamily: 'NunitoSans-Regular', fontSize: 12 }}>See recommended hangout spots through your history.</Text>
+                                        <Text numberOfLines={2} style={{ color: '#fff7e7', fontFamily: 'NunitoSans-Regular', fontSize: 12 }}>EReserved your spot at the best clubs </Text>
                                     </View>
                                 </TouchableOpacity>
-
 
 
                             </View>
@@ -518,10 +522,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     paginationDot: {
-        width: 8,
-        height: 8,
+        width: 5,
+        height: 5,
         borderRadius: 4,
-        marginHorizontal: 4,
+        marginHorizontal: 1,
         backgroundColor: 'rgba(255, 255, 255, 0.92)'
     },
     item: {
