@@ -75,7 +75,7 @@ export default class Dashboard extends Component {
     getEventsRequest() {
         const { data, user } = this.state
         console.warn(user)
-    
+
         fetch(URL.url + 'customer/dashboard', {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
@@ -316,14 +316,14 @@ export default class Dashboard extends Component {
                         </View>
 
                         <View style={styles.cat}>
-                        <Text style={styles.catTitle}>Categories </Text>
+                            <Text style={styles.catTitle}>Categories </Text>
                         </View>
 
                         <View style={{}}>
 
                             <View style={{ flexDirection: 'row', marginHorizontal: 10, marginVertical: 10 }}>
 
-                                <TouchableOpacity  onPress={() => this.goTopage('events')}  style={[styles.cat_box, { borderWidth: 1, borderColor: '#FFDB4340' }]}>
+                                <TouchableOpacity onPress={() => this.goTopage('events')} style={[styles.cat_box, { borderWidth: 1, borderColor: '#FFDB4340' }]}>
                                     <View style={{ flexDirection: 'row', marginTop: 5, }}>
                                         <View style={{ flex: 1 }}>
                                             <Text style={{ color: '#FFDB43', fontFamily: 'NunitoSans-Bold' }}>Events</Text>
@@ -353,7 +353,7 @@ export default class Dashboard extends Component {
                                     </View>
                                 </TouchableOpacity>
 
-                              
+
 
 
                             </View>
@@ -361,7 +361,7 @@ export default class Dashboard extends Component {
 
                             <View style={{ flexDirection: 'row', marginHorizontal: 10, marginVertical: 10 }}>
 
-                                <TouchableOpacity  onPress={() => this.goTopage('play')}  style={[styles.cat_box, { borderWidth: 1, borderColor: '#FF993440' }]}>
+                                <TouchableOpacity onPress={() => this.goTopage('play')} style={[styles.cat_box, { borderWidth: 1, borderColor: '#FF993440' }]}>
                                     <View style={{ flexDirection: 'row', marginTop: 5, }}>
                                         <View style={{ flex: 1 }}>
                                             <Text style={{ color: '#FF9934', fontFamily: 'NunitoSans-Bold' }}>Parks & plays </Text>
@@ -398,7 +398,7 @@ export default class Dashboard extends Component {
 
                             <View style={{ flexDirection: 'row', marginHorizontal: 10, marginVertical: 10 }}>
 
-                                <TouchableOpacity onPress={() => this.goTopage('restaurants')}  style={[styles.cat_box, { borderWidth: 1, borderColor: '#FF3C3440' }]}>
+                                <TouchableOpacity onPress={() => this.goTopage('restaurants')} style={[styles.cat_box, { borderWidth: 1, borderColor: '#FF3C3440' }]}>
                                     <View style={{ flexDirection: 'row', marginTop: 5, }}>
                                         <View style={{ flex: 1 }}>
                                             <Text style={{ color: '#FF3C34', fontFamily: 'NunitoSans-Bold' }}>Food</Text>
@@ -413,11 +413,11 @@ export default class Dashboard extends Component {
                                     </View>
                                 </TouchableOpacity>
 
-                              
 
 
 
-                                <TouchableOpacity onPress={() => this.goTopage('clubs')}  style={[styles.cat_box, { borderWidth: 1, borderColor: '#BE41FF40' }]}>
+
+                                <TouchableOpacity onPress={() => this.goTopage('clubs')} style={[styles.cat_box, { borderWidth: 1, borderColor: '#BE41FF40' }]}>
                                     <View style={{ flexDirection: 'row', marginTop: 5, }}>
                                         <View style={{ flex: 1 }}>
                                             <Text style={{ color: '#BE41FF', fontFamily: 'NunitoSans-Bold' }}>Clubs & lounge </Text>
@@ -464,24 +464,24 @@ export default class Dashboard extends Component {
             });
         }
         else if (data == 'clubs') {
-            //this.props.navigation.navigate(data)
-            Toast.show({
-                text: 'This feature is not available at the moment !',
-                position: 'top',
-                type: 'success',
-                buttonText: 'Dismiss',
-                duration: 3000
-            });
+            this.props.navigation.navigate(data)
+            // Toast.show({
+            //     text: 'This feature is not available at the moment !',
+            //     position: 'top',
+            //     type: 'success',
+            //     buttonText: 'Dismiss',
+            //     duration: 3000
+            // });
         }
         else if (data == 'restaurants') {
-           // this.props.navigation.navigate(data)
-           Toast.show({
-            text: 'This feature is not available at the moment !',
-            position: 'top',
-            type: 'success',
-            buttonText: 'Dismiss',
-            duration: 3000
-        });
+            this.props.navigation.navigate(data)
+            //    Toast.show({
+            //     text: 'This feature is not available at the moment !',
+            //     position: 'top',
+            //     type: 'success',
+            //     buttonText: 'Dismiss',
+            //     duration: 3000
+            // });
         }
         else if (data == 'play') {
             Toast.show({

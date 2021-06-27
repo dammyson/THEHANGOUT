@@ -251,8 +251,7 @@ _goToYosemite() {
 
     return (
       <Container style={{ backgroundColor: '#101023' }}>
-         <StatusBar barStyle="light-content" hidden={false} backgroundColor="#101023" />
-        <Navbar left={left} right={right} title={details.title} bg='#111123' />
+         <StatusBar translucent barStyle="light-content" hidden={false} backgroundColor="transparent" />
         <Content>
           
           <View style={styles.container}>
@@ -262,11 +261,22 @@ _goToYosemite() {
               <ScrollView style={{ flex: 1, }}>
                 <View style={{ flex: 1, }}>
                   <ImageBackground
-                    opacity={0.8}
-                    style={{ height: Dimensions.get('window').height / 3 }}
+                    opacity={1}
+                    style={{ height: Dimensions.get('window').height / 2.8 }}
                     source={{ uri: details.banner }}
                     imageStyle={{ backgroundColor: 'blue', alignItems: 'flex-start', justifyContent: 'flex-start' }}
                   >
+                     <View style={{ paddingTop: 20, marginLeft: 20 }}>
+                                            <Button transparent onPress={() => this.props.navigation.goBack()}>
+                                                <Icon
+                                                    active
+                                                    name="ios-arrow-back"
+                                                    type='ionicon'
+                                                    color='#FFF'
+                                                    size={30}
+                                                />
+                                            </Button>
+                                        </View>
                     <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', padding: 20 }}>
                       <View style={[styles.iconContainer, { marginRight: 15 }]}>
                         {details.isLike ?
@@ -301,9 +311,9 @@ _goToYosemite() {
 
                   </ImageBackground>
 
-                  <View style={{ backgroundColor: '#111123', marginLeft: 20, marginRight: 20 }}>
-                    <Text style={styles.title}> {details.title} </Text>
-                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '200', marginTop: 15, opacity: 0.6 }}>{Moment(details.startDate).format('llll')} - {Moment(details.endDate).format('llll')} </Text>
+                  <View style={{ backgroundColor: '#111123', marginLeft: 20, marginRight: 20, }}>
+                    <Text style={styles.title}>{details.title} </Text>
+                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '200', marginTop: 10, opacity: 0.6 }}>{Moment(details.startDate).format('llll')} - {Moment(details.endDate).format('llll')} </Text>
 
                     <View style={{ alignItems: 'center', backgroundColor: '#111123', flexDirection: 'row', marginTop: 15, opacity: 0.5 }}>
                       <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginRight: 15 }}>
@@ -313,7 +323,7 @@ _goToYosemite() {
                           type='font-awesome'
                           color='#FFF'
                         />
-                        <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}> {details.type} </Text>
+                        <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}>{details.type} </Text>
                       </View>
 
                       <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
@@ -328,10 +338,10 @@ _goToYosemite() {
 
                     </View>
 
-                    <View style={{ alignItems: 'center', backgroundColor: '#111123', flexDirection: 'row', marginTop: 15, opacity: 0.5 }}>
+                    <View style={{ alignItems: 'center', backgroundColor: '#111123', flexDirection: 'row', marginTop: 10, opacity: 0.5 }}>
 
 
-                      <View style={{ flex: 1, flexDirection: 'row', marginTop: 3, marginLeft: 15 }}>
+                      <View style={{ flex: 1, flexDirection: 'row', marginTop: 3, }}>
                         <Icon
                           active
                           name="map-marker-distance"
@@ -339,7 +349,7 @@ _goToYosemite() {
                           color='#fff'
                           size={15}
                         />
-                        <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '100' }}> {details.distance} ({details.duration})</Text>
+                        <Text style={{ marginLeft: 2, color: '#fff', fontSize: 11, fontWeight: '100' }}>{details.distance} ({details.duration})</Text>
 
                       </View>
                     </View>
@@ -350,14 +360,14 @@ _goToYosemite() {
 
                     </ScrollView>
 
-                    <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 15, opacity: 0.8, marginLeft: 10 }}>
+                    <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 15, opacity: 0.8, }}>
                       <Icon
                         active
                         name="location-pin"
                         type='simple-line-icon'
                         color='#FFF'
                       />
-                      <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200' }}> {details.location} </Text>
+                      <Text style={{ marginLeft: 2, color: '#fff', fontSize: 11, fontWeight: '200' }}>{details.location} </Text>
                     </View>
                     <View style={styles.piceContainer}>
 
@@ -365,15 +375,13 @@ _goToYosemite() {
 
 
 
-                    <View style={styles.lineStyle} />
+                  
 
-                    <Text style={styles.headings}> EVENT DETAILS </Text>
-                    <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, marginTop: 15, }}>  {details.description}</Text>
-                   
-                    <Text style={styles.headings}> LOCATION </Text>
-                    <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, marginTop: 15, }}>  {details.location}  </Text>
-                    <Text style={styles.headings}> ORGANIZER </Text>
-                    <View style={{ flexDirection: 'row', marginTop: 15, marginBottom: 30, opacity: 0.8, marginLeft: 5 }}>
+                    <Text style={styles.headings}>DETAILS </Text>
+                    <Text style={{ marginLeft: 2, color: '#fff', fontSize: 11, fontWeight: '200', opacity: 0.6, marginTop: 2, }}>{details.description}</Text>
+                    <View style={styles.lineStyle} />
+                    <Text style={styles.headings}>ORGANIZER </Text>
+                    <View style={{ flexDirection: 'row', marginTop: 9, marginBottom: 30, opacity: 0.8, }}>
                       <View style={{ marginRight: 15, }}>
                         <Avatar
                           rounded
@@ -395,7 +403,7 @@ _goToYosemite() {
                           <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '500' }}> {details.rating} </Text>
                         </View>
                         <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '500' }}>  {details.organizer.name} </Text>
-                        <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, }}> {details.organizer.description} </Text>
+                        <Text style={{ marginLeft: 2, color: '#fff', fontSize: 13, fontWeight: '200', opacity: 0.6, }}>{details.organizer.description} </Text>
                         <View style={{ marginLeft: 10, flexDirection: 'row', justifyContent: 'center', justifyContent: 'center' }}>
                           <View style={{ flex: 1, justifyContent: 'center', justifyContent: 'center' }}>
                             <TouchableOpacity onPress={() =>  this.state.is_guest? this.showToast() : this.props.navigation.navigate('organizer_details', { id: details.id })} >
@@ -543,7 +551,7 @@ _goToYosemite() {
 const styles = StyleSheet.create({
   container: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height - 80,
+    height: Dimensions.get('window').height ,
 
   },
   iconContainer: {
@@ -564,8 +572,9 @@ const styles = StyleSheet.create({
   headings: {
     marginTop: 22,
     color: '#fff',
-    fontSize: 14,
-    fontWeight: '600'
+    fontSize: 13,
+    fontFamily: 'NunitoSans-Bold'
+
   },
   lineStyle: {
     height: 0.8,

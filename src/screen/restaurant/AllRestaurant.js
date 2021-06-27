@@ -221,7 +221,7 @@ export default class Dashboard extends Component {
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={styles.welcome}>
                         <Text style={{ fontSize: 15, color: '#fff' }}>Fetching all restaurants</Text>
-                        <BarIndicator count={4} color={color.primary_color} />
+                        <BarIndicator count={4} color={'#FF3C3440'} />
                         <Text style={{ fontSize: 13, flex: 1, color: '#fff' }}>Please wait...</Text>
                     </View>
                 </View>
@@ -346,7 +346,7 @@ export default class Dashboard extends Component {
                         <View style={{ flex: 1, }}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('restaurantD', { id: item.id })}   >
                                 <ImageBackground
-                                    opacity={0.5}
+                                    opacity={0.9}
                                     style={{ borderRadius: 12, flex: 1, margin: 10, marginTop: 0 }}
                                     source={{ uri: item.banner, }}
                                     imageStyle={{ borderRadius: 20, backgroundColor: 'blue' }}
